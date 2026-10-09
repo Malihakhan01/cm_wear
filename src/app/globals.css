@@ -1,0 +1,231 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Space+Grotesk:wght@500;700&family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+:root {
+  /* TAWFIQ INDUSTRY Core Design Tokens */
+  --sf-black: #0A0A0A;
+  --sf-white: #FFFFFF;
+  --sf-off-white: #F4F4EF;
+  /* Brand Theme Tokens (Derived from TAWFIQ INDUSTRIES Logo: Crimson Red + Carbon Black + White) */
+  --sf-red: #D90429;
+  --sf-red-dark: #9E001B;
+  --sf-red-light: #EF233C;
+  --sf-olive: #D90429;
+  --sf-olive-dark: #9E001B;
+  --sf-olive-light: #EF233C;
+  --sf-border: #DADBD2;
+  --sf-border-dark: #2A2A28;
+  --sf-muted: #72726D;
+  --sf-charcoal: #20201E;
+
+  /* Semantic UI Tokens */
+  --color-primary: var(--sf-black);
+  --color-background: var(--sf-white);
+  --color-secondary-bg: var(--sf-off-white);
+  --color-border: var(--sf-border);
+  --color-text-main: var(--sf-black);
+  --color-text-muted: var(--sf-muted);
+  --color-accent: var(--sf-red);
+  --color-accent-hover: var(--sf-red-dark);
+  --color-accent-soft: rgba(217, 4, 41, 0.12);
+
+  /* Fonts & Heading Typography Tokens (Matching Reference Screenshots) */
+  --fd: "BX Display", "Arial Narrow", system-ui, sans-serif;
+  --font-heading: var(--fd);
+  --font-display: var(--fd);
+  --font-editorial: 'Manrope', sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --t-hero: clamp(3rem, 9vw, 9.4rem);
+  --t-h2: clamp(2.3rem, 5.4vw, 5.2rem);
+
+  /* Header & Navigation Metrics */
+  --header-height: 72px;
+  --announcement-height: 36px;
+}
+
+@theme {
+  --font-display: "BX Display", "Arial Narrow", system-ui, sans-serif;
+  --font-heading: "BX Display", "Arial Narrow", system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    border-color: var(--sf-border);
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text-main);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 100%;
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  /* Primary Headings across website matching reference screenshots */
+  h1, h2,
+  .bx-h1, .bx-h2 {
+    font-family: var(--fd) !important;
+    font-style: italic;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: -0.01em !important;
+    -webkit-text-stroke: 0.35px currentColor;
+  }
+
+  h1, .bx-h1 {
+    font-weight: 900 !important;
+    line-height: 0.86 !important;
+  }
+
+  h2, .bx-h2 {
+    font-weight: 900 !important;
+    line-height: 0.9 !important;
+  }
+
+  /* Subheadings & card titles default to clean normal upright style */
+  h3, h4, h5, h6 {
+    font-family: var(--fd);
+    font-style: normal;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+
+  h3, .bx-h3 {
+    line-height: 0.95;
+  }
+
+  h4, h5, h6 {
+    line-height: 1;
+  }
+
+  /* Accessibility: Respect Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Local Font Fallback ensuring BX Display renders thick Bold Italic */
+@font-face {
+  font-family: "BX Display";
+  font-style: italic;
+  font-weight: 100 900;
+  src: local("Arial Narrow Bold Italic"), local("ArialNarrow-BoldItalic"), local("Arial-BoldItalicMT"), local("Arial Narrow Bold"), local("Arial Narrow");
+}
+
+@font-face {
+  font-family: "BX Display";
+  font-style: normal;
+  font-weight: 100 900;
+  src: local("Arial Narrow Bold"), local("ArialNarrow-Bold"), local("Arial-BoldMT"), local("Arial Narrow");
+}
+
+/* Custom Utilities for Editorial & Heading Styling matching reference */
+.apparel-site .bx-h1,
+.bx-h1 {
+  font-family: var(--fd) !important;
+  font-style: italic !important;
+  font-weight: 900 !important;
+  font-size: var(--t-hero);
+  line-height: 0.86 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+  -webkit-text-stroke: 0.35px currentColor;
+}
+
+.apparel-site .bx-h2,
+.bx-h2 {
+  font-family: var(--fd) !important;
+  font-style: italic !important;
+  font-weight: 900 !important;
+  font-size: var(--t-h2);
+  line-height: 0.9 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+  -webkit-text-stroke: 0.35px currentColor;
+}
+
+.font-display,
+.font-heading,
+.heading-font {
+  font-family: var(--fd) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+  -webkit-text-stroke: 0.35px currentColor;
+}
+
+.not-italic {
+  font-style: normal !important;
+}
+
+.font-editorial {
+  font-family: var(--font-editorial);
+}
+
+.eyebrow-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.editorial-number {
+  font-family: var(--fd) !important;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.86;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F4EF;
+}
+::-webkit-scrollbar-thumb {
+  background: #DADBD2;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #73764A;
+}
+
+/* Section Heading Animation Keyframes & Utilities */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(217, 4, 41, 0.6);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.2);
+    box-shadow: 0 0 10px 2px rgba(217, 4, 41, 0.4);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.2s infinite ease-in-out;
+}
+
