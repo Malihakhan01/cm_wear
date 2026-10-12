@@ -179,20 +179,20 @@ export const Header: React.FC = () => {
           isOpen={megaMenuOpen}
           onClose={() => setMegaMenuOpen(false)}
         />
-
-        {/* Global Modals & Drawers */}
-        <MobileMenuDrawer
-          isOpen={mobileMenuOpen}
-          onClose={() => setMobileMenuOpen(false)}
-        />
-
-        <SearchModal
-          isOpen={searchModalOpen}
-          onClose={() => setSearchModalOpen(false)}
-        />
-
-        <CartDrawer />
       </header>
+
+      {/* Global Modals & Drawers */}
+      <MobileMenuDrawer
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+      />
+
+      <SearchModal
+        isOpen={searchModalOpen}
+        onClose={() => setSearchModalOpen(false)}
+      />
+
+      <CartDrawer />
 
       {/* On non-home pages, keep 72px space in normal document flow so page content is not covered */}
       {!isHome && <div className="h-[72px] w-full shrink-0" aria-hidden="true" />}

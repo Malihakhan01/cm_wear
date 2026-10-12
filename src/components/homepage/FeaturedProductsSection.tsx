@@ -228,17 +228,17 @@ export const FeaturedProductsSection: React.FC = () => {
         </div>
 
         {/* View All CTA */}
-        <div className="mt-12 text-center pt-8 border-t border-[#DADBD2] flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="mt-12 text-center pt-8 border-t border-[#DADBD2] flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4">
           <Link
             href="/catalog"
-            className="px-6 py-3 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono uppercase font-bold tracking-wider rounded-[2px] transition-colors flex items-center gap-2"
+            className="w-full max-w-[290px] sm:w-auto sm:max-w-none px-3.5 py-2 sm:px-6 sm:py-3 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-[10px] sm:text-xs font-mono uppercase font-bold tracking-normal sm:tracking-wider rounded-[2px] transition-colors flex items-center justify-center gap-2 leading-tight"
           >
             <span>Explore Complete Export Catalog (70+ Items)</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
           </Link>
           <Link
             href="/request-quote"
-            className="px-6 py-3 bg-[#F4F4EF] hover:bg-[#DADBD2] border border-[#DADBD2] text-[#0A0A0A] text-xs font-mono uppercase font-bold tracking-wider rounded-[2px] transition-colors"
+            className="w-full max-w-[290px] sm:w-auto sm:max-w-none px-3.5 py-2 sm:px-6 sm:py-3 bg-[#F4F4EF] hover:bg-[#DADBD2] border border-[#DADBD2] text-[#0A0A0A] text-[10px] sm:text-xs font-mono uppercase font-bold tracking-normal sm:tracking-wider rounded-[2px] transition-colors flex items-center justify-center text-center leading-tight"
           >
             Request Custom Factory Specification
           </Link>

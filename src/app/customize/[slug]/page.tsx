@@ -558,8 +558,8 @@ export default function ProductCustomizerPage() {
       activeModelType === "varsity" && !product.slug.includes("varsity")
         ? (PRODUCTS_DATA.find((p) => p.slug.includes("varsity") || p.subcategory === "varsity-jackets") || product)
         : activeModelType === "hoodie" && !product.slug.includes("hoodie")
-        ? (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || product)
-        : product;
+          ? (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || product)
+          : product;
 
     const totalBatchUnits = Object.values(sizeBreakdown).reduce((a, b) => a + b, 0);
     const isBatch = totalBatchUnits > 1 || mode === "wholesale";
@@ -649,17 +649,14 @@ export default function ProductCustomizerPage() {
                 top: `${art.y}px`,
                 width: `${art.width * art.scale}px`,
                 height: `${art.height * art.scale}px`,
-                transform: `translate(-50%, -50%) rotate(${art.rotation}deg) ${
-                  art.flippedH ? "scaleX(-1)" : ""
-                }`,
+                transform: `translate(-50%, -50%) rotate(${art.rotation}deg) ${art.flippedH ? "scaleX(-1)" : ""
+                  }`,
                 opacity: art.opacity,
                 zIndex: 35 + (art.zIndex || 1),
               }}
-              className={`transition-shadow select-none pointer-events-auto ${
-                isDraggingThis ? "cursor-grabbing" : "cursor-grab"
-              } ${
-                isSelected ? "ring-2 ring-[#D10115] ring-offset-2" : "hover:ring-1 hover:ring-black/40"
-              }`}
+              className={`transition-shadow select-none pointer-events-auto ${isDraggingThis ? "cursor-grabbing" : "cursor-grab"
+                } ${isSelected ? "ring-2 ring-[#D10115] ring-offset-2" : "hover:ring-1 hover:ring-black/40"
+                }`}
               title="Click and drag to move artwork • Drag bottom-right corner to resize"
             >
               <img
@@ -754,11 +751,9 @@ export default function ProductCustomizerPage() {
                     ? `1px 1px 0px ${txt.outlineColor}, -1px -1px 0px ${txt.outlineColor}, 1px -1px 0px ${txt.outlineColor}, -1px 1px 0px ${txt.outlineColor}`
                     : undefined,
               }}
-              className={`select-none p-1 transition-shadow whitespace-nowrap pointer-events-auto ${
-                isDraggingThis ? "cursor-grabbing" : "cursor-grab"
-              } ${
-                isSelected ? "ring-2 ring-[#D10115] ring-offset-2" : "hover:ring-1 hover:ring-black/40"
-              }`}
+              className={`select-none p-1 transition-shadow whitespace-nowrap pointer-events-auto ${isDraggingThis ? "cursor-grabbing" : "cursor-grab"
+                } ${isSelected ? "ring-2 ring-[#D10115] ring-offset-2" : "hover:ring-1 hover:ring-black/40"
+                }`}
               title="Click and drag to move text"
             >
               {txt.name?.startsWith("Monogram") || (txt.outlineColor && txt.text.length <= 3) ? (
@@ -849,77 +844,82 @@ export default function ProductCustomizerPage() {
   return (
     <div className="w-full min-h-[calc(100vh-108px)] flex flex-col bg-[#F5F5F2]">
       {/* Top Application Ribbon */}
-      <div className="h-14 bg-white border-b border-[#DADBD2] px-4 sm:px-6 flex items-center justify-between z-20">
+      <div className="h-12 sm:h-14 bg-white border-b border-[#DADBD2] px-3 sm:px-6 flex items-center justify-between z-20 gap-1.5 sm:gap-2">
         {/* Left: Product Title & Breadcrumb */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
           <Link
             href="/catalog"
-            className="text-neutral-500 hover:text-black text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
+            className="text-neutral-500 hover:text-black text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-0.5 sm:gap-1 cursor-pointer transition-colors shrink-0"
           >
-            &lt; EXIT STUDIO
+            <span className="hidden sm:inline">&lt; EXIT STUDIO</span>
+            <span className="sm:hidden">&lt; EXIT</span>
           </Link>
           <span className="text-neutral-300">|</span>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#D61C24]" />
-            <h1 className="text-xs sm:text-sm font-bold text-[#0A0A0A] uppercase tracking-tight font-display truncate max-w-[240px] sm:max-w-md">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#D61C24] shrink-0" />
+            <h1 className="text-[11px] sm:text-sm font-bold text-[#0A0A0A] uppercase tracking-tight font-display truncate max-w-[110px] xs:max-w-[180px] sm:max-w-md">
               {activeModelType === "hoodie"
                 ? "CUSTOM HEAVYWEIGHT 450 GSM HOODIE"
                 : activeModelType === "varsity"
-                ? "CUSTOM HERITAGE WOOL & LEATHER VARSITY JACKET"
-                : product.name.toUpperCase()}
+                  ? "CUSTOM HERITAGE WOOL & LEATHER VARSITY JACKET"
+                  : activeModelType === "equestrian"
+                    ? "CUSTOM EQUESTRIAN PERFORMANCE JACKET"
+                    : activeModelType === "basketball"
+                      ? "CUSTOM BASKETBALL UNIFORM SET"
+                      : product.name.toUpperCase()}
             </h1>
           </div>
-          <span className="hidden sm:inline-block text-[10px] font-mono bg-[#FAFAF8] border border-[#DADBD2] px-2 py-0.5 rounded-[2px] font-semibold text-neutral-600">
+          <span className="hidden md:inline-block text-[10px] font-mono bg-[#FAFAF8] border border-[#DADBD2] px-2 py-0.5 rounded-[2px] font-semibold text-neutral-600 shrink-0">
             {gsm} GSM
           </span>
         </div>
 
         {/* Center: Undo / Redo / Reset History Controls */}
-        <div className="flex items-center gap-1 bg-[#FAFAF8] p-1 rounded-[2px] border border-[#DADBD2]">
+        <div className="flex items-center gap-0.5 sm:gap-1 bg-[#FAFAF8] p-0.5 sm:p-1 rounded-[2px] border border-[#DADBD2] shrink-0">
           <button
             onClick={undo}
             disabled={!canUndo()}
-            className="p-1.5 rounded-[2px] text-neutral-600 disabled:opacity-30 hover:text-black transition-colors cursor-pointer"
+            className="p-1 sm:p-1.5 rounded-[2px] text-neutral-600 disabled:opacity-30 hover:text-black transition-colors cursor-pointer"
             title="Undo (Ctrl+Z)"
           >
-            <Undo2 className="w-4 h-4" />
+            <Undo2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
           <button
             onClick={redo}
             disabled={!canRedo()}
-            className="p-1.5 rounded-[2px] text-neutral-600 disabled:opacity-30 hover:text-black transition-colors cursor-pointer"
+            className="p-1 sm:p-1.5 rounded-[2px] text-neutral-600 disabled:opacity-30 hover:text-black transition-colors cursor-pointer"
             title="Redo"
           >
-            <Redo2 className="w-4 h-4" />
+            <Redo2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
-          <span className="w-px h-4 bg-neutral-300 mx-1" />
+          <span className="w-px h-3.5 sm:h-4 bg-neutral-300 mx-0.5 sm:mx-1" />
           <button
             onClick={() => {
               if (confirm("Reset garment configuration back to factory default?")) {
                 resetToDefaults();
               }
             }}
-            className="p-1.5 rounded-[2px] text-neutral-600 hover:text-[#D61C24] transition-colors cursor-pointer"
+            className="p-1 sm:p-1.5 rounded-[2px] text-neutral-600 hover:text-[#D61C24] transition-colors cursor-pointer"
             title="Reset All Changes"
           >
-            <RotateCcw className="w-4 h-4" />
+            <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
 
         {/* Right: Actions (Save Design, Tech Pack, Add Batch to Cart) */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <button
             onClick={handleSaveDesign}
-            className="py-1.5 px-3 border border-[#D61C24] hover:bg-[#D61C24]/10 text-[#0A0A0A] font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="p-1.5 sm:py-1.5 sm:px-3 border border-[#D61C24] hover:bg-[#D61C24]/10 text-[#0A0A0A] font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] flex items-center gap-1.5 transition-colors cursor-pointer"
             title="Save Design"
           >
             <Save className="w-3.5 h-3.5 text-[#D61C24]" />
-            <span className="hidden sm:inline">SAVE DESIGN</span>
+            <span className="hidden md:inline">SAVE DESIGN</span>
           </button>
 
           <button
             onClick={() => setIsTechPackOpen(true)}
-            className="py-1.5 px-3 bg-white hover:bg-neutral-50 border border-[#DADBD2] text-[#0A0A0A] font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] hidden md:flex items-center gap-1.5 transition-all cursor-pointer"
+            className="py-1.5 px-3 bg-white hover:bg-neutral-50 border border-[#DADBD2] text-[#0A0A0A] font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] hidden lg:flex items-center gap-1.5 transition-all cursor-pointer"
             title="Generate Factory Spec Sheet / Tech Pack"
           >
             <FileText className="w-3.5 h-3.5 text-[#D61C24]" />
@@ -928,10 +928,11 @@ export default function ProductCustomizerPage() {
 
           <button
             onClick={handleAddCustomToCart}
-            className="py-1.5 px-3 sm:px-4 bg-[#0A0A0A] hover:bg-[#D61C24] text-white font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] shadow-sm flex items-center gap-2 transition-colors cursor-pointer"
+            className="py-1.5 px-2.5 sm:px-4 bg-[#0A0A0A] hover:bg-[#D61C24] text-white font-mono font-bold text-[10px] sm:text-xs uppercase tracking-wider rounded-[2px] shadow-sm flex items-center gap-1 sm:gap-2 transition-colors cursor-pointer shrink-0"
           >
-            <ShoppingBag className="w-3.5 h-3.5 text-white" />
-            <span>ADD BATCH TO CART</span>
+            <ShoppingBag className="w-3.5 h-3.5 text-white shrink-0" />
+            <span className="hidden sm:inline">ADD BATCH TO CART</span>
+            <span className="sm:hidden">ADD TO CART</span>
           </button>
         </div>
       </div>
@@ -943,30 +944,29 @@ export default function ProductCustomizerPage() {
            ========================================================================= */}
         <div
           ref={canvasWorkspaceRef}
-          className="lg:col-span-8 flex flex-col justify-between items-center p-6 relative canvas-grid-pattern bg-[#FAFAF8] overflow-y-auto select-none border-b lg:border-b-0 lg:border-r border-[#E6E6E2]"
+          className="lg:col-span-8 flex flex-col justify-between items-center p-3 sm:p-6 relative canvas-grid-pattern bg-[#FAFAF8] overflow-y-auto select-none border-b lg:border-b-0 lg:border-r border-[#E6E6E2]"
         >
           {/* Top View Selector Bar */}
-          <div className="w-full flex items-center justify-between text-xs z-10 mb-2">
+          <div className="w-full flex flex-wrap items-center justify-between gap-2 text-xs z-10 mb-2">
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 bg-white p-1 rounded-[2px] border border-[#DADBD2] shadow-2xs">
+              <div className="flex items-center gap-1 bg-white p-0.5 sm:p-1 rounded-[2px] border border-[#DADBD2] shadow-2xs">
                 {(["front", "back"] as const).map((v) => (
                   <button
                     key={v}
                     onClick={() => setView(v)}
-                    className={`px-3 py-1 font-mono font-bold uppercase text-[11px] rounded-[2px] transition-colors cursor-pointer ${
-                      view === v ? "bg-[#0A0A0A] text-white" : "text-neutral-600 hover:text-black"
-                    }`}
+                    className={`px-2.5 sm:px-3 py-1 font-mono font-bold uppercase text-[10px] sm:text-[11px] rounded-[2px] transition-colors cursor-pointer ${view === v ? "bg-[#0A0A0A] text-white" : "text-neutral-600 hover:text-black"
+                      }`}
                   >
                     {v === "front" ? "FRONT" : "BACK"}
                   </button>
                 ))}
                 <button
                   onClick={() => setView(view === "threeD" ? "front" : "threeD")}
-                  className={`px-3 py-1 font-mono font-bold uppercase text-[11px] rounded-[2px] transition-colors flex items-center gap-1.5 cursor-pointer ${
-                    view === "threeD" ? "bg-[#0A0A0A] text-white" : "text-neutral-600 hover:text-black"
-                  }`}
+                  className={`px-2 sm:px-3 py-1 font-mono font-bold uppercase text-[10px] sm:text-[11px] rounded-[2px] transition-colors flex items-center gap-1 sm:gap-1.5 cursor-pointer ${view === "threeD" ? "bg-[#0A0A0A] text-white" : "text-neutral-600 hover:text-black"
+                    }`}
+                  title="Interactive 3D View"
                 >
-                  <Box className="w-3.5 h-3.5" />
+                  <Box className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
                   <span>INTERACTIVE</span>
                 </button>
               </div>
@@ -980,15 +980,15 @@ export default function ProductCustomizerPage() {
                     if (!["body", "sleeves", "hood", "pocket", "cuffs", "waistband"].includes(activeGarmentPart)) {
                       setActiveGarmentPart("body");
                     }
+                    router.replace("/customize/custom-hoodie");
                   }}
-                  className={`px-2.5 py-0.5 font-mono font-bold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer flex items-center gap-1 ${
-                    activeModelType === "hoodie" && view !== "threeD"
+                  className={`px-2.5 py-0.5 font-mono font-bold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer flex items-center gap-1 ${activeModelType === "hoodie" && view !== "threeD"
                       ? "bg-[#0A0A0A] text-white shadow-2xs"
                       : "text-neutral-600 hover:text-black"
-                  }`}
+                    }`}
                   title="Heavyweight Hoodie Studio"
                 >
-                  <span>👕 Hoodie</span>
+                  <span>Hoodie</span>
                 </button>
                 <button
                   onClick={() => {
@@ -997,15 +997,15 @@ export default function ProductCustomizerPage() {
                     if (!["body", "sleeves", "pockets", "collar", "cuffs", "waistband", "buttons"].includes(activeGarmentPart)) {
                       setActiveGarmentPart("body");
                     }
+                    router.replace("/customize/custom-varsity-jacket");
                   }}
-                  className={`px-2.5 py-0.5 font-mono font-bold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer flex items-center gap-1 ${
-                    activeModelType === "varsity" && view !== "threeD"
+                  className={`px-2.5 py-0.5 font-mono font-bold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer flex items-center gap-1 ${activeModelType === "varsity" && view !== "threeD"
                       ? "bg-[#0A0A0A] text-white shadow-2xs"
                       : "text-neutral-600 hover:text-black"
-                  }`}
+                    }`}
                   title="Varsity Jacket Studio"
                 >
-                  <span>🧥 Varsity</span>
+                  <span>Varsity</span>
                 </button>
                 <button
                   onClick={() => {
@@ -1014,15 +1014,15 @@ export default function ProductCustomizerPage() {
                     if (!["body", "sleeves", "ribs", "leggings"].includes(activeGarmentPart)) {
                       setActiveGarmentPart("body");
                     }
+                    router.replace("/customize/custom-riding-jacket");
                   }}
-                  className={`px-2.5 py-0.5 font-mono font-bold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer flex items-center gap-1 ${
-                    activeModelType === "equestrian" && view !== "threeD"
+                  className={`px-2.5 py-0.5 font-mono font-bold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer flex items-center gap-1 ${activeModelType === "equestrian" && view !== "threeD"
                       ? "bg-[#0A0A0A] text-white shadow-2xs"
                       : "text-neutral-600 hover:text-black"
-                  }`}
+                    }`}
                   title="Equestrian Performance Set Studio"
                 >
-                  <span>🏇 Equestrian</span>
+                  <span>Equestrian</span>
                 </button>
                 <button
                   onClick={() => {
@@ -1031,29 +1031,29 @@ export default function ProductCustomizerPage() {
                     if (!["jersey", "ribs", "shorts", "body"].includes(activeGarmentPart)) {
                       setActiveGarmentPart("jersey");
                     }
+                    router.replace("/customize/custom-basketball-jersey");
                   }}
-                  className={`px-2.5 py-0.5 font-mono font-bold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer flex items-center gap-1 ${
-                    activeModelType === "basketball" && view !== "threeD"
+                  className={`px-2.5 py-0.5 font-mono font-bold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer flex items-center gap-1 ${activeModelType === "basketball" && view !== "threeD"
                       ? "bg-[#0A0A0A] text-white shadow-2xs"
                       : "text-neutral-600 hover:text-black"
-                  }`}
+                    }`}
                   title="Basketball Uniform Set Studio"
                 >
-                  <span>🏀 Basketball</span>
+                  <span>Basketball</span>
                 </button>
               </div>
             </div>
 
             {/* Wholesale Pricing & MOQ Badge */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 bg-white border border-[#DADBD2] px-3 py-1.5 rounded-[2px] font-mono text-xs shadow-2xs">
-                <span className="text-neutral-400 font-semibold tracking-wider uppercase text-[10px]">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2 bg-white border border-[#DADBD2] px-2 sm:px-3 py-1 sm:py-1.5 rounded-[2px] font-mono text-[10.5px] sm:text-xs shadow-2xs shrink-0">
+                <span className="text-neutral-400 font-semibold tracking-wider uppercase text-[9px] sm:text-[10px]">
                   WHOLESALE:
                 </span>
                 <span className="font-bold text-[#0A0A0A]">
                   ${(activeModelType === "basketball" ? 18.5 : activeModelType === "equestrian" ? 72.0 : activeModelType === "varsity" ? 68.0 : activeModelType === "hoodie" ? 24.5 : product.wholesalePrice || 24.5).toFixed(2)}/pc
                 </span>
-                <span className="font-bold text-[#D61C24]">
+                <span className="font-bold text-[#D61C24] text-[9.5px] sm:text-[10px]">
                   MOQ {activeModelType === "basketball" ? 30 : activeModelType === "equestrian" ? 30 : activeModelType === "varsity" ? 30 : product.MOQ || 50}
                 </span>
               </div>
@@ -1071,7 +1071,7 @@ export default function ProductCustomizerPage() {
           </div>
 
           {/* Interactive Workspace Area */}
-          <div className="w-full flex-1 flex items-center justify-center relative my-6">
+          <div className="w-full flex-1 flex items-center justify-center relative my-4 sm:my-6">
             {activeModelType === "hoodie" ? (
               <HoodieCustomizerViewer
                 partColors={partColors}
@@ -1119,7 +1119,6 @@ export default function ProductCustomizerPage() {
                   setActiveGarmentPart(p);
                   if (p === "letters") setActiveTab("text");
                   else if (p === "logo") setActiveTab("artwork");
-                  else if (p === "buttons") setActiveTab("specs");
                   else setActiveTab("colors");
                 }}
                 sleeveStyle={sleeveStyle}
@@ -1130,10 +1129,10 @@ export default function ProductCustomizerPage() {
                   washId === "vintage-wash"
                     ? "Vintage Mineral Acid Wash"
                     : washId === "stone-wash"
-                    ? "Heavy Stone Wash"
-                    : washId === "sun-faded"
-                    ? "Sun-Faded Solar Distress"
-                    : "Clean Raw Mill Finish"
+                      ? "Heavy Stone Wash"
+                      : washId === "sun-faded"
+                        ? "Sun-Faded Solar Distress"
+                        : "Clean Raw Mill Finish"
                 }
                 customLetters={{
                   enabled: false,
@@ -1163,28 +1162,20 @@ export default function ProductCustomizerPage() {
               </div>
             )}
           </div>
-
-          {/* Bottom Zoom & Measurement Status */}
-          <div className="w-full flex items-center justify-between text-xs text-neutral-500 pt-2 border-t border-[#E6E6E2]">
-            <span>Click any artwork or text layer to transform</span>
-            <span className="font-mono text-[11px]">Factory Scale: 1:1 Vector Blueprint</span>
-          </div>
         </div>
 
         {/* =========================================================================
             RIGHT CONFIGURATION PANEL (Col 9 to 12)
            ========================================================================= */}
         <div className="lg:col-span-4 bg-white flex flex-col justify-between h-full border-t lg:border-t-0 border-[#E6E6E2] overflow-y-auto">
-          {/* Tabs Navigation */}
+          {/* Tabs Navigation (01 COLORS, 02 ARTWORK, 03 TEXT, 04 SIZING) */}
           <div>
             <div className="flex items-center border-b border-[#DADBD2] overflow-x-auto scrollbar-none bg-[#FAFAF8]">
               {[
                 { id: "colors" as const, label: "01 COLORS", icon: Palette },
-                { id: "specs" as const, label: "02 FABRIC", icon: Sliders },
-                { id: "artwork" as const, label: "03 ARTWORK", icon: ImageIcon },
-                { id: "text" as const, label: "04 TEXT", icon: Type },
-                { id: "layers" as const, label: "05 LAYERS", icon: Layers },
-                { id: "sizing" as const, label: "06 SIZING", icon: ShoppingBag },
+                { id: "artwork" as const, label: "02 ARTWORK", icon: ImageIcon },
+                { id: "text" as const, label: "03 TEXT", icon: Type },
+                { id: "sizing" as const, label: "04 SIZING", icon: ShoppingBag },
               ].map((t) => {
                 const Icon = t.icon;
                 const isCurrent = activeTab === t.id;
@@ -1192,24 +1183,20 @@ export default function ProductCustomizerPage() {
                   <button
                     key={t.id}
                     onClick={() => setActiveTab(t.id)}
-                    className={`px-3.5 py-3 text-[11px] font-mono uppercase font-bold tracking-wider shrink-0 flex items-center gap-1.5 transition-colors border-b-2 cursor-pointer ${
-                      isCurrent
+                    className={`px-3 sm:px-4 py-2.5 sm:py-3 text-[10.5px] sm:text-[11px] font-mono uppercase font-bold tracking-wider shrink-0 flex items-center gap-1.5 transition-colors border-b-2 cursor-pointer ${isCurrent
                         ? "border-[#D61C24] bg-white text-[#D61C24]"
                         : "border-transparent text-neutral-500 hover:text-black hover:bg-neutral-100"
-                    }`}
+                      }`}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     <span>{t.label}</span>
-                    {t.id === "layers" && (artworkLayers.length > 0 || textLayers.length > 0) && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#D61C24] inline-block ml-0.5" />
-                    )}
                   </button>
                 );
               })}
             </div>
 
             {/* Tab Contents Container */}
-            <div className="p-6 space-y-6">
+            <div className="p-4 sm:p-6 space-y-6">
               {/* TAB 1: GARMENT PART COLORS */}
               {activeTab === "colors" && (
                 <div className="space-y-6">
@@ -1228,12 +1215,12 @@ export default function ProductCustomizerPage() {
                         onClick={() => {
                           setActiveModelType("hoodie");
                           setActiveGarmentPart("body");
+                          router.replace("/customize/custom-hoodie");
                         }}
-                        className={`p-2.5 text-left rounded-[2px] border font-mono cursor-pointer transition-all ${
-                          activeModelType === "hoodie"
+                        className={`p-2.5 text-left rounded-[2px] border font-mono cursor-pointer transition-all ${activeModelType === "hoodie"
                             ? "bg-[#0B0B0B] text-white border-[#0B0B0B] shadow-xs"
                             : "bg-[#FAFAF8] text-neutral-800 border-[#DADBD2] hover:bg-neutral-100"
-                        }`}
+                          }`}
                       >
                         <div className="text-[11px] font-bold uppercase truncate">450 GSM HOODIE</div>
                         <div className="text-[9.5px] text-neutral-400 mt-0.5">$24.50/pc &bull; MOQ 50</div>
@@ -1242,12 +1229,12 @@ export default function ProductCustomizerPage() {
                         onClick={() => {
                           setActiveModelType("varsity");
                           setActiveGarmentPart("body");
+                          router.replace("/customize/custom-varsity-jacket");
                         }}
-                        className={`p-2.5 text-left rounded-[2px] border font-mono cursor-pointer transition-all ${
-                          activeModelType === "varsity"
+                        className={`p-2.5 text-left rounded-[2px] border font-mono cursor-pointer transition-all ${activeModelType === "varsity"
                             ? "bg-[#0B0B0B] text-white border-[#0B0B0B] shadow-xs"
                             : "bg-[#FAFAF8] text-neutral-800 border-[#DADBD2] hover:bg-neutral-100"
-                        }`}
+                          }`}
                       >
                         <div className="text-[11px] font-bold uppercase truncate">VARSITY JACKET</div>
                         <div className="text-[9.5px] text-neutral-400 mt-0.5">$68.00/pc &bull; MOQ 30</div>
@@ -1265,51 +1252,50 @@ export default function ProductCustomizerPage() {
                         {activeModelType === "hoodie"
                           ? "450 GSM French Terry"
                           : activeModelType === "varsity"
-                          ? "Wool Melton & Leather"
-                          : `${product.GSM || 300} GSM Knit`}
+                            ? "Wool Melton & Leather"
+                            : `${product.GSM || 300} GSM Knit`}
                       </span>
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       {(activeModelType === "varsity"
                         ? [
-                            { id: "body", label: "WOOL MELTON TORSO", defaultColor: "#0A0A0A" },
-                            { id: "sleeves", label: "LEATHER SLEEVES", defaultColor: "#F4F4EF" },
-                            { id: "pockets", label: "WELT POCKETS", defaultColor: "#D61C24" },
-                            { id: "collar", label: "STRIPED RIB COLLAR", defaultColor: "#20201E" },
-                            { id: "cuffs", label: "STRIPED RIB CUFFS", defaultColor: "#20201E" },
-                            { id: "waistband", label: "BOTTOM RIB WAISTBAND", defaultColor: "#20201E" },
-                            { id: "buttons", label: "SNAP BUTTONS", defaultColor: "#FFFFFF" },
-                          ]
+                          { id: "body", label: "WOOL MELTON TORSO", defaultColor: "#0A0A0A" },
+                          { id: "sleeves", label: "LEATHER SLEEVES", defaultColor: "#F4F4EF" },
+                          { id: "pockets", label: "WELT POCKETS", defaultColor: "#D61C24" },
+                          { id: "collar", label: "STRIPED RIB COLLAR", defaultColor: "#20201E" },
+                          { id: "cuffs", label: "STRIPED RIB CUFFS", defaultColor: "#20201E" },
+                          { id: "waistband", label: "BOTTOM RIB WAISTBAND", defaultColor: "#20201E" },
+                          { id: "buttons", label: "SNAP BUTTONS", defaultColor: "#FFFFFF" },
+                        ]
                         : activeModelType === "equestrian"
-                        ? [
+                          ? [
                             { id: "body", label: "TORSO & MAIN SHELL", defaultColor: "#111B2C" },
                             { id: "sleeves", label: "ARTICULATED SLEEVES", defaultColor: "#0A0A0A" },
                             { id: "ribs", label: "COLLAR & RIB TRIMS", defaultColor: "#D61C24" },
                             { id: "leggings", label: "SILICONE GRIP BREECHES", defaultColor: "#20201E" },
                           ]
-                        : activeModelType === "basketball"
-                        ? [
-                            { id: "jersey", label: "PRO AIR-MESH JERSEY", defaultColor: "#CA8A04" },
-                            { id: "ribs", label: "NECK & ARMHOLE RIBS", defaultColor: "#111B2C" },
-                            { id: "shorts", label: "PRO GAME SHORTS", defaultColor: "#CA8A04" },
-                          ]
-                        : [
-                            { id: "body", label: "TORSO & MAIN BODY", defaultColor: "#0A0A0A" },
-                            { id: "hood", label: "DOUBLE-LINED HOOD", defaultColor: "#0A0A0A" },
-                            { id: "sleeves", label: "DROP SLEEVES", defaultColor: "#20201E" },
-                            { id: "pocket", label: "KANGAROO POCKET", defaultColor: "#D61C24" },
-                            { id: "cuffs", label: "HEAVY 2X2 RIB CUFFS", defaultColor: "#0A0A0A" },
-                            { id: "waistband", label: "RIBBED WAISTBAND", defaultColor: "#0A0A0A" },
-                          ]
+                          : activeModelType === "basketball"
+                            ? [
+                              { id: "jersey", label: "PRO AIR-MESH JERSEY", defaultColor: "#CA8A04" },
+                              { id: "ribs", label: "NECK & ARMHOLE RIBS", defaultColor: "#111B2C" },
+                              { id: "shorts", label: "PRO GAME SHORTS", defaultColor: "#CA8A04" },
+                            ]
+                            : [
+                              { id: "body", label: "TORSO & MAIN BODY", defaultColor: "#0A0A0A" },
+                              { id: "hood", label: "DOUBLE-LINED HOOD", defaultColor: "#0A0A0A" },
+                              { id: "sleeves", label: "DROP SLEEVES", defaultColor: "#20201E" },
+                              { id: "pocket", label: "KANGAROO POCKET", defaultColor: "#D61C24" },
+                              { id: "cuffs", label: "HEAVY 2X2 RIB CUFFS", defaultColor: "#0A0A0A" },
+                              { id: "waistband", label: "RIBBED WAISTBAND", defaultColor: "#0A0A0A" },
+                            ]
                       ).map((part) => (
                         <button
                           key={part.id}
                           onClick={() => setActiveGarmentPart(part.id)}
-                          className={`p-2.5 text-xs text-left font-mono font-bold uppercase rounded-[2px] border transition-all flex items-center justify-between cursor-pointer ${
-                            activeGarmentPart === part.id
+                          className={`p-2.5 text-xs text-left font-mono font-bold uppercase rounded-[2px] border transition-all flex items-center justify-between cursor-pointer ${activeGarmentPart === part.id
                               ? "bg-[#0B0B0B] text-white border-[#0B0B0B] shadow-xs"
                               : "bg-[#FAFAF8] text-neutral-800 border-[#DADBD2] hover:bg-neutral-100 hover:border-black"
-                          }`}
+                            }`}
                         >
                           <span className="truncate pr-1 text-[11px] tracking-wide">{part.label}</span>
                           <span
@@ -1331,16 +1317,16 @@ export default function ProductCustomizerPage() {
                         {activeGarmentPart === "body"
                           ? "BODY"
                           : activeGarmentPart === "hood"
-                          ? "HOOD"
-                          : activeGarmentPart === "sleeves"
-                          ? "SLEEVES"
-                          : activeGarmentPart === "pocket"
-                          ? "POCKET"
-                          : activeGarmentPart === "cuffs"
-                          ? "CUFFS"
-                          : activeGarmentPart === "waistband"
-                          ? "WAISTBAND"
-                          : activeGarmentPart.toUpperCase()}
+                            ? "HOOD"
+                            : activeGarmentPart === "sleeves"
+                              ? "SLEEVES"
+                              : activeGarmentPart === "pocket"
+                                ? "POCKET"
+                                : activeGarmentPart === "cuffs"
+                                  ? "CUFFS"
+                                  : activeGarmentPart === "waistband"
+                                    ? "WAISTBAND"
+                                    : activeGarmentPart.toUpperCase()}
                       </span>
                     </div>
 
@@ -1368,11 +1354,10 @@ export default function ProductCustomizerPage() {
                           <button
                             key={swatch.id}
                             onClick={() => setPartColor(activeGarmentPart, swatch.hex)}
-                            className={`relative aspect-square rounded-[2px] border transition-transform hover:scale-105 flex items-center justify-center cursor-pointer ${
-                              isSelected
+                            className={`relative aspect-square rounded-[2px] border transition-transform hover:scale-105 flex items-center justify-center cursor-pointer ${isSelected
                                 ? "border-2 border-[#D61C24] ring-2 ring-[#D61C24] scale-105 shadow-xs"
                                 : "border-[#DADBD2] hover:border-black"
-                            }`}
+                              }`}
                             style={{ backgroundColor: swatch.hex }}
                             title={`${swatch.name} (${swatch.hex})`}
                           >
@@ -1439,11 +1424,10 @@ export default function ProductCustomizerPage() {
                                 setSelectedButtonFinish(btn.id);
                                 setPartColor("buttons", btn.hex);
                               }}
-                              className={`p-2 rounded-[2px] border text-left transition-all cursor-pointer flex items-center gap-2 ${
-                                isBtnSelected
+                              className={`p-2 rounded-[2px] border text-left transition-all cursor-pointer flex items-center gap-2 ${isBtnSelected
                                   ? "bg-black text-white border-black shadow-xs"
                                   : "bg-[#FAFAF8] text-neutral-800 border-[#E6E6E2] hover:bg-neutral-100"
-                              }`}
+                                }`}
                             >
                               <span
                                 className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0"
@@ -1473,46 +1457,46 @@ export default function ProductCustomizerPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {activeModelType === "hoodie"
                         ? HOODIE_COLOR_PRESETS.map((preset) => (
-                            <button
-                              key={preset.name}
-                              onClick={() => setAllPartColors(preset.colors)}
-                              className="flex items-center gap-2.5 p-2 rounded-[2px] border border-[#E6E6E2] hover:border-black/60 text-left transition-all bg-white group hover:shadow-xs cursor-pointer"
-                            >
-                              {/* 4-Part Segmented Swatch: Body • Pocket • Cap • Sleeves */}
-                              <div className="flex gap-0.5 shrink-0" title="Body • Pocket • Cap • Sleeves">
-                                <span
-                                  className="w-2.5 h-6 rounded-l-[2px] border border-black/15"
-                                  style={{ backgroundColor: preset.colors.body }}
-                                  title={`Body: ${preset.colors.body}`}
-                                />
-                                <span
-                                  className="w-2.5 h-6 border-y border-black/15"
-                                  style={{ backgroundColor: preset.colors.pocket }}
-                                  title={`Pocket: ${preset.colors.pocket}`}
-                                />
-                                <span
-                                  className="w-2.5 h-6 border-y border-black/15"
-                                  style={{ backgroundColor: preset.colors.hood }}
-                                  title={`Cap / Hood: ${preset.colors.hood}`}
-                                />
-                                <span
-                                  className="w-2.5 h-6 rounded-r-[2px] border border-black/15"
-                                  style={{ backgroundColor: preset.colors.sleeves }}
-                                  title={`Sleeves: ${preset.colors.sleeves}`}
-                                />
-                              </div>
-                              <div className="min-w-0">
-                                <span className="text-[11px] font-bold text-black block truncate group-hover:text-[#D10115] transition-colors">
-                                  {preset.name}
-                                </span>
-                                <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
-                                  {preset.tag}
-                                </span>
-                              </div>
-                            </button>
-                          ))
+                          <button
+                            key={preset.name}
+                            onClick={() => setAllPartColors(preset.colors)}
+                            className="flex items-center gap-2.5 p-2 rounded-[2px] border border-[#E6E6E2] hover:border-black/60 text-left transition-all bg-white group hover:shadow-xs cursor-pointer"
+                          >
+                            {/* 4-Part Segmented Swatch: Body • Pocket • Cap • Sleeves */}
+                            <div className="flex gap-0.5 shrink-0" title="Body • Pocket • Cap • Sleeves">
+                              <span
+                                className="w-2.5 h-6 rounded-l-[2px] border border-black/15"
+                                style={{ backgroundColor: preset.colors.body }}
+                                title={`Body: ${preset.colors.body}`}
+                              />
+                              <span
+                                className="w-2.5 h-6 border-y border-black/15"
+                                style={{ backgroundColor: preset.colors.pocket }}
+                                title={`Pocket: ${preset.colors.pocket}`}
+                              />
+                              <span
+                                className="w-2.5 h-6 border-y border-black/15"
+                                style={{ backgroundColor: preset.colors.hood }}
+                                title={`Cap / Hood: ${preset.colors.hood}`}
+                              />
+                              <span
+                                className="w-2.5 h-6 rounded-r-[2px] border border-black/15"
+                                style={{ backgroundColor: preset.colors.sleeves }}
+                                title={`Sleeves: ${preset.colors.sleeves}`}
+                              />
+                            </div>
+                            <div className="min-w-0">
+                              <span className="text-[11px] font-bold text-black block truncate group-hover:text-[#D10115] transition-colors">
+                                {preset.name}
+                              </span>
+                              <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
+                                {preset.tag}
+                              </span>
+                            </div>
+                          </button>
+                        ))
                         : activeModelType === "equestrian"
-                        ? EQUESTRIAN_COLOR_PRESETS.map((preset) => (
+                          ? EQUESTRIAN_COLOR_PRESETS.map((preset) => (
                             <button
                               key={preset.name}
                               onClick={() => setAllPartColors(preset.colors)}
@@ -1551,80 +1535,80 @@ export default function ProductCustomizerPage() {
                               </div>
                             </button>
                           ))
-                        : activeModelType === "basketball"
-                        ? BASKETBALL_COLOR_PRESETS.map((preset) => (
-                            <button
-                              key={preset.name}
-                              onClick={() => setAllPartColors(preset.colors)}
-                              className="flex items-center gap-2.5 p-2 rounded-[2px] border border-[#E6E6E2] hover:border-black/60 text-left transition-all bg-white group hover:shadow-xs cursor-pointer"
-                            >
-                              {/* 3-Part Segmented Swatch: Jersey • Ribs • Shorts */}
-                              <div className="flex gap-0.5 shrink-0" title="Jersey • Ribs • Shorts">
-                                <span
-                                  className="w-3.5 h-6 rounded-l-[2px] border border-black/15"
-                                  style={{ backgroundColor: preset.colors.jersey || preset.colors.body }}
-                                  title={`Jersey: ${preset.colors.jersey || preset.colors.body}`}
-                                />
-                                <span
-                                  className="w-2.5 h-6 border-y border-black/15"
-                                  style={{ backgroundColor: preset.colors.ribs }}
-                                  title={`Ribs: ${preset.colors.ribs}`}
-                                />
-                                <span
-                                  className="w-3.5 h-6 rounded-r-[2px] border border-black/15"
-                                  style={{ backgroundColor: preset.colors.shorts }}
-                                  title={`Shorts: ${preset.colors.shorts}`}
-                                />
-                              </div>
-                              <div className="min-w-0">
-                                <span className="text-[11px] font-bold text-black block truncate group-hover:text-[#D10115] transition-colors">
-                                  {preset.name}
-                                </span>
-                                <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
-                                  {preset.tag}
-                                </span>
-                              </div>
-                            </button>
-                          ))
-                        : COLOR_PRESETS.map((preset) => (
-                            <button
-                              key={preset.name}
-                              onClick={() => setAllPartColors(preset.colors)}
-                              className="flex items-center gap-2.5 p-2 rounded-[2px] border border-[#E6E6E2] hover:border-black/60 text-left transition-all bg-white group hover:shadow-xs cursor-pointer"
-                            >
-                              {/* 4-Part Segmented Swatch: Body • Sleeves • Ribs • Pocket */}
-                              <div className="flex gap-0.5 shrink-0" title="Body • Sleeves • Ribs • Pocket">
-                                <span
-                                  className="w-2.5 h-6 rounded-l-[2px] border border-black/15"
-                                  style={{ backgroundColor: preset.colors.body }}
-                                  title={`Body: ${preset.colors.body}`}
-                                />
-                                <span
-                                  className="w-2.5 h-6 border-y border-black/15"
-                                  style={{ backgroundColor: preset.colors.sleeves }}
-                                  title={`Sleeves: ${preset.colors.sleeves}`}
-                                />
-                                <span
-                                  className="w-2.5 h-6 border-y border-black/15"
-                                  style={{ backgroundColor: preset.colors.collar }}
-                                  title={`Ribs: ${preset.colors.collar}`}
-                                />
-                                <span
-                                  className="w-2.5 h-6 rounded-r-[2px] border border-black/15"
-                                  style={{ backgroundColor: preset.colors.pockets }}
-                                  title={`Pocket: ${preset.colors.pockets}`}
-                                />
-                              </div>
-                              <div className="min-w-0">
-                                <span className="text-[11px] font-bold text-black block truncate group-hover:text-[#D10115] transition-colors">
-                                  {preset.name}
-                                </span>
-                                <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
-                                  {preset.tag}
-                                </span>
-                              </div>
-                            </button>
-                          ))}
+                          : activeModelType === "basketball"
+                            ? BASKETBALL_COLOR_PRESETS.map((preset) => (
+                              <button
+                                key={preset.name}
+                                onClick={() => setAllPartColors(preset.colors)}
+                                className="flex items-center gap-2.5 p-2 rounded-[2px] border border-[#E6E6E2] hover:border-black/60 text-left transition-all bg-white group hover:shadow-xs cursor-pointer"
+                              >
+                                {/* 3-Part Segmented Swatch: Jersey • Ribs • Shorts */}
+                                <div className="flex gap-0.5 shrink-0" title="Jersey • Ribs • Shorts">
+                                  <span
+                                    className="w-3.5 h-6 rounded-l-[2px] border border-black/15"
+                                    style={{ backgroundColor: preset.colors.jersey || preset.colors.body }}
+                                    title={`Jersey: ${preset.colors.jersey || preset.colors.body}`}
+                                  />
+                                  <span
+                                    className="w-2.5 h-6 border-y border-black/15"
+                                    style={{ backgroundColor: preset.colors.ribs }}
+                                    title={`Ribs: ${preset.colors.ribs}`}
+                                  />
+                                  <span
+                                    className="w-3.5 h-6 rounded-r-[2px] border border-black/15"
+                                    style={{ backgroundColor: preset.colors.shorts }}
+                                    title={`Shorts: ${preset.colors.shorts}`}
+                                  />
+                                </div>
+                                <div className="min-w-0">
+                                  <span className="text-[11px] font-bold text-black block truncate group-hover:text-[#D10115] transition-colors">
+                                    {preset.name}
+                                  </span>
+                                  <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
+                                    {preset.tag}
+                                  </span>
+                                </div>
+                              </button>
+                            ))
+                            : COLOR_PRESETS.map((preset) => (
+                              <button
+                                key={preset.name}
+                                onClick={() => setAllPartColors(preset.colors)}
+                                className="flex items-center gap-2.5 p-2 rounded-[2px] border border-[#E6E6E2] hover:border-black/60 text-left transition-all bg-white group hover:shadow-xs cursor-pointer"
+                              >
+                                {/* 4-Part Segmented Swatch: Body • Sleeves • Ribs • Pocket */}
+                                <div className="flex gap-0.5 shrink-0" title="Body • Sleeves • Ribs • Pocket">
+                                  <span
+                                    className="w-2.5 h-6 rounded-l-[2px] border border-black/15"
+                                    style={{ backgroundColor: preset.colors.body }}
+                                    title={`Body: ${preset.colors.body}`}
+                                  />
+                                  <span
+                                    className="w-2.5 h-6 border-y border-black/15"
+                                    style={{ backgroundColor: preset.colors.sleeves }}
+                                    title={`Sleeves: ${preset.colors.sleeves}`}
+                                  />
+                                  <span
+                                    className="w-2.5 h-6 border-y border-black/15"
+                                    style={{ backgroundColor: preset.colors.collar }}
+                                    title={`Ribs: ${preset.colors.collar}`}
+                                  />
+                                  <span
+                                    className="w-2.5 h-6 rounded-r-[2px] border border-black/15"
+                                    style={{ backgroundColor: preset.colors.pockets }}
+                                    title={`Pocket: ${preset.colors.pockets}`}
+                                  />
+                                </div>
+                                <div className="min-w-0">
+                                  <span className="text-[11px] font-bold text-black block truncate group-hover:text-[#D10115] transition-colors">
+                                    {preset.name}
+                                  </span>
+                                  <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
+                                    {preset.tag}
+                                  </span>
+                                </div>
+                              </button>
+                            ))}
                     </div>
                   </div>
                 </div>
@@ -1872,41 +1856,43 @@ export default function ProductCustomizerPage() {
                   <div className="flex border border-[#E6E6E2] rounded-[2px] p-0.5 bg-[#FAFAF8]">
                     <button
                       onClick={() => setTextToolMode("monogram")}
-                      className={`flex-1 py-1.5 text-xs font-bold rounded-[2px] transition-all flex items-center justify-center gap-1.5 ${
-                        textToolMode === "monogram"
+                      className={`flex-1 py-1.5 px-2 text-[11px] sm:text-xs font-bold rounded-[2px] transition-all flex items-center justify-center gap-1 sm:gap-1.5 ${textToolMode === "monogram"
                           ? "bg-black text-white shadow-xs"
                           : "text-neutral-600 hover:text-black"
-                      }`}
+                        }`}
                     >
-                      <Type className="w-3.5 h-3.5 text-[#D10115]" />
-                      <span>3-Letter Monogram (Max 3)</span>
+                      <Type className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#D10115] shrink-0" />
+                      <span className="truncate">
+                        <span className="hidden sm:inline">3-Letter </span>Monogram <span className="hidden xs:inline sm:inline">(Max 3)</span>
+                      </span>
                     </button>
                     <button
                       onClick={() => setTextToolMode("standard")}
-                      className={`flex-1 py-1.5 text-xs font-bold rounded-[2px] transition-all ${
-                        textToolMode === "standard"
+                      className={`flex-1 py-1.5 px-2 text-[11px] sm:text-xs font-bold rounded-[2px] transition-all ${textToolMode === "standard"
                           ? "bg-black text-white shadow-xs"
                           : "text-neutral-600 hover:text-black"
-                      }`}
+                        }`}
                     >
-                      <span>Standard Slogan</span>
+                      <span className="truncate">
+                        <span className="hidden sm:inline">Standard </span>Slogan
+                      </span>
                     </button>
                   </div>
 
                   {/* SUBMODE 1: 3-LETTER MONOGRAM TOOL */}
                   {textToolMode === "monogram" && (
-                    <div className="space-y-5 animate-fadeIn">
-                      <div className="p-4 bg-[#FAFAF8] border border-[#E6E6E2] rounded-[2px] space-y-3">
+                    <div className="space-y-4 sm:space-y-5 animate-fadeIn">
+                      <div className="p-3 sm:p-4 bg-[#FAFAF8] border border-[#E6E6E2] rounded-[2px] space-y-2.5 sm:space-y-3">
                         <div className="flex items-center justify-between">
                           <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">
                             Custom Letterman Monogram:
                           </label>
-                          <span className="text-[9px] font-mono bg-black text-white px-1.5 py-0.5 rounded-[2px]">
+                          <span className="text-[8.5px] sm:text-[9px] font-mono bg-black text-white px-1.5 py-0.5 rounded-[2px]">
                             MAX 3 LETTERS &bull; UPPERCASE
                           </span>
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="flex gap-1.5 sm:gap-2">
                           <div className="relative flex-1">
                             <input
                               type="text"
@@ -1914,15 +1900,15 @@ export default function ProductCustomizerPage() {
                               onChange={(e) => handleMonogramTextChange(e.target.value)}
                               maxLength={3}
                               placeholder="e.g. TI"
-                              className="w-full px-4 py-2 bg-white border-2 border-neutral-300 focus:border-black rounded-[2px] text-lg font-bold tracking-widest uppercase text-center outline-hidden"
+                              className="w-full px-2.5 sm:px-4 py-1.5 sm:py-2 bg-white border-2 border-neutral-300 focus:border-black rounded-[2px] text-base sm:text-lg font-bold tracking-widest uppercase text-center outline-hidden"
                             />
-                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono font-bold text-neutral-400">
+                            <span className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-[9px] sm:text-[10px] font-mono font-bold text-neutral-400">
                               {activeMonogramText.length} / 3
                             </span>
                           </div>
                           <button
                             onClick={handleAddMonogram}
-                            className="btn-primary text-xs py-2 px-5 font-bold uppercase tracking-wider cursor-pointer"
+                            className="btn-primary text-[10.5px] sm:text-xs py-1.5 sm:py-2 px-3 sm:px-5 font-bold uppercase tracking-wider cursor-pointer whitespace-nowrap"
                           >
                             Add Patch
                           </button>
@@ -1937,11 +1923,10 @@ export default function ProductCustomizerPage() {
                             <button
                               key={pst}
                               onClick={() => handleMonogramTextChange(pst)}
-                              className={`px-2 py-0.5 text-[10px] font-mono font-bold rounded-[2px] border cursor-pointer ${
-                                activeMonogramText === pst
+                              className={`px-2 py-0.5 text-[10px] font-mono font-bold rounded-[2px] border cursor-pointer ${activeMonogramText === pst
                                   ? "bg-black text-white border-black"
                                   : "bg-white text-neutral-700 border-[#E6E6E2] hover:border-black"
-                              }`}
+                                }`}
                             >
                               {pst}
                             </button>
@@ -1950,35 +1935,34 @@ export default function ProductCustomizerPage() {
                       </div>
 
                       {/* Monogram Font Style Selection */}
-                      <div className="space-y-2">
+                      <div className="space-y-1.5 sm:space-y-2">
                         <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block">
                           Letter Font Style:
                         </label>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
                           {VARSITY_FONTS.map((font) => {
                             const isFontSelected = activeMonogramFont === font.id;
                             return (
                               <button
                                 key={font.id}
                                 onClick={() => handleMonogramFontChange(font.id)}
-                                className={`p-2.5 rounded-[2px] border text-left transition-all cursor-pointer ${
-                                  isFontSelected
+                                className={`p-1.5 sm:p-2.5 rounded-[2px] border text-left transition-all cursor-pointer ${isFontSelected
                                     ? "bg-[#0B0B0B] text-white border-[#0B0B0B] shadow-xs"
                                     : "bg-[#FAFAF8] text-neutral-800 border-[#E6E6E2] hover:bg-neutral-100"
-                                }`}
+                                  }`}
                               >
-                                <div className="flex items-baseline justify-between mb-1">
+                                <div className="flex items-baseline justify-between mb-0.5 sm:mb-1">
                                   <span
-                                    className="text-lg font-bold"
+                                    className="text-sm sm:text-lg font-bold"
                                     style={{ fontFamily: font.family }}
                                   >
                                     {activeMonogramText || font.preview}
                                   </span>
-                                  <span className="text-[9px] opacity-60 uppercase font-mono">
+                                  <span className="text-[7.5px] sm:text-[9px] opacity-60 uppercase font-mono">
                                     {font.category}
                                   </span>
                                 </div>
-                                <span className="text-[10px] block truncate opacity-75">
+                                <span className="text-[9px] sm:text-[10px] block truncate opacity-75">
                                   {font.name}
                                 </span>
                               </button>
@@ -2016,11 +2000,10 @@ export default function ProductCustomizerPage() {
                             <button
                               key={t.id}
                               onClick={() => setMonogramShadeFilter(t.id as any)}
-                              className={`px-2 py-0.5 text-[9px] font-semibold uppercase rounded-[2px] border cursor-pointer ${
-                                monogramShadeFilter === t.id
+                              className={`px-2 py-0.5 text-[9px] font-semibold uppercase rounded-[2px] border cursor-pointer ${monogramShadeFilter === t.id
                                   ? "bg-black text-white border-black"
                                   : "bg-white text-neutral-600 border-[#E6E6E2]"
-                              }`}
+                                }`}
                             >
                               {t.label}
                             </button>
@@ -2043,11 +2026,10 @@ export default function ProductCustomizerPage() {
                                     <button
                                       key={shade.id}
                                       onClick={() => handleMonogramColorChange(shade.hex)}
-                                      className={`flex items-center gap-1.5 p-1 rounded-[2px] border transition-all text-left bg-white cursor-pointer ${
-                                        activeMonogramColor.toLowerCase() === shade.hex.toLowerCase()
+                                      className={`flex items-center gap-1.5 p-1 rounded-[2px] border transition-all text-left bg-white cursor-pointer ${activeMonogramColor.toLowerCase() === shade.hex.toLowerCase()
                                           ? "border-black ring-2 ring-black font-semibold shadow-xs"
                                           : "border-[#E6E6E2] hover:border-black/30"
-                                      }`}
+                                        }`}
                                       title={`${shade.name} (${shade.hex})`}
                                     >
                                       <span
@@ -2102,11 +2084,10 @@ export default function ProductCustomizerPage() {
                                       updateTextLayer(targetTextLayer.id, { outlineColor: borderHex });
                                     }
                                   }}
-                                  className={`p-1.5 text-[9px] font-semibold rounded-[2px] border text-center transition-colors truncate cursor-pointer ${
-                                    isFeltSelected
+                                  className={`p-1.5 text-[9px] font-semibold rounded-[2px] border text-center transition-colors truncate cursor-pointer ${isFeltSelected
                                       ? "bg-black text-white border-black font-bold shadow-xs"
                                       : "bg-white text-neutral-700 border-[#E6E6E2] hover:bg-neutral-50"
-                                  }`}
+                                    }`}
                                 >
                                   {fb.name.replace(" Felt", "")}
                                 </button>
@@ -2158,11 +2139,10 @@ export default function ProductCustomizerPage() {
                                   updateTextLayer(targetTextLayer.id, { font: font.family });
                                 }
                               }}
-                              className={`w-full p-2.5 text-left text-xs rounded-[2px] border transition-colors flex items-center justify-between cursor-pointer ${
-                                (targetTextLayer ? targetTextLayer.font === font.family : selectedFont === font.id)
+                              className={`w-full p-2.5 text-left text-xs rounded-[2px] border transition-colors flex items-center justify-between cursor-pointer ${(targetTextLayer ? targetTextLayer.font === font.family : selectedFont === font.id)
                                   ? "bg-[#0B0B0B] text-white border-[#0B0B0B]"
                                   : "bg-[#FAFAF8] text-neutral-800 border-[#E6E6E2] hover:bg-neutral-100"
-                              }`}
+                                }`}
                             >
                               <span style={{ fontFamily: font.family }}>{font.name}</span>
                               <span className="text-[10px] opacity-60 uppercase">{font.category}</span>
@@ -2237,11 +2217,10 @@ export default function ProductCustomizerPage() {
                         <button
                           key={weight}
                           onClick={() => setFabric(fabricId, weight)}
-                          className={`py-2 text-xs font-mono font-bold rounded-[2px] border cursor-pointer ${
-                            gsm === weight
+                          className={`py-2 text-xs font-mono font-bold rounded-[2px] border cursor-pointer ${gsm === weight
                               ? "bg-[#0B0B0B] text-white border-[#0B0B0B] shadow-xs"
                               : "bg-[#FAFAF8] text-neutral-700 border-[#E6E6E2] hover:bg-neutral-100"
-                          }`}
+                            }`}
                         >
                           {weight} GSM
                         </button>
@@ -2265,11 +2244,10 @@ export default function ProductCustomizerPage() {
                         <button
                           key={w.id}
                           onClick={() => setWash(w.id)}
-                          className={`w-full p-2.5 text-left rounded-[2px] border flex items-center justify-between cursor-pointer ${
-                            washId === w.id
+                          className={`w-full p-2.5 text-left rounded-[2px] border flex items-center justify-between cursor-pointer ${washId === w.id
                               ? "bg-[#0B0B0B] text-white font-semibold shadow-xs"
                               : "bg-[#FAFAF8] text-neutral-700 border-[#E6E6E2] hover:bg-neutral-100"
-                          }`}
+                            }`}
                         >
                           <span>{w.name}</span>
                           {washId === w.id && <Check className="w-3.5 h-3.5" />}
@@ -2292,11 +2270,10 @@ export default function ProductCustomizerPage() {
                         <button
                           key={dist.id}
                           onClick={() => setDistressLevel(dist.id as any)}
-                          className={`py-2 px-1 text-center rounded-[2px] border text-[11px] font-semibold cursor-pointer transition-colors ${
-                            distressLevel === dist.id
+                          className={`py-2 px-1 text-center rounded-[2px] border text-[11px] font-semibold cursor-pointer transition-colors ${distressLevel === dist.id
                               ? "bg-black text-white border-black font-bold shadow-xs"
                               : "bg-[#FAFAF8] text-neutral-700 border-[#E6E6E2] hover:bg-neutral-100"
-                          }`}
+                            }`}
                         >
                           {dist.label}
                         </button>
@@ -2327,11 +2304,10 @@ export default function ProductCustomizerPage() {
                                 setSelectedButtonFinish(btn.id);
                                 setPartColor("buttons", btn.hex);
                               }}
-                              className={`p-2 rounded-[2px] border text-left transition-all cursor-pointer flex items-center gap-2 ${
-                                isBtnSelected
+                              className={`p-2 rounded-[2px] border text-left transition-all cursor-pointer flex items-center gap-2 ${isBtnSelected
                                   ? "bg-black text-white border-black shadow-xs font-bold"
                                   : "bg-[#FAFAF8] text-neutral-800 border-[#E6E6E2] hover:bg-neutral-100"
-                              }`}
+                                }`}
                             >
                               <span
                                 className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0"
@@ -2353,21 +2329,19 @@ export default function ProductCustomizerPage() {
                         <div className="flex border border-[#E6E6E2] rounded-[2px] p-0.5 bg-[#FAFAF8]">
                           <button
                             onClick={() => setSleeveStyle("striped")}
-                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${
-                              sleeveStyle === "striped"
+                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${sleeveStyle === "striped"
                                 ? "bg-[#0B0B0B] text-white shadow-xs"
                                 : "text-neutral-600 hover:text-black"
-                            }`}
+                              }`}
                           >
                             Striped
                           </button>
                           <button
                             onClick={() => setSleeveStyle("plain")}
-                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${
-                              sleeveStyle === "plain"
+                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${sleeveStyle === "plain"
                                 ? "bg-[#0B0B0B] text-white shadow-xs"
                                 : "text-neutral-600 hover:text-black"
-                            }`}
+                              }`}
                           >
                             Solid
                           </button>
@@ -2381,21 +2355,19 @@ export default function ProductCustomizerPage() {
                         <div className="flex border border-[#E6E6E2] rounded-[2px] p-0.5 bg-[#FAFAF8]">
                           <button
                             onClick={() => setPocketStyle("striped")}
-                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${
-                              pocketStyle === "striped"
+                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${pocketStyle === "striped"
                                 ? "bg-[#0B0B0B] text-white shadow-xs"
                                 : "text-neutral-600 hover:text-black"
-                            }`}
+                              }`}
                           >
                             Striped
                           </button>
                           <button
                             onClick={() => setPocketStyle("plain")}
-                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${
-                              pocketStyle === "plain"
+                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${pocketStyle === "plain"
                                 ? "bg-[#0B0B0B] text-white shadow-xs"
                                 : "text-neutral-600 hover:text-black"
-                            }`}
+                              }`}
                           >
                             Plain
                           </button>
@@ -2413,11 +2385,10 @@ export default function ProductCustomizerPage() {
                           <button
                             key={lining.id}
                             onClick={() => setSelectedLining(lining.id)}
-                            className={`p-2 rounded-[2px] border text-left transition-colors flex items-center gap-2 cursor-pointer ${
-                              selectedLining === lining.id
+                            className={`p-2 rounded-[2px] border text-left transition-colors flex items-center gap-2 cursor-pointer ${selectedLining === lining.id
                                 ? "bg-black text-white border-black shadow-xs font-bold"
                                 : "bg-[#FAFAF8] text-neutral-800 border-[#E6E6E2] hover:bg-neutral-100"
-                            }`}
+                              }`}
                           >
                             <span
                               className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0"
@@ -2450,11 +2421,10 @@ export default function ProductCustomizerPage() {
                         <button
                           key={dec.id}
                           onClick={() => setDecorationMethod(dec.id)}
-                          className={`w-full p-2.5 text-left rounded-[2px] border flex items-center justify-between cursor-pointer ${
-                            decorationMethodId === dec.id
+                          className={`w-full p-2.5 text-left rounded-[2px] border flex items-center justify-between cursor-pointer ${decorationMethodId === dec.id
                               ? "bg-[#0B0B0B] text-white font-semibold shadow-xs"
                               : "bg-[#FAFAF8] text-neutral-700 border-[#E6E6E2] hover:bg-neutral-100"
-                          }`}
+                            }`}
                         >
                           <span>{dec.name}</span>
                           {decorationMethodId === dec.id && <Check className="w-3.5 h-3.5" />}
@@ -2510,9 +2480,8 @@ export default function ProductCustomizerPage() {
                           <div
                             key={art.id}
                             onClick={() => setSelectedLayerId(art.id)}
-                            className={`p-3 rounded-[2px] border flex items-center justify-between text-xs cursor-pointer ${
-                              isSelected ? "bg-red-50 border-[#D10115]" : "bg-[#FAFAF8] border-[#E6E6E2]"
-                            }`}
+                            className={`p-3 rounded-[2px] border flex items-center justify-between text-xs cursor-pointer ${isSelected ? "bg-red-50 border-[#D10115]" : "bg-[#FAFAF8] border-[#E6E6E2]"
+                              }`}
                           >
                             <div className="flex items-center gap-2">
                               <ImageIcon className="w-4 h-4 text-neutral-500" />
@@ -2567,9 +2536,8 @@ export default function ProductCustomizerPage() {
                               setSelectedLayerId(txt.id);
                               setActiveTab("text");
                             }}
-                            className={`p-3 rounded-[2px] border flex items-center justify-between text-xs cursor-pointer ${
-                              isSelected ? "bg-red-50 border-[#D10115]" : "bg-[#FAFAF8] border-[#E6E6E2]"
-                            }`}
+                            className={`p-3 rounded-[2px] border flex items-center justify-between text-xs cursor-pointer ${isSelected ? "bg-red-50 border-[#D10115]" : "bg-[#FAFAF8] border-[#E6E6E2]"
+                              }`}
                           >
                             <div className="flex items-center gap-2">
                               <Type className="w-4 h-4 text-neutral-500" />
@@ -2645,15 +2613,14 @@ export default function ProductCustomizerPage() {
                         const totalUnits = Object.values(sizeBreakdown).reduce((a, b) => a + b, 0);
                         const isTierActive =
                           i === 3 ? totalUnits >= 500 :
-                          i === 2 ? totalUnits >= 250 && totalUnits < 500 :
-                          i === 1 ? totalUnits >= 100 && totalUnits < 250 :
-                          totalUnits >= 50 && totalUnits < 100;
+                            i === 2 ? totalUnits >= 250 && totalUnits < 500 :
+                              i === 1 ? totalUnits >= 100 && totalUnits < 250 :
+                                totalUnits >= 50 && totalUnits < 100;
                         return (
                           <div
                             key={i}
-                            className={`grid grid-cols-3 p-2 border-b border-[#DADBD2] last:border-0 font-mono text-[11px] transition-colors ${
-                              isTierActive ? "bg-red-50/80 font-bold" : ""
-                            }`}
+                            className={`grid grid-cols-3 p-2 border-b border-[#DADBD2] last:border-0 font-mono text-[11px] transition-colors ${isTierActive ? "bg-red-50/80 font-bold" : ""
+                              }`}
                           >
                             <span className="font-semibold text-neutral-800">{r.tier}</span>
                             <span className="font-bold text-[#D61C24]">{r.price}/pc</span>
@@ -2673,28 +2640,28 @@ export default function ProductCustomizerPage() {
                         Total: {Object.values(sizeBreakdown).reduce((a, b) => a + b, 0)} pcs
                       </span>
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-1 sm:space-y-1.5">
                       {["XS", "S", "M", "L", "XL", "2XL", "3XL"].map((sz) => {
                         const qty = sizeBreakdown[sz] || 0;
                         return (
                           <div
                             key={sz}
-                            className="flex items-center justify-between p-2.5 bg-[#FAFAF8] border border-[#DADBD2] rounded-[2px]"
+                            className="flex items-center justify-between py-1.5 px-2.5 sm:py-2 sm:px-3 bg-[#FAFAF8] border border-[#DADBD2] rounded-[2px]"
                           >
-                            <span className="font-mono font-bold text-xs w-12 text-[#0A0A0A]">{sz}</span>
-                            <div className="flex items-center gap-3">
+                            <span className="font-mono font-bold text-[11px] sm:text-xs w-8 sm:w-12 text-[#0A0A0A]">{sz}</span>
+                            <div className="flex items-center gap-1.5 sm:gap-3">
                               <button
                                 onClick={() => setSizeBreakdown({ ...sizeBreakdown, [sz]: Math.max(0, qty - 5) })}
-                                className="w-7 h-7 bg-white border border-[#DADBD2] hover:border-black rounded-[2px] font-mono font-bold text-xs flex items-center justify-center cursor-pointer transition-colors"
+                                className="w-6 h-6 sm:w-7 sm:h-7 bg-white border border-[#DADBD2] hover:border-black rounded-[2px] font-mono font-bold text-xs flex items-center justify-center cursor-pointer transition-colors"
                               >
                                 -
                               </button>
-                              <span className="w-10 text-center font-mono font-bold text-xs text-[#0A0A0A]">
+                              <span className="w-7 sm:w-10 text-center font-mono font-bold text-[11px] sm:text-xs text-[#0A0A0A]">
                                 {qty}
                               </span>
                               <button
                                 onClick={() => setSizeBreakdown({ ...sizeBreakdown, [sz]: qty + 5 })}
-                                className="w-7 h-7 bg-white border border-[#DADBD2] hover:border-black rounded-[2px] font-mono font-bold text-xs flex items-center justify-center cursor-pointer transition-colors"
+                                className="w-6 h-6 sm:w-7 sm:h-7 bg-white border border-[#DADBD2] hover:border-black rounded-[2px] font-mono font-bold text-xs flex items-center justify-center cursor-pointer transition-colors"
                               >
                                 +
                               </button>
@@ -2833,54 +2800,54 @@ export default function ProductCustomizerPage() {
           activeModelType === "varsity" && !product.slug.includes("varsity")
             ? (PRODUCTS_DATA.find((p) => p.slug.includes("varsity") || p.subcategory === "varsity-jackets") || product)
             : activeModelType === "hoodie" && !product.slug.includes("hoodie")
-            ? (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || product)
-            : activeModelType === "basketball" && !product.slug.includes("basketball")
-            ? (PRODUCTS_DATA.find((p) => p.slug.includes("basketball") || p.subcategory.includes("basketball")) || product)
-            : activeModelType === "equestrian" && !product.slug.includes("riding") && !product.slug.includes("equestrian")
-            ? (PRODUCTS_DATA.find((p) => p.slug.includes("riding") || p.subcategory.includes("riding") || p.subcategory.includes("equestrian")) || product)
-            : product;
+              ? (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || product)
+              : activeModelType === "basketball" && !product.slug.includes("basketball")
+                ? (PRODUCTS_DATA.find((p) => p.slug.includes("basketball") || p.subcategory.includes("basketball")) || product)
+                : activeModelType === "equestrian" && !product.slug.includes("riding") && !product.slug.includes("equestrian")
+                  ? (PRODUCTS_DATA.find((p) => p.slug.includes("riding") || p.subcategory.includes("riding") || p.subcategory.includes("equestrian")) || product)
+                  : product;
 
         return (
           <TechPackModal
             product={effectiveProduct}
             state={{
               productId: effectiveProduct.id,
-            view,
-            activeGarmentPart,
-            partColors,
-            fabricId,
-            gsm,
-            washId:
-              washId === "vintage-wash"
-                ? "Vintage Mineral Acid Wash"
-                : washId === "stone-wash"
-                ? "Heavy Stone Wash"
-                : washId === "sun-faded"
-                ? "Sun-Faded Solar Distress"
-                : "Clean Raw Mill Finish",
-            decorationMethodId:
-              textLayers.length > 0
-                ? "chenille-embroidery"
-                : artworkLayers.length > 0
-                ? "screen-printing"
-                : decorationMethodId || (activeModelType === "varsity" ? "chenille-embroidery" : "direct-to-garment"),
-            trims: {
-              lining: selectedLining,
-              buttonFinish: selectedButtonFinish,
-              sleeveStyle,
-              pocketStyle,
-            },
-            construction: {
-              silhouette: activeModelType === "varsity" ? "Boxy Vintage Drop-Shoulder" : "Oversized Drop-Shoulder",
-              lining: selectedLining,
-            },
-            artworkLayers,
-            textLayers,
-            quantity,
-            sizeBreakdown,
-          }}
-          onClose={() => setIsTechPackOpen(false)}
-        />
+              view,
+              activeGarmentPart,
+              partColors,
+              fabricId,
+              gsm,
+              washId:
+                washId === "vintage-wash"
+                  ? "Vintage Mineral Acid Wash"
+                  : washId === "stone-wash"
+                    ? "Heavy Stone Wash"
+                    : washId === "sun-faded"
+                      ? "Sun-Faded Solar Distress"
+                      : "Clean Raw Mill Finish",
+              decorationMethodId:
+                textLayers.length > 0
+                  ? "chenille-embroidery"
+                  : artworkLayers.length > 0
+                    ? "screen-printing"
+                    : decorationMethodId || (activeModelType === "varsity" ? "chenille-embroidery" : "direct-to-garment"),
+              trims: {
+                lining: selectedLining,
+                buttonFinish: selectedButtonFinish,
+                sleeveStyle,
+                pocketStyle,
+              },
+              construction: {
+                silhouette: activeModelType === "varsity" ? "Boxy Vintage Drop-Shoulder" : "Oversized Drop-Shoulder",
+                lining: selectedLining,
+              },
+              artworkLayers,
+              textLayers,
+              quantity,
+              sizeBreakdown,
+            }}
+            onClose={() => setIsTechPackOpen(false)}
+          />
         );
       })()}
 

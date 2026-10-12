@@ -258,19 +258,19 @@ export const CustomizerDemoSection: React.FC = () => {
     activeStudioModel === "hoodie"
       ? hoodieLetters
       : activeStudioModel === "equestrian"
-      ? equestrianLetters
-      : activeStudioModel === "basketball"
-      ? basketballLetters
-      : varsityLetters;
+        ? equestrianLetters
+        : activeStudioModel === "basketball"
+          ? basketballLetters
+          : varsityLetters;
 
   const customLogo =
     activeStudioModel === "hoodie"
       ? hoodieLogo
       : activeStudioModel === "equestrian"
-      ? equestrianLogo
-      : activeStudioModel === "basketball"
-      ? basketballLogo
-      : varsityLogo;
+        ? equestrianLogo
+        : activeStudioModel === "basketball"
+          ? basketballLogo
+          : varsityLogo;
 
   const setCustomLetters = useCallback(
     (action: React.SetStateAction<CustomLettersState>) => {
@@ -359,10 +359,10 @@ export const CustomizerDemoSection: React.FC = () => {
     activeStudioModel === "hoodie"
       ? hoodieParts
       : activeStudioModel === "equestrian"
-      ? equestrianParts
-      : activeStudioModel === "basketball"
-      ? basketballParts
-      : varsityParts;
+        ? equestrianParts
+        : activeStudioModel === "basketball"
+          ? basketballParts
+          : varsityParts;
 
   const handleColorSelect = (hex: string) => {
     if (activePart === "letters") {
@@ -570,21 +570,19 @@ export const CustomizerDemoSection: React.FC = () => {
                 <div className="flex items-center gap-1 bg-white p-1 rounded-[2px] border border-[#E6E6E2] shadow-xs shrink-0">
                   <button
                     onClick={() => setActiveView("front")}
-                    className={`px-2.5 sm:px-3 py-1 font-semibold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer ${
-                      activeView === "front"
+                    className={`px-2.5 sm:px-3 py-1 font-semibold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer ${activeView === "front"
                         ? "bg-[#0B0B0B] text-white"
                         : "text-neutral-600 hover:text-black"
-                    }`}
+                      }`}
                   >
                     Front
                   </button>
                   <button
                     onClick={() => setActiveView("back")}
-                    className={`px-2.5 sm:px-3 py-1 font-semibold uppercase text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer ${
-                      activeView === "back"
+                    className={`px-2.5 sm:px-3 py-1 font-semibold uppercase text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer ${activeView === "back"
                         ? "bg-[#0B0B0B] text-white"
                         : "text-neutral-600 hover:text-black"
-                    }`}
+                      }`}
                     title="Back view"
                   >
                     <span>Back</span>
@@ -595,47 +593,43 @@ export const CustomizerDemoSection: React.FC = () => {
                 <div className="flex items-center gap-0.5 bg-[#F5F5F3] border border-[#E6E6E2] p-0.5 rounded-[2px] overflow-x-auto no-scrollbar">
                   <button
                     onClick={() => { setActiveStudioModel("hoodie"); setActivePart("body"); setControlTab("colors"); }}
-                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${
-                      activeStudioModel === "hoodie"
+                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "hoodie"
                         ? "bg-[#0B0B0B] text-white shadow-xs"
                         : "text-neutral-600 hover:text-black"
-                    }`}
+                      }`}
                     title="Hoodie Studio"
                   >
-                    <span>👕 Hoodie</span>
+                    <span>Hoodie</span>
                   </button>
                   <button
                     onClick={() => { setActiveStudioModel("varsity"); setActivePart("body"); setControlTab("colors"); setActiveView("front"); }}
-                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${
-                      activeStudioModel === "varsity"
+                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "varsity"
                         ? "bg-[#0B0B0B] text-white shadow-xs"
                         : "text-neutral-600 hover:text-black"
-                    }`}
+                      }`}
                     title="Varsity Studio"
                   >
-                    <span>🧥 Varsity</span>
+                    <span>Varsity</span>
                   </button>
                   <button
                     onClick={() => { setActiveStudioModel("equestrian"); setActivePart("body"); setControlTab("colors"); setActiveView("front"); }}
-                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${
-                      activeStudioModel === "equestrian"
+                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "equestrian"
                         ? "bg-[#0B0B0B] text-white shadow-xs"
                         : "text-neutral-600 hover:text-black"
-                    }`}
+                      }`}
                     title="Equestrian Studio"
                   >
-                    <span>🏇 Equestrian</span>
+                    <span>Equestrian</span>
                   </button>
                   <button
                     onClick={() => { setActiveStudioModel("basketball"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); }}
-                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${
-                      activeStudioModel === "basketball"
+                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "basketball"
                         ? "bg-[#0B0B0B] text-white shadow-xs"
                         : "text-neutral-600 hover:text-black"
-                    }`}
+                      }`}
                     title="Basketball Studio"
                   >
-                    <span>🏀 Basketball</span>
+                    <span>Basketball</span>
                   </button>
                 </div>
               </div>
@@ -645,10 +639,10 @@ export const CustomizerDemoSection: React.FC = () => {
                   {activeStudioModel === "basketball"
                     ? "200 GSM Diamond Air-Mesh"
                     : activeStudioModel === "equestrian"
-                    ? "320 GSM Italian Softshell"
-                    : activeStudioModel === "varsity"
-                    ? "500 GSM Melton & Leather"
-                    : "380 GSM French Terry"}
+                      ? "320 GSM Italian Softshell"
+                      : activeStudioModel === "varsity"
+                        ? "500 GSM Melton & Leather"
+                        : "380 GSM French Terry"}
                 </span>
                 <button
                   onClick={handleReset}
@@ -780,47 +774,49 @@ export const CustomizerDemoSection: React.FC = () => {
 
           {/* Right Configuration Controls (Col 8 to 12) */}
           <div className="lg:col-span-5 flex flex-col justify-between bg-white max-h-[850px] relative overflow-hidden">
-            {/* Studio Navigation Tabs (Fixed at top of drawer, zero extra spacing, never scrolls) */}
-            <div className="p-4 sm:p-5 border-b border-[#E6E6E2] bg-white shrink-0 z-20 flex gap-1.5 overflow-x-auto scrollbar-none">
+            {/* Studio Navigation Tabs (Fixed at top of drawer, zero extra spacing, fits seamlessly on mobile) */}
+            <div className="p-3 sm:p-4 lg:p-5 border-b border-[#E6E6E2] bg-white shrink-0 z-20 grid grid-cols-3 gap-1.5 sm:gap-2">
               {/* 1st: Panels */}
               <button
                 onClick={() => handleTabClick("colors")}
-                className={`flex items-center gap-1.5 py-2 px-2.5 text-xs font-bold rounded-[2px] transition-all shrink-0 border cursor-pointer ${getTabButtonClass("colors")}`}
+                className={`w-full flex items-center justify-center gap-1 sm:gap-1.5 py-2 px-1.5 sm:px-2.5 text-[11px] sm:text-xs font-bold rounded-[2px] transition-all border cursor-pointer ${getTabButtonClass("colors")}`}
               >
-                <Palette className="w-3.5 h-3.5 text-neutral-400" />
-                <span>Panels</span>
+                <Palette className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                <span className="truncate">Panels</span>
                 {controlTab === "colors" && isMobileOptionsOpen ? (
-                  <ChevronUp className="w-3 h-3 text-white lg:hidden ml-0.5" />
+                  <ChevronUp className="w-3 h-3 text-white lg:hidden ml-0.5 shrink-0" />
                 ) : (
-                  <ChevronDown className="w-3 h-3 text-neutral-400 lg:hidden ml-0.5" />
+                  <ChevronDown className="w-3 h-3 text-neutral-400 lg:hidden ml-0.5 shrink-0" />
                 )}
               </button>
 
               {/* 2nd: Logo (PNG) */}
               <button
                 onClick={() => handleTabClick("logo")}
-                className={`flex items-center gap-1.5 py-2 px-2.5 text-xs font-bold rounded-[2px] transition-all shrink-0 border cursor-pointer ${getTabButtonClass("logo")}`}
+                className={`w-full flex items-center justify-center gap-1 sm:gap-1.5 py-2 px-1.5 sm:px-2.5 text-[11px] sm:text-xs font-bold rounded-[2px] transition-all border cursor-pointer ${getTabButtonClass("logo")}`}
               >
-                <ImageIcon className="w-3.5 h-3.5 text-purple-600" />
-                <span>Logo (PNG)</span>
+                <ImageIcon className="w-3.5 h-3.5 text-purple-600 shrink-0" />
+                <span className="truncate">
+                  Logo<span className="hidden sm:inline"> (PNG)</span>
+                </span>
                 {controlTab === "logo" && isMobileOptionsOpen ? (
-                  <ChevronUp className="w-3 h-3 text-white lg:hidden ml-0.5" />
+                  <ChevronUp className="w-3 h-3 text-white lg:hidden ml-0.5 shrink-0" />
                 ) : (
-                  <ChevronDown className="w-3 h-3 text-neutral-400 lg:hidden ml-0.5" />
+                  <ChevronDown className="w-3 h-3 text-neutral-400 lg:hidden ml-0.5 shrink-0" />
                 )}
               </button>
 
               {/* 3rd: Letters */}
               <button
                 onClick={() => handleTabClick("letters")}
-                className={`flex items-center gap-1.5 py-2 px-2.5 text-xs font-bold rounded-[2px] transition-all shrink-0 border cursor-pointer ${getTabButtonClass("letters")}`}
+                className={`w-full flex items-center justify-center gap-1 sm:gap-1.5 py-2 px-1.5 sm:px-2.5 text-[11px] sm:text-xs font-bold rounded-[2px] transition-all border cursor-pointer ${getTabButtonClass("letters")}`}
               >
-                <Type className="w-3.5 h-3.5 text-[#D10115]" />
-                <span>Letters</span>
+                <Type className="w-3.5 h-3.5 text-[#D10115] shrink-0" />
+                <span className="truncate">Letters</span>
                 {controlTab === "letters" && isMobileOptionsOpen ? (
-                  <ChevronUp className="w-3 h-3 text-white lg:hidden ml-0.5" />
+                  <ChevronUp className="w-3 h-3 text-white lg:hidden ml-0.5 shrink-0" />
                 ) : (
-                  <ChevronDown className="w-3 h-3 text-neutral-400 lg:hidden ml-0.5" />
+                  <ChevronDown className="w-3 h-3 text-neutral-400 lg:hidden ml-0.5 shrink-0" />
                 )}
               </button>
             </div>
@@ -830,25 +826,25 @@ export const CustomizerDemoSection: React.FC = () => {
               id="customizer-options-panel"
               className={`${isMobileOptionsOpen ? "block" : "hidden lg:block"} flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 animate-fadeIn`}
             >
-                {/* Mobile Drawer Top Header with Active Tab Name and Close Button */}
-                <div className="lg:hidden flex items-center justify-between pb-3 border-b border-[#E6E6E2]">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#D10115] animate-pulse" />
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-black">
-                      {controlTab === "letters" && "Custom Letters & Monogram"}
-                      {controlTab === "logo" && "Upload Logo (PNG)"}
-                      {controlTab === "colors" && "Panel Colors & Fabric"}
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => setIsMobileOptionsOpen(false)}
-                    className="flex items-center gap-1 text-[11px] font-mono font-semibold px-2.5 py-1 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 rounded-[2px] border border-neutral-300 transition-colors cursor-pointer"
-                    aria-label="Close customizing options"
-                  >
-                    <span>Close</span>
-                    <X className="w-3.5 h-3.5" />
-                  </button>
+              {/* Mobile Drawer Top Header with Active Tab Name and Close Button */}
+              <div className="lg:hidden flex items-center justify-between pb-3 border-b border-[#E6E6E2]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#D10115] animate-pulse" />
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-black">
+                    {controlTab === "letters" && "Custom Letters & Monogram"}
+                    {controlTab === "logo" && "Upload Logo (PNG)"}
+                    {controlTab === "colors" && "Panel Colors & Fabric"}
+                  </span>
                 </div>
+                <button
+                  onClick={() => setIsMobileOptionsOpen(false)}
+                  className="flex items-center gap-1 text-[11px] font-mono font-semibold px-2.5 py-1 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 rounded-[2px] border border-neutral-300 transition-colors cursor-pointer"
+                  aria-label="Close customizing options"
+                >
+                  <span>Close</span>
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
 
               {/* ============================================================== */}
               {/* TAB 1: UPLOAD LOGO IN PNG & INTERACTIVE DRAG/RESIZE */}
@@ -1029,19 +1025,19 @@ export const CustomizerDemoSection: React.FC = () => {
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                           {(activeStudioModel === "basketball"
                             ? [
-                                { label: "Chest Center", x: 50, y: 22 },
-                                { label: "Left Chest", x: 35, y: 22 },
-                                { label: "Jersey Number", x: 50, y: 36 },
-                                { label: "Shorts Leg", x: 35, y: 65 },
-                              ]
+                              { label: "Chest Center", x: 50, y: 22 },
+                              { label: "Left Chest", x: 35, y: 22 },
+                              { label: "Jersey Number", x: 50, y: 36 },
+                              { label: "Shorts Leg", x: 35, y: 65 },
+                            ]
                             : activeStudioModel === "equestrian"
-                            ? [
+                              ? [
                                 { label: "Right Chest", x: 30, y: 28 },
                                 { label: "Center Placket", x: 50, y: 32 },
                                 { label: "Left Chest", x: 70, y: 28 },
                                 { label: "Riding Breeches", x: 32, y: 68 },
                               ]
-                            : [
+                              : [
                                 { label: "Right Chest", x: 32, y: 34 },
                                 { label: "Center Torso", x: 50, y: 35 },
                                 { label: "Left Chest", x: 68, y: 34 },
@@ -1092,11 +1088,10 @@ export const CustomizerDemoSection: React.FC = () => {
                             });
                             setActivePart("logo");
                           }}
-                          className={`p-2.5 bg-white border rounded-[2px] flex items-center gap-2.5 text-left transition-all cursor-pointer ${
-                            customLogo.url === sample.url
+                          className={`p-2.5 bg-white border rounded-[2px] flex items-center gap-2.5 text-left transition-all cursor-pointer ${customLogo.url === sample.url
                               ? "border-black ring-2 ring-black shadow-xs"
                               : "border-[#E6E6E2] hover:border-neutral-400"
-                          }`}
+                            }`}
                         >
                           <div className="w-8 h-8 rounded-[2px] bg-[#FAFAF8] border border-[#E6E6E2] p-1 flex items-center justify-center shrink-0">
                             <img
@@ -1147,11 +1142,10 @@ export const CustomizerDemoSection: React.FC = () => {
                             };
                           })
                         }
-                        className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-[2px] border ${
-                          customLetters.enabled && customLetters.text.trim()
+                        className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-[2px] border ${customLetters.enabled && customLetters.text.trim()
                             ? "bg-emerald-50 text-emerald-700 border-emerald-300"
                             : "bg-neutral-100 text-neutral-500 border-neutral-300"
-                        }`}
+                          }`}
                       >
                         {customLetters.enabled && customLetters.text.trim() ? "Active" : "Disabled"}
                       </button>
@@ -1190,11 +1184,10 @@ export const CustomizerDemoSection: React.FC = () => {
                         <button
                           key={pst}
                           onClick={() => setCustomLetters((prev) => ({ ...prev, text: pst, enabled: true }))}
-                          className={`px-2 py-0.5 text-[10px] font-mono font-bold rounded-[2px] border transition-all ${
-                            customLetters.text === pst
+                          className={`px-2 py-0.5 text-[10px] font-mono font-bold rounded-[2px] border transition-all ${customLetters.text === pst
                               ? "bg-black text-white border-black"
                               : "bg-white text-neutral-700 border-[#E6E6E2] hover:border-black"
-                          }`}
+                            }`}
                         >
                           {pst}
                         </button>
@@ -1222,9 +1215,8 @@ export const CustomizerDemoSection: React.FC = () => {
                           {activeFontObj.name}
                         </span>
                         <ChevronDown
-                          className={`w-3.5 h-3.5 text-neutral-500 transition-transform duration-200 ${
-                            openLetterSections.font ? "rotate-180" : ""
-                          }`}
+                          className={`w-3.5 h-3.5 text-neutral-500 transition-transform duration-200 ${openLetterSections.font ? "rotate-180" : ""
+                            }`}
                         />
                       </div>
                     </button>
@@ -1240,11 +1232,10 @@ export const CustomizerDemoSection: React.FC = () => {
                                 onClick={() =>
                                   setCustomLetters((prev) => ({ ...prev, fontId: font.id }))
                                 }
-                                className={`p-2.5 rounded-[2px] border text-left transition-all ${
-                                  isSelected
+                                className={`p-2.5 rounded-[2px] border text-left transition-all ${isSelected
                                     ? "bg-[#0B0B0B] text-white border-[#0B0B0B] shadow-xs"
                                     : "bg-white text-neutral-800 border-[#E6E6E2] hover:border-black/40"
-                                }`}
+                                  }`}
                               >
                                 <div className="flex items-baseline justify-between mb-1">
                                   <span
@@ -1258,9 +1249,8 @@ export const CustomizerDemoSection: React.FC = () => {
                                   </span>
                                 </div>
                                 <span
-                                  className={`text-[10px] block truncate font-medium ${
-                                    isSelected ? "text-neutral-300" : "text-neutral-500"
-                                  }`}
+                                  className={`text-[10px] block truncate font-medium ${isSelected ? "text-neutral-300" : "text-neutral-500"
+                                    }`}
                                 >
                                   {font.name}
                                 </span>
@@ -1296,9 +1286,8 @@ export const CustomizerDemoSection: React.FC = () => {
                           {customLetters.color}
                         </span>
                         <ChevronDown
-                          className={`w-3.5 h-3.5 text-neutral-500 transition-transform duration-200 ${
-                            openLetterSections.color ? "rotate-180" : ""
-                          }`}
+                          className={`w-3.5 h-3.5 text-neutral-500 transition-transform duration-200 ${openLetterSections.color ? "rotate-180" : ""
+                            }`}
                         />
                       </div>
                     </button>
@@ -1317,11 +1306,10 @@ export const CustomizerDemoSection: React.FC = () => {
                             <button
                               key={tf.id}
                               onClick={() => setShadeToneFilter(tf.id as any)}
-                              className={`px-2 py-1 text-[10px] font-semibold uppercase rounded-[2px] border transition-colors shrink-0 ${
-                                shadeToneFilter === tf.id
+                              className={`px-2 py-1 text-[10px] font-semibold uppercase rounded-[2px] border transition-colors shrink-0 ${shadeToneFilter === tf.id
                                   ? "bg-black text-white border-black"
                                   : "bg-[#FAFAF8] text-neutral-600 border-[#E6E6E2] hover:bg-neutral-100"
-                              }`}
+                                }`}
                             >
                               {tf.label}
                             </button>
@@ -1351,11 +1339,10 @@ export const CustomizerDemoSection: React.FC = () => {
                                         onClick={() =>
                                           setCustomLetters((prev) => ({ ...prev, color: shade.hex }))
                                         }
-                                        className={`flex items-center gap-1.5 p-1 rounded-[2px] border transition-all text-left group ${
-                                          isSelected
+                                        className={`flex items-center gap-1.5 p-1 rounded-[2px] border transition-all text-left group ${isSelected
                                             ? "bg-white border-black ring-2 ring-black shadow-xs"
                                             : "bg-white border-[#E6E6E2] hover:border-black/40"
-                                        }`}
+                                          }`}
                                         title={`${shade.name} (${shade.hex})`}
                                       >
                                         <span
@@ -1421,9 +1408,8 @@ export const CustomizerDemoSection: React.FC = () => {
                           {CRAFT_TECHNIQUES.find((c) => c.id === customLetters.craftStyle)?.name || customLetters.craftStyle}
                         </span>
                         <ChevronDown
-                          className={`w-3.5 h-3.5 text-neutral-500 transition-transform duration-200 ${
-                            openLetterSections.craft ? "rotate-180" : ""
-                          }`}
+                          className={`w-3.5 h-3.5 text-neutral-500 transition-transform duration-200 ${openLetterSections.craft ? "rotate-180" : ""
+                            }`}
                         />
                       </div>
                     </button>
@@ -1442,11 +1428,10 @@ export const CustomizerDemoSection: React.FC = () => {
                                 onClick={() =>
                                   setCustomLetters((prev) => ({ ...prev, borderColor: fb.hex }))
                                 }
-                                className={`p-1.5 text-[10px] font-semibold rounded-[2px] border text-center transition-colors truncate ${
-                                  customLetters.borderColor === fb.hex
+                                className={`p-1.5 text-[10px] font-semibold rounded-[2px] border text-center transition-colors truncate ${customLetters.borderColor === fb.hex
                                     ? "bg-black text-white border-black"
                                     : "bg-white text-neutral-700 border-[#E6E6E2] hover:bg-neutral-50"
-                                }`}
+                                  }`}
                               >
                                 {fb.name.replace(" Felt", "")}
                               </button>
@@ -1469,11 +1454,10 @@ export const CustomizerDemoSection: React.FC = () => {
                                     craftStyle: craft.id as any,
                                   }))
                                 }
-                                className={`p-1.5 text-[10px] font-semibold rounded-[2px] border text-center transition-colors truncate ${
-                                  customLetters.craftStyle === craft.id
+                                className={`p-1.5 text-[10px] font-semibold rounded-[2px] border text-center transition-colors truncate ${customLetters.craftStyle === craft.id
                                     ? "bg-black text-white border-black"
                                     : "bg-white text-neutral-700 border-[#E6E6E2] hover:bg-neutral-50"
-                                }`}
+                                  }`}
                                 title={craft.description}
                               >
                                 {craft.name}
@@ -1511,11 +1495,10 @@ export const CustomizerDemoSection: React.FC = () => {
                         <button
                           key={part.id}
                           onClick={() => setActivePart(part.id)}
-                          className={`py-2 px-2 text-xs font-semibold rounded-[2px] border text-center transition-all ${
-                            activePart === part.id
+                          className={`py-2 px-2 text-xs font-semibold rounded-[2px] border text-center transition-all ${activePart === part.id
                               ? "bg-[#0B0B0B] text-white border-[#0B0B0B] shadow-xs"
                               : "bg-[#FAFAF8] hover:bg-neutral-100 text-neutral-700 border-[#E6E6E2]"
-                          }`}
+                            }`}
                         >
                           {part.label}
                         </button>
@@ -1533,10 +1516,10 @@ export const CustomizerDemoSection: React.FC = () => {
                         {activeStudioModel === "hoodie"
                           ? (hoodiePartColors[activePart] || "#222224")
                           : activeStudioModel === "equestrian"
-                          ? (equestrianPartColors[activePart] || "#111B2C")
-                          : activeStudioModel === "basketball"
-                          ? (basketballPartColors[activePart] || "#CA8A04")
-                          : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")}
+                            ? (equestrianPartColors[activePart] || "#111B2C")
+                            : activeStudioModel === "basketball"
+                              ? (basketballPartColors[activePart] || "#CA8A04")
+                              : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")}
                       </span>
                     </div>
                     <div className="grid grid-cols-7 sm:grid-cols-8 gap-2 p-3 bg-[#FAFAF8] border border-[#E6E6E2] rounded-[2px]">
@@ -1545,21 +1528,20 @@ export const CustomizerDemoSection: React.FC = () => {
                           activeStudioModel === "hoodie"
                             ? hoodiePartColors[activePart]
                             : activeStudioModel === "equestrian"
-                            ? equestrianPartColors[activePart]
-                            : activeStudioModel === "basketball"
-                            ? basketballPartColors[activePart]
-                            : partColors[activePart as keyof VarsityPartsState]
+                              ? equestrianPartColors[activePart]
+                              : activeStudioModel === "basketball"
+                                ? basketballPartColors[activePart]
+                                : partColors[activePart as keyof VarsityPartsState]
                         )?.toLowerCase() || "";
                         const isSelected = currentColor === swatch.hex.toLowerCase();
                         return (
                           <button
                             key={swatch.id}
                             onClick={() => handleColorSelect(swatch.hex)}
-                            className={`w-7 h-7 rounded-full border transition-all relative ${
-                              isSelected
+                            className={`w-7 h-7 rounded-full border transition-all relative ${isSelected
                                 ? "ring-2 ring-black ring-offset-2 scale-110 shadow-xs"
                                 : "border-black/20 hover:scale-105"
-                            }`}
+                              }`}
                             style={{ backgroundColor: swatch.hex }}
                             title={`${swatch.name} (${swatch.pantone})`}
                             aria-label={swatch.name}
@@ -1574,10 +1556,10 @@ export const CustomizerDemoSection: React.FC = () => {
                             activeStudioModel === "hoodie"
                               ? (hoodiePartColors[activePart] || "#222224")
                               : activeStudioModel === "equestrian"
-                              ? (equestrianPartColors[activePart] || "#111B2C")
-                              : activeStudioModel === "basketball"
-                              ? (basketballPartColors[activePart] || "#CA8A04")
-                              : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")
+                                ? (equestrianPartColors[activePart] || "#111B2C")
+                                : activeStudioModel === "basketball"
+                                  ? (basketballPartColors[activePart] || "#CA8A04")
+                                  : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")
                           )
                         }
                         className="text-[#D10115] hover:underline font-semibold"
@@ -1787,10 +1769,10 @@ export const CustomizerDemoSection: React.FC = () => {
                   activeStudioModel === "hoodie"
                     ? "/customize/custom-hoodie"
                     : activeStudioModel === "equestrian"
-                    ? "/customize/custom-riding-jacket"
-                    : activeStudioModel === "basketball"
-                    ? "/customize/custom-basketball-jersey"
-                    : "/customize/custom-varsity-jacket"
+                      ? "/customize/custom-riding-jacket"
+                      : activeStudioModel === "basketball"
+                        ? "/customize/custom-basketball-jersey"
+                        : "/customize/custom-varsity-jacket"
                 }
                 className="w-full btn-primary py-2.5 text-xs flex items-center justify-center gap-2 cursor-pointer"
               >
@@ -1812,53 +1794,53 @@ export const CustomizerDemoSection: React.FC = () => {
             activeStudioModel === "varsity"
               ? (PRODUCTS_DATA.find((p) => p.slug.includes("varsity") || p.subcategory === "varsity-jackets") || PRODUCTS_DATA[0])
               : activeStudioModel === "basketball"
-              ? (PRODUCTS_DATA.find((p) => p.slug.includes("basketball") || p.subcategory.includes("basketball")) || PRODUCTS_DATA[0])
-              : activeStudioModel === "equestrian"
-              ? (PRODUCTS_DATA.find((p) => p.slug.includes("riding") || p.subcategory.includes("riding") || p.subcategory.includes("equestrian")) || PRODUCTS_DATA[0])
-              : (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || PRODUCTS_DATA[0])
+                ? (PRODUCTS_DATA.find((p) => p.slug.includes("basketball") || p.subcategory.includes("basketball")) || PRODUCTS_DATA[0])
+                : activeStudioModel === "equestrian"
+                  ? (PRODUCTS_DATA.find((p) => p.slug.includes("riding") || p.subcategory.includes("riding") || p.subcategory.includes("equestrian")) || PRODUCTS_DATA[0])
+                  : (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || PRODUCTS_DATA[0])
           }
           state={{
             productId:
               activeStudioModel === "varsity"
                 ? "varsity-bomber-jacket"
                 : activeStudioModel === "basketball"
-                ? "custom-basketball-jersey"
-                : activeStudioModel === "equestrian"
-                ? "custom-riding-jacket"
-                : "heavyweight-hoodie",
+                  ? "custom-basketball-jersey"
+                  : activeStudioModel === "equestrian"
+                    ? "custom-riding-jacket"
+                    : "heavyweight-hoodie",
             view: activeView,
             activeGarmentPart: activePart,
             partColors:
               activeStudioModel === "varsity"
                 ? partColors
                 : activeStudioModel === "basketball"
-                ? basketballPartColors
-                : activeStudioModel === "equestrian"
-                ? equestrianPartColors
-                : hoodiePartColors,
+                  ? basketballPartColors
+                  : activeStudioModel === "equestrian"
+                    ? equestrianPartColors
+                    : hoodiePartColors,
             fabricId:
               activeStudioModel === "varsity"
                 ? "500-gsm-melton"
                 : activeStudioModel === "basketball"
-                ? "200-gsm-diamond-mesh"
-                : activeStudioModel === "equestrian"
-                ? "320-gsm-italian-softshell"
-                : "450-gsm-loopback",
+                  ? "200-gsm-diamond-mesh"
+                  : activeStudioModel === "equestrian"
+                    ? "320-gsm-italian-softshell"
+                    : "450-gsm-loopback",
             gsm:
               activeStudioModel === "varsity"
                 ? 500
                 : activeStudioModel === "basketball"
-                ? 200
-                : activeStudioModel === "equestrian"
-                ? 320
-                : 450,
+                  ? 200
+                  : activeStudioModel === "equestrian"
+                    ? 320
+                    : 450,
             washId: activeWash,
             decorationMethodId:
               customLetters.text && customLetters.text.trim()
                 ? "chenille-embroidery"
                 : customLogo.enabled && customLogo.url
-                ? "screen-printing"
-                : "direct-to-garment",
+                  ? "screen-printing"
+                  : "direct-to-garment",
             trims: {
               buttonFinish: selectedButtonFinish,
               lining: selectedLining,
@@ -1870,55 +1852,55 @@ export const CustomizerDemoSection: React.FC = () => {
                 activeStudioModel === "varsity"
                   ? "Boxy Vintage Drop-Shoulder"
                   : activeStudioModel === "equestrian"
-                  ? "Sartorial Show-Ring Tailored Arc"
-                  : "Oversized Drop-Shoulder",
+                    ? "Sartorial Show-Ring Tailored Arc"
+                    : "Oversized Drop-Shoulder",
               lining: selectedLining,
             },
             artworkLayers:
               customLogo.enabled && customLogo.url
                 ? [
-                    {
-                      id: "art_logo",
-                      name: customLogo.name || "Brand Logo",
-                      url: customLogo.url,
-                      x: Math.round(((customLogo.x ?? 32) / 100) * 420),
-                      y: Math.round(((customLogo.y ?? 34) / 100) * 420),
-                      width: 120,
-                      height: 120,
-                      scale: customLogo.scale,
-                      rotation: customLogo.rotation,
-                      opacity: 1,
-                      zIndex: 1,
-                      view: customLogo.view || "front",
-                      isLocked: false,
-                      isVisible: true,
-                    },
-                  ]
+                  {
+                    id: "art_logo",
+                    name: customLogo.name || "Brand Logo",
+                    url: customLogo.url,
+                    x: Math.round(((customLogo.x ?? 32) / 100) * 420),
+                    y: Math.round(((customLogo.y ?? 34) / 100) * 420),
+                    width: 120,
+                    height: 120,
+                    scale: customLogo.scale,
+                    rotation: customLogo.rotation,
+                    opacity: 1,
+                    zIndex: 1,
+                    view: customLogo.view || "front",
+                    isLocked: false,
+                    isVisible: true,
+                  },
+                ]
                 : [],
             textLayers:
               customLetters.text && customLetters.text.trim()
                 ? [
-                    {
-                      id: "txt_monogram",
-                      name: "Monogram",
-                      text: customLetters.text.trim().toUpperCase(),
-                      font: customLetters.fontId,
-                      fontSize: 48,
-                      fontWeight: "bold",
-                      color: customLetters.color,
-                      outlineColor: customLetters.borderColor || "#FFFFFF",
-                      letterSpacing: 2,
-                      lineHeight: 1,
-                      rotation: 0,
-                      x: Math.round(((customLetters.x ?? 30) / 100) * 420),
-                      y: Math.round(((customLetters.y ?? 30) / 100) * 420),
-                      zIndex: 2,
-                      view: customLetters.view || "front",
-                      alignment: "center",
-                      isLocked: false,
-                      isVisible: true,
-                    },
-                  ]
+                  {
+                    id: "txt_monogram",
+                    name: "Monogram",
+                    text: customLetters.text.trim().toUpperCase(),
+                    font: customLetters.fontId,
+                    fontSize: 48,
+                    fontWeight: "bold",
+                    color: customLetters.color,
+                    outlineColor: customLetters.borderColor || "#FFFFFF",
+                    letterSpacing: 2,
+                    lineHeight: 1,
+                    rotation: 0,
+                    x: Math.round(((customLetters.x ?? 30) / 100) * 420),
+                    y: Math.round(((customLetters.y ?? 30) / 100) * 420),
+                    zIndex: 2,
+                    view: customLetters.view || "front",
+                    alignment: "center",
+                    isLocked: false,
+                    isVisible: true,
+                  },
+                ]
                 : [],
             quantity: 50,
             sizeBreakdown: { S: 10, M: 20, L: 15, XL: 5 },
