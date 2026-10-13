@@ -102,7 +102,7 @@ export default function SavedDesignsPage() {
                   {/* Actions */}
                   <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#F4F4EF]">
                     <Link
-                      href={`/customize/${design.productId}`}
+                      href={`/customize/${design.productId || 'custom-hoodie'}?designId=${encodeURIComponent(design.id)}`}
                       className="py-2 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-[11px] font-mono uppercase font-bold rounded-[2px] text-center transition-colors flex items-center justify-center gap-1"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />

@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { siteConfig } from "@/config/site.config";
 import { useStoreModeStore } from "@/stores/useStoreModeStore";
-import { X, ChevronDown, ArrowRight, MessageCircle, Sparkles } from "lucide-react";
+import { X, ChevronDown, ArrowRight, MessageCircle, Sparkles, Factory, Tag, ShieldCheck, Truck, BookOpen, Users, Mail } from "lucide-react";
 
 interface MobileMenuDrawerProps {
   isOpen: boolean;
@@ -37,199 +37,246 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onCl
   const drawerContent = (
     <div 
       onClick={onClose}
-      className="fixed inset-0 z-[99999] bg-[#0A0A0A]/80 backdrop-blur-sm flex justify-end"
+      className="fixed inset-0 z-[99999] bg-[#0A0A0A]/75 backdrop-blur-sm flex justify-end transition-opacity duration-200"
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-sm sm:max-w-md bg-[#FFFFFF] h-screen max-h-screen flex flex-col justify-between overflow-y-auto border-l border-[#DADBD2] p-4 sm:p-5 animate-in slide-in-from-right duration-200"
+        className="w-full max-w-[340px] xs:max-w-xs sm:max-w-sm bg-[#FFFFFF] h-full max-h-[100dvh] flex flex-col justify-between overflow-hidden border-l border-[#E5E5DE] shadow-2xl animate-in slide-in-from-right duration-250 ease-out"
       >
         
-        {/* Top Header */}
-        <div>
-          <div className="flex items-center justify-between pb-3.5 border-b border-[#DADBD2] mb-3.5">
-            <Link
-              href="/"
-              onClick={onClose}
-              className="flex items-center gap-2"
-            >
-              <img
-                src="/logo (2).png"
-                alt="TAWFIQ INDUSTRIES"
-                className="h-8 w-auto object-contain"
-              />
-              <div className="flex flex-col leading-none">
-                <span className="text-sm font-black tracking-tight uppercase font-display text-[#0A0A0A]">
-                  TAWFIQ
-                </span>
-                <span className="text-[7.5px] font-mono tracking-[0.25em] uppercase text-neutral-500 font-bold">
-                  INDUSTRIES
-                </span>
-              </div>
-            </Link>
-            <button
-              onClick={onClose}
-              className="p-1.5 hover:bg-[#F4F4EF] rounded-[2px] text-[#0A0A0A] transition-colors cursor-pointer"
-              aria-label="Close menu"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
+        {/* Top Header - Fixed */}
+        <div className="shrink-0 px-4 sm:px-5 pt-4 pb-3 border-b border-[#E5E5DE] flex items-center justify-between">
+          <Link
+            href="/"
+            onClick={onClose}
+            className="flex items-center gap-2 group"
+          >
+            <img
+              src="/logo (2).png"
+              alt="TAWFIQ INDUSTRIES"
+              className="h-8 w-auto object-contain transition-transform group-hover:scale-105"
+            />
+            <div className="flex flex-col leading-none">
+              <span className="text-sm font-black tracking-tight uppercase font-display text-[#0A0A0A]">
+                TAWFIQ
+              </span>
+              <span className="text-[7.5px] font-mono tracking-[0.25em] uppercase text-neutral-500 font-bold">
+                INDUSTRIES
+              </span>
+            </div>
+          </Link>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-neutral-100 text-neutral-600 hover:text-black transition-colors cursor-pointer"
+            aria-label="Close menu"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
 
-          {/* Mode Switcher */}
-          <div className="bg-[#F4F4EF] px-3 py-2 rounded-[2px] border border-[#DADBD2] mb-3 flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase font-semibold text-[#72726D]">
-              Purchasing Mode:
-            </span>
+        {/* Scrollable Middle Content */}
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-5 py-3 space-y-3">
+          
+          {/* Mode Switcher Box - Compact & Professional */}
+          <div className="bg-[#F8F9F7] px-3 py-2 rounded-md border border-[#E5E5DE] flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D61C24] animate-pulse" />
+              <span className="text-[10.5px] font-mono uppercase tracking-wider font-semibold text-neutral-500">
+                Pricing Mode
+              </span>
+            </div>
             <button
               onClick={toggleMode}
-              className="px-2.5 py-1 bg-[#0A0A0A] text-white text-[11px] font-mono uppercase font-bold rounded-[2px] flex items-center gap-1.5 cursor-pointer hover:bg-black/90 transition-colors"
+              className="px-2.5 py-1 bg-[#0A0A0A] hover:bg-neutral-800 text-white text-[10.5px] font-mono uppercase font-bold rounded-[3px] flex items-center gap-1.5 cursor-pointer transition-colors shadow-xs"
+              title="Toggle Wholesale or Retail mode"
             >
-              <span className="text-[#FF333D]">{mode.toUpperCase()}</span>
-              <span className="text-[9px] text-neutral-400 font-normal">(SWITCH)</span>
+              <span className={mode === "wholesale" ? "text-[#FF333D]" : "text-emerald-400"}>
+                {mode.toUpperCase()}
+              </span>
+              <span className="text-[8.5px] text-neutral-400 font-normal uppercase">(SWITCH)</span>
             </button>
           </div>
 
-          {/* Nav Links */}
-          <nav className="divide-y divide-[#F4F4EF]">
-            {/* Products with Accordion */}
+          {/* Navigation Links */}
+          <nav className="divide-y divide-neutral-100/90">
+            
+            {/* Products with Accordion & Direct Link */}
             <div className="py-0.5">
-              <button
-                onClick={() => setProductsExpanded(!productsExpanded)}
-                className="w-full flex items-center justify-between py-2 px-1 text-[13px] sm:text-sm font-bold uppercase tracking-tight text-[#0A0A0A] hover:text-[#D61C24] transition-colors cursor-pointer"
-              >
-                <span>Products (8 Categories)</span>
-                <ChevronDown
-                  className={`w-4 h-4 transition-transform ${
-                    productsExpanded ? "rotate-180 text-[#D61C24]" : "text-[#72726D]"
-                  }`}
-                />
-              </button>
+              <div className="w-full flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 transition-colors group">
+                <Link
+                  href="/catalog"
+                  onClick={onClose}
+                  className="text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 group-hover:text-[#D61C24] transition-colors flex-1"
+                >
+                  Products (8 Categories)
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setProductsExpanded(!productsExpanded)}
+                  className="p-1 -mr-1 text-neutral-400 hover:text-black cursor-pointer transition-colors"
+                  aria-label="Toggle products categories"
+                >
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      productsExpanded ? "rotate-180 text-[#D61C24]" : "text-neutral-500"
+                    }`}
+                  />
+                </button>
+              </div>
 
               {productsExpanded && (
-                <div className="pl-3 py-2 space-y-1.5 border-l-2 border-[#D61C24] my-1 bg-[#F4F4EF] rounded-[2px]">
+                <div className="ml-2 pl-3 py-2 space-y-1 border-l-2 border-[#D61C24] bg-[#F8F9F7] rounded-r-[3px] my-1">
                   {siteConfig.mainCategories.map((cat) => (
                     <Link
                       key={cat.id}
                       href={`/catalog?category=${cat.id}`}
                       onClick={onClose}
-                      className="block text-[11px] uppercase font-semibold text-[#72726D] hover:text-[#0A0A0A] py-0.5"
+                      className="flex items-center justify-between text-[11px] font-mono uppercase font-semibold text-neutral-600 hover:text-[#D61C24] py-1 px-1.5 rounded hover:bg-white/80 transition-colors"
                     >
-                      <span className="font-mono text-[#D61C24] mr-2">{cat.number}</span>
-                      {cat.name}
+                      <span className="flex items-center gap-2">
+                        <span className="text-[#D61C24] font-bold text-[10px]">{cat.number}</span>
+                        <span>{cat.name}</span>
+                      </span>
+                      <ArrowRight className="w-2.5 h-2.5 opacity-40" />
                     </Link>
                   ))}
-                  <div className="pt-1.5 border-t border-[#DADBD2]/60">
+                  <div className="pt-1.5 mt-1 border-t border-[#E5E5DE]">
                     <Link
                       href="/catalog"
                       onClick={onClose}
-                      className="text-[11px] font-mono uppercase font-bold text-[#0A0A0A] flex items-center gap-1 hover:text-[#D61C24] transition-colors"
+                      className="text-[11px] font-mono uppercase font-bold text-neutral-900 flex items-center justify-between py-1 px-1.5 hover:text-[#D61C24] transition-colors"
                     >
-                      View All Catalog <ArrowRight className="w-3 h-3" />
+                      <span>View Complete Catalog</span>
+                      <ArrowRight className="w-3 h-3 text-[#D61C24]" />
                     </Link>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Other Main Nav Items */}
+            {/* Customize (Featured Item) */}
             <Link
               href="/customize"
               onClick={onClose}
-              className="flex items-center justify-between py-2 px-1 text-[13px] sm:text-sm font-bold uppercase tracking-tight text-[#0A0A0A] hover:text-[#D61C24] transition-colors"
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
             >
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#D61C24]" /> Customize
+              <span className="flex items-center gap-2">
+                <Sparkles className="w-3.5 h-3.5 text-[#D61C24]" />
+                <span>Customize</span>
               </span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#72726D]" />
+              <span className="flex items-center gap-1.5">
+                <span className="text-[8.5px] font-mono text-[#D61C24] bg-[#D61C24]/10 px-1.5 py-0.5 rounded-[2px] font-bold">
+                  3D LIVE
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
+              </span>
             </Link>
 
+            {/* Manufacturing */}
             <Link
               href="/manufacturing"
               onClick={onClose}
-              className="flex items-center justify-between py-2 px-1 text-[13px] sm:text-sm font-bold uppercase tracking-tight text-[#0A0A0A] hover:text-[#D61C24] transition-colors"
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
             >
               <span>Manufacturing</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#72726D]" />
+              <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
             </Link>
 
+            {/* Private Label */}
             <Link
               href="/private-label"
               onClick={onClose}
-              className="flex items-center justify-between py-2 px-1 text-[13px] sm:text-sm font-bold uppercase tracking-tight text-[#0A0A0A] hover:text-[#D61C24] transition-colors"
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
             >
               <span>Private Label</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#72726D]" />
+              <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
             </Link>
 
+            {/* Wholesale */}
             <Link
               href="/wholesale"
               onClick={onClose}
-              className="flex items-center justify-between py-2 px-1 text-[13px] sm:text-sm font-bold uppercase tracking-tight text-[#0A0A0A] hover:text-[#D61C24] transition-colors"
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
             >
               <span>Wholesale</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#72726D]" />
+              <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
             </Link>
 
+            {/* Track Order */}
             <Link
               href="/track-order"
               onClick={onClose}
-              className="flex items-center justify-between py-2 px-1 text-[13px] sm:text-sm font-bold uppercase tracking-tight text-[#0A0A0A] hover:text-[#D61C24] transition-colors"
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
             >
               <span>Track Order</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#72726D]" />
+              <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
             </Link>
 
+            {/* Editorial Blog & Guides */}
+            <Link
+              href="/blog"
+              onClick={onClose}
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
+            >
+              <span>Blog & Articles</span>
+              <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
+            </Link>
+
+            {/* Resources & Guides */}
             <Link
               href="/resources"
               onClick={onClose}
-              className="flex items-center justify-between py-2 px-1 text-[13px] sm:text-sm font-bold uppercase tracking-tight text-[#0A0A0A] hover:text-[#D61C24] transition-colors"
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
             >
               <span>Resources & Guides</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#72726D]" />
+              <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
             </Link>
 
+            {/* About Us */}
             <Link
               href="/about"
               onClick={onClose}
-              className="flex items-center justify-between py-2 px-1 text-[13px] sm:text-sm font-bold uppercase tracking-tight text-[#0A0A0A] hover:text-[#D61C24] transition-colors"
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
             >
               <span>About Us</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#72726D]" />
+              <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
             </Link>
 
+            {/* Contact Us */}
             <Link
               href="/contact"
               onClick={onClose}
-              className="flex items-center justify-between py-2 px-1 text-[13px] sm:text-sm font-bold uppercase tracking-tight text-[#0A0A0A] hover:text-[#D61C24] transition-colors"
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
             >
               <span>Contact Us</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#72726D]" />
+              <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
             </Link>
           </nav>
         </div>
 
-        {/* Bottom Actions */}
-        <div className="pt-3.5 border-t border-[#DADBD2] space-y-2 shrink-0">
+        {/* Bottom Actions - Fixed to Bottom */}
+        <div className="shrink-0 p-4 border-t border-[#E5E5DE] bg-white space-y-2">
           <Link
             href="/request-quote"
             onClick={onClose}
-            className="w-full block text-center py-2.5 bg-[#0A0A0A] text-white font-mono uppercase text-[11px] font-bold tracking-wider rounded-[2px] hover:bg-[#D61C24] transition-colors"
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-[#0A0A0A] hover:bg-[#D61C24] text-white font-mono uppercase text-xs font-bold tracking-wider rounded-[3px] transition-all shadow-xs group"
           >
-            Request Factory Quote
+            <span>Request Factory Quote</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </Link>
 
           <a
             href={`https://wa.me/${siteConfig.whatsAppFormattedNumber}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white font-mono uppercase text-[11px] font-bold rounded-[2px] transition-colors"
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white font-mono uppercase text-xs font-bold rounded-[3px] transition-colors shadow-xs"
           >
             <MessageCircle className="w-3.5 h-3.5" />
-            Inquire on WhatsApp
+            <span>Inquire on WhatsApp</span>
           </a>
 
-          <div className="text-center text-[9.5px] font-mono text-[#72726D]">
-            Sialkot Industrial Zone • ISO 9001 Facility
+          <div className="text-center text-[9px] font-mono uppercase tracking-widest text-neutral-400 pt-0.5">
+            Sialkot Industrial Hub • ISO 9001:2015
           </div>
         </div>
 

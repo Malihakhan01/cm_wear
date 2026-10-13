@@ -25,16 +25,16 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("credit_card");
 
   // Contact & shipping state
-  const [email, setEmail] = useState("buyer@fashionbrand.com");
-  const [firstName, setFirstName] = useState("Marcus");
-  const [lastName, setLastName] = useState("Vance");
-  const [company, setCompany] = useState("Vance Atelier Corp");
-  const [street, setStreet] = useState("482 Broadway, Suite 400");
-  const [city, setCity] = useState("New York");
-  const [state, setState] = useState("NY");
-  const [postalCode, setPostalCode] = useState("10013");
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [company, setCompany] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("United States");
-  const [phone, setPhone] = useState("+1 212 555 0192");
+  const [phone, setPhone] = useState("");
   const [whatsAppUpdates, setWhatsAppUpdates] = useState(true);
 
   // Simulated card inputs
@@ -48,32 +48,77 @@ export default function CheckoutPage() {
   const shippingCost = items.length > 0 ? (mode === "wholesale" ? 180 : 25) : 0;
   const total = subtotal + shippingCost;
 
-  const handlePlaceOrder = (e: React.FormEvent) => {
+  const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
 
-    setTimeout(() => {
-      const orderRef = `SF-${Math.floor(100000 + Math.random() * 900000)}`;
-      const orderSummary = {
-        orderNumber: orderRef,
-        amount: total,
-        itemsCount: items.length,
-        customerName: `${firstName} ${lastName}`,
+    const initialOrderRef = `TI-${Math.floor(100000 + Math.random() * 900000)}`;
+    let confirmedOrderRef = initialOrderRef;
+
+    // Forward order to Laravel backend
+    try {
+      const { apiClient } = await import("@/services/api.client");
+      const res = await apiClient.post<{
+        success: boolean;
+        data?: { order_number: string };
+      }>("/orders", {
+        order_number: initialOrderRef,
+        first_name: firstName,
+        last_name: lastName,
+        full_name: `${firstName} ${lastName}`.trim(),
         email,
+        company,
         phone,
+        street,
+        city,
+        state,
+        postal_code: postalCode,
         country,
-        paymentMethod,
-        date: new Date().toLocaleDateString(),
-      };
+        order_type: mode === "wholesale" ? "bulk_commercial" : "retail",
+        incoterm: mode === "wholesale" ? "FOB" : "DDP",
+        payment_method: paymentMethod,
+        subtotal,
+        shipping_cost: shippingCost,
+        total_amount: total,
+        notes: `Direct web order #${initialOrderRef} with ${items.length} product lines`,
+        items: items.map((i) => ({
+          name: i.productName,
+          sku: i.sku,
+          quantity: i.quantity,
+          price: i.unitPrice,
+          color: i.color.name,
+          sizeBreakdown: i.sizeBreakdown,
+          isCustomized: i.isCustomized,
+          customSummary: i.customSummary,
+        })),
+      });
 
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("tawfiq-industry-last-order", JSON.stringify(orderSummary));
+      if (res?.success && res.data?.order_number) {
+        confirmedOrderRef = res.data.order_number;
       }
+    } catch (err) {
+      console.warn("Backend order sync fallback:", err);
+    }
 
-      clearCart();
-      setIsProcessing(false);
-      router.push(`/order-confirmation?order=${orderRef}`);
-    }, 1200);
+    const orderSummary = {
+      orderNumber: confirmedOrderRef,
+      amount: total,
+      itemsCount: items.length,
+      customerName: `${firstName} ${lastName}`.trim() || "Valued Client",
+      email,
+      phone,
+      country,
+      paymentMethod,
+      date: new Date().toLocaleDateString(),
+    };
+
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("tawfiq-industry-last-order", JSON.stringify(orderSummary));
+    }
+
+    clearCart();
+    setIsProcessing(false);
+    router.push(`/order-confirmation?order=${confirmedOrderRef}`);
   };
 
   return (
@@ -117,6 +162,7 @@ export default function CheckoutPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    placeholder="e.g. buyer@fashionbrand.com"
                     className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3 py-2 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                   />
                 </div>
@@ -130,6 +176,7 @@ export default function CheckoutPage() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     required
+                    placeholder="e.g. +1 212 555 0192"
                     className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3 py-2 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                   />
                 </div>
@@ -142,6 +189,7 @@ export default function CheckoutPage() {
                     type="text"
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
+                    placeholder="e.g. Vance Atelier Corp (optional)"
                     className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3 py-2 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                   />
                 </div>
@@ -178,6 +226,7 @@ export default function CheckoutPage() {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     required
+                    placeholder="e.g. Marcus"
                     className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3 py-2 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                   />
                 </div>
@@ -191,6 +240,7 @@ export default function CheckoutPage() {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     required
+                    placeholder="e.g. Vance"
                     className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3 py-2 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                   />
                 </div>
@@ -204,6 +254,7 @@ export default function CheckoutPage() {
                     value={street}
                     onChange={(e) => setStreet(e.target.value)}
                     required
+                    placeholder="e.g. 482 Broadway, Suite 400"
                     className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3 py-2 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                   />
                 </div>
@@ -217,6 +268,7 @@ export default function CheckoutPage() {
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     required
+                    placeholder="e.g. New York"
                     className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3 py-2 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                   />
                 </div>
@@ -231,6 +283,7 @@ export default function CheckoutPage() {
                       value={state}
                       onChange={(e) => setState(e.target.value)}
                       required
+                      placeholder="e.g. NY"
                       className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3 py-2 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                     />
                   </div>
@@ -243,6 +296,7 @@ export default function CheckoutPage() {
                       value={postalCode}
                       onChange={(e) => setPostalCode(e.target.value)}
                       required
+                      placeholder="e.g. 10013"
                       className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3 py-2 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                     />
                   </div>
@@ -257,6 +311,7 @@ export default function CheckoutPage() {
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
                     required
+                    placeholder="e.g. United States"
                     className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3 py-2 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                   />
                 </div>

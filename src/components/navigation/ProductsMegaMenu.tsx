@@ -29,7 +29,7 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
           {/* Column 1: Category Selector (4 cols) */}
           <div className="col-span-4 border-r border-[#DADBD2] pr-6 space-y-1">
             <div className="text-[10px] font-mono uppercase tracking-widest text-[#72726D] mb-3 px-3">
-              08 Specialized Apparel Categories
+              {String(siteConfig.mainCategories.length).padStart(2, "0")} Specialized Apparel Categories
             </div>
 
             {siteConfig.mainCategories.map((cat, idx) => {

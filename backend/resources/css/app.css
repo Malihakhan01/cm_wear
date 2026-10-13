@@ -1,0 +1,173 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+@source "../views/**/*.blade.php";
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Global Form Controls & High-Contrast Theme Styling */
+@layer base {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="search"],
+    select,
+    textarea {
+        max-width: 100%;
+        border-radius: 0.75rem;
+        border: 1px solid var(--color-slate-200);
+        background-color: #ffffff;
+        padding: 0.625rem 0.875rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        color: var(--color-slate-900);
+        transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    input[type="number"]:focus,
+    input[type="search"]:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        background-color: #ffffff;
+    }
+
+    .dark input[type="text"],
+    .dark input[type="email"],
+    .dark input[type="password"],
+    .dark input[type="number"],
+    .dark input[type="search"],
+    .dark select,
+    .dark textarea {
+        border-color: #1e293b;
+        background-color: #020617;
+        color: #f8fafc;
+    }
+
+    .dark input[type="text"]:focus,
+    .dark input[type="email"]:focus,
+    .dark input[type="password"]:focus,
+    .dark input[type="number"]:focus,
+    .dark input[type="search"]:focus,
+    .dark select:focus,
+    .dark textarea:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+        background-color: #0f172a;
+        color: #ffffff;
+    }
+
+    .dark select option {
+        background-color: #0f172a;
+        color: #f8fafc;
+    }
+}
+
+/* ==========================================================================
+   Quill WYSIWYG Editor Theming (Light & Dark Modes)
+   ========================================================================== */
+.wysiwyg-wrapper .ql-toolbar.ql-snow {
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+    border-color: #e2e8f0;
+    background-color: #f8fafc;
+    font-family: inherit;
+    padding: 0.5rem 0.75rem;
+}
+
+.wysiwyg-wrapper .ql-container.ql-snow {
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+    border-color: #e2e8f0;
+    background-color: #ffffff;
+    font-family: inherit;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #0f172a;
+}
+
+.wysiwyg-wrapper .ql-editor {
+    min-height: 120px;
+    font-family: inherit;
+}
+
+.wysiwyg-wrapper .ql-editor.ql-blank::before {
+    color: #94a3b8;
+    font-style: normal;
+}
+
+/* Dark Mode Quill Overrides */
+.dark .wysiwyg-wrapper .ql-toolbar.ql-snow {
+    border-color: #1e293b;
+    background-color: #0b0f19;
+}
+
+.dark .wysiwyg-wrapper .ql-container.ql-snow {
+    border-color: #1e293b;
+    background-color: #020617;
+    color: #f8fafc;
+}
+
+.dark .wysiwyg-wrapper .ql-snow .ql-stroke {
+    stroke: #94a3b8;
+}
+
+.dark .wysiwyg-wrapper .ql-snow .ql-fill {
+    fill: #94a3b8;
+}
+
+.dark .wysiwyg-wrapper .ql-snow .ql-picker {
+    color: #cbd5e1;
+}
+
+.dark .wysiwyg-wrapper .ql-snow .ql-picker-options {
+    background-color: #0f172a;
+    border-color: #1e293b;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+.dark .wysiwyg-wrapper .ql-snow .ql-picker-item:hover,
+.dark .wysiwyg-wrapper .ql-snow .ql-picker-item.ql-selected {
+    color: #38bdf8;
+}
+
+.dark .wysiwyg-wrapper .ql-snow button:hover .ql-stroke,
+.dark .wysiwyg-wrapper .ql-snow button:focus .ql-stroke,
+.dark .wysiwyg-wrapper .ql-snow button.ql-active .ql-stroke {
+    stroke: #38bdf8;
+}
+
+.dark .wysiwyg-wrapper .ql-snow button:hover .ql-fill,
+.dark .wysiwyg-wrapper .ql-snow button:focus .ql-fill,
+.dark .wysiwyg-wrapper .ql-snow button.ql-active .ql-fill {
+    fill: #38bdf8;
+}
+
+.dark .wysiwyg-wrapper .ql-editor.ql-blank::before {
+    color: #64748b;
+}
+
+.dark .wysiwyg-wrapper .ql-snow .ql-tooltip {
+    background-color: #0f172a;
+    border-color: #1e293b;
+    color: #f8fafc;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+.dark .wysiwyg-wrapper .ql-snow .ql-tooltip input[type="text"] {
+    background-color: #020617;
+    border-color: #334155;
+    color: #ffffff;
+}
+

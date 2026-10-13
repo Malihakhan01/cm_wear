@@ -63,6 +63,9 @@ interface CustomizerStoreState {
   setQuantity: (qty: number) => void;
   setSizeBreakdown: (breakdown: Record<string, number>) => void;
 
+  // State restoration
+  loadCustomizerState: (state: Partial<CustomizerState>) => void;
+
   // History actions
   pushHistoryState: () => void;
   undo: () => void;
@@ -115,8 +118,8 @@ export const useCustomizerStore = create<CustomizerStoreState>((set, get) => ({
   artworkLayers: [],
   textLayers: [],
   selectedLayerId: null,
-  quantity: 100,
-  sizeBreakdown: { S: 20, M: 35, L: 35, XL: 10 },
+  quantity: 0,
+  sizeBreakdown: {},
   history: [],
   historyIndex: -1,
 
@@ -134,8 +137,8 @@ export const useCustomizerStore = create<CustomizerStoreState>((set, get) => ({
     }
 
     const initialBreakdown: Record<string, number> = {};
-    product.sizes.forEach((s, idx) => {
-      initialBreakdown[s] = idx === 1 || idx === 2 ? 35 : 15;
+    (product.sizes && product.sizes.length > 0 ? product.sizes : ["XS", "S", "M", "L", "XL", "2XL", "3XL"]).forEach((s) => {
+      initialBreakdown[s] = 0;
     });
 
     const newState = {
@@ -150,7 +153,7 @@ export const useCustomizerStore = create<CustomizerStoreState>((set, get) => ({
       artworkLayers: [],
       textLayers: [],
       selectedLayerId: null,
-      quantity: Math.max(product.MOQ || 50, 100),
+      quantity: 0,
       sizeBreakdown: initialBreakdown,
     };
 
@@ -170,7 +173,7 @@ export const useCustomizerStore = create<CustomizerStoreState>((set, get) => ({
           construction: get().construction,
           artworkLayers: [],
           textLayers: [],
-          quantity: Math.max(product.MOQ || 50, 100),
+          quantity: 0,
           sizeBreakdown: initialBreakdown,
         },
       ],
@@ -381,6 +384,26 @@ export const useCustomizerStore = create<CustomizerStoreState>((set, get) => ({
         historyIndex: targetIndex,
       });
     }
+  },
+
+  loadCustomizerState: (loadedState) => {
+    set((prev) => ({
+      ...prev,
+      ...(loadedState.partColors ? { partColors: { ...prev.partColors, ...loadedState.partColors } } : {}),
+      ...(loadedState.fabricId ? { fabricId: loadedState.fabricId } : {}),
+      ...(loadedState.gsm !== undefined ? { gsm: loadedState.gsm } : {}),
+      ...(loadedState.washId ? { washId: loadedState.washId } : {}),
+      ...(loadedState.decorationMethodId ? { decorationMethodId: loadedState.decorationMethodId } : {}),
+      ...(loadedState.trims ? { trims: { ...prev.trims, ...loadedState.trims } } : {}),
+      ...(loadedState.construction ? { construction: { ...prev.construction, ...loadedState.construction } } : {}),
+      ...(loadedState.artworkLayers ? { artworkLayers: [...loadedState.artworkLayers] } : {}),
+      ...(loadedState.textLayers ? { textLayers: [...loadedState.textLayers] } : {}),
+      ...(loadedState.quantity !== undefined ? { quantity: loadedState.quantity } : {}),
+      ...(loadedState.sizeBreakdown ? { sizeBreakdown: { ...loadedState.sizeBreakdown } } : {}),
+      ...(loadedState.view ? { view: loadedState.view } : {}),
+      ...(loadedState.activeGarmentPart ? { activeGarmentPart: loadedState.activeGarmentPart } : {}),
+    }));
+    get().pushHistoryState();
   },
 
   resetToDefaults: () => {

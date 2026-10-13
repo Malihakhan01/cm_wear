@@ -5,8 +5,9 @@ import { createPortal } from "react-dom";
 import { CustomizerState, Product } from "@/types";
 import { VarsityJacketGrayscaleViewer } from "./VarsityJacketGrayscaleViewer";
 import { GarmentSvg } from "./GarmentSvg";
-import { X, Printer, Loader2 } from "lucide-react";
+import { X, Printer, Loader2, Maximize2, Minimize2 } from "lucide-react";
 import { VARSITY_FONTS } from "@/config/varsityCustomizer.config";
+import { customizerService } from "@/services/customizer.service";
 
 interface TechPackModalProps {
   product: Product;
@@ -152,21 +153,11 @@ const getLayerBlendStyle = (hex: string, baseOpacity = 0.9) => {
 export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, onClose }) => {
   const [mounted, setMounted] = useState(false);
   const [isPreparingPrint, setIsPreparingPrint] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const handlePrint = useCallback(() => {
-    setIsPreparingPrint(true);
-    // Allow React to re-render the button into loading state and prepare print portal
-    setTimeout(() => {
-      window.print();
-      setTimeout(() => {
-        setIsPreparingPrint(false);
-      }, 1000);
-    }, 120);
-  }, []);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [modelZoom, setModelZoom] = useState(100);
+  const [elevationViewMode, setElevationViewMode] = useState<"dual" | "front" | "back">("dual");
+  const [modelBgColor, setModelBgColor] = useState<string>("#141414");
+  const hasSyncedRef = useRef(false);
 
   // Determine Accurate Garment Category & Silhouette
   const isVarsity = Boolean(
@@ -203,6 +194,61 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
       product.subcategory?.toLowerCase().includes("sweatshirt") ||
       product.category?.toLowerCase().includes("hoodie")
     );
+
+  const frontPreviewAsset = isBasketball
+    ? "/basketball/front (3) (1).png"
+    : isVarsity
+    ? "/varsity_jacket/front/body.png"
+    : isEquestrian
+    ? "/equestrian/front (1) (1).png"
+    : "/hoodie/front/body.png";
+
+  const backPreviewAsset = isBasketball
+    ? "/basketball/back (3) (1).png"
+    : isVarsity
+    ? "/varsity_jacket/back/body.png"
+    : isEquestrian
+    ? "/equestrian/back (1) (1).png"
+    : "/hoodie/back_body.png";
+
+  useEffect(() => {
+    setMounted(true);
+
+    // Prevent duplicate synchronization calls in React Strict Mode
+    if (hasSyncedRef.current) return;
+    hasSyncedRef.current = true;
+
+    // Synchronize Factory Tech Pack with Laravel Backend API
+    customizerService
+      .generateAndSaveTechPack({
+        productId: Number(product.id) || 1,
+        styleName: `${product.name} Factory Spec Sheet`,
+        partsColors: state.partColors || {},
+        artworkLayers: state.artworkLayers || [],
+        monogramState: state.textLayers || [],
+        fabricSpec: `${state.gsm || 450} GSM ${product.fabric || "Combed Cotton Fleece"} (${state.washId || "Clean Raw Mill"})`,
+        targetGsm: state.gsm || 450,
+        sizeBreakdown: state.sizeBreakdown,
+        decorationMethod: state.decorationMethodId || "3D Puff Embroidery / Screen Print",
+        washType: state.washId || "Clean Raw Mill Finish",
+        trimsConfig: state.trims,
+        stitchingNotes: "Double-needle flatlock topstitching. 100% pre-shrunk wash test under AQL 2.5 protocol.",
+        previewFront: frontPreviewAsset,
+        previewBack: backPreviewAsset,
+      })
+      .catch((err) => console.warn("TechPackModal auto-sync error:", err));
+  }, []);
+
+  const handlePrint = useCallback(() => {
+    setIsPreparingPrint(true);
+    // Allow React to re-render the button into loading state and prepare print portal
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => {
+        setIsPreparingPrint(false);
+      }, 1000);
+    }, 120);
+  }, []);
 
   const isTee =
     !isVarsity &&
@@ -559,16 +605,23 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
         },
       ];
 
+  const totalUnits = state.sizeBreakdown
+    ? Object.values(state.sizeBreakdown).reduce((sum, q) => sum + Number(q || 0), 0)
+    : (Number(state.quantity) || 0);
+
+  const hasVolumeEntered = totalUnits > 0;
+
   const sizeBreakdownList = state.sizeBreakdown
     ? Object.entries(state.sizeBreakdown)
         .filter(([_, qty]) => Number(qty) > 0)
         .map(([sz, qty]) => `${sz}: ${qty}`)
     : [];
-  const garmentSize =
-    sizeBreakdownList.length > 1
-      ? sizeBreakdownList.join(" • ")
-      : sizeBreakdownList[0] || (state.sizeBreakdown ? Object.keys(state.sizeBreakdown)[0] : "S");
-  const orderVolume = state.quantity || product.MOQ || 50;
+
+  const garmentSize = hasVolumeEntered
+    ? (sizeBreakdownList.length > 1 ? sizeBreakdownList.join(" • ") : sizeBreakdownList[0] || `${totalUnits} pcs`)
+    : "Pending Batch Allocation";
+
+  const orderVolume = totalUnits;
   const currentDate = new Date().toLocaleDateString("en-US", {
     month: "numeric",
     day: "numeric",
@@ -577,7 +630,7 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
 
   const basePrice = product.wholesalePrice || (product.retailPrice ? product.retailPrice * 0.45 : 35.0);
   const customUnitQuote = Number((basePrice * 1.15).toFixed(2));
-  const totalOrderQuote = (customUnitQuote * orderVolume).toFixed(2);
+  const totalOrderQuote = hasVolumeEntered ? (customUnitQuote * orderVolume).toFixed(2) : null;
 
   // Resolve Trims & Construction Labels
   const liningLabel =
@@ -2175,7 +2228,7 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
       {/* 1. ON-SCREEN DARK THEME MODAL (ALIGNED TO ATELIER THEME)                  */}
       {/* ========================================================================= */}
       <div className="fixed inset-0 z-[99999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-2.5 sm:p-5 tech-pack-modal-backdrop no-print">
-        <div className="bg-[#0E0E0E] text-white w-full max-w-5xl max-h-[92vh] rounded-[4px] border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] flex flex-col justify-between overflow-hidden">
+        <div className={`bg-[#0E0E0E] text-white ${isFullscreen ? "w-full max-w-none h-full max-h-none rounded-none sm:rounded-lg" : "w-full max-w-5xl max-h-[92vh] rounded-[4px]"} border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] flex flex-col justify-between overflow-hidden transition-all duration-200`}>
           {/* Top Header Bar */}
           <div className="p-4 sm:p-5 border-b border-white/10 flex items-start justify-between bg-[#0E0E0E]">
             <div>
@@ -2186,42 +2239,170 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
                 Garment Manufacturing Specification Sheet
               </h2>
             </div>
-            <button
-              onClick={onClose}
-              className="text-neutral-400 hover:text-white p-1 rounded-[2px] transition-colors cursor-pointer"
-              aria-label="Close modal"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setIsFullscreen(!isFullscreen)}
+                className="text-neutral-300 hover:text-white bg-white/5 hover:bg-white/10 px-2.5 py-1.5 rounded-[3px] border border-white/15 transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-mono font-semibold"
+                title={isFullscreen ? "Restore standard size" : "Expand to fullscreen"}
+              >
+                {isFullscreen ? (
+                  <>
+                    <Minimize2 className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Standard</span>
+                  </>
+                ) : (
+                  <>
+                    <Maximize2 className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Expand</span>
+                  </>
+                )}
+              </button>
+              <button
+                onClick={onClose}
+                className="text-neutral-400 hover:text-white p-1 rounded-[2px] transition-colors cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
           {/* Modal Content Body */}
           <div className="p-4 sm:p-6 overflow-y-auto space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-              {/* Left Column: Front & Back Spec Cards Side-by-Side */}
-              <div className="lg:col-span-5 grid grid-cols-2 gap-3">
-                {/* Front Spec Card */}
-                <div className="bg-[#141414] border border-white/15 rounded-[6px] flex flex-col items-center justify-between relative shadow-lg group">
-                  <div className="w-full aspect-square relative flex items-center justify-center p-1.5 overflow-hidden">
-                    {renderFrontView(false)}
+              {/* Left Column: Elevation Controls & Spec Cards */}
+              <div className="lg:col-span-5 space-y-3">
+                {/* Elevation Controls Toolbar */}
+                <div className="bg-[#141414] border border-white/15 rounded-[4px] p-2 flex flex-wrap items-center justify-between gap-2 text-xs">
+                  {/* View Selector */}
+                  <div className="flex items-center gap-1 bg-black/60 p-0.5 rounded border border-white/10">
+                    {(["dual", "front", "back"] as const).map((mode) => (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => setElevationViewMode(mode)}
+                        className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase transition-colors cursor-pointer ${
+                          elevationViewMode === mode
+                            ? "bg-[#D10115] text-white font-bold"
+                            : "text-neutral-400 hover:text-white"
+                        }`}
+                      >
+                        {mode === "dual" ? "◫ Dual" : mode}
+                      </button>
+                    ))}
                   </div>
-                  <div className="w-full py-2 px-2 border-t border-white/10 bg-black/60 rounded-b-[5px] flex items-center justify-center">
-                    <span className="text-[11px] font-mono font-bold tracking-widest text-neutral-200 uppercase select-none block">
-                      FRONT SPEC
+
+                  {/* Zoom Controls */}
+                  <div className="flex items-center gap-1 bg-black/60 px-1.5 py-0.5 rounded border border-white/10 font-mono text-[10px]">
+                    <span className="text-neutral-400 text-[9px]">Zoom:</span>
+                    <button
+                      type="button"
+                      onClick={() => setModelZoom((z) => Math.max(60, z - 15))}
+                      className="w-4 h-4 rounded bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold cursor-pointer"
+                      title="Zoom Out"
+                    >
+                      -
+                    </button>
+                    <span className="text-white font-bold min-w-[28px] text-center text-[10px]">
+                      {modelZoom}%
                     </span>
+                    <button
+                      type="button"
+                      onClick={() => setModelZoom((z) => Math.min(180, z + 15))}
+                      className="w-4 h-4 rounded bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold cursor-pointer"
+                      title="Zoom In"
+                    >
+                      +
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setModelZoom(100)}
+                      className="text-[9px] text-neutral-400 hover:text-white underline ml-0.5 cursor-pointer"
+                      title="Reset 100%"
+                    >
+                      ↺
+                    </button>
+                  </div>
+
+                  {/* BG Color Selector */}
+                  <div className="flex items-center gap-1 bg-black/60 px-1.5 py-0.5 rounded border border-white/10">
+                    <span className="text-neutral-400 text-[9px] font-mono">BG:</span>
+                    <div className="flex items-center gap-1">
+                      {["#0E0F12", "#141414", "#1E293B", "#3A3E47", "#F8FAFC", "#000000"].map((bg) => (
+                        <button
+                          key={bg}
+                          type="button"
+                          onClick={() => setModelBgColor(bg)}
+                          className={`w-3.5 h-3.5 rounded-full border transition-transform cursor-pointer shrink-0 ${
+                            modelBgColor === bg ? "ring-2 ring-[#D10115] border-white scale-110" : "border-white/30 hover:scale-105"
+                          }`}
+                          style={{ backgroundColor: bg }}
+                          title={`Set background to ${bg}`}
+                        />
+                      ))}
+                      <input
+                        type="color"
+                        value={modelBgColor}
+                        onChange={(e) => setModelBgColor(e.target.value)}
+                        className="w-3.5 h-3.5 rounded cursor-pointer border-0 p-0 ml-0.5 bg-transparent"
+                        title="Custom Background Color"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* Back Spec Card */}
-                <div className="bg-[#141414] border border-white/15 rounded-[6px] flex flex-col items-center justify-between relative shadow-lg group">
-                  <div className="w-full aspect-square relative flex items-center justify-center p-1.5 overflow-hidden">
-                    {renderBackView()}
-                  </div>
-                  <div className="w-full py-2 px-2 border-t border-white/10 bg-black/60 rounded-b-[5px] flex items-center justify-center">
-                    <span className="text-[11px] font-mono font-bold tracking-widest text-neutral-200 uppercase select-none block">
-                      BACK SPEC
-                    </span>
-                  </div>
+                {/* Spec Cards Grid */}
+                <div className={`grid ${elevationViewMode === "dual" ? "grid-cols-2" : "grid-cols-1"} gap-3`}>
+                  {/* Front Spec Card */}
+                  {(elevationViewMode === "dual" || elevationViewMode === "front") && (
+                    <div className="bg-[#141414] border border-white/15 rounded-[6px] flex flex-col items-center justify-between relative shadow-lg group">
+                      <div
+                        className={`w-full ${elevationViewMode === "front" ? "aspect-4/3 min-h-[280px]" : "aspect-square"} relative flex items-center justify-center p-1.5 overflow-hidden rounded-t-[5px] transition-colors`}
+                        style={{ backgroundColor: modelBgColor }}
+                      >
+                        <div
+                          className="w-full h-full flex items-center justify-center transition-transform duration-200 origin-center"
+                          style={{ transform: `scale(${modelZoom / 100})` }}
+                        >
+                          {renderFrontView(false)}
+                        </div>
+                      </div>
+                      <div className="w-full py-2 px-2 border-t border-white/10 bg-black/60 rounded-b-[5px] flex items-center justify-between">
+                        <span className="text-[10px] font-mono font-bold tracking-widest text-neutral-200 uppercase select-none block">
+                          FRONT SPEC
+                        </span>
+                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400 font-semibold whitespace-nowrap">
+                          2D / 3D
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Back Spec Card */}
+                  {(elevationViewMode === "dual" || elevationViewMode === "back") && (
+                    <div className="bg-[#141414] border border-white/15 rounded-[6px] flex flex-col items-center justify-between relative shadow-lg group">
+                      <div
+                        className={`w-full ${elevationViewMode === "back" ? "aspect-4/3 min-h-[280px]" : "aspect-square"} relative flex items-center justify-center p-1.5 overflow-hidden rounded-t-[5px] transition-colors`}
+                        style={{ backgroundColor: modelBgColor }}
+                      >
+                        <div
+                          className="w-full h-full flex items-center justify-center transition-transform duration-200 origin-center"
+                          style={{ transform: `scale(${modelZoom / 100})` }}
+                        >
+                          {renderBackView()}
+                        </div>
+                      </div>
+                      <div className="w-full py-2 px-2 border-t border-white/10 bg-black/60 rounded-b-[5px] flex items-center justify-between">
+                        <span className="text-[10px] font-mono font-bold tracking-widest text-neutral-200 uppercase select-none block">
+                          BACK SPEC
+                        </span>
+                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-neutral-800 text-neutral-300 font-semibold whitespace-nowrap">
+                          Rear Spec
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -2387,7 +2568,11 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
                 <div className="bg-[#141414] border border-white/10 rounded-[4px] p-3.5 text-xs text-neutral-300 font-mono flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <span className="text-neutral-400 text-[10px] uppercase block">Production Volume</span>
-                    <strong className="text-white">{garmentSize} &bull; {orderVolume} pcs</strong>
+                    {hasVolumeEntered ? (
+                      <strong className="text-white">{garmentSize} &bull; {orderVolume} pcs</strong>
+                    ) : (
+                      <strong className="text-amber-400 text-[11px]">Pending Allocation &bull; 0 pcs entered</strong>
+                    )}
                   </div>
                   <div>
                     <span className="text-neutral-400 text-[10px] uppercase block">Fabric Specification</span>
@@ -2409,7 +2594,11 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
                     <span className="text-neutral-400 text-[10px] uppercase block">Unit / Total Order</span>
                     <span className="text-white font-bold text-sm">${customUnitQuote.toFixed(2)}</span>
                     <span className="text-neutral-500 mx-1">/</span>
-                    <strong className="text-[#D10115] font-black text-sm">${totalOrderQuote}</strong>
+                    {totalOrderQuote ? (
+                      <strong className="text-[#D10115] font-black text-sm">${totalOrderQuote}</strong>
+                    ) : (
+                      <strong className="text-neutral-400 text-xs font-semibold">Enter batch units</strong>
+                    )}
                   </div>
                 </div>
               </div>
@@ -2469,11 +2658,20 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
                     <span className="font-mono font-bold text-neutral-900">{currentDate}</span>
                   </div>
                   <div className="mt-0.5">
-                    <span className="text-neutral-500 font-medium">Garment Size: </span>
-                    <strong className="text-neutral-900 font-bold">{garmentSize}</strong>
-                    <span className="text-neutral-400 mx-1">|</span>
-                    <span className="text-neutral-500 font-medium">Order Volume: </span>
-                    <strong className="text-[#D10115] font-bold">{orderVolume} pcs</strong>
+                    {hasVolumeEntered ? (
+                      <>
+                        <span className="text-neutral-500 font-medium">Garment Size: </span>
+                        <strong className="text-neutral-900 font-bold">{garmentSize}</strong>
+                        <span className="text-neutral-400 mx-1">|</span>
+                        <span className="text-neutral-500 font-medium">Order Volume: </span>
+                        <strong className="text-[#D10115] font-bold">{orderVolume} pcs</strong>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-neutral-500 font-medium">Production Volume: </span>
+                        <strong className="text-neutral-700 font-bold">Sample Spec (Pending Batch Allocation)</strong>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -2516,10 +2714,17 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
                       <span>Unit Quote:</span>
                       <span className="font-mono">${customUnitQuote.toFixed(2)}</span>
                     </div>
-                    <div className="flex items-center justify-between font-bold text-neutral-900 border-t border-neutral-200 pt-1">
-                      <span>Total Order:</span>
-                      <span className="font-mono">${totalOrderQuote}</span>
-                    </div>
+                    {totalOrderQuote ? (
+                      <div className="flex items-center justify-between font-bold text-neutral-900 border-t border-neutral-200 pt-1">
+                        <span>Total Order:</span>
+                        <span className="font-mono">${totalOrderQuote}</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between font-medium text-neutral-500 border-t border-neutral-200 pt-1">
+                        <span>Total Order:</span>
+                        <span className="font-mono text-xs">Pending Allocation</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 

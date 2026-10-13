@@ -1,276 +1,318 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { trackingService } from "@/services/tracking.service";
 import { Order } from "@/types";
-import { Search, Package, Truck, CheckCircle2, Clock, MapPin, Plane, ShieldCheck, ArrowRight } from "lucide-react";
+import { Search, Package, ChevronDown, ChevronUp, MapPin, Truck, Check } from "lucide-react";
 
-export default function TrackOrderPage() {
-  const [orderNumberInput, setOrderNumberInput] = useState("SF-849201");
-  const [emailInput, setEmailInput] = useState("procurement@vanceatelier.com");
+function TrackOrderContent() {
+  const searchParams = useSearchParams();
+  const queryOrder = searchParams.get("order") || searchParams.get("orderNumber");
+
+  const [orderNumberInput, setOrderNumberInput] = useState(queryOrder || "PP-20261012-F245");
+  const [emailInput, setEmailInput] = useState("");
   const [activeOrder, setActiveOrder] = useState<Order | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [showLogistics, setShowLogistics] = useState(false);
 
-  // Auto load demo order on mount
-  React.useEffect(() => {
-    trackingService.trackOrder("SF-849201").then((ord) => {
-      setActiveOrder(ord);
-      setHasSearched(true);
-    });
-  }, []);
-
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!orderNumberInput.trim()) return;
-
+  const loadOrder = async (targetRef: string) => {
+    if (!targetRef.trim()) return;
     setIsSearching(true);
-    const result = await trackingService.trackOrder(orderNumberInput);
+    const result = await trackingService.trackOrder(targetRef);
     setActiveOrder(result);
     setIsSearching(false);
     setHasSearched(true);
   };
 
-  const progressPercent = activeOrder
-    ? Math.round(
-        ((activeOrder.currentStageIndex + 1) / (activeOrder.stages.length || 10)) * 100
-      )
-    : 0;
+  useEffect(() => {
+    let initialTarget = queryOrder;
+
+    if (!initialTarget && typeof window !== "undefined") {
+      const stored = sessionStorage.getItem("tawfiq-industry-last-order");
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (parsed.orderNumber) {
+            initialTarget = parsed.orderNumber;
+          }
+        } catch (e) {
+          console.warn("Stored order parse error:", e);
+        }
+      }
+    }
+
+    const finalTarget = initialTarget || "PP-20261012-F245";
+    setOrderNumberInput(finalTarget);
+    if (finalTarget === "PP-20261012-F245") {
+      setEmailInput("email@gmail.com");
+    }
+    loadOrder(finalTarget);
+  }, [queryOrder]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    loadOrder(orderNumberInput);
+  };
+
+  // Determine current active step (1 to 4)
+  const getActiveStep = (order: Order | null): number => {
+    if (!order) return 1;
+    const status = (order.status || "").toLowerCase();
+
+    if (status.includes("deliver") || status.includes("dispatch") || status.includes("complet") || status.includes("quot")) {
+      return 4;
+    }
+    if (status.includes("production") || status.includes("repli") || status.includes("stitch") || order.currentStageIndex >= 2) {
+      return 3;
+    }
+    if (status.includes("review") || status.includes("process") || order.currentStageIndex >= 1) {
+      return 2;
+    }
+    return 1;
+  };
+
+  const currentActiveStep = getActiveStep(activeOrder);
+
+  // 4 Less Stages matching Screen 1
+  const isQuoteInquiry =
+    activeOrder?.orderNumber.startsWith("PP-") ||
+    activeOrder?.orderNumber.startsWith("RFQ-");
+
+  const fourStages = [
+    { step: 1, label: "RECEIVED" },
+    { step: 2, label: "IN REVIEW" },
+    { step: 3, label: isQuoteInquiry ? "REPLIED" : "IN PRODUCTION" },
+    { step: 4, label: isQuoteInquiry ? "QUOTED" : "DISPATCHED" },
+  ];
 
   return (
-    <div className="w-full bg-[#FAFAF8] py-16 select-none min-h-[calc(100vh-72px)]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="w-full bg-[#FAFAF8] py-14 select-none min-h-[calc(100vh-72px)]">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         
-        {/* Header Breadcrumbs & Title */}
-        <div className="border-b border-[#DADBD2] pb-6 mb-8">
-          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#72726D] mb-2 font-mono">
-            <Link href="/" className="hover:text-black">Home</Link>
-            <span>/</span>
-            <span className="text-black font-bold">Live Production & Shipment Tracking</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#0A0A0A] uppercase font-display">
-            Track Order & Milling Status
-          </h1>
-          <p className="text-xs sm:text-sm text-[#72726D] mt-2 max-w-xl">
-            Real-time milestone reporting from raw yarn milling in Sialkot through CNC cutting, Tajima embroidery, needle scanning, and international courier transit.
-          </p>
+        {/* Navigation Breadcrumb */}
+        <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#72726D] mb-6">
+          <Link href="/" className="hover:text-black">Home</Link>
+          <span>/</span>
+          <span className="text-black font-bold">Track Order & Inquiry Status</span>
         </div>
 
-        {/* Search Query Form */}
+        {/* Search Bar Card - Matching Screen 1 */}
         <div className="bg-white border border-[#DADBD2] rounded-[2px] p-6 mb-8 shadow-xs">
           <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+            
+            {/* Reference Number Input */}
             <div className="md:col-span-5">
-              <label className="block text-[11px] font-mono uppercase text-[#72726D] font-bold mb-1">
-                Order Tracking ID (e.g. SF-849201):
+              <label className="block text-[11px] font-mono uppercase text-[#72726D] font-bold mb-1.5 tracking-wider">
+                Reference Number
               </label>
               <input
                 type="text"
                 value={orderNumberInput}
                 onChange={(e) => setOrderNumberInput(e.target.value)}
-                placeholder="SF-849201"
-                className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3.5 py-2.5 text-xs font-mono uppercase font-bold text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
+                placeholder="PP-20261012-F245"
+                className="w-full bg-white border border-[#DADBD2] px-3.5 py-2.5 text-xs font-mono uppercase font-bold text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                 required
               />
             </div>
 
+            {/* Email Used in Inquiry Input */}
             <div className="md:col-span-5">
-              <label className="block text-[11px] font-mono uppercase text-[#72726D] font-bold mb-1">
-                Client Procurement Email:
+              <label className="block text-[11px] font-mono uppercase text-[#72726D] font-bold mb-1.5 tracking-wider">
+                Email Used in Inquiry
               </label>
               <input
                 type="email"
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
-                placeholder="buyer@fashionbrand.com"
-                className="w-full bg-[#F4F4EF] border border-[#DADBD2] px-3.5 py-2.5 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
+                placeholder="email@gmail.com"
+                className="w-full bg-[#EBF2FC] border border-[#CBDCF7] px-3.5 py-2.5 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-blue-500 focus:bg-white"
               />
             </div>
 
+            {/* Red Track Button */}
             <div className="md:col-span-2">
               <button
                 type="submit"
                 disabled={isSearching}
-                className="w-full py-2.5 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono uppercase font-bold tracking-wider rounded-[2px] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-2.5 bg-[#E52B28] hover:bg-[#cf2421] text-white text-xs font-mono uppercase font-bold tracking-wider rounded-[2px] transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
               >
                 <Search className="w-4 h-4" />
-                <span>{isSearching ? "Querying..." : "Locate"}</span>
+                <span>{isSearching ? "Searching..." : "Track"}</span>
               </button>
             </div>
           </form>
 
           {/* Quick Demo Test Buttons */}
-          <div className="mt-3 pt-3 border-t border-[#F4F4EF] flex items-center gap-2 text-[11px] font-mono text-[#72726D]">
-            <span>Try Demo Order IDs:</span>
+          <div className="mt-3.5 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-2 text-[11px] font-mono text-[#72726D]">
+            <span>Try Demo References:</span>
             <button
+              type="button"
               onClick={() => {
-                setOrderNumberInput("SF-849201");
-                trackingService.trackOrder("SF-849201").then(setActiveOrder);
+                setOrderNumberInput("PP-20261012-F245");
+                setEmailInput("email@gmail.com");
+                loadOrder("PP-20261012-F245");
               }}
-              className="text-[#D61C24] hover:underline font-bold"
+              className="text-[#E52B28] hover:underline font-bold"
             >
-              SF-849201 (QC Active)
+              PP-20261012-F245 (Screen 1 Inquiry)
             </button>
             <span>•</span>
             <button
+              type="button"
               onClick={() => {
-                setOrderNumberInput("SF-302194");
-                trackingService.trackOrder("SF-302194").then(setActiveOrder);
+                setOrderNumberInput("TI-849201");
+                setEmailInput("procurement@vanceatelier.com");
+                loadOrder("TI-849201");
               }}
-              className="text-[#D61C24] hover:underline font-bold"
+              className="text-[#E52B28] hover:underline font-bold"
             >
-              SF-302194 (Yarn Lab-Dip)
+              TI-849201 (Commercial Order)
+            </button>
+            <span>•</span>
+            <button
+              type="button"
+              onClick={() => {
+                setOrderNumberInput("TI-563657");
+                loadOrder("TI-563657");
+              }}
+              className="text-[#E52B28] hover:underline font-bold"
+            >
+              TI-563657 (Live DB Order)
             </button>
           </div>
         </div>
 
-        {/* Search Results Display */}
+        {/* Results Card - Matching Screen 1 */}
         {hasSearched && !activeOrder ? (
-          <div className="bg-white border border-[#DADBD2] rounded-[2px] p-12 text-center space-y-3">
+          <div className="bg-white border border-[#DADBD2] rounded-[2px] p-12 text-center space-y-3 shadow-xs">
             <Package className="w-8 h-8 text-[#72726D] mx-auto" />
             <h3 className="text-base font-bold uppercase text-[#0A0A0A]">
-              No active shipment found for &ldquo;{orderNumberInput}&rdquo;
+              No active inquiry or order found for &ldquo;{orderNumberInput}&rdquo;
             </h3>
-            <p className="text-xs text-[#72726D] max-w-sm mx-auto">
-              Please double check your Order ID from your commercial invoice, or submit a new quotation request.
+            <p className="text-xs text-[#72726D] max-w-sm mx-auto font-mono">
+              Please verify your reference ID from your commercial confirmation email or submit a new inquiry.
             </p>
           </div>
         ) : activeOrder ? (
-          <div className="space-y-8 animate-in fade-in duration-200">
+          <div className="bg-white border border-[#DADBD2] rounded-[2px] p-6 sm:p-8 shadow-xs space-y-6 animate-in fade-in duration-150">
             
-            {/* Order Overview Card */}
-            <div className="bg-white border border-[#DADBD2] rounded-[2px] p-6 shadow-xs">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-[#DADBD2] gap-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#D61C24] animate-pulse" />
-                    <span className="text-xs font-mono font-bold text-[#D61C24] uppercase">
-                      ACTIVE PRODUCTION BATCH
-                    </span>
-                  </div>
-                  <h2 className="text-2xl font-bold uppercase text-[#0A0A0A] font-display mt-1">
-                    Order Ref: {activeOrder.orderNumber}
-                  </h2>
-                  <div className="text-xs font-mono text-[#72726D] mt-0.5">
-                    Client: {activeOrder.customer.name} ({activeOrder.customer.company || "Direct Label"})
-                  </div>
-                </div>
-
-                <div className="sm:text-right space-y-1">
-                  <div className="text-xs font-mono text-[#72726D] uppercase">
-                    Status: <strong className="text-[#0A0A0A]">{activeOrder.status}</strong>
-                  </div>
-                  <div className="text-xs font-mono text-[#D61C24] font-bold">
-                    Est. Dispatch: {activeOrder.estimatedDispatch}
-                  </div>
-                  {activeOrder.trackingNumber && (
-                    <div className="text-[11px] font-mono text-[#72726D]">
-                      AWB: <span className="font-bold text-black">{activeOrder.trackingNumber}</span>
-                    </div>
-                  )}
-                </div>
+            {/* Header: Reference ID and Submitted Date */}
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-slate-200 pb-5">
+              <div>
+                <span className="text-[11px] font-mono uppercase tracking-widest text-[#72726D] block mb-1">
+                  {isQuoteInquiry ? "INQUIRY" : "COMMERCIAL ORDER"}
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-extrabold uppercase font-mono tracking-tight text-[#0A0A0A]">
+                  {activeOrder.orderNumber}
+                </h2>
               </div>
-
-              {/* Progress Percentage Bar */}
-              <div className="pt-6">
-                <div className="flex items-center justify-between text-xs font-mono font-bold uppercase mb-2">
-                  <span className="text-[#0A0A0A]">
-                    Stage {activeOrder.currentStageIndex + 1} of {activeOrder.stages.length}
-                  </span>
-                  <span className="text-[#D61C24]">{progressPercent}% Completed</span>
-                </div>
-                <div className="w-full h-2 bg-[#F4F4EF] rounded-full overflow-hidden border border-[#DADBD2]">
-                  <div
-                    className="h-full bg-[#0A0A0A] transition-all duration-500"
-                    style={{ width: `${progressPercent}%` }}
-                  />
-                </div>
+              <div className="text-xs font-mono text-[#72726D]">
+                Submitted {activeOrder.createdAt || "10/12/2026"}
               </div>
             </div>
 
-            {/* 10-Stage Milestone Timeline (Section 48) */}
-            <div className="bg-white border border-[#DADBD2] rounded-[2px] p-6 sm:p-8 shadow-xs">
-              <h3 className="text-sm font-mono uppercase font-bold text-[#0A0A0A] mb-6 flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#D61C24]" />
-                <span>Manufacturing Protocol Stages (AQL 2.5)</span>
-              </h3>
+            {/* 4 Clean Stages Horizontal Stepper (Screen 1 Design) */}
+            <div className="py-6 sm:py-8">
+              <div className="relative flex items-center justify-between max-w-2xl mx-auto px-4 sm:px-8">
+                
+                {/* Horizontal Background Track Line */}
+                <div className="absolute left-8 right-8 top-3.5 h-[1px] bg-slate-200 -z-0" />
 
-              <div className="relative pl-6 sm:pl-8 space-y-6 before:absolute before:left-3 sm:before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#DADBD2]">
-                {activeOrder.stages.map((st, idx) => {
-                  const isCompleted = idx < activeOrder.currentStageIndex;
-                  const isCurrent = idx === activeOrder.currentStageIndex;
+                {fourStages.map((stage) => {
+                  const isCurrent = currentActiveStep === stage.step;
+                  const isCompleted = currentActiveStep > stage.step;
+                  const isReached = isCurrent || isCompleted;
 
                   return (
-                    <div key={st.id} className="relative flex items-start gap-4">
-                      {/* Milestone Dot */}
+                    <div key={stage.step} className="relative z-10 flex flex-col items-center">
+                      {/* Square Badge with Number */}
                       <div
-                        className={`absolute -left-6 sm:-left-8 top-1 w-6 h-6 rounded-full border-2 flex items-center justify-center text-[10px] font-mono font-bold transition-colors ${
-                          isCompleted
-                            ? "bg-[#0A0A0A] border-[#0A0A0A] text-white"
-                            : isCurrent
-                            ? "bg-[#D61C24] border-[#D61C24] text-white animate-pulse"
-                            : "bg-white border-[#DADBD2] text-[#72726D]"
+                        className={`w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-xs font-mono font-bold rounded-[2px] transition-colors ${
+                          isReached
+                            ? "bg-[#E52B28] text-white shadow-xs"
+                            : "bg-white border border-slate-300 text-slate-400"
                         }`}
                       >
-                        {isCompleted ? "✓" : idx + 1}
+                        {stage.step}
                       </div>
 
-                      {/* Content */}
-                      <div
-                        className={`p-4 rounded-[2px] border w-full transition-all ${
-                          isCurrent
-                            ? "bg-[#F4F4EF] border-[#D61C24] shadow-xs"
-                            : "bg-white border-[#DADBD2]"
+                      {/* Stage Label Below */}
+                      <span
+                        className={`mt-2 text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-center ${
+                          isReached ? "font-bold text-[#0A0A0A]" : "text-slate-400 font-medium"
                         }`}
                       >
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
-                          <h4 className="text-xs font-bold uppercase font-display text-[#0A0A0A]">
-                            {st.name}
-                          </h4>
-                          <span
-                            className={`text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded-[1px] w-fit ${
-                              isCompleted
-                                ? "bg-emerald-50 text-emerald-800"
-                                : isCurrent
-                                ? "bg-[#D61C24] text-white"
-                                : "bg-[#F4F4EF] text-[#72726D]"
-                            }`}
-                          >
-                            {isCompleted ? "COMPLETED" : isCurrent ? "IN PROGRESS" : "QUEUED"}
-                          </span>
-                        </div>
-                        <p className="text-xs text-[#72726D] font-sans">
-                          {st.description}
-                        </p>
-                        {st.location && (
-                          <div className="text-[10px] font-mono text-[#D61C24] mt-2 flex items-center gap-1 font-semibold">
-                            <MapPin className="w-3 h-3" />
-                            <span>Location: {st.location}</span>
-                          </div>
-                        )}
-                      </div>
+                        {stage.label}
+                      </span>
                     </div>
                   );
                 })}
               </div>
             </div>
 
-            {/* Destination & Logistics Details */}
-            <div className="bg-[#F4F4EF] border border-[#DADBD2] rounded-[2px] p-6 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs font-mono">
-              <div>
-                <span className="text-[#72726D] uppercase block mb-1">Shipping Method:</span>
-                <strong className="text-black">{activeOrder.shippingMethod}</strong>
+            {/* ITEMS Section - Matching Screen 1 */}
+            <div className="pt-4 border-t border-slate-200">
+              <div className="text-[11px] font-mono uppercase tracking-widest text-[#72726D] font-bold mb-3">
+                ITEMS
               </div>
-              <div>
-                <span className="text-[#72726D] uppercase block mb-1">Delivery Destination:</span>
-                <strong className="text-black">
-                  {activeOrder.customer.shippingAddress.city}, {activeOrder.customer.shippingAddress.country}
-                </strong>
+
+              <div className="divide-y divide-slate-100 border-t border-b border-slate-100">
+                {activeOrder.items && activeOrder.items.length > 0 ? (
+                  activeOrder.items.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="py-3 text-xs sm:text-sm font-mono text-[#0A0A0A] hover:bg-slate-50/50 transition-colors"
+                    >
+                      {item.productName}
+                      {" — "}
+                      <span className="font-bold">Qty {item.quantity}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="py-3 text-xs sm:text-sm font-mono text-[#0A0A0A]">
+                    Commercial Custom Apparel Production Batch — <span className="font-bold">Qty {activeOrder.subtotal ? Math.round(activeOrder.subtotal / 25) : 100}</span>
+                  </div>
+                )}
               </div>
-              <div>
-                <span className="text-[#72726D] uppercase block mb-1">Commercial Term:</span>
-                <strong className="text-[#D61C24]">Delivered Duty Paid (DDP) Air Corridor</strong>
-              </div>
+            </div>
+
+            {/* Optional Collapsible Logistics & Commercial Metadata */}
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => setShowLogistics(!showLogistics)}
+                className="text-xs font-mono uppercase text-[#72726D] hover:text-black flex items-center gap-1.5 cursor-pointer py-1"
+              >
+                <span>{showLogistics ? "Hide" : "View"} Commercial & Transit Metadata</span>
+                {showLogistics ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              </button>
+
+              {showLogistics && (
+                <div className="mt-3 p-4 bg-[#F4F4EF] border border-[#DADBD2] rounded-[2px] grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono animate-in fade-in duration-100">
+                  <div>
+                    <span className="text-[#72726D] uppercase block mb-1">Procurement Client:</span>
+                    <strong className="text-black">{activeOrder.customer.name}</strong>
+                    <div className="text-[11px] text-[#72726D]">{activeOrder.customer.company || "Direct Label"}</div>
+                  </div>
+                  <div>
+                    <span className="text-[#72726D] uppercase block mb-1">Dispatch Logistics:</span>
+                    <strong className="text-black">{activeOrder.shippingMethod || "DDP Air Cargo"}</strong>
+                    {activeOrder.trackingNumber && (
+                      <div className="text-[11px] text-[#D61C24] font-bold">{activeOrder.trackingNumber}</div>
+                    )}
+                  </div>
+                  <div>
+                    <span className="text-[#72726D] uppercase block mb-1">Destination:</span>
+                    <strong className="text-black">
+                      {activeOrder.customer?.shippingAddress?.city || "Austin"},{" "}
+                      {activeOrder.customer?.shippingAddress?.country || "United States"}
+                    </strong>
+                  </div>
+                </div>
+              )}
             </div>
 
           </div>
@@ -278,5 +320,13 @@ export default function TrackOrderPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function TrackOrderPage() {
+  return (
+    <Suspense fallback={<div className="p-12 text-center text-xs font-mono">Loading order tracking portal...</div>}>
+      <TrackOrderContent />
+    </Suspense>
   );
 }

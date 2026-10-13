@@ -17,7 +17,6 @@ export const CategoryPageTemplate: React.FC<CategoryPageTemplateProps> = ({
   products,
 }) => {
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("all");
-  const [customizableOnly, setCustomizableOnly] = useState(false);
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "moq-asc">("featured");
 
   const { mode, toggleMode } = useStoreModeStore();
@@ -25,7 +24,6 @@ export const CategoryPageTemplate: React.FC<CategoryPageTemplateProps> = ({
   const filteredProducts = products
     .filter((p) => {
       if (selectedSubcategory !== "all" && p.subcategory !== selectedSubcategory) return false;
-      if (customizableOnly && !p.customizable) return false;
       return true;
     })
     .sort((a, b) => {
@@ -132,18 +130,6 @@ export const CategoryPageTemplate: React.FC<CategoryPageTemplateProps> = ({
 
             {/* Quick Filter & Sort Controls */}
             <div className="flex items-center gap-2 shrink-0">
-              <button
-                onClick={() => setCustomizableOnly(!customizableOnly)}
-                className={`px-2.5 py-1.5 text-xs font-mono uppercase rounded-[2px] border transition-colors flex items-center gap-1.5 ${
-                  customizableOnly
-                    ? "bg-[#D61C24] text-white border-[#D61C24]"
-                    : "bg-white text-[#72726D] border-[#DADBD2]"
-                }`}
-              >
-                <Sparkles className="w-3 h-3" />
-                <span>Customizable Only</span>
-              </button>
-
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
@@ -189,7 +175,6 @@ export const CategoryPageTemplate: React.FC<CategoryPageTemplateProps> = ({
               <button
                 onClick={() => {
                   setSelectedSubcategory("all");
-                  setCustomizableOnly(false);
                 }}
                 className="px-4 py-2 bg-[#0A0A0A] text-white text-xs font-mono uppercase rounded-[2px]"
               >

@@ -1,6 +1,6 @@
 import React from "react";
 import { CATEGORIES_DATA } from "@/data/categories.data";
-import { PRODUCTS_DATA } from "@/data/products.data";
+import { productsService } from "@/services/products.service";
 import { CategoryPageTemplate } from "@/components/catalog/CategoryPageTemplate";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
@@ -10,10 +10,11 @@ export const metadata: Metadata = {
   description: "300 GSM interlock rugby match jerseys with anti-grab collars and silicone chest grip. 600N tensile burst resistance for pro clubs and unions.",
 };
 
-export default function RugbyPage() {
+export default async function RugbyPage() {
   const category = CATEGORIES_DATA.find((c) => c.id === "rugby");
   if (!category) return notFound();
-  const products = PRODUCTS_DATA.filter((p) => p.category === "rugby");
+  const products = await productsService.getByCategory("rugby");
 
   return <CategoryPageTemplate category={category} products={products} />;
 }
+

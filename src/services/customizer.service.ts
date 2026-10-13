@@ -353,4 +353,224 @@ export const customizerService = {
   getPackaging: async () => PACKAGING_DATA,
   getSwatches: () => PRESET_SWATCHES,
   getFonts: () => FONT_COLLECTIONS,
+
+  /**
+   * Upload logo/artwork file to Laravel backend storage disk.
+   */
+  async uploadArtwork(file: File): Promise<{ success: boolean; url: string; fullUrl?: string; filename?: string }> {
+    try {
+      const { apiClient } = await import("@/services/api.client");
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await apiClient.upload<{
+        success: boolean;
+        url: string;
+        full_url?: string;
+        filename?: string;
+      }>("/customizer/upload-artwork", formData);
+
+      if (res?.success && res.url) {
+        return {
+          success: true,
+          url: res.url,
+          fullUrl: res.full_url,
+          filename: res.filename,
+        };
+      }
+    } catch (e) {
+      console.warn("Backend logo upload fallback:", e);
+    }
+
+    return {
+      success: false,
+      url: URL.createObjectURL(file),
+    };
+  },
+
+  async saveDesignToBackend(payload: {
+    productId?: number | string;
+    designCode?: string;
+    designName: string;
+    partsColors: Record<string, string>;
+    artworkLayers?: unknown[];
+    monogramState?: unknown;
+    previewFront?: string;
+    previewBack?: string;
+    decorationMethod?: string;
+    washType?: string;
+    fabricSpec?: string;
+    targetGsm?: number;
+    sizeBreakdown?: Record<string, number>;
+    totalUnits?: number;
+    trimsConfig?: unknown;
+  }): Promise<{ success: boolean; designCode?: string; techPackCode?: string }> {
+    try {
+      const { apiClient } = await import("@/services/api.client");
+      const clientEmail = typeof window !== "undefined" ? sessionStorage.getItem("user_inquiry_email") : null;
+      const clientName = typeof window !== "undefined" ? sessionStorage.getItem("user_inquiry_name") : null;
+      const clientCompany = typeof window !== "undefined" ? sessionStorage.getItem("user_inquiry_company") : null;
+      const clientPhone = typeof window !== "undefined" ? sessionStorage.getItem("user_inquiry_phone") : null;
+
+      const res = await apiClient.post<{ success: boolean; design_code?: string; tech_pack_code?: string }>(
+        "/customizer/save",
+        {
+          product_id: typeof payload.productId === "number" ? payload.productId : 1,
+          design_code: payload.designCode,
+          design_name: payload.designName,
+          parts_colors: payload.partsColors,
+          artwork_layers: payload.artworkLayers,
+          monogram_state: payload.monogramState,
+          preview_front: payload.previewFront,
+          preview_back: payload.previewBack,
+          decoration_method: payload.decorationMethod,
+          wash_type: payload.washType,
+          fabric_spec: payload.fabricSpec,
+          target_gsm: payload.targetGsm,
+          size_breakdown: payload.sizeBreakdown,
+          total_units: payload.totalUnits,
+          trims_config: payload.trimsConfig,
+          client_email: clientEmail || undefined,
+          client_name: clientName || undefined,
+          client_company: clientCompany || undefined,
+          client_phone: clientPhone || undefined,
+        }
+      );
+      if (res?.success) {
+        return {
+          success: true,
+          designCode: res.design_code,
+          techPackCode: res.tech_pack_code,
+        };
+      }
+    } catch (e) {
+      console.warn("Backend customizer save fallback:", e);
+    }
+    // Client-side fallback code
+    const fallbackCode = payload.designCode || `CD-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+    const fallbackTp = `TP-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+    return { success: true, designCode: fallbackCode, techPackCode: fallbackTp };
+  },
+
+  async generateAndSaveTechPack(payload: {
+    productId?: number | string;
+    techPackCode?: string;
+    designCode?: string;
+    styleName: string;
+    partsColors: Record<string, string>;
+    artworkLayers?: unknown[];
+    monogramState?: unknown;
+    decorationMethod?: string;
+    washType?: string;
+    fabricSpec?: string;
+    targetGsm?: number;
+    stitchingNotes?: string;
+    sizeBreakdown?: Record<string, number>;
+    totalUnits?: number;
+    trimsConfig?: unknown;
+    previewFront?: string;
+    previewBack?: string;
+  }): Promise<{ success: boolean; techPackCode?: string; designCode?: string }> {
+    try {
+      const { apiClient } = await import("@/services/api.client");
+
+      const gradingMatrix = payload.sizeBreakdown
+        ? {
+            breakdown: payload.sizeBreakdown,
+            matrix: {
+              XS: { chest_width: 54, body_length: 68, shoulder: 50, sleeve: 63, units: payload.sizeBreakdown["XS"] || 0 },
+              S: { chest_width: 57, body_length: 70, shoulder: 52, sleeve: 64, units: payload.sizeBreakdown["S"] || 0 },
+              M: { chest_width: 60, body_length: 72, shoulder: 54, sleeve: 65, units: payload.sizeBreakdown["M"] || 0 },
+              L: { chest_width: 63, body_length: 74, shoulder: 56, sleeve: 66, units: payload.sizeBreakdown["L"] || 0 },
+              XL: { chest_width: 66, body_length: 76, shoulder: 58, sleeve: 67, units: payload.sizeBreakdown["XL"] || 0 },
+              "2XL": { chest_width: 69, body_length: 78, shoulder: 60, sleeve: 68, units: payload.sizeBreakdown["2XL"] || 0 },
+              "3XL": { chest_width: 72, body_length: 80, shoulder: 62, sleeve: 69, units: payload.sizeBreakdown["3XL"] || 0 },
+            },
+          }
+        : undefined;
+
+      const res = await apiClient.post<{
+        success: boolean;
+        code?: string;
+        tech_pack_code?: string;
+        design_code?: string;
+      }>("/tech-packs", {
+        product_id: typeof payload.productId === "number" ? payload.productId : 1,
+        code: payload.techPackCode,
+        tech_pack_code: payload.techPackCode,
+        design_code: payload.designCode,
+        style_name: payload.styleName,
+        season: "FW26",
+        fabric_spec: payload.fabricSpec || "450 GSM 100% Combed Cotton French Terry",
+        target_gsm: payload.targetGsm || 450,
+        stitching_notes: payload.stitchingNotes || "Double-needle flatlock topstitching along seams. 100% pre-shrunk wash test under AQL 2.5 protocol.",
+        pom_measurements: gradingMatrix,
+        parts_colors: payload.partsColors,
+        artwork_layers: payload.artworkLayers,
+        monogram_state: payload.monogramState,
+        decoration_method: payload.decorationMethod,
+        wash_type: payload.washType,
+        size_breakdown: payload.sizeBreakdown,
+        total_units: payload.totalUnits,
+        trims_config: payload.trimsConfig,
+        preview_front: payload.previewFront,
+        preview_back: payload.previewBack,
+      });
+
+      if (res?.success && (res.code || res.tech_pack_code)) {
+        return {
+          success: true,
+          techPackCode: res.code || res.tech_pack_code,
+          designCode: res.design_code,
+        };
+      }
+    } catch (e) {
+      console.warn("Backend tech-pack save fallback:", e);
+    }
+
+    const fallbackCode = payload.techPackCode || `TP-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+    return { success: true, techPackCode: fallbackCode };
+  },
+
+  async loadDesignFromBackend(designCode: string) {
+    try {
+      const { apiClient } = await import("@/services/api.client");
+      const res = await apiClient.get<{ success?: boolean; data: any }>(`/customizer/${designCode}`);
+      return res?.data ?? null;
+    } catch (e) {
+      console.warn("Backend customizer load fallback:", e);
+      return null;
+    }
+  },
+
+  async fetchCustomizerConfig() {
+    try {
+      const { apiClient } = await import("@/services/api.client");
+      const res = await apiClient.get<{ success: boolean; data: any }>("/customizer/config");
+      if (res?.success && res.data) {
+        return res.data;
+      }
+    } catch (e) {
+      console.warn("Backend customizer config fetch fallback:", e);
+    }
+    return null;
+  },
+
+  async fetchArtworkLibrary() {
+    try {
+      const { apiClient } = await import("@/services/api.client");
+      const res = await apiClient.get<{ success: boolean; data: any[] }>("/customizer/artworks");
+      if (res?.success && Array.isArray(res.data)) {
+        return res.data;
+      }
+    } catch (e) {
+      console.warn("Backend customizer artworks fetch fallback:", e);
+    }
+    return [];
+  },
+
+  saveCustomizerDesign(payload: any) {
+    return this.saveDesignToBackend(payload);
+  },
 };
+

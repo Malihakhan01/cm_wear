@@ -1,0 +1,270 @@
+@extends('layouts.admin')
+
+@section('title', 'Saved Customizer Designs')
+@section('header_title', 'Saved Customizer Designs & Approvals')
+
+@section('content')
+<div class="space-y-6" x-data="{ selectedDesign: null }">
+
+    <!-- Header Section -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Saved Customer Designs Vault</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">All customer-saved 2D/3D garment configurations with component colors, artwork layers, monograms, and linked Tech Packs.</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <span class="rounded-xl bg-blue-500/10 px-3 py-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                {{ $designs->total() }} Total Saved Designs
+            </span>
+
+            <a href="{{ route('admin.customizer.settings') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 dark:hover:bg-blue-500 text-xs font-bold transition shadow-sm">
+                <span>⚙️ Customizer Settings</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Search & Filter Bar -->
+    <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <form method="GET" action="{{ route('admin.customizer.designs') }}" class="flex flex-col sm:flex-row gap-3">
+            <div class="flex-1 relative">
+                <input 
+                    type="text" 
+                    name="search" 
+                    value="{{ request('search') }}" 
+                    placeholder="Search by Design Code (e.g. CD-...), Design Name, or Product..." 
+                    class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+                />
+            </div>
+            <div class="sm:w-48">
+                <select name="status" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+                    <option value="">All Statuses</option>
+                    <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
+                    <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
+                    <option value="archived" {{ request('status') === 'archived' ? 'selected' : '' }}>Archived</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="submit" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition shadow-sm">
+                    Filter
+                </button>
+                @if(request()->hasAny(['search', 'status']))
+                    <a href="{{ route('admin.customizer.designs') }}" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-300 text-xs font-bold transition">
+                        Reset
+                    </a>
+                @endif
+            </div>
+        </form>
+    </div>
+
+    <!-- Designs Grid -->
+    @if($designs->isEmpty())
+        <div class="rounded-3xl border border-slate-200 bg-white p-16 text-center text-slate-400 dark:border-slate-800 dark:bg-slate-900 space-y-2">
+            <div class="text-4xl">🎨</div>
+            <div class="text-sm font-bold text-slate-700 dark:text-slate-300">No customizer designs found.</div>
+            <p class="text-xs text-slate-400 max-w-sm mx-auto">Designs saved in the customer customizer or generated from orders will automatically populate here.</p>
+        </div>
+    @else
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            @foreach($designs as $d)
+                @php
+                    $product = $d->product;
+                    $frontendCustomizerUrl = env('FRONTEND_URL', 'http://localhost:3000') . '/customize/' . ($product->slug ?? 'custom-hoodie') . '?design=' . $d->design_code;
+                    $hasArtworks = !empty($d->artwork_layers) && count($d->artwork_layers) > 0;
+                    $hasMonogram = !empty($d->monogram_state);
+                    
+                    // Fallback preview
+                    $previewSrc = $d->preview_front;
+                    if (!$previewSrc) {
+                        $lowerName = strtolower($d->design_name);
+                        if (str_contains($lowerName, 'basketball') || str_contains($lowerName, 'jersey')) {
+                            $previewSrc = asset('basketball/front (3) (1).png');
+                        } elseif (str_contains($lowerName, 'varsity') || str_contains($lowerName, 'jacket')) {
+                            $previewSrc = asset('varsity_jacket/FRONT_BODY.png');
+                        } elseif (str_contains($lowerName, 'equestrian') || str_contains($lowerName, 'riding')) {
+                            $previewSrc = asset('equastarian/front (2) (1).png');
+                        } else {
+                            $previewSrc = asset('hoodie/front_body.png');
+                        }
+                    }
+                @endphp
+                <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden flex flex-col justify-between hover:border-blue-500/50 transition-all dark:border-slate-800 dark:bg-slate-900 group">
+                    
+                    <!-- Card Top: Thumbnail & Quick Tags -->
+                    <div class="relative aspect-square bg-slate-950/20 p-4 flex items-center justify-center border-b border-slate-100 dark:border-slate-800/80 overflow-hidden">
+                        <img 
+                            src="{{ $previewSrc }}" 
+                            alt="{{ $d->design_name }}" 
+                            class="w-full h-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300"
+                        />
+
+                        <!-- Design Code Badge -->
+                        <div class="absolute top-2.5 left-2.5 bg-slate-900/90 text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-md border border-white/10 backdrop-blur-xs">
+                            {{ $d->design_code }}
+                        </div>
+
+                        <!-- Status Badge -->
+                        <div class="absolute top-2.5 right-2.5">
+                            @if($d->status === 'active')
+                                <span class="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-bold px-2 py-0.5 rounded-md">Active</span>
+                            @else
+                                <span class="bg-slate-500/10 text-slate-500 border border-slate-500/20 text-[10px] font-bold px-2 py-0.5 rounded-md">{{ ucfirst($d->status) }}</span>
+                            @endif
+                        </div>
+
+                        <!-- Layer badges at bottom of thumbnail -->
+                        <div class="absolute bottom-2 left-2 flex items-center gap-1">
+                            @if($hasArtworks)
+                                <span class="bg-blue-600/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm" title="Contains custom artwork">
+                                    🖼️ Logo
+                                </span>
+                            @endif
+                            @if($hasMonogram)
+                                <span class="bg-amber-600/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm" title="Contains custom text monogram">
+                                    🔤 Mono
+                                </span>
+                            @endif
+                            @if($d->techPack)
+                                <span class="bg-purple-600/90 text-white text-[9px] font-mono font-bold px-1.5 py-0.5 rounded shadow-sm" title="Factory Tech Pack generated">
+                                    📋 TP Ready
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Card Body: Metadata -->
+                    <div class="p-4 space-y-3 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="font-bold text-xs text-slate-900 dark:text-white truncate" title="{{ $d->design_name }}">
+                                    {{ $d->design_name }}
+                                </h4>
+                                <span class="text-[10px] font-mono text-slate-400 shrink-0">v{{ $d->version ?? '1.0' }}</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
+                                {{ $product->name ?? 'Custom Garment' }}
+                            </p>
+                        </div>
+
+                        <!-- Technical Specs Summary Box -->
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800/60 space-y-1 text-[11px] font-mono">
+                            <div class="flex justify-between items-center text-slate-600 dark:text-slate-400">
+                                <span>Decoration:</span>
+                                <span class="font-semibold text-slate-900 dark:text-slate-200 truncate max-w-[120px]">
+                                    {{ $d->decoration_method ?: 'Direct Print' }}
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center text-slate-600 dark:text-slate-400">
+                                <span>Fabric Spec:</span>
+                                <span class="font-semibold text-blue-600 dark:text-blue-400">
+                                    {{ $d->target_gsm ? $d->target_gsm . ' GSM' : 'Atelier Spec' }}
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center text-slate-600 dark:text-slate-400">
+                                <span>Created:</span>
+                                <span class="text-slate-500">
+                                    {{ $d->created_at->format('M d, Y') }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-2">
+                            <a 
+                                href="{{ $frontendCustomizerUrl }}" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center justify-center gap-1 py-1.5 px-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition shadow-xs"
+                                title="Open in Frontend Customer Studio"
+                            >
+                                <span>Studio</span>
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </a>
+
+                            <button 
+                                type="button" 
+                                @click="selectedDesign = {{ json_encode($d) }}"
+                                class="inline-flex items-center justify-center py-1.5 px-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-bold transition"
+                            >
+                                Inspect
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <div class="mt-6">
+            {{ $designs->links() }}
+        </div>
+    @endif
+
+    <!-- Inspect Design Modal -->
+    <div 
+        x-show="selectedDesign" 
+        x-cloak 
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs"
+        @keydown.escape.window="selectedDesign = null"
+    >
+        <div 
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
+            @click.outside="selectedDesign = null"
+        >
+            <div class="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-mono font-bold text-blue-600 dark:text-blue-400" x-text="selectedDesign?.design_code"></span>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white" x-text="selectedDesign?.design_name"></h3>
+                </div>
+                <button @click="selectedDesign = null" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-lg font-bold">&times;</button>
+            </div>
+
+            <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs font-mono">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <span class="text-slate-400">Decoration Method:</span>
+                        <p class="font-bold text-slate-900 dark:text-white" x-text="selectedDesign?.decoration_method || 'Direct Print'"></p>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-slate-400">Wash Type:</span>
+                        <p class="font-bold text-slate-900 dark:text-white" x-text="selectedDesign?.wash_type || 'Clean Raw Mill'"></p>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-slate-400">Fabric Spec:</span>
+                        <p class="font-bold text-slate-900 dark:text-white" x-text="selectedDesign?.fabric_spec || '-'"></p>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-slate-400">Target GSM:</span>
+                        <p class="font-bold text-slate-900 dark:text-white" x-text="(selectedDesign?.target_gsm || 450) + ' GSM'"></p>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100 dark:border-slate-800 pt-3">
+                    <span class="text-slate-400 block mb-2 font-bold uppercase text-[10px]">Component Part Colors:</span>
+                    <pre class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-800 overflow-x-auto text-[11px]" x-text="JSON.stringify(selectedDesign?.parts_colors, null, 2)"></pre>
+                </div>
+
+                <template x-if="selectedDesign?.artwork_layers && selectedDesign?.artwork_layers.length > 0">
+                    <div class="border-t border-slate-100 dark:border-slate-800 pt-3">
+                        <span class="text-slate-400 block mb-2 font-bold uppercase text-[10px]">Uploaded Artwork Layers:</span>
+                        <div class="grid grid-cols-3 gap-3">
+                            <template x-for="layer in selectedDesign.artwork_layers" :key="layer.id || layer.url">
+                                <div class="p-2 border border-slate-200 dark:border-slate-800 rounded-lg text-center bg-slate-950/20">
+                                    <img :src="layer.url" class="w-16 h-16 object-contain mx-auto" />
+                                    <span class="block text-[9px] text-slate-400 truncate mt-1" x-text="layer.name || 'Logo'"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-end">
+                <button @click="selectedDesign = null" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-bold transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+@endsection

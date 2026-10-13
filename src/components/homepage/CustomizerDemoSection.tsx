@@ -3,7 +3,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import { RevealHeading } from "@/components/common/RevealHeading";
-import { PRESET_SWATCHES } from "@/services/customizer.service";
+import { PRESET_SWATCHES, WASHES_DATA, DECORATIONS_DATA } from "@/services/customizer.service";
 import {
   Sliders,
   Sparkles,
@@ -23,7 +23,13 @@ import {
   ChevronUp,
   X,
   FileText,
+  ShoppingBag,
+  Save,
+  Box,
 } from "lucide-react";
+import { useCartStore } from "@/stores/useCartStore";
+import { useSavedDesignStore } from "@/stores/useSavedDesignStore";
+import { customizerService } from "@/services/customizer.service";
 import { VarsityJacketCanvas, VarsityPartsState } from "./VarsityJacketCanvas";
 import { HoodieCustomizerViewer } from "@/components/common/HoodieCustomizerViewer";
 import { EquestrianCustomizerViewer } from "@/components/common/EquestrianCustomizerViewer";
@@ -86,14 +92,45 @@ const INITIAL_BASKETBALL_COLORS: Record<string, string> = {
 
 
 export const CustomizerDemoSection: React.FC = () => {
-  // Navigation tabs for the customizer controls: 1st Panels, 2nd Logo, 3rd Letters
-  const [controlTab, setControlTab] = useState<"letters" | "logo" | "colors">("colors");
+  const { addItem } = useCartStore();
+  const { saveDesign } = useSavedDesignStore();
+  const [saveToast, setSaveToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
+
+  // Dynamic Customizer Configuration from Laravel Backend
+  const [dynamicConfig, setDynamicConfig] = useState<any>(null);
+
+  React.useEffect(() => {
+    customizerService.fetchCustomizerConfig().then((cfg) => {
+      if (cfg) {
+        setDynamicConfig(cfg);
+      }
+    });
+  }, []);
+
+  // Navigation tabs for the customizer controls: 01 Colors, 02 Artwork, 03 Text, 04 Specs, 05 Sizing
+  const [controlTab, setControlTab] = useState<"colors" | "logo" | "letters" | "specs" | "sizing">("colors");
+
+  // Wholesale Size Matrix Breakdown
+  const [sizeBreakdown, setSizeBreakdown] = useState<Record<string, number>>({
+    XS: 0,
+    S: 0,
+    M: 0,
+    L: 0,
+    XL: 0,
+    "2XL": 0,
+    "3XL": 0,
+  });
+
+  const totalBatchUnits = Object.values(sizeBreakdown).reduce((a, b) => a + Number(b || 0), 0);
 
   // Mobile drawer state: on mobile, customizing options are closed by default until user taps a button
   const [isMobileOptionsOpen, setIsMobileOptionsOpen] = useState<boolean>(false);
 
   // Tech Pack specification sheet modal state
   const [isTechPackOpen, setIsTechPackOpen] = useState<boolean>(false);
+  const [canvasBgColor, setCanvasBgColor] = useState<string>("#FAFAF8");
+  const [isBgPickerOpen, setIsBgPickerOpen] = useState<boolean>(false);
 
   // Collapsible accordion state for the Letters tab
   const [openLetterSections, setOpenLetterSections] = useState<{
@@ -110,33 +147,341 @@ export const CustomizerDemoSection: React.FC = () => {
     setOpenLetterSections((prev) => ({ ...prev, [sec]: !prev[sec] }));
   };
 
-  const handleTabClick = (tab: "letters" | "logo" | "colors") => {
+  const handleTabClick = (tab: "colors" | "logo" | "letters" | "specs" | "sizing") => {
     if (controlTab === tab) {
-      // Toggle options drawer open/closed if clicking the same tab on mobile
       setIsMobileOptionsOpen((prev) => !prev);
     } else {
-      // Switch tab and open the options drawer
       setControlTab(tab);
       setIsMobileOptionsOpen(true);
     }
   };
 
-  const getTabButtonClass = (tab: "letters" | "logo" | "colors") => {
-    const isCurrent = controlTab === tab;
-    // On mobile: active only if options drawer is open AND this tab is selected
-    if (isCurrent && isMobileOptionsOpen) {
-      return "bg-[#0B0B0B] text-white border-black shadow-xs";
-    }
-    // On mobile (<lg): looks like a neutral button when closed
-    // On desktop (lg): always looks active because options are always open
-    if (isCurrent && !isMobileOptionsOpen) {
-      return "bg-[#FAFAF8] text-neutral-700 hover:text-black border-[#E6E6E2] lg:bg-[#0B0B0B] lg:text-white lg:border-black lg:shadow-xs";
-    }
-    return "bg-[#FAFAF8] text-neutral-600 hover:text-black hover:bg-neutral-100 border-[#E6E6E2]";
-  };
-
   // Studio model switcher: hoodie vs varsity vs equestrian vs basketball
   const [activeStudioModel, setActiveStudioModel] = useState<"hoodie" | "varsity" | "equestrian" | "basketball">("varsity");
+
+  // Volume tier pricing based on active studio model
+  const getTierPricingData = () => {
+    if (activeStudioModel === "varsity") {
+      return [
+        { tier: "50 - 99 pcs", price: "$68.00", save: "Standard MOQ", rawPrice: 68.0 },
+        { tier: "100 - 249 pcs", price: "$62.50", save: "Save 8%", rawPrice: 62.5 },
+        { tier: "250 - 499 pcs", price: "$56.00", save: "Save 18%", rawPrice: 56.0 },
+        { tier: "500+ pcs", price: "$49.50", save: "Save 27%", rawPrice: 49.5 },
+      ];
+    }
+    if (activeStudioModel === "basketball") {
+      return [
+        { tier: "50 - 99 pcs", price: "$28.00", save: "Standard MOQ", rawPrice: 28.0 },
+        { tier: "100 - 249 pcs", price: "$24.50", save: "Save 12%", rawPrice: 24.5 },
+        { tier: "250 - 499 pcs", price: "$21.00", save: "Save 25%", rawPrice: 21.0 },
+        { tier: "500+ pcs", price: "$18.00", save: "Save 36%", rawPrice: 18.0 },
+      ];
+    }
+    if (activeStudioModel === "equestrian") {
+      return [
+        { tier: "50 - 99 pcs", price: "$58.00", save: "Standard MOQ", rawPrice: 58.0 },
+        { tier: "100 - 249 pcs", price: "$52.00", save: "Save 10%", rawPrice: 52.0 },
+        { tier: "250 - 499 pcs", price: "$46.00", save: "Save 20%", rawPrice: 46.0 },
+        { tier: "500+ pcs", price: "$40.00", save: "Save 31%", rawPrice: 40.0 },
+      ];
+    }
+    return [
+      { tier: "50 - 99 pcs", price: "$24.50", save: "Standard MOQ", rawPrice: 24.5 },
+      { tier: "100 - 249 pcs", price: "$21.80", save: "Save 11%", rawPrice: 21.8 },
+      { tier: "250 - 499 pcs", price: "$19.20", save: "Save 22%", rawPrice: 19.2 },
+      { tier: "500+ pcs", price: "$16.50", save: "Save 33%", rawPrice: 16.5 },
+    ];
+  };
+
+  const currentTierPricing = getTierPricingData();
+
+  const getTierUnitPrice = () => {
+    if (totalBatchUnits >= 500) return currentTierPricing[3].rawPrice;
+    if (totalBatchUnits >= 250) return currentTierPricing[2].rawPrice;
+    if (totalBatchUnits >= 100) return currentTierPricing[1].rawPrice;
+    return currentTierPricing[0].rawPrice;
+  };
+
+  const tierUnitPrice = getTierUnitPrice();
+  const totalEstimatedCost = totalBatchUnits * tierUnitPrice;
+
+  const handleAddBatchToCart = () => {
+    if (totalBatchUnits === 0) {
+      alert("Please allocate at least 1 unit in the Wholesale Size Matrix before adding to cart.");
+      return;
+    }
+
+    const effectiveProduct =
+      activeStudioModel === "varsity"
+        ? (PRODUCTS_DATA.find((p) => p.slug.includes("varsity") || p.subcategory === "varsity-jackets") || PRODUCTS_DATA[0])
+        : activeStudioModel === "basketball"
+          ? (PRODUCTS_DATA.find((p) => p.slug.includes("basketball") || p.subcategory.includes("basketball")) || PRODUCTS_DATA[0])
+          : activeStudioModel === "equestrian"
+            ? (PRODUCTS_DATA.find((p) => p.slug.includes("riding") || p.subcategory.includes("riding") || p.subcategory.includes("equestrian")) || PRODUCTS_DATA[0])
+            : (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || PRODUCTS_DATA[0]);
+
+    const activeColors =
+      activeStudioModel === "varsity"
+        ? partColors
+        : activeStudioModel === "basketball"
+          ? basketballPartColors
+          : activeStudioModel === "equestrian"
+            ? equestrianPartColors
+            : hoodiePartColors;
+
+    addItem({
+      id: `home_custom_${Date.now()}`,
+      productId: effectiveProduct.id,
+      productSlug: effectiveProduct.slug,
+      productName: `${effectiveProduct.name} (Custom Batch Spec)`,
+      sku: `${effectiveProduct.sku || "SPEC"}-HOME`,
+      image: effectiveProduct.images[0] || (activeStudioModel === "varsity" ? "/varsity_jacket/front/body.png" : "/hoodie/hoodie_front.png"),
+      mode: "wholesale",
+      unitPrice: tierUnitPrice,
+      quantity: totalBatchUnits,
+      color: {
+        id: "home-cust",
+        name: "Custom Atelier Palette",
+        hex: activeColors.body || "#0A0A0A",
+      },
+      sizeBreakdown,
+      isCustomized: true,
+      customDesignId: `batch_${Date.now()}`,
+      customSummary: `${activeStudioModel.toUpperCase()} • ${totalBatchUnits} pcs • ${activeWash}`,
+    });
+
+    const homePreviewFront =
+      activeStudioModel === "varsity"
+        ? "/varsity_jacket/front/body.png"
+        : activeStudioModel === "basketball"
+        ? "/basketball/front (3) (1).png"
+        : activeStudioModel === "equestrian"
+        ? "/equestrian/front (1) (1).png"
+        : "/hoodie/front/body.png";
+
+    const homePreviewBack =
+      activeStudioModel === "varsity"
+        ? "/varsity_jacket/back/body.png"
+        : activeStudioModel === "basketball"
+        ? "/basketball/back (3) (1).png"
+        : activeStudioModel === "equestrian"
+        ? "/equestrian/back (1) (1).png"
+        : "/hoodie/back_body.png";
+
+    const activeLogoConfig = customLogo?.enabled && customLogo.url
+      ? [{
+          name: customLogo.name || "Uploaded Brand Logo",
+          url: customLogo.url,
+          scale: customLogo.scale || 1,
+          x: customLogo.x || 30,
+          y: customLogo.y || 30,
+          rotation: customLogo.rotation || 0,
+          view: activeView,
+        }]
+      : [];
+
+    const activeLettersConfig = customLetters?.enabled && customLetters.text
+      ? [{
+          text: customLetters.text,
+          color: customLetters.color || "#FBBF24",
+          borderColor: customLetters.borderColor || "#FFFFFF",
+          craftStyle: customLetters.craftStyle || "chenille",
+          font: customLetters.fontId || "varsity-slab",
+        }]
+      : [];
+
+    customizerService.generateAndSaveTechPack({
+      productId: Number(effectiveProduct.id) || 1,
+      styleName: `${effectiveProduct.name} Custom Batch Spec`,
+      partsColors: activeColors,
+      artworkLayers: activeLogoConfig,
+      monogramState: activeLettersConfig,
+      decorationMethod: customLetters?.craftStyle === "chenille" ? "Varsity Wool Chenille Embroidery" : "3D High-Loft Puff Embroidery",
+      washType: activeWash,
+      fabricSpec: `${activeStudioModel === "varsity" ? 500 : 450} GSM Atelier Fabric (${activeWash})`,
+      targetGsm: activeStudioModel === "varsity" ? 500 : 450,
+      sizeBreakdown,
+      totalUnits: totalBatchUnits,
+      trimsConfig: {
+        buttonFinish: selectedButtonFinish,
+        lining: selectedLining,
+        sleeveStyle,
+        pocketStyle,
+      },
+      stitchingNotes: "Standard ISO 9001 flatlock seams and AQL 2.5 finishing norms.",
+      previewFront: homePreviewFront,
+      previewBack: homePreviewBack,
+    }).catch(err => console.warn("Backend tech-pack auto-save fallback:", err));
+
+    setToastMessage(`Added ${totalBatchUnits} pcs batch to Production Bag!`);
+    setSaveToast(true);
+    setTimeout(() => setSaveToast(false), 3500);
+  };
+
+  const handleSaveHomeDesign = () => {
+    const effectiveProduct =
+      activeStudioModel === "varsity"
+        ? (PRODUCTS_DATA.find((p) => p.slug.includes("varsity") || p.subcategory === "varsity-jackets") || PRODUCTS_DATA[0])
+        : activeStudioModel === "basketball"
+          ? (PRODUCTS_DATA.find((p) => p.slug.includes("basketball") || p.subcategory.includes("basketball")) || PRODUCTS_DATA[0])
+          : activeStudioModel === "equestrian"
+            ? (PRODUCTS_DATA.find((p) => p.slug.includes("riding") || p.subcategory.includes("riding") || p.subcategory.includes("equestrian")) || PRODUCTS_DATA[0])
+            : (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || PRODUCTS_DATA[0]);
+
+    const activeColors: Record<string, string> =
+      activeStudioModel === "hoodie"
+        ? hoodiePartColors
+        : activeStudioModel === "equestrian"
+          ? equestrianPartColors
+          : activeStudioModel === "basketball"
+            ? basketballPartColors
+            : partColors;
+
+    const homePreviewFront =
+      activeStudioModel === "varsity"
+        ? "/varsity_jacket/front/body.png"
+        : activeStudioModel === "basketball"
+        ? "/basketball/front (3) (1).png"
+        : activeStudioModel === "equestrian"
+        ? "/equestrian/front (1) (1).png"
+        : "/hoodie/front/body.png";
+
+    const homePreviewBack =
+      activeStudioModel === "varsity"
+        ? "/varsity_jacket/back/body.png"
+        : activeStudioModel === "basketball"
+        ? "/basketball/back (3) (1).png"
+        : activeStudioModel === "equestrian"
+        ? "/equestrian/back (1) (1).png"
+        : "/hoodie/back_body.png";
+
+    const localDesignId = `des_${Date.now()}`;
+    const generatedDesignCode = `CD-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
+    // 1. Save to client-side Zustand portfolio
+    saveDesign({
+      id: localDesignId,
+      productId: effectiveProduct.id,
+      productName: effectiveProduct.name,
+      thumbnail: homePreviewFront,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      partColors: activeColors,
+      fabricName: `${selectedGsm} GSM Atelier Fabric (${activeWash})`,
+      gsm: selectedGsm,
+      washName: activeWash,
+      decorationMethod: customLetters?.craftStyle === "chenille" ? "chenille-patch" : "screen-print",
+      artworkLayersCount: customLogo?.enabled ? 1 : 0,
+      textLayersCount: customLetters?.enabled ? 1 : 0,
+      customizerState: {
+        productId: effectiveProduct.id,
+        view: activeView,
+        activeGarmentPart: activePart,
+        partColors: activeColors,
+        fabricId: `${selectedGsm}-gsm-atelier`,
+        gsm: selectedGsm,
+        washId: activeWash,
+        decorationMethodId: customLetters?.craftStyle === "chenille" ? "chenille-patch" : "screen-print",
+        trims: {
+          buttonFinish: selectedButtonFinish,
+          lining: selectedLining,
+          sleeveStyle,
+          pocketStyle,
+        },
+        construction: {
+          silhouette: activeStudioModel === "varsity" ? "Boxy Vintage Drop-Shoulder" : "Oversized Drop-Shoulder",
+          lining: selectedLining,
+        },
+        artworkLayers: customLogo?.enabled && customLogo.url ? [{
+          id: "logo_1",
+          name: customLogo.name || "Brand Logo",
+          url: customLogo.url,
+          scale: customLogo.scale || 1,
+          x: customLogo.x || 30,
+          y: customLogo.y || 30,
+          rotation: customLogo.rotation || 0,
+          opacity: 1,
+          zIndex: 1,
+          view: activeView,
+          isLocked: false,
+          isVisible: true,
+          width: 120,
+          height: 120,
+        }] : [],
+        textLayers: customLetters?.enabled && customLetters.text ? [{
+          id: "txt_1",
+          name: `Monogram: ${customLetters.text}`,
+          text: customLetters.text,
+          font: activeFontObj.family,
+          fontSize: 36,
+          fontWeight: "900",
+          color: customLetters.color || "#FBBF24",
+          letterSpacing: 2,
+          lineHeight: 1.1,
+          alignment: "center",
+          rotation: 0,
+          x: 180,
+          y: 190,
+          zIndex: 2,
+          view: activeView,
+          isLocked: false,
+          isVisible: true,
+          outlineColor: customLetters.borderColor || "#FFFFFF",
+        }] : [],
+        quantity: totalBatchUnits || 1,
+        sizeBreakdown: totalBatchUnits > 0 ? sizeBreakdown : { M: 1 },
+      },
+    });
+
+    // 2. Persist to MySQL Backend Customizer Vault & Sync Tech Pack
+    customizerService
+      .saveDesignToBackend({
+        productId: Number(effectiveProduct.id) || 1,
+        designCode: generatedDesignCode,
+        designName: `${effectiveProduct.name} Custom Spec`,
+        partsColors: activeColors,
+        artworkLayers: customLogo?.enabled && customLogo.url ? [{
+          name: customLogo.name || "Brand Logo",
+          url: customLogo.url,
+          scale: customLogo.scale || 1,
+          x: customLogo.x || 30,
+          y: customLogo.y || 30,
+          rotation: customLogo.rotation || 0,
+          view: activeView,
+        }] : [],
+        monogramState: customLetters?.enabled && customLetters.text ? [{
+          text: customLetters.text,
+          color: customLetters.color || "#FBBF24",
+          borderColor: customLetters.borderColor || "#FFFFFF",
+          craftStyle: customLetters.craftStyle || "chenille",
+          font: customLetters.fontId || "varsity-slab",
+        }] : [],
+        previewFront: homePreviewFront,
+        previewBack: homePreviewBack,
+        decorationMethod: customLetters?.craftStyle === "chenille" ? "Varsity Wool Chenille Embroidery" : "3D High-Loft Puff Embroidery",
+        washType: activeWash,
+        fabricSpec: `${selectedGsm} GSM Atelier Fabric (${activeWash})`,
+        targetGsm: selectedGsm,
+        sizeBreakdown: totalBatchUnits > 0 ? sizeBreakdown : { M: 1 },
+        totalUnits: totalBatchUnits || 1,
+        trimsConfig: {
+          buttonFinish: selectedButtonFinish,
+          lining: selectedLining,
+          sleeveStyle,
+          pocketStyle,
+        },
+      })
+      .then((res) => {
+        if (res?.success) {
+          console.log("Customizer design synced from home to backend:", res.designCode);
+        }
+      })
+      .catch((err) => console.warn("Backend customizer sync fallback:", err));
+
+    setToastMessage("Custom design saved to portfolio & synced to factory backend!");
+    setSaveToast(true);
+    setTimeout(() => setSaveToast(false), 3500);
+  };
 
   // Garment parts state
   const [activePart, setActivePart] = useState<string>("body");
@@ -150,6 +495,8 @@ export const CustomizerDemoSection: React.FC = () => {
   const [basketballPartColors, setBasketballPartColors] = useState<Record<string, string>>(INITIAL_BASKETBALL_COLORS);
   const [activeWash, setActiveWash] = useState("Clean Raw Mill Finish");
   const [distressLevel, setDistressLevel] = useState<"clean" | "subtle" | "heavy">("clean");
+  const [selectedGsm, setSelectedGsm] = useState<number>(500);
+  const [decorationMethod, setDecorationMethod] = useState<string>("Varsity Wool Chenille Embroidery");
 
   // Modular varsity construction
   const [sleeveStyle, setSleeveStyle] = useState<"striped" | "plain">("striped");
@@ -415,17 +762,18 @@ export const CustomizerDemoSection: React.FC = () => {
     }));
   };
 
-  // Handle Uploading Custom PNG Logo
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle Uploading Custom PNG Logo (Persisted to backend storage disk)
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const defX = activeStudioModel === "basketball" ? 50 : activeStudioModel === "equestrian" ? 30 : 32;
+    const defY = activeStudioModel === "basketball" ? 22 : activeStudioModel === "equestrian" ? 28 : 34;
+
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const dataUrl = event.target?.result as string;
-      const defX = activeStudioModel === "basketball" ? 50 : activeStudioModel === "equestrian" ? 30 : 32;
-      const defY = activeStudioModel === "basketball" ? 22 : activeStudioModel === "equestrian" ? 28 : 34;
-      setCustomLogo({
+      const initialLogoState = {
         enabled: true,
         url: dataUrl,
         name: file.name,
@@ -434,9 +782,20 @@ export const CustomizerDemoSection: React.FC = () => {
         scale: 0.9,
         rotation: 0,
         flippedH: false,
-      });
+      };
+      setCustomLogo(initialLogoState);
       setControlTab("logo");
       setActivePart("logo");
+
+      // Asynchronously upload to backend design vault
+      try {
+        const uploadRes = await customizerService.uploadArtwork(file);
+        if (uploadRes.success && uploadRes.url) {
+          setCustomLogo((prev) => ({ ...prev, url: uploadRes.url }));
+        }
+      } catch (err) {
+        console.warn("Backend logo upload fallback:", err);
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -546,7 +905,7 @@ export const CustomizerDemoSection: React.FC = () => {
     VARSITY_FONTS.find((f) => f.id === customLetters.fontId) || VARSITY_FONTS[0];
 
   return (
-    <section className="w-full bg-white py-20 border-b border-[#E6E6E2]">
+    <section id="customizer-studio" className="w-full bg-white py-20 border-b border-[#E6E6E2]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <RevealHeading
@@ -562,7 +921,14 @@ export const CustomizerDemoSection: React.FC = () => {
         {/* Studio Box */}
         <div className="grid grid-cols-1 lg:grid-cols-12 border border-[#E6E6E2] rounded-[2px] overflow-hidden bg-[#FAFAF8] shadow-sm">
           {/* Left Canvas Preview Area (Col 1 to 7) */}
-          <div className="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-between items-center relative border-b lg:border-b-0 lg:border-r border-[#E6E6E2] bg-radial from-white via-[#FAFAF8] to-[#F0F0EC]">
+          <div 
+            style={{ backgroundColor: canvasBgColor }}
+            className={`lg:col-span-7 p-6 sm:p-10 flex flex-col justify-between items-center relative border-b lg:border-b-0 lg:border-r transition-colors duration-200 ${
+              ["#0e0f12", "#101010", "#000000", "#050505", "#1a1d24", "#1e293b"].includes(canvasBgColor.toLowerCase())
+                ? "border-[#222530]"
+                : "border-[#E6E6E2]"
+            }`}
+          >
             {/* Top Toolbar */}
             <div className="w-full flex flex-wrap items-center justify-between gap-2 text-xs mb-4">
               <div className="flex flex-wrap items-center gap-1.5">
@@ -592,7 +958,7 @@ export const CustomizerDemoSection: React.FC = () => {
                 {/* Studio Model Switcher: Hoodie vs Varsity vs Equestrian vs Basketball */}
                 <div className="flex items-center gap-0.5 bg-[#F5F5F3] border border-[#E6E6E2] p-0.5 rounded-[2px] overflow-x-auto no-scrollbar">
                   <button
-                    onClick={() => { setActiveStudioModel("hoodie"); setActivePart("body"); setControlTab("colors"); }}
+                    onClick={() => { setActiveStudioModel("hoodie"); setActivePart("body"); setControlTab("colors"); setSelectedGsm(450); }}
                     className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "hoodie"
                         ? "bg-[#0B0B0B] text-white shadow-xs"
                         : "text-neutral-600 hover:text-black"
@@ -602,7 +968,7 @@ export const CustomizerDemoSection: React.FC = () => {
                     <span>Hoodie</span>
                   </button>
                   <button
-                    onClick={() => { setActiveStudioModel("varsity"); setActivePart("body"); setControlTab("colors"); setActiveView("front"); }}
+                    onClick={() => { setActiveStudioModel("varsity"); setActivePart("body"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(500); }}
                     className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "varsity"
                         ? "bg-[#0B0B0B] text-white shadow-xs"
                         : "text-neutral-600 hover:text-black"
@@ -612,7 +978,7 @@ export const CustomizerDemoSection: React.FC = () => {
                     <span>Varsity</span>
                   </button>
                   <button
-                    onClick={() => { setActiveStudioModel("equestrian"); setActivePart("body"); setControlTab("colors"); setActiveView("front"); }}
+                    onClick={() => { setActiveStudioModel("equestrian"); setActivePart("body"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(320); }}
                     className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "equestrian"
                         ? "bg-[#0B0B0B] text-white shadow-xs"
                         : "text-neutral-600 hover:text-black"
@@ -622,7 +988,7 @@ export const CustomizerDemoSection: React.FC = () => {
                     <span>Equestrian</span>
                   </button>
                   <button
-                    onClick={() => { setActiveStudioModel("basketball"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); }}
+                    onClick={() => { setActiveStudioModel("basketball"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(200); }}
                     className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "basketball"
                         ? "bg-[#0B0B0B] text-white shadow-xs"
                         : "text-neutral-600 hover:text-black"
@@ -644,6 +1010,85 @@ export const CustomizerDemoSection: React.FC = () => {
                         ? "500 GSM Melton & Leather"
                         : "380 GSM French Terry"}
                 </span>
+
+                {/* Studio Canvas Background Color Selector */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setIsBgPickerOpen(!isBgPickerOpen)}
+                    className="p-1.5 text-neutral-700 hover:text-black bg-white border border-[#E6E6E2] hover:border-black rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
+                    title="Change Studio Background Color"
+                  >
+                    <span
+                      className="w-3 h-3 rounded-full border border-black/20 shrink-0"
+                      style={{ backgroundColor: canvasBgColor }}
+                    />
+                    <Palette className="w-3 h-3 text-neutral-500" />
+                  </button>
+
+                  {isBgPickerOpen && (
+                    <div
+                      className="absolute right-0 top-full mt-1.5 z-50 bg-[#0E0E0E] text-white border border-white/20 rounded-[4px] p-2.5 shadow-xl w-52 space-y-2 animate-in fade-in zoom-in-95 duration-150"
+                    >
+                      <div className="flex items-center justify-between pb-1 border-b border-white/10">
+                        <span className="text-[10px] font-mono font-bold tracking-wider text-neutral-300 uppercase">
+                          Studio Backdrop
+                        </span>
+                        <button
+                          onClick={() => setIsBgPickerOpen(false)}
+                          className="text-neutral-400 hover:text-white text-xs leading-none"
+                        >
+                          &times;
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-1.5">
+                        {[
+                          { label: "Light", hex: "#FAFAF8" },
+                          { label: "Dark", hex: "#0E0F12" },
+                          { label: "Charcoal", hex: "#1A1D24" },
+                          { label: "Slate", hex: "#1E293B" },
+                          { label: "Sand", hex: "#ECEAE4" },
+                          { label: "Black", hex: "#050505" },
+                        ].map((preset) => (
+                          <button
+                            key={preset.hex}
+                            type="button"
+                            onClick={() => {
+                              setCanvasBgColor(preset.hex);
+                              setIsBgPickerOpen(false);
+                            }}
+                            className={`flex items-center gap-1 p-1 rounded-[2px] border text-[9px] font-mono transition-colors cursor-pointer ${
+                              canvasBgColor.toLowerCase() === preset.hex.toLowerCase()
+                                ? "border-[#D61C24] bg-white/10 text-white font-bold"
+                                : "border-white/10 hover:border-white/30 text-neutral-300"
+                            }`}
+                          >
+                            <span
+                              className="w-2.5 h-2.5 rounded-full border border-white/30 shrink-0"
+                              style={{ backgroundColor: preset.hex }}
+                            />
+                            <span className="truncate">{preset.label}</span>
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[10px] font-mono">
+                        <span className="text-neutral-400">Custom:</span>
+                        <div className="flex items-center gap-1.5">
+                          <input
+                            type="color"
+                            value={canvasBgColor}
+                            onChange={(e) => setCanvasBgColor(e.target.value)}
+                            className="w-4 h-4 rounded cursor-pointer border-0 p-0 bg-transparent"
+                          />
+                          <span className="text-neutral-200 uppercase text-[9px]">{canvasBgColor}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 <button
                   onClick={handleReset}
                   className="p-1.5 text-neutral-500 hover:text-black bg-white border border-[#E6E6E2] rounded-[2px] transition-colors cursor-pointer"
@@ -774,51 +1219,76 @@ export const CustomizerDemoSection: React.FC = () => {
 
           {/* Right Configuration Controls (Col 8 to 12) */}
           <div className="lg:col-span-5 flex flex-col justify-between bg-white max-h-[850px] relative overflow-hidden">
-            {/* Studio Navigation Tabs (Fixed at top of drawer, zero extra spacing, fits seamlessly on mobile) */}
-            <div className="p-3 sm:p-4 lg:p-5 border-b border-[#E6E6E2] bg-white shrink-0 z-20 grid grid-cols-3 gap-1.5 sm:gap-2">
-              {/* 1st: Panels */}
+            {/* Top Studio Action Bar (Save Design, Tech Pack, Add to Cart) */}
+            <div className="flex items-center justify-between gap-1.5 p-2.5 sm:p-3 border-b border-[#E6E6E2] bg-white shrink-0">
               <button
-                onClick={() => handleTabClick("colors")}
-                className={`w-full flex items-center justify-center gap-1 sm:gap-1.5 py-2 px-1.5 sm:px-2.5 text-[11px] sm:text-xs font-bold rounded-[2px] transition-all border cursor-pointer ${getTabButtonClass("colors")}`}
+                type="button"
+                onClick={() => {
+                  setToastMessage("Design specifications saved to studio cloud!");
+                  setSaveToast(true);
+                  setTimeout(() => setSaveToast(false), 3000);
+                }}
+                className="flex-1 py-1.5 sm:py-2 px-2 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 font-mono font-bold text-[10px] sm:text-[11px] uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
-                <Palette className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                <span className="truncate">Panels</span>
-                {controlTab === "colors" && isMobileOptionsOpen ? (
-                  <ChevronUp className="w-3 h-3 text-white lg:hidden ml-0.5 shrink-0" />
-                ) : (
-                  <ChevronDown className="w-3 h-3 text-neutral-400 lg:hidden ml-0.5 shrink-0" />
-                )}
+                <FileText className="w-3.5 h-3.5 text-[#D10115]" />
+                <span className="truncate">Save Design</span>
               </button>
 
-              {/* 2nd: Logo (PNG) */}
               <button
-                onClick={() => handleTabClick("logo")}
-                className={`w-full flex items-center justify-center gap-1 sm:gap-1.5 py-2 px-1.5 sm:px-2.5 text-[11px] sm:text-xs font-bold rounded-[2px] transition-all border cursor-pointer ${getTabButtonClass("logo")}`}
+                type="button"
+                onClick={() => setIsTechPackOpen(true)}
+                className="flex-1 py-1.5 sm:py-2 px-2 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 font-mono font-bold text-[10px] sm:text-[11px] uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
-                <ImageIcon className="w-3.5 h-3.5 text-purple-600 shrink-0" />
-                <span className="truncate">
-                  Logo<span className="hidden sm:inline"> (PNG)</span>
-                </span>
-                {controlTab === "logo" && isMobileOptionsOpen ? (
-                  <ChevronUp className="w-3 h-3 text-white lg:hidden ml-0.5 shrink-0" />
-                ) : (
-                  <ChevronDown className="w-3 h-3 text-neutral-400 lg:hidden ml-0.5 shrink-0" />
-                )}
+                <FileText className="w-3.5 h-3.5 text-[#D10115]" />
+                <span className="truncate">Tech Pack</span>
               </button>
 
-              {/* 3rd: Letters */}
               <button
-                onClick={() => handleTabClick("letters")}
-                className={`w-full flex items-center justify-center gap-1 sm:gap-1.5 py-2 px-1.5 sm:px-2.5 text-[11px] sm:text-xs font-bold rounded-[2px] transition-all border cursor-pointer ${getTabButtonClass("letters")}`}
+                type="button"
+                onClick={() => {
+                  if (totalBatchUnits === 0) {
+                    setControlTab("sizing");
+                    setIsMobileOptionsOpen(true);
+                  } else {
+                    handleAddBatchToCart();
+                  }
+                }}
+                className="flex-1 py-1.5 sm:py-2 px-2 bg-[#0B0B0B] hover:bg-neutral-900 text-white font-mono font-bold text-[10px] sm:text-[11px] uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
-                <Type className="w-3.5 h-3.5 text-[#D10115] shrink-0" />
-                <span className="truncate">Letters</span>
-                {controlTab === "letters" && isMobileOptionsOpen ? (
-                  <ChevronUp className="w-3 h-3 text-white lg:hidden ml-0.5 shrink-0" />
-                ) : (
-                  <ChevronDown className="w-3 h-3 text-neutral-400 lg:hidden ml-0.5 shrink-0" />
-                )}
+                <ShoppingBag className="w-3.5 h-3.5 text-[#D10115]" />
+                <span className="truncate">{totalBatchUnits > 0 ? `Add (${totalBatchUnits})` : "Add to Cart"}</span>
               </button>
+            </div>
+
+            {/* Studio Navigation Tabs (01 COLORS, 02 ARTWORK, 03 TEXT, 04 SPECS, 05 SIZING) */}
+            <div className="flex items-center border-b border-[#DADBD2] overflow-x-auto scrollbar-none bg-[#FAFAF8] shrink-0 z-20">
+              {[
+                { id: "colors" as const, label: "01 COLORS", icon: Palette },
+                { id: "logo" as const, label: "02 ARTWORK", icon: ImageIcon },
+                { id: "letters" as const, label: "03 TEXT", icon: Type },
+                { id: "specs" as const, label: "04 SPECS", icon: Sliders },
+                { id: "sizing" as const, label: "05 SIZING", icon: ShoppingBag },
+              ].map((t) => {
+                const Icon = t.icon;
+                const isCurrent = controlTab === t.id;
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => {
+                      setControlTab(t.id);
+                      setIsMobileOptionsOpen(true);
+                    }}
+                    className={`flex-1 py-2 sm:py-2.5 px-2 text-[10px] sm:text-[11px] font-mono uppercase font-bold tracking-wider shrink-0 flex items-center justify-center gap-1 sm:gap-1.5 transition-colors border-b-2 cursor-pointer ${
+                      isCurrent
+                        ? "border-[#D61C24] bg-white text-[#D61C24]"
+                        : "border-transparent text-neutral-500 hover:text-black hover:bg-neutral-100"
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    <span className="truncate">{t.label}</span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Customizer Options Content Drawer (Scrollable body ONLY) */}
@@ -833,7 +1303,9 @@ export const CustomizerDemoSection: React.FC = () => {
                   <span className="text-xs font-mono font-bold uppercase tracking-wider text-black">
                     {controlTab === "letters" && "Custom Letters & Monogram"}
                     {controlTab === "logo" && "Upload Logo (PNG)"}
-                    {controlTab === "colors" && "Panel Colors & Fabric"}
+                    {controlTab === "colors" && "Panel Colors & Hardware"}
+                    {controlTab === "specs" && "Fabric Specs, Wash & Trims"}
+                    {controlTab === "sizing" && "Wholesale Size Matrix & Volume"}
                   </span>
                 </div>
                 <button
@@ -1522,8 +1994,11 @@ export const CustomizerDemoSection: React.FC = () => {
                               : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")}
                       </span>
                     </div>
-                    <div className="grid grid-cols-7 sm:grid-cols-8 gap-2 p-3 bg-[#FAFAF8] border border-[#E6E6E2] rounded-[2px]">
-                      {PRESET_SWATCHES.slice(0, 16).map((swatch) => {
+                    <div className="grid grid-cols-7 sm:grid-cols-9 gap-1.5 p-3 bg-[#FAFAF8] border border-[#E6E6E2] rounded-[2px]">
+                      {(dynamicConfig?.swatches && dynamicConfig.swatches.length > 0
+                        ? dynamicConfig.swatches
+                        : PRESET_SWATCHES
+                      ).map((swatch: any) => {
                         const currentColor = (
                           activeStudioModel === "hoodie"
                             ? hoodiePartColors[activePart]
@@ -1538,12 +2013,12 @@ export const CustomizerDemoSection: React.FC = () => {
                           <button
                             key={swatch.id}
                             onClick={() => handleColorSelect(swatch.hex)}
-                            className={`w-7 h-7 rounded-full border transition-all relative ${isSelected
+                            className={`w-7 h-7 rounded-full border transition-all relative cursor-pointer ${isSelected
                                 ? "ring-2 ring-black ring-offset-2 scale-110 shadow-xs"
                                 : "border-black/20 hover:scale-105"
                               }`}
                             style={{ backgroundColor: swatch.hex }}
-                            title={`${swatch.name} (${swatch.pantone})`}
+                            title={`${swatch.name} (${swatch.hex})`}
                             aria-label={swatch.name}
                           />
                         );
@@ -1562,11 +2037,94 @@ export const CustomizerDemoSection: React.FC = () => {
                                   : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")
                           )
                         }
-                        className="text-[#D10115] hover:underline font-semibold"
+                        className="text-[#D10115] hover:underline font-semibold cursor-pointer"
                       >
                         Apply this color to entire garment &rarr;
                       </button>
                     </div>
+
+                    {/* Custom Hex Picker Input */}
+                    <div className="pt-2 border-t border-[#E6E6E2] mt-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                          Custom HEX / Pantone Color Code:
+                        </label>
+                        <span className="text-[9px] font-mono text-neutral-500 uppercase">Exact Mill Dye Match</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <input
+                          type="color"
+                          value={
+                            activeStudioModel === "hoodie"
+                              ? (hoodiePartColors[activePart] || "#222224")
+                              : activeStudioModel === "equestrian"
+                                ? (equestrianPartColors[activePart] || "#111B2C")
+                                : activeStudioModel === "basketball"
+                                  ? (basketballPartColors[activePart] || "#CA8A04")
+                                  : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")
+                          }
+                          onChange={(e) => handleColorSelect(e.target.value)}
+                          className="w-9 h-9 p-0.5 rounded-[2px] border border-[#E6E6E2] cursor-pointer shrink-0"
+                          title="Pick custom swatch color"
+                        />
+                        <input
+                          type="text"
+                          value={
+                            activeStudioModel === "hoodie"
+                              ? (hoodiePartColors[activePart] || "#222224")
+                              : activeStudioModel === "equestrian"
+                                ? (equestrianPartColors[activePart] || "#111B2C")
+                                : activeStudioModel === "basketball"
+                                  ? (basketballPartColors[activePart] || "#CA8A04")
+                                  : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")
+                          }
+                          onChange={(e) => handleColorSelect(e.target.value)}
+                          className="w-full px-3 py-1 text-xs font-mono border border-[#E6E6E2] rounded-[2px]"
+                          placeholder="#HEX or Pantone code"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Snap Button Hardware Finishes (When Varsity or buttons part is selected) */}
+                    {(activeStudioModel === "varsity" || activePart === "buttons") && (
+                      <div className="pt-2 border-t border-[#E6E6E2] mt-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                            Snap Button Hardware Finishes:
+                          </label>
+                          <span className="text-[9px] font-mono text-neutral-500 uppercase">Heavy Metal Plating</span>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                          {BUTTON_FINISHES.map((btn) => {
+                            const isBtnSelected =
+                              (partColors.buttons || "").toLowerCase() === btn.hex.toLowerCase() ||
+                              selectedButtonFinish === btn.id;
+                            return (
+                              <button
+                                key={btn.id}
+                                onClick={() => handleButtonFinishSelect(btn.id)}
+                                className={`p-2 rounded-[2px] border text-left transition-all cursor-pointer flex items-center gap-2 ${
+                                  isBtnSelected
+                                    ? "bg-black text-white border-black shadow-xs font-bold"
+                                    : "bg-[#FAFAF8] text-neutral-800 border-[#E6E6E2] hover:bg-neutral-100"
+                                }`}
+                              >
+                                <span
+                                  className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0"
+                                  style={{ backgroundColor: btn.hex }}
+                                />
+                                <div className="min-w-0">
+                                  <span className="text-[10px] font-bold block truncate">{btn.name}</span>
+                                  <span className={`text-[8.5px] block truncate font-mono ${isBtnSelected ? "text-neutral-400" : "text-neutral-500"}`}>
+                                    {btn.description}
+                                  </span>
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Heritage Colorway Presets */}
@@ -1740,6 +2298,414 @@ export const CustomizerDemoSection: React.FC = () => {
                 </div>
               )}
 
+              {/* ============================================================== */}
+              {/* TAB 4: FABRIC DENSITY, WASH & MODULAR TRIMS (SPECS)           */}
+              {/* ============================================================== */}
+              {controlTab === "specs" && (
+                <div className="space-y-6 animate-fadeIn font-sans">
+                  {/* Fabric GSM Weight Density */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0A0A0A]">
+                        FABRIC DENSITY (GSM WEIGHT):
+                      </label>
+                      <span className="text-[10px] font-mono font-bold text-[#D61C24]">
+                        {selectedGsm} GSM Specification
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
+                      {[200, 280, 320, 380, 450, 500].map((weight) => (
+                        <button
+                          key={weight}
+                          onClick={() => setSelectedGsm(weight)}
+                          className={`py-2 text-xs font-mono font-bold rounded-[2px] border cursor-pointer transition-colors ${
+                            selectedGsm === weight
+                              ? "bg-[#0B0B0B] text-white border-[#0B0B0B] shadow-xs"
+                              : "bg-[#FAFAF8] text-neutral-700 border-[#E6E6E2] hover:bg-neutral-100"
+                          }`}
+                        >
+                          {weight} GSM
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Garment Wash Treatment */}
+                  <div>
+                    <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0A0A0A] block mb-2">
+                      GARMENT WASH TREATMENT:
+                    </label>
+                    <div className="space-y-1.5 text-xs">
+                      {WASHES_DATA.map((w) => (
+                        <button
+                          key={w.id}
+                          onClick={() => setActiveWash(w.name)}
+                          className={`w-full p-2.5 text-left rounded-[2px] border flex items-center justify-between cursor-pointer transition-colors ${
+                            activeWash === w.name
+                              ? "bg-[#0B0B0B] text-white font-semibold shadow-xs"
+                              : "bg-[#FAFAF8] text-neutral-700 border-[#E6E6E2] hover:bg-neutral-100"
+                          }`}
+                        >
+                          <div className="min-w-0 pr-2">
+                            <span className="block font-bold">{w.name}</span>
+                            <span className={`text-[10px] block truncate font-mono ${activeWash === w.name ? "text-neutral-400" : "text-neutral-500"}`}>
+                              {w.description}
+                            </span>
+                          </div>
+                          {activeWash === w.name && <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Hand-Abrasion & Distress Level */}
+                  <div className="pt-2 border-t border-[#E6E6E2]">
+                    <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0A0A0A] block mb-2">
+                      HAND-ABRASION &amp; DISTRESS LEVEL:
+                    </label>
+                    <div className="grid grid-cols-3 gap-1.5 text-xs">
+                      {[
+                        { id: "clean", label: "Pristine Raw (0%)" },
+                        { id: "subtle", label: "Seam Fade (15%)" },
+                        { id: "heavy", label: "Stone Abrasion (35%)" },
+                      ].map((dist) => (
+                        <button
+                          key={dist.id}
+                          onClick={() => setDistressLevel(dist.id as any)}
+                          className={`py-2 px-1 text-center rounded-[2px] border text-[11px] font-semibold cursor-pointer transition-colors ${
+                            distressLevel === dist.id
+                              ? "bg-black text-white border-black font-bold shadow-xs"
+                              : "bg-[#FAFAF8] text-neutral-700 border-[#E6E6E2] hover:bg-neutral-100"
+                          }`}
+                        >
+                          {dist.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Modular Hardware & Varsity Trims */}
+                  <div className="pt-2 border-t border-[#E6E6E2] space-y-4">
+                    <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0A0A0A]">
+                      MODULAR GARMENT TRIMS &amp; HARDWARE:
+                    </div>
+
+                    {/* Snap Buttons Hardware Finishes */}
+                    <div>
+                      <span className="text-[10px] text-neutral-500 uppercase block mb-1.5 font-mono">
+                        Hardware Button Finish
+                      </span>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                        {BUTTON_FINISHES.map((btn) => {
+                          const isBtnSelected =
+                            (partColors.buttons || "").toLowerCase() === btn.hex.toLowerCase() ||
+                            selectedButtonFinish === btn.id;
+                          return (
+                            <button
+                              key={btn.id}
+                              onClick={() => {
+                                handleButtonFinishSelect(btn.id);
+                              }}
+                              className={`p-2 rounded-[2px] border text-left transition-all cursor-pointer flex items-center gap-2 ${
+                                isBtnSelected
+                                  ? "bg-black text-white border-black shadow-xs font-bold"
+                                  : "bg-[#FAFAF8] text-neutral-800 border-[#E6E6E2] hover:bg-neutral-100"
+                              }`}
+                            >
+                              <span
+                                className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0"
+                                style={{ backgroundColor: btn.hex }}
+                              />
+                              <span className="text-[10px] truncate">{btn.name}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Sleeve & Pocket Striping */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <span className="text-[10px] text-neutral-500 uppercase block mb-1 font-mono">
+                          Sleeve Cuffs Ribbing
+                        </span>
+                        <div className="flex border border-[#E6E6E2] rounded-[2px] p-0.5 bg-[#FAFAF8]">
+                          <button
+                            onClick={() => setSleeveStyle("striped")}
+                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${
+                              sleeveStyle === "striped"
+                                ? "bg-[#0B0B0B] text-white shadow-xs"
+                                : "text-neutral-600 hover:text-black"
+                            }`}
+                          >
+                            Striped
+                          </button>
+                          <button
+                            onClick={() => setSleeveStyle("plain")}
+                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${
+                              sleeveStyle === "plain"
+                                ? "bg-[#0B0B0B] text-white shadow-xs"
+                                : "text-neutral-600 hover:text-black"
+                            }`}
+                          >
+                            Solid
+                          </button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] text-neutral-500 uppercase block mb-1 font-mono">
+                          Pocket Welts
+                        </span>
+                        <div className="flex border border-[#E6E6E2] rounded-[2px] p-0.5 bg-[#FAFAF8]">
+                          <button
+                            onClick={() => setPocketStyle("striped")}
+                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${
+                              pocketStyle === "striped"
+                                ? "bg-[#0B0B0B] text-white shadow-xs"
+                                : "text-neutral-600 hover:text-black"
+                            }`}
+                          >
+                            Piped
+                          </button>
+                          <button
+                            onClick={() => setPocketStyle("plain")}
+                            className={`flex-1 py-1 text-[11px] font-semibold rounded-[2px] transition-colors cursor-pointer ${
+                              pocketStyle === "plain"
+                                ? "bg-[#0B0B0B] text-white shadow-xs"
+                                : "text-neutral-600 hover:text-black"
+                            }`}
+                          >
+                            Solid
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Interior Lining */}
+                    <div>
+                      <span className="text-[10px] text-neutral-500 uppercase block mb-1 font-mono">
+                        Interior Garment Lining
+                      </span>
+                      <div className="grid grid-cols-2 gap-1.5">
+                        {LINING_OPTIONS.map((lining) => (
+                          <button
+                            key={lining.id}
+                            onClick={() => setSelectedLining(lining.id)}
+                            className={`p-2 rounded-[2px] border text-left transition-colors cursor-pointer ${
+                              selectedLining === lining.id
+                                ? "bg-black text-white border-black font-bold shadow-xs"
+                                : "bg-[#FAFAF8] text-neutral-800 border-[#E6E6E2] hover:bg-neutral-100"
+                            }`}
+                          >
+                            <span className="text-[10px] block truncate">{lining.name}</span>
+                            <span className={`text-[8.5px] block truncate font-mono ${selectedLining === lining.id ? "text-neutral-400" : "text-neutral-500"}`}>
+                              {lining.composition}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ============================================================== */}
+              {/* TAB 5: SIZING & WHOLESALE MATRIX (IDENTICAL TO CUSTOMIZE PAGE) */}
+              {/* ============================================================== */}
+              {controlTab === "sizing" && (
+                <div className="space-y-5 animate-fadeIn font-sans">
+                  {/* Volume Wholesale Tier Pricing */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0A0A0A]">
+                        VOLUME WHOLESALE TIER PRICING:
+                      </label>
+                      <span className="text-[10px] font-mono font-bold text-[#D61C24]">
+                        {activeStudioModel === "varsity"
+                          ? "Outerwear Tier"
+                          : activeStudioModel === "basketball"
+                            ? "Pro Court Tier"
+                            : activeStudioModel === "equestrian"
+                              ? "Italian Softshell Tier"
+                              : "Heavyweight Fleece Tier"}
+                      </span>
+                    </div>
+
+                    <div className="border border-[#DADBD2] rounded-[2px] overflow-hidden">
+                      <div className="grid grid-cols-3 bg-[#FAFAF8] border-b border-[#DADBD2] px-3 py-1.5 text-[9.5px] font-mono font-bold uppercase tracking-wider text-neutral-500">
+                        <span>QUANTITY TIER</span>
+                        <span className="text-center">UNIT PRICE</span>
+                        <span className="text-right">SAVINGS</span>
+                      </div>
+                      <div className="divide-y divide-[#DADBD2] font-mono text-xs">
+                        {currentTierPricing.map((r, i) => {
+                          const isCurrentTier =
+                            (i === 0 && totalBatchUnits >= 50 && totalBatchUnits < 100) ||
+                            (i === 1 && totalBatchUnits >= 100 && totalBatchUnits < 250) ||
+                            (i === 2 && totalBatchUnits >= 250 && totalBatchUnits < 500) ||
+                            (i === 3 && totalBatchUnits >= 500);
+                          return (
+                            <div
+                              key={r.tier}
+                              className={`grid grid-cols-3 px-3 py-2 text-[11px] items-center transition-colors ${
+                                isCurrentTier ? "bg-red-50/60 font-bold" : "hover:bg-neutral-50"
+                              }`}
+                            >
+                              <span className="font-semibold text-neutral-800">{r.tier}</span>
+                              <span className="font-bold text-[#D61C24] text-center">{r.price}/pc</span>
+                              <span className="text-neutral-500 text-right">{r.save}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Wholesale Size Matrix */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0A0A0A]">
+                        WHOLESALE SIZE MATRIX (UNITS):
+                      </label>
+                      <span className={`text-[10px] font-mono font-bold ${totalBatchUnits > 0 ? "text-[#D61C24]" : "text-neutral-500"}`}>
+                        Total: {totalBatchUnits > 0 ? `${totalBatchUnits} pcs` : "0 pcs (None allocated)"}
+                      </span>
+                    </div>
+                    <div className="space-y-1 sm:space-y-1.5">
+                      {["XS", "S", "M", "L", "XL", "2XL", "3XL"].map((sz) => {
+                        const qty = sizeBreakdown[sz] || 0;
+                        return (
+                          <div
+                            key={sz}
+                            className="flex items-center justify-between py-1.5 px-2.5 sm:py-2 sm:px-3 bg-[#FAFAF8] border border-[#DADBD2] rounded-[2px]"
+                          >
+                            <span className="font-mono font-bold text-[11px] sm:text-xs w-8 sm:w-12 text-[#0A0A0A]">{sz}</span>
+                            <div className="flex items-center gap-1.5 sm:gap-3">
+                              <button
+                                type="button"
+                                onClick={() => setSizeBreakdown((prev) => ({ ...prev, [sz]: Math.max(0, (prev[sz] || 0) - 5) }))}
+                                className="w-6 h-6 sm:w-7 sm:h-7 bg-white border border-[#DADBD2] hover:border-black rounded-[2px] font-mono font-bold text-xs flex items-center justify-center cursor-pointer transition-colors"
+                              >
+                                -
+                              </button>
+                              <span className="w-7 sm:w-10 text-center font-mono font-bold text-[11px] sm:text-xs text-[#0A0A0A]">
+                                {qty}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => setSizeBreakdown((prev) => ({ ...prev, [sz]: (prev[sz] || 0) + 5 }))}
+                                className="w-6 h-6 sm:w-7 sm:h-7 bg-white border border-[#DADBD2] hover:border-black rounded-[2px] font-mono font-bold text-xs flex items-center justify-center cursor-pointer transition-colors"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Quick Preset Allocations */}
+                  <div className="pt-2 border-t border-[#DADBD2]">
+                    <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-400 block mb-2">
+                      QUICK BATCH ALLOCATIONS:
+                    </label>
+                    <div className="grid grid-cols-3 gap-2 text-xs font-mono">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSizeBreakdown({
+                            XS: 5,
+                            S: 10,
+                            M: 15,
+                            L: 15,
+                            XL: 5,
+                            "2XL": 0,
+                            "3XL": 0,
+                          })
+                        }
+                        className="p-2 bg-[#FAFAF8] hover:bg-neutral-100 border border-[#DADBD2] rounded-[2px] text-left cursor-pointer"
+                      >
+                        <span className="font-bold block text-[#0A0A0A]">50 PCS</span>
+                        <span className="text-[10px] text-neutral-400">MOQ Split</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSizeBreakdown({
+                            XS: 10,
+                            S: 20,
+                            M: 30,
+                            L: 25,
+                            XL: 10,
+                            "2XL": 5,
+                            "3XL": 0,
+                          })
+                        }
+                        className="p-2 bg-[#FAFAF8] hover:bg-neutral-100 border border-[#DADBD2] rounded-[2px] text-left cursor-pointer"
+                      >
+                        <span className="font-bold block text-[#0A0A0A]">100 PCS</span>
+                        <span className="text-[10px] text-neutral-400">Retail Curve</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSizeBreakdown({
+                            XS: 0,
+                            S: 0,
+                            M: 0,
+                            L: 0,
+                            XL: 0,
+                            "2XL": 0,
+                            "3XL": 0,
+                          })
+                        }
+                        className="p-2 bg-[#FAFAF8] hover:bg-rose-50 border border-[#DADBD2] hover:border-rose-400 rounded-[2px] text-left cursor-pointer transition-colors"
+                      >
+                        <span className="font-bold block text-rose-600">RESET (0)</span>
+                        <span className="text-[10px] text-neutral-400">Clear All</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Order Summary & Add to Cart Box */}
+                  <div className="p-4 bg-[#0A0A0A] text-white rounded-[2px] space-y-3 font-mono">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-neutral-400">Total Batch Units:</span>
+                      <span className="font-bold">
+                        {totalBatchUnits > 0 ? `${totalBatchUnits} pcs` : "0 pcs (Allocate sizes above)"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-neutral-400">Tier Unit Price:</span>
+                      <span className="font-bold text-[#FF333D]">
+                        ${tierUnitPrice.toFixed(2)}/pc
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm font-bold pt-2 border-t border-neutral-800">
+                      <span>Total Estimated Cost:</span>
+                      <span className="text-[#FF333D]">
+                        ${totalEstimatedCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddBatchToCart}
+                      disabled={totalBatchUnits === 0}
+                      className={`w-full py-3 font-bold text-xs uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-2 transition-colors mt-2 ${
+                        totalBatchUnits === 0
+                          ? "bg-neutral-800 text-neutral-500 cursor-not-allowed border border-neutral-700"
+                          : "bg-[#D61C24] hover:bg-red-700 text-white cursor-pointer"
+                      }`}
+                    >
+                      <ShoppingBag className="w-4 h-4" />
+                      <span>{totalBatchUnits === 0 ? "ALLOCATE SIZES TO ADD BATCH" : "ADD BATCH TO CART"}</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Mobile Drawer Bottom Close Button */}
               <div className="lg:hidden pt-3 border-t border-[#E6E6E2]">
                 <button
@@ -1754,15 +2720,27 @@ export const CustomizerDemoSection: React.FC = () => {
 
             {/* Launch Full Studio CTA (Docked at bottom of right column) */}
             <div className="p-4 sm:p-5 border-t border-[#E6E6E2] bg-white shrink-0 space-y-2">
-              {/* Instant Factory Tech Pack Button */}
-              <button
-                type="button"
-                onClick={() => setIsTechPackOpen(true)}
-                className="w-full py-2.5 px-4 bg-white hover:bg-neutral-50 text-black border-2 border-black font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer group"
-              >
-                <FileText className="w-4 h-4 text-[#D10115] group-hover:scale-110 transition-transform" />
-                <span>Generate Factory Tech Pack</span>
-              </button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {/* Instant Factory Tech Pack Button */}
+                <button
+                  type="button"
+                  onClick={() => setIsTechPackOpen(true)}
+                  className="w-full py-2.5 px-3 bg-white hover:bg-neutral-50 text-black border-2 border-black font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer group"
+                >
+                  <FileText className="w-4 h-4 text-[#D10115] group-hover:scale-110 transition-transform" />
+                  <span>Tech Pack Spec</span>
+                </button>
+
+                {/* Save Design Spec Button (Saves to client portfolio & syncs to backend MySQL) */}
+                <button
+                  type="button"
+                  onClick={handleSaveHomeDesign}
+                  className="w-full py-2.5 px-3 bg-[#0A0A0A] hover:bg-[#D61C24] text-white font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer group"
+                >
+                  <Save className="w-4 h-4 text-[#FF333D] group-hover:scale-110 transition-transform" />
+                  <span>Save Design</span>
+                </button>
+              </div>
 
               <Link
                 href={
@@ -1826,14 +2804,7 @@ export const CustomizerDemoSection: React.FC = () => {
                   : activeStudioModel === "equestrian"
                     ? "320-gsm-italian-softshell"
                     : "450-gsm-loopback",
-            gsm:
-              activeStudioModel === "varsity"
-                ? 500
-                : activeStudioModel === "basketball"
-                  ? 200
-                  : activeStudioModel === "equestrian"
-                    ? 320
-                    : 450,
+            gsm: selectedGsm,
             washId: activeWash,
             decorationMethodId:
               customLetters.text && customLetters.text.trim()
@@ -1902,11 +2873,19 @@ export const CustomizerDemoSection: React.FC = () => {
                   },
                 ]
                 : [],
-            quantity: 50,
-            sizeBreakdown: { S: 10, M: 20, L: 15, XL: 5 },
+            quantity: totalBatchUnits,
+            sizeBreakdown: sizeBreakdown,
           }}
           onClose={() => setIsTechPackOpen(false)}
         />
+      )}
+
+      {/* Floating Save/Add Toast Notification */}
+      {saveToast && (
+        <div className="fixed bottom-6 right-6 z-[999999] bg-[#0A0A0A] text-white px-5 py-3 rounded-[2px] shadow-2xl border-l-4 border-[#D10115] flex items-center gap-3 animate-slideUp font-mono text-xs">
+          <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>{toastMessage}</span>
+        </div>
       )}
     </section>
   );

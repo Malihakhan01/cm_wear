@@ -1,21 +1,27 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "export",
+  trailingSlash: true,
   images: {
+    unoptimized: true,
     minimumCacheTTL: 0,
-  },
-  async headers() {
-    return [
+    remotePatterns: [
       {
-        source: "/images/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "no-cache, no-store, must-revalidate",
-          },
-        ],
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
       },
-    ];
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "8000",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   },
 };
 

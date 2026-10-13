@@ -55,15 +55,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Top Badges Bar */}
       <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-20 pointer-events-none">
         <div className="flex flex-wrap items-center gap-1">
-          {product.customizable && (
-            <span className="bg-[#0A0A0A] text-white text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-[1px] flex items-center gap-1 font-bold">
-              <Sparkles className="w-2.5 h-2.5 text-[#FF333D]" />
-              CUSTOMIZABLE
-            </span>
-          )}
-          {product.sampleAvailable && (
-            <span className="bg-[#F4F4EF] text-[#0A0A0A] border border-[#DADBD2] text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-[1px]">
-              SAMPLE READY
+          {product.threeDModel && (
+            <span className="bg-[#D61C24] text-white text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-[1px] font-bold">
+              CAD SPEC
             </span>
           )}
         </div>
@@ -86,54 +80,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </button>
       </div>
 
-      {/* Main Image Area (Dominates Card) */}
+      {/* Main Image Area (Dominates Card, clean unblocked view) */}
       <div className="relative aspect-square bg-[#F4F4EF] overflow-hidden p-6">
         <Link href={`/products/${product.slug}`} className="block w-full h-full">
           <img
             src={isHovered && product.images[1] ? product.images[1] : product.images[0]}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "/placeholder.jpg";
+            }}
             alt={product.name}
             className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition-transform duration-500"
           />
         </Link>
-
-        {/* Hover Quick Action Overlay */}
-        <div className="absolute inset-x-3 bottom-3 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 pointer-events-auto">
-          {product.customizable ? (
-            <Link
-              href={`/customize/${product.customizerId || "custom-hoodie"}`}
-              onClick={(e) => e.stopPropagation()}
-              className="flex-1 py-2 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-[10px] font-mono uppercase font-bold tracking-wider rounded-[2px] text-center flex items-center justify-center gap-1 transition-colors"
-            >
-              <Sparkles className="w-3 h-3 text-[#FF333D]" />
-              <span>Customize</span>
-            </Link>
-          ) : (
-            <button
-              onClick={handleQuickAdd}
-              className="flex-1 py-2 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-[10px] font-mono uppercase font-bold tracking-wider rounded-[2px] flex items-center justify-center gap-1 transition-colors"
-            >
-              {addedToast ? (
-                <>
-                  <Check className="w-3 h-3 text-[#FF333D]" />
-                  <span>Added!</span>
-                </>
-              ) : (
-                <>
-                  <ShoppingBag className="w-3 h-3" />
-                  <span>{mode === "wholesale" ? "Add MOQ" : "Quick Add"}</span>
-                </>
-              )}
-            </button>
-          )}
-
-          <Link
-            href={`/products/${product.slug}`}
-            className="px-2.5 py-2 bg-white hover:bg-[#DADBD2] text-[#0A0A0A] border border-[#DADBD2] rounded-[2px] text-[10px] font-mono uppercase font-bold"
-            title="View Product Details"
-          >
-            Specs
-          </Link>
-        </div>
       </div>
 
       {/* Product Information */}
@@ -154,46 +112,76 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </Link>
         </div>
 
-        {/* Color Dots & Pricing Row */}
-        <div className="pt-3 border-t border-[#F4F4EF] flex items-end justify-between">
-          {/* Swatch Previews */}
-          <div className="flex items-center gap-1">
-            {product.colors.slice(0, 4).map((c) => (
-              <span
-                key={c.id}
-                className="w-2.5 h-2.5 rounded-full border border-black/20"
-                style={{ backgroundColor: c.hex }}
-                title={c.name}
-              />
-            ))}
-            {product.colors.length > 4 && (
-              <span className="text-[9px] font-mono text-[#72726D]">
-                +{product.colors.length - 4}
-              </span>
-            )}
+        <div className="space-y-3 pt-3 border-t border-[#F4F4EF]">
+          {/* Color Dots & Pricing Row */}
+          <div className="flex items-end justify-between">
+            {/* Swatch Previews */}
+            <div className="flex items-center gap-1">
+              {product.colors.slice(0, 4).map((c) => (
+                <span
+                  key={c.id}
+                  className="w-2.5 h-2.5 rounded-full border border-black/20"
+                  style={{ backgroundColor: c.hex }}
+                  title={c.name}
+                />
+              ))}
+              {product.colors.length > 4 && (
+                <span className="text-[9px] font-mono text-[#72726D]">
+                  +{product.colors.length - 4}
+                </span>
+              )}
+            </div>
+
+            {/* Pricing based on store mode */}
+            <div className="text-right">
+              {mode === "wholesale" ? (
+                <div>
+                  <div className="text-xs font-bold text-[#0A0A0A] font-mono">
+                    From ${product.wholesalePrice.toFixed(2)}/pc
+                  </div>
+                  <div className="text-[10px] font-mono text-[#D61C24] font-semibold">
+                    MOQ {product.MOQ} PCS
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className="text-xs font-bold text-[#0A0A0A] font-mono">
+                    ${product.retailPrice.toFixed(2)}
+                  </div>
+                  <div className="text-[10px] font-mono text-[#72726D]">
+                    Single Piece
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Pricing based on store mode */}
-          <div className="text-right">
-            {mode === "wholesale" ? (
-              <div>
-                <div className="text-xs font-bold text-[#0A0A0A] font-mono">
-                  From ${product.wholesalePrice.toFixed(2)}/pc
-                </div>
-                <div className="text-[10px] font-mono text-[#D61C24] font-semibold">
-                  MOQ {product.MOQ} PCS
-                </div>
-              </div>
-            ) : (
-              <div>
-                <div className="text-xs font-bold text-[#0A0A0A] font-mono">
-                  ${product.retailPrice.toFixed(2)}
-                </div>
-                <div className="text-[10px] font-mono text-[#72726D]">
-                  Single Piece
-                </div>
-              </div>
-            )}
+          {/* Action Buttons Row (Placed directly below product details) */}
+          <div className="pt-2 border-t border-[#F4F4EF] flex items-center gap-2">
+            <button
+              onClick={handleQuickAdd}
+              className="flex-1 py-2 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-[10px] font-mono uppercase font-bold tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+            >
+              {addedToast ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-[#FF333D]" />
+                  <span>Added!</span>
+                </>
+              ) : (
+                <>
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span>{mode === "wholesale" ? "Add MOQ" : "Quick Add"}</span>
+                </>
+              )}
+            </button>
+
+            <Link
+              href={`/products/${product.slug}`}
+              className="px-3.5 py-2 bg-white hover:bg-[#F4F4EF] text-[#0A0A0A] border border-[#DADBD2] hover:border-[#0A0A0A] rounded-[2px] text-[10px] font-mono uppercase font-bold text-center transition-colors shrink-0 cursor-pointer"
+              title="View Product Details"
+            >
+              View Specs
+            </Link>
           </div>
         </div>
 

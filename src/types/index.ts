@@ -22,7 +22,10 @@ export type MainCategoryId =
   | "rugby"
   | "basketball"
   | "ski-wear"
-  | "go-karting-racing";
+  | "go-karting-racing"
+  | "bavarian-wear"
+  | "martial-arts"
+  | (string & {});
 
 export interface Subcategory {
   id: string;
@@ -481,3 +484,66 @@ export interface PackagingOption {
   ecoRating: "Standard" | "Recycled" | "100% Biodegradable";
   image: string;
 }
+
+export interface FaqItem {
+  id: number;
+  topic: string;
+  question: string;
+  answer: string;
+  sort_order: number;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface BlogCategoryItem {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string;
+  sort_order?: number;
+  is_active?: boolean;
+  posts_count?: number;
+}
+
+export interface BlogPostItem {
+  id: number;
+  title: string;
+  slug: string;
+  blog_category_id?: number | null;
+  author_id?: number;
+  summary?: string;
+  content: string;
+  cover_image?: string;
+  meta_title?: string;
+  meta_description?: string;
+  meta_keywords?: string;
+  status: "draft" | "published" | "archived";
+  published_at?: string;
+  views_count: number;
+  is_featured: boolean;
+  estimated_reading_time?: number;
+  category?: BlogCategoryItem;
+  author?: {
+    id: number;
+    name: string;
+    email?: string;
+    avatar?: string;
+  };
+}
+
+export interface TestimonialItem {
+  id: number;
+  client_name: string;
+  client_role?: string;
+  company?: string;
+  country?: string;
+  country_flag?: string;
+  avatar?: string;
+  quote: string;
+  rating: number;
+  sort_order: number;
+  is_featured: boolean;
+  is_active?: boolean;
+}
+

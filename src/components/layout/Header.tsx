@@ -79,22 +79,33 @@ export const Header: React.FC = () => {
           <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
             {/* Products with Mega Menu trigger */}
             <div
-              className="relative"
+              className="relative flex items-center"
               onMouseEnter={() => setMegaMenuOpen(true)}
             >
-              <button
-                onClick={() => setMegaMenuOpen(!megaMenuOpen)}
+              <Link
+                href="/catalog"
+                onClick={() => setMegaMenuOpen(false)}
                 className={`flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider font-semibold py-2 transition-colors cursor-pointer ${
                   megaMenuOpen ? "text-[#FF333D]" : "text-white/80 hover:text-white"
                 }`}
               >
                 <span>Products</span>
-                <ChevronDown className="w-3.5 h-3.5" />
-              </button>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                    megaMenuOpen ? "rotate-180" : ""
+                  }`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setMegaMenuOpen((prev) => !prev);
+                  }}
+                />
+              </Link>
             </div>
 
             <Link
               href="/customize"
+              onMouseEnter={() => setMegaMenuOpen(false)}
               className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider font-semibold text-white/80 hover:text-white transition-colors"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#FF333D]" />
@@ -103,6 +114,7 @@ export const Header: React.FC = () => {
 
             <Link
               href="/about"
+              onMouseEnter={() => setMegaMenuOpen(false)}
               className="text-xs font-mono uppercase tracking-wider font-semibold text-white/80 hover:text-white transition-colors"
             >
               About
@@ -110,6 +122,7 @@ export const Header: React.FC = () => {
 
             <Link
               href="/contact"
+              onMouseEnter={() => setMegaMenuOpen(false)}
               className="text-xs font-mono uppercase tracking-wider font-semibold text-white/80 hover:text-white transition-colors"
             >
               Contact Us

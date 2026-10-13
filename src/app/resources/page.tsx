@@ -90,18 +90,69 @@ export default function ResourcesPage() {
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-[#F4F4EF]">
+                <div className="pt-4 border-t border-[#F4F4EF] flex items-center justify-between">
                   <Link
-                    href="/request-quote"
+                    href="/blog"
                     className="inline-flex items-center gap-1.5 text-xs font-mono uppercase font-bold text-[#0A0A0A] hover:text-[#D61C24] transition-colors"
                   >
-                    <span>Request Spec Consultation</span>
+                    <span>Read Whitepaper</span>
                     <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+
+                  <Link
+                    href="/request-quote"
+                    className="text-[11px] font-mono text-[#72726D] hover:text-[#D61C24] transition-colors"
+                  >
+                    Quote Spec →
                   </Link>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* Quick Hub Navigation Cards */}
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Link
+              href="/blog"
+              className="bg-white border border-[#DADBD2] p-8 rounded-[2px] hover:border-[#D61C24] transition-all group flex flex-col justify-between space-y-4"
+            >
+              <div>
+                <span className="text-[10px] font-mono uppercase font-bold text-[#D61C24] tracking-wider">
+                  Editorial Whitepapers
+                </span>
+                <h3 className="text-xl font-bold uppercase tracking-tight text-[#0A0A0A] font-display mt-2 group-hover:text-[#D61C24] transition-colors">
+                  Manufacturing Blog & Sourcing Guides →
+                </h3>
+                <p className="text-xs text-[#72726D] mt-2 leading-relaxed">
+                  Deep-dive articles on GSM fabric weights, aerodynamic speed meshes, private label branding, and container logistics.
+                </p>
+              </div>
+              <span className="text-xs font-mono font-bold uppercase text-[#D61C24]">
+                Explore All Whitepapers
+              </span>
+            </Link>
+
+            <Link
+              href="/resources/faq"
+              className="bg-white border border-[#DADBD2] p-8 rounded-[2px] hover:border-[#D61C24] transition-all group flex flex-col justify-between space-y-4"
+            >
+              <div>
+                <span className="text-[10px] font-mono uppercase font-bold text-[#D61C24] tracking-wider">
+                  Client Support & Policies
+                </span>
+                <h3 className="text-xl font-bold uppercase tracking-tight text-[#0A0A0A] font-display mt-2 group-hover:text-[#D61C24] transition-colors">
+                  Frequently Asked Questions (FAQs) →
+                </h3>
+                <p className="text-xs text-[#72726D] mt-2 leading-relaxed">
+                  Clear answers on 50-piece minimums, 5–7 day prototyping, 3D tech pack exports, and DDP shipping terms.
+                </p>
+              </div>
+              <span className="text-xs font-mono font-bold uppercase text-[#D61C24]">
+                Browse FAQ Directory
+              </span>
+            </Link>
+          </div>
+
         </div>
       </section>
 

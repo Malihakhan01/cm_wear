@@ -12,13 +12,52 @@ function OrderConfirmationContent() {
   const [orderData, setOrderData] = useState<any>(null);
 
   useEffect(() => {
+    // 1. Load from session storage if available
     if (typeof window !== "undefined") {
       const stored = sessionStorage.getItem("tawfiq-industry-last-order");
       if (stored) {
-        setOrderData(JSON.parse(stored));
+        try {
+          const parsed = JSON.parse(stored);
+          if (parsed.orderNumber === orderNumber) {
+            setOrderData(parsed);
+          }
+        } catch (e) {
+          console.warn("Error parsing stored order:", e);
+        }
       }
     }
-  }, []);
+
+    // 2. Fetch live from backend API
+    const fetchOrderFromApi = async () => {
+      try {
+        const { apiClient } = await import("@/services/api.client");
+        const res = await apiClient.get<{
+          success: boolean;
+          data?: any;
+        }>(`/orders/${orderNumber}`);
+
+        if (res?.success && res.data) {
+          const ord = res.data;
+          setOrderData({
+            orderNumber: ord.order_number,
+            amount: Number(ord.total_amount),
+            itemsCount: ord.items?.length || 1,
+            customerName: ord.customer?.full_name || ord.shipping_address_snapshot?.first_name 
+              ? `${ord.shipping_address_snapshot?.first_name || ""} ${ord.shipping_address_snapshot?.last_name || ""}`.trim() 
+              : "Valued Client",
+            email: ord.customer?.email || "",
+            phone: ord.customer?.phone || ord.customer?.whatsapp || "",
+            currentStage: ord.current_stage?.name || "Stage 01: Spec Approved",
+            incoterm: ord.incoterms || "DDP",
+          });
+        }
+      } catch (err) {
+        console.warn("Backend order fetch fallback:", err);
+      }
+    };
+
+    fetchOrderFromApi();
+  }, [orderNumber]);
 
   return (
     <div className="w-full bg-[#FAFAF8] py-16 select-none min-h-[calc(100vh-72px)]">
@@ -40,22 +79,22 @@ function OrderConfirmationContent() {
               Commercial Order Confirmed
             </h1>
             <p className="text-xs sm:text-sm text-[#72726D] max-w-md mx-auto leading-relaxed">
-              Thank you, <strong className="text-black">{orderData?.customerName || "Client"}</strong>. Your apparel manufacturing order has been scheduled on the Sialkot facility production board.
+              Thank you, <strong className="text-black">{orderData?.customerName || "Valued Client"}</strong>. Your apparel manufacturing order has been scheduled on the Sialkot facility production board.
             </p>
           </div>
 
-          {/* Simulated Notifications Scheduled Alert (Section 46 & 47) */}
+          {/* Automated Dispatch Notifications Scheduled Alert */}
           <div className="bg-[#F4F4EF] border border-[#DADBD2] rounded-[2px] p-4 max-w-md mx-auto text-left text-xs font-mono space-y-2">
             <div className="text-[10px] uppercase font-bold text-[#72726D] mb-1">
               Automated Dispatch Notifications Scheduled:
             </div>
             <div className="flex items-center gap-2 text-emerald-800">
               <Mail className="w-3.5 h-3.5" />
-              <span>✓ Confirmation & Proforma PDF scheduled to {orderData?.email || "buyer@fashionbrand.com"}</span>
+              <span>✓ Confirmation & Proforma PDF scheduled to {orderData?.email || "Buyer Procurement Email"}</span>
             </div>
             <div className="flex items-center gap-2 text-emerald-800">
               <MessageCircle className="w-3.5 h-3.5" />
-              <span>✓ Milestone alerts active on WhatsApp ({orderData?.phone || "+1 212 555 0192"})</span>
+              <span>✓ Milestone alerts active on WhatsApp ({orderData?.phone || "Client WhatsApp Contact"})</span>
             </div>
           </div>
 
@@ -63,11 +102,15 @@ function OrderConfirmationContent() {
           <div className="border border-[#DADBD2] rounded-[2px] p-4 max-w-md mx-auto text-left text-xs font-mono space-y-2">
             <div className="flex justify-between border-b border-[#F4F4EF] pb-1.5">
               <span className="text-[#72726D]">Total Amount:</span>
-              <span className="font-bold text-black">${orderData?.amount ? orderData.amount.toFixed(2) : "6,605.00"}</span>
+              <span className="font-bold text-black">
+                ${orderData?.amount ? Number(orderData.amount).toFixed(2) : "0.00"}
+              </span>
             </div>
             <div className="flex justify-between border-b border-[#F4F4EF] pb-1.5">
               <span className="text-[#72726D]">Production Status:</span>
-              <span className="text-[#D61C24] font-bold">Stage 01: Spec Approved</span>
+              <span className="text-[#D61C24] font-bold">
+                {orderData?.currentStage || "Stage 01: Spec Approved"}
+              </span>
             </div>
             <div className="flex justify-between border-b border-[#F4F4EF] pb-1.5">
               <span className="text-[#72726D]">Estimated Dispatch:</span>
@@ -75,14 +118,14 @@ function OrderConfirmationContent() {
             </div>
             <div className="flex justify-between">
               <span className="text-[#72726D]">Shipping Incoterm:</span>
-              <span className="text-black">DDP (Delivered Duty Paid)</span>
+              <span className="text-black">{orderData?.incoterm || "DDP (Delivered Duty Paid)"}</span>
             </div>
           </div>
 
           {/* Action Navigation */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <Link
-              href={`/track-order`}
+              href={`/track-order?order=${encodeURIComponent(orderNumber)}`}
               className="w-full sm:w-auto px-6 py-3.5 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono uppercase font-bold tracking-wider rounded-[2px] transition-colors flex items-center justify-center gap-2"
             >
               <span>Track Live Production Stages</span>

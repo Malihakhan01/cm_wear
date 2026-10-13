@@ -1,6 +1,6 @@
 import React from "react";
 import { CATEGORIES_DATA } from "@/data/categories.data";
-import { PRODUCTS_DATA } from "@/data/products.data";
+import { productsService } from "@/services/products.service";
 import { CategoryPageTemplate } from "@/components/catalog/CategoryPageTemplate";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
@@ -10,10 +10,11 @@ export const metadata: Metadata = {
   description: "High-tensile 500D Cordura CIK-FIA style go-karting racing suits with 360° floating shoulders, paddock softshell jackets, and team mechanics overalls.",
 };
 
-export default function GoKartingRacingPage() {
+export default async function GoKartingRacingPage() {
   const category = CATEGORIES_DATA.find((c) => c.id === "go-karting-racing");
   if (!category) return notFound();
-  const products = PRODUCTS_DATA.filter((p) => p.category === "go-karting-racing");
+  const products = await productsService.getByCategory("go-karting-racing");
 
   return <CategoryPageTemplate category={category} products={products} />;
 }
+

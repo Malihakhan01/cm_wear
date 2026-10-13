@@ -23,11 +23,27 @@ export default function ContactPage() {
   const [subject, setSubject] = useState("OEM Production Inquiry");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (name && email && message) {
-      setSubmitted(true);
+      setIsSubmitting(true);
+      try {
+        const { apiClient } = await import("@/services/api.client");
+        await apiClient.post("/inquiries/contact", {
+          name,
+          email,
+          company,
+          subject,
+          message,
+        });
+      } catch (err) {
+        console.warn("Backend contact dispatch fallback:", err);
+      } finally {
+        setIsSubmitting(false);
+        setSubmitted(true);
+      }
     }
   };
 

@@ -9,10 +9,16 @@ export const Footer: React.FC = () => {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
       setSubscribed(true);
+      try {
+        const { apiClient } = await import("@/services/api.client");
+        await apiClient.post("/inquiries/newsletter", { email });
+      } catch (err) {
+        console.warn("Newsletter backend sync fallback:", err);
+      }
       setEmail("");
     }
   };
@@ -166,6 +172,11 @@ export const Footer: React.FC = () => {
                 </a>
               </li>
               <li>
+                <Link href="/blog" className="hover:text-white transition-colors">
+                  Blog & Articles
+                </Link>
+              </li>
+              <li>
                 <Link href="/resources" className="hover:text-white transition-colors">
                   Technical Apparel Guides
                 </Link>
@@ -206,6 +217,11 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/blog" className="hover:text-white transition-colors">
+                  Manufacturing Blog & Insights
+                </Link>
+              </li>
+              <li>
                 <Link href="/resources/faq" className="hover:text-white transition-colors">
                   Manufacturing FAQs
                 </Link>
@@ -226,6 +242,10 @@ export const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()} Tawfiq Industries. All rights reserved.
           </div>
           <div className="flex items-center gap-4 text-[11px] text-neutral-500">
+            <Link href="/blog" className="hover:text-white transition-colors text-neutral-400">Blog</Link>
+            <span>&bull;</span>
+            <Link href="/resources/faq" className="hover:text-white transition-colors text-neutral-400">FAQs</Link>
+            <span>&bull;</span>
             <Link href="/resources" className="hover:text-white transition-colors">Privacy Policy</Link>
             <span>&bull;</span>
             <Link href="/resources" className="hover:text-white transition-colors">Terms of Manufacturing</Link>
