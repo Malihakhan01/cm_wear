@@ -135,10 +135,11 @@ const HERO_SLIDES: HeroSlide[] = [
   },
 ];
 
-const SLIDE_DURATION_MS = 2800; // Snappy, cinematic slide transitions across all 8 categories
+const SLIDE_DURATION_MS = 4800; // Calmer, editorial pace so slides stay long enough to read comfortably
 
 export const HeroSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const tabsContainerRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [activeIdx, setActiveIdx] = useState<number>(0);
 
@@ -156,14 +157,16 @@ export const HeroSection: React.FC = () => {
     return () => clearInterval(timer);
   }, [activeIdx]);
 
-  // Automatically scroll active tab into view when cycling
+  // Automatically scroll horizontal tabs container only (NEVER scroll the page or window)
   useEffect(() => {
+    const container = tabsContainerRef.current;
     const activeTabEl = tabRefs.current[activeIdx];
-    if (activeTabEl) {
-      activeTabEl.scrollIntoView({
+    if (container && activeTabEl) {
+      const targetScrollLeft =
+        activeTabEl.offsetLeft - container.clientWidth / 2 + activeTabEl.clientWidth / 2;
+      container.scrollTo({
+        left: Math.max(0, targetScrollLeft),
         behavior: "smooth",
-        block: "nearest",
-        inline: "center",
       });
     }
   }, [activeIdx]);
@@ -190,8 +193,8 @@ export const HeroSection: React.FC = () => {
       ref={containerRef}
       className="relative w-full bg-[#0A0A0A] select-none"
     >
-      {/* Hero Stage */}
-      <section className="relative w-full h-screen min-h-[640px] max-h-[1080px] overflow-hidden bg-[#0A0A0A] text-white flex flex-col justify-between">
+      {/* Hero Stage with Dynamic Viewport Height & Zero Overflow Clipping */}
+      <section className="relative w-full min-h-[100svh] lg:h-[100svh] lg:max-h-[1080px] overflow-hidden bg-[#0A0A0A] text-white flex flex-col justify-between">
         {/* ======================================================== */}
         {/* BACKGROUND SLIDES: CINEMATIC ANIMATION ON ALL SLIDES      */}
         {/* ======================================================== */}
@@ -201,7 +204,7 @@ export const HeroSection: React.FC = () => {
             return (
               <div
                 key={slide.id}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
                   isActive ? "opacity-100 z-1" : "opacity-0 z-0 pointer-events-none"
                 }`}
               >
@@ -221,9 +224,10 @@ export const HeroSection: React.FC = () => {
         {/* ======================================================== */}
         {/* TOP CONTROLS: CATEGORY TABS & SLIDE COUNTER              */}
         {/* ======================================================== */}
-        <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 flex items-center justify-between">
+        <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-2 flex items-center justify-between shrink-0">
           {/* Top Left: Category Toggle Pills for all 8 categories with active animated progress effect */}
           <div 
+            ref={tabsContainerRef}
             className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar max-w-[68%] sm:max-w-none pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             style={{
               scrollbarWidth: "none",
@@ -287,15 +291,15 @@ export const HeroSection: React.FC = () => {
         </div>
 
         {/* ======================================================== */}
-        {/* MAIN EDITORIAL HEADLINE & COPY                           */}
+        {/* MAIN EDITORIAL HEADLINE & COPY (FLEX-1 CENTERED CONTENT) */}
         {/* ======================================================== */}
-        <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 my-auto py-4">
+        <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex-1 min-h-0 flex flex-col justify-center py-2 sm:py-4">
           <div className="max-w-2xl lg:max-w-3xl">
-            {/* Massive Kinetic Display Headline */}
+            {/* Scaled Responsive Display Headline (Ensures breathing room for bottom banners) */}
             <h1
-              className="text-4xl sm:text-7xl md:text-8xl lg:text-[6.5rem] xl:text-[7.2rem] font-black uppercase tracking-tighter text-[#F4F4EF] leading-[0.9] sm:leading-[0.88] select-none font-display drop-shadow-md"
+              className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.2rem] xl:text-[5.8rem] font-black uppercase tracking-tighter text-[#F4F4EF] leading-[0.92] sm:leading-[0.88] select-none font-display drop-shadow-md"
             >
-              <div className="overflow-hidden py-1">
+              <div className="overflow-hidden py-0.5 sm:py-1">
                 <span
                   key={`line1-${activeIdx}`}
                   className="inline-flex items-center animate-in fade-in slide-in-from-bottom-8 duration-300 ease-out fill-mode-both"
@@ -303,14 +307,14 @@ export const HeroSection: React.FC = () => {
                   {currentSlide.titleLine1.includes("•") ? (
                     <>
                       <span>{currentSlide.titleLine1.replace("•", "").trim()}</span>
-                      <span className="inline-block w-3 h-3 sm:w-5 sm:h-5 rounded-full bg-[#D61C24] ml-2 sm:ml-4 shadow-[0_0_15px_rgba(214,28,36,0.8)] animate-pulse" />
+                      <span className="inline-block w-2.5 h-2.5 sm:w-4 sm:h-4 rounded-full bg-[#D61C24] ml-2 sm:ml-3 shadow-[0_0_15px_rgba(214,28,36,0.8)] animate-pulse" />
                     </>
                   ) : (
                     currentSlide.titleLine1
                   )}
                 </span>
               </div>
-              <div className="overflow-hidden py-1">
+              <div className="overflow-hidden py-0.5 sm:py-1">
                 <span
                   key={`line2-${activeIdx}`}
                   className="block animate-in fade-in slide-in-from-bottom-10 duration-400 delay-75 ease-out fill-mode-both text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-100 to-white/90"
@@ -323,7 +327,7 @@ export const HeroSection: React.FC = () => {
             {/* Supporting Copy */}
             <p
               key={`desc-${activeIdx}`}
-              className="text-xs sm:text-base text-neutral-300 max-w-md font-normal leading-relaxed mt-3 sm:mt-6 animate-in fade-in slide-in-from-bottom-4 duration-300 delay-150 fill-mode-both line-clamp-3 sm:line-clamp-none"
+              className="text-xs sm:text-sm md:text-base text-neutral-300 max-w-md font-normal leading-relaxed mt-2.5 sm:mt-4 animate-in fade-in slide-in-from-bottom-4 duration-300 delay-150 fill-mode-both line-clamp-2 sm:line-clamp-none"
             >
               {currentSlide.description}
             </p>
@@ -331,22 +335,22 @@ export const HeroSection: React.FC = () => {
             {/* Action Row */}
             <div
               key={`actions-${activeIdx}`}
-              className="flex flex-wrap items-center gap-3 pt-5 sm:pt-8 animate-in fade-in slide-in-from-bottom-3 duration-300 delay-200 fill-mode-both"
+              className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 pt-3.5 sm:pt-6 animate-in fade-in slide-in-from-bottom-3 duration-300 delay-200 fill-mode-both"
             >
               <Link
                 href={currentSlide.link}
-                className="px-5 sm:px-6 py-3 sm:py-3.5 bg-white hover:bg-neutral-200 text-[#0A0A0A] text-[11px] sm:text-xs font-bold font-mono tracking-wider uppercase rounded-[2px] transition-all flex items-center gap-2 shadow-xl hover:shadow-2xl hover:scale-102 group"
+                className="px-4.5 sm:px-6 py-2.5 sm:py-3.5 bg-white hover:bg-neutral-200 text-[#0A0A0A] text-[10px] sm:text-xs font-bold font-mono tracking-wider uppercase rounded-[2px] transition-all flex items-center gap-2 shadow-xl hover:shadow-2xl hover:scale-102 group"
               >
                 <span>VIEW THE RANGES</span>
-                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
 
               {/* Tag Pill with Plus Icon */}
-              <div className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-xs font-mono text-white/80 hover:border-white/50 transition-colors">
-                <span className="w-4 h-4 rounded-full border border-white/40 flex items-center justify-center text-[10px] leading-none text-[#D61C24] font-bold">
+              <div className="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-xs font-mono text-white/80 hover:border-white/50 transition-colors">
+                <span className="w-3.5 h-3.5 rounded-full border border-white/40 flex items-center justify-center text-[10px] leading-none text-[#D61C24] font-bold">
                   +
                 </span>
-                <span className="tracking-wider">{currentSlide.categoryTag}</span>
+                <span className="tracking-wider text-[11px] sm:text-xs">{currentSlide.categoryTag}</span>
               </div>
             </div>
           </div>
@@ -354,13 +358,14 @@ export const HeroSection: React.FC = () => {
 
         {/* ======================================================== */}
         {/* BOTTOM ELEMENTS: FLOATING QUOTE CAPSULE & SCROLL DOWN    */}
+        {/* Guaranteed never-clip shrink-0 layout with safe padding  */}
         {/* ======================================================== */}
-        <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-5 sm:pb-6 flex items-center justify-between">
+        <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-5 sm:pb-7 pt-2 flex items-center justify-between shrink-0">
           <div className="hidden lg:block w-32" />
 
           {/* Center Floating Pill: "Samples first. Your label, your spec. | GET A QUOTE ↗" */}
           <div className="mx-auto sm:mx-0">
-            <div className="bg-[#121210]/90 backdrop-blur-md border border-white/15 rounded-full pl-3.5 sm:pl-5 pr-1.5 sm:pr-2 py-1 sm:py-1.5 flex items-center gap-2 sm:gap-3 text-xs shadow-2xl">
+            <div className="bg-[#121210]/95 backdrop-blur-md border border-white/20 rounded-full pl-3.5 sm:pl-5 pr-1.5 sm:pr-2 py-1 sm:py-1.5 flex items-center gap-2 sm:gap-3 text-xs shadow-[0_8px_30px_rgb(0,0,0,0.6)]">
               <span className="text-white/80 text-[10px] sm:text-xs">
                 <strong className="text-white font-bold">Samples first.</strong>{" "}
                 <span className="hidden sm:inline">Your label, your spec.</span>
