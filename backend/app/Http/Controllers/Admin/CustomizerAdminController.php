@@ -32,6 +32,13 @@ class CustomizerAdminController extends Controller
                   ->orWhere('design_name', 'like', "%{$s}%")
                   ->orWhereHas('product', function ($pq) use ($s) {
                       $pq->where('name', 'like', "%{$s}%");
+                  })
+                  ->orWhereHas('customer', function ($cq) use ($s) {
+                      $cq->where('email', 'like', "%{$s}%")
+                        ->orWhere('first_name', 'like', "%{$s}%")
+                        ->orWhere('last_name', 'like', "%{$s}%")
+                        ->orWhere('company_name', 'like', "%{$s}%")
+                        ->orWhere('phone', 'like', "%{$s}%");
                   });
             });
         }
@@ -124,21 +131,92 @@ class CustomizerAdminController extends Controller
             'sort_order' => 'nullable|integer',
         ]);
 
-        $key = $validated['key'] ?: (Str::slug($validated['category'] . '_' . $validated['name'], '_'));
+        $id = $request->input('id');
+        $tab = $request->input('tab', 'swatches');
 
-        $option = CustomizerOption::updateOrCreate(
-            ['key' => $key],
-            [
+        if ($id && ($existing = CustomizerOption::find($id))) {
+            $mergedValue = is_array($existing->value) ? array_merge($existing->value, $validated['value']) : $validated['value'];
+            $existing->update([
+                'category' => $validated['category'],
+                'name' => $validated['name'],
+                'value' => $mergedValue,
+                'garment_types' => $validated['garment_types'] ?? ($existing->garment_types ?? ['all']),
+                'is_active' => $request->has('is_active') ? (bool)$request->is_active : $existing->is_active,
+                'sort_order' => $validated['sort_order'] ?? $existing->sort_order,
+            ]);
+            $option = $existing;
+        } else {
+            $baseKey = !empty($validated['key']) 
+                ? Str::slug($validated['key'], '_') 
+                : Str::slug($validated['category'] . '_' . $validated['name'], '_');
+
+            $key = $baseKey;
+            $counter = 1;
+            while (CustomizerOption::where('key', $key)->exists()) {
+                $key = $baseKey . '_' . $counter;
+                $counter++;
+            }
+
+            $option = CustomizerOption::create([
+                'key' => $key,
                 'category' => $validated['category'],
                 'name' => $validated['name'],
                 'value' => $validated['value'],
                 'garment_types' => $validated['garment_types'] ?? ['all'],
                 'is_active' => $request->has('is_active') ? (bool)$request->is_active : true,
                 'sort_order' => $validated['sort_order'] ?? 0,
-            ]
-        );
+            ]);
+        }
 
-        return back()->with('success', "Customizer setting '{$option->name}' saved successfully.");
+        return redirect()->route('admin.customizer.settings', ['tab' => $tab])
+            ->with('success', "Customizer setting '{$option->name}' saved successfully.");
+    }
+
+    /**
+     * Update Point of Measure (POM) grading matrix for a template.
+     */
+    public function updatePomGrading(Request $request, CustomizerOption $template)
+    {
+        $grading = $request->input('pom_grading', []);
+        
+        $val = $template->value;
+        $val['pom_grading'] = $grading;
+        $template->value = $val;
+        $template->save();
+
+        return redirect()->route('admin.customizer.settings', ['tab' => 'size_charts'])
+            ->with('success', "POM grading matrix for '{$template->name}' updated successfully.");
+    }
+
+    /**
+     * Update Wholesale Tier Pricing matrix for a garment template.
+     */
+    public function updateWholesaleTiers(Request $request, CustomizerOption $template)
+    {
+        $tiersInput = $request->input('wholesale_tiers', []);
+        $formattedTiers = [];
+
+        foreach ($tiersInput as $row) {
+            $minQty = isset($row['min_qty']) && $row['min_qty'] !== '' ? (int)$row['min_qty'] : 50;
+            $maxQty = isset($row['max_qty']) && $row['max_qty'] !== '' ? (int)$row['max_qty'] : null;
+            $unitPrice = isset($row['unit_price']) ? (float)$row['unit_price'] : 0.0;
+            $savings = trim($row['savings'] ?? '');
+
+            $formattedTiers[] = [
+                'min_qty' => $minQty,
+                'max_qty' => $maxQty,
+                'unit_price' => $unitPrice,
+                'savings' => $savings,
+            ];
+        }
+
+        $val = $template->value;
+        $val['wholesale_tiers'] = $formattedTiers;
+        $template->value = $val;
+        $template->save();
+
+        return redirect()->route('admin.customizer.settings', ['tab' => 'pricing'])
+            ->with('success', "Wholesale tier pricing for '{$template->name}' updated successfully.");
     }
 
     /**
@@ -147,7 +225,9 @@ class CustomizerAdminController extends Controller
     public function toggleOption(CustomizerOption $option)
     {
         $option->update(['is_active' => !$option->is_active]);
-        return back()->with('success', "Option '{$option->name}' is now " . ($option->is_active ? 'Active' : 'Disabled') . '.');
+        $tab = request()->input('tab', 'swatches');
+        return redirect()->route('admin.customizer.settings', ['tab' => $tab])
+            ->with('success', "Option '{$option->name}' is now " . ($option->is_active ? 'Active' : 'Disabled') . '.');
     }
 
     /**
@@ -156,8 +236,10 @@ class CustomizerAdminController extends Controller
     public function deleteOption(CustomizerOption $option)
     {
         $name = $option->name;
+        $tab = request()->input('tab', 'swatches');
         $option->delete();
-        return back()->with('success', "Option '{$name}' removed from customizer configuration.");
+        return redirect()->route('admin.customizer.settings', ['tab' => $tab])
+            ->with('success', "Option '{$name}' removed from customizer configuration.");
     }
 
     /**

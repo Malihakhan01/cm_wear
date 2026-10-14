@@ -235,6 +235,7 @@ export interface CartItem {
   fabric?: string;
   gsm?: number;
   customDesignId?: string;
+  techPackCode?: string;
   isCustomized?: boolean;
   customSummary?: string;
   notes?: string;

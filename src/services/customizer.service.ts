@@ -404,10 +404,14 @@ export const customizerService = {
     sizeBreakdown?: Record<string, number>;
     totalUnits?: number;
     trimsConfig?: unknown;
+    clientEmail?: string;
+    clientName?: string;
+    clientCompany?: string;
+    clientPhone?: string;
   }): Promise<{ success: boolean; designCode?: string; techPackCode?: string }> {
     try {
       const { apiClient } = await import("@/services/api.client");
-      const clientEmail = typeof window !== "undefined" ? sessionStorage.getItem("user_inquiry_email") : null;
+      const clientEmail = typeof window !== "undefined" ? (sessionStorage.getItem("user_inquiry_email") || localStorage.getItem("user_design_email")) : null;
       const clientName = typeof window !== "undefined" ? sessionStorage.getItem("user_inquiry_name") : null;
       const clientCompany = typeof window !== "undefined" ? sessionStorage.getItem("user_inquiry_company") : null;
       const clientPhone = typeof window !== "undefined" ? sessionStorage.getItem("user_inquiry_phone") : null;
@@ -430,10 +434,10 @@ export const customizerService = {
           size_breakdown: payload.sizeBreakdown,
           total_units: payload.totalUnits,
           trims_config: payload.trimsConfig,
-          client_email: clientEmail || undefined,
-          client_name: clientName || undefined,
-          client_company: clientCompany || undefined,
-          client_phone: clientPhone || undefined,
+          client_email: payload.clientEmail || clientEmail || undefined,
+          client_name: payload.clientName || clientName || undefined,
+          client_company: payload.clientCompany || clientCompany || undefined,
+          client_phone: payload.clientPhone || clientPhone || undefined,
         }
       );
       if (res?.success) {
@@ -457,6 +461,10 @@ export const customizerService = {
     techPackCode?: string;
     designCode?: string;
     styleName: string;
+    customerEmail?: string;
+    customerName?: string;
+    customerCompany?: string;
+    customerPhone?: string;
     partsColors: Record<string, string>;
     artworkLayers?: unknown[];
     monogramState?: unknown;
@@ -500,6 +508,10 @@ export const customizerService = {
         tech_pack_code: payload.techPackCode,
         design_code: payload.designCode,
         style_name: payload.styleName,
+        customer_email: payload.customerEmail,
+        customer_name: payload.customerName,
+        customer_company: payload.customerCompany,
+        customer_phone: payload.customerPhone,
         season: "FW26",
         fabric_spec: payload.fabricSpec || "450 GSM 100% Combed Cotton French Terry",
         target_gsm: payload.targetGsm || 450,

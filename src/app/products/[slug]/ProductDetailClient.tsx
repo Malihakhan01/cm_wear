@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, notFound } from "next/navigation";
 import Link from "next/link";
 import { PRODUCTS_DATA } from "@/data/products.data";
+import { productsService, getProductDemoImage } from "@/services/products.service";
 import { useStoreModeStore } from "@/stores/useStoreModeStore";
 import { useCartStore } from "@/stores/useCartStore";
 import { useWishlistStore } from "@/stores/useWishlistStore";
@@ -11,7 +12,7 @@ import { MOQConfigurator } from "@/components/wholesale/MOQConfigurator";
 import { WhatsAppInquiryButton } from "@/components/common/WhatsAppInquiryButton";
 import { TechPackModal } from "@/components/common/TechPackModal";
 import { ProductCard } from "@/components/catalog/ProductCard";
-import { CustomizerState } from "@/types";
+import { Product, CustomizerState } from "@/types";
 import {
   ShoppingBag,
   FileText,
@@ -31,19 +32,37 @@ export default function ProductDetailPage() {
   const params = useParams();
   const slug = params?.slug as string;
 
-  const product = PRODUCTS_DATA.find((p) => p.slug === slug);
-  if (!product) return notFound();
+  const [product, setProduct] = useState<Product | null>(
+    () => PRODUCTS_DATA.find((p) => p.slug === slug) || null
+  );
+  const [loading, setLoading] = useState(!product);
+
+  useEffect(() => {
+    if (!product && slug) {
+      productsService.getBySlug(slug).then((p) => {
+        if (p) setProduct(p);
+        setLoading(false);
+      });
+    }
+  }, [slug, product]);
 
   const { mode, toggleMode } = useStoreModeStore();
   const { addItem } = useCartStore();
   const { isInWishlist, toggleItem } = useWishlistStore();
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0] || "L");
+  const [selectedColor, setSelectedColor] = useState<any>(product?.colors?.[0] || { id: "c-black", name: "Black", hex: "#0A0A0A" });
+  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || "L");
   const [retailQuantity, setRetailQuantity] = useState(1);
   const [addedToast, setAddedToast] = useState(false);
   const [isTechPackOpen, setIsTechPackOpen] = useState(false);
+
+  useEffect(() => {
+    if (product) {
+      if (product.colors?.[0]) setSelectedColor(product.colors[0]);
+      if (product.sizes?.[0]) setSelectedSize(product.sizes[0]);
+    }
+  }, [product]);
 
   // Accordion state for technical specifications
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
@@ -57,6 +76,21 @@ export default function ProductDetailPage() {
   const toggleSection = (key: string) => {
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center font-mono text-xs">
+        Loading Garment Spec...
+      </div>
+    );
+  }
+
+  if (!product) {
+    return notFound();
+  }
+
+  const demoImage = getProductDemoImage(product.category, product.name, product.subcategory);
+  const mainDisplayImage = product.images?.[activeImageIndex] || product.images?.[0] || demoImage;
 
   const handleRetailAddToCart = () => {
     addItem({
@@ -155,7 +189,13 @@ export default function ProductDetailPage() {
             {/* Main Stage Image */}
             <div className="relative aspect-square bg-[#F4F4EF] border border-[#DADBD2] rounded-[2px] p-8 flex items-center justify-center overflow-hidden group">
               <img
-                src={product.images[activeImageIndex] || product.images[0]}
+                src={mainDisplayImage}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  if (target.src !== demoImage && !target.src.endsWith(demoImage)) {
+                    target.src = demoImage;
+                  }
+                }}
                 alt={product.name}
                 className="w-full h-full object-contain filter drop-shadow-md group-hover:scale-105 transition-transform duration-500"
               />
@@ -203,7 +243,17 @@ export default function ProductDetailPage() {
                         : "border-[#DADBD2] hover:border-black"
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-contain" />
+                    <img
+                      src={img || demoImage}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (target.src !== demoImage && !target.src.endsWith(demoImage)) {
+                          target.src = demoImage;
+                        }
+                      }}
+                      alt=""
+                      className="w-full h-full object-contain"
+                    />
                   </button>
                 ))}
               </div>

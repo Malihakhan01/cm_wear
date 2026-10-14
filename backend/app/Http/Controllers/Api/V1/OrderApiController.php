@@ -47,6 +47,11 @@ class OrderApiController extends Controller
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.price' => 'nullable|numeric|min:0',
             'items.*.sizeBreakdown' => 'nullable|array',
+            'items.*.tech_pack_code' => 'nullable|string|max:100',
+            'items.*.customDesignId' => 'nullable|string|max:100',
+            'items.*.fabric' => 'nullable|string|max:255',
+            'items.*.gsm' => 'nullable|integer',
+            'items.*.isCustomized' => 'nullable|boolean',
         ]);
 
         return DB::transaction(function () use ($validated) {
@@ -163,12 +168,14 @@ class OrderApiController extends Controller
                 'notes' => $validated['notes'] ?? ('Direct web checkout. Payment: ' . ($validated['payment_method'] ?? 'credit_card')),
             ]);
 
-            // 8. Create Order Items
+            // 8. Create Order Items & Link Tech Packs & Designs
             foreach ($itemsData as $item) {
                 $productName = $item['name'] ?? 'Custom Apparel Item';
                 $sku = $item['sku'] ?? ('TI-' . strtoupper(Str::random(6)));
                 $qty = (int) ($item['quantity'] ?? 1);
                 $unitPrice = (float) ($item['price'] ?? 0);
+                $sizeBreakdown = $item['sizeBreakdown'] ?? null;
+                $isCustomized = !empty($item['isCustomized']) || str_contains($productName, 'Custom') || str_contains($productName, 'Spec');
 
                 // Try to find matching Product
                 $product = null;
@@ -179,14 +186,64 @@ class OrderApiController extends Controller
                     $product = Product::where('name', $item['name'])->first();
                 }
 
+                // If customized item, find corresponding TechPack or CustomizerDesign
+                $matchedTechPack = null;
+                $matchedDesign = null;
+
+                if (!empty($item['tech_pack_code'])) {
+                    $matchedTechPack = \App\Models\TechPack::where('code', $item['tech_pack_code'])->first();
+                }
+                if (!$matchedTechPack && !empty($item['customDesignId'])) {
+                    $matchedDesign = \App\Models\CustomizerDesign::where('design_code', $item['customDesignId'])->first();
+                    if ($matchedDesign) {
+                        $matchedTechPack = \App\Models\TechPack::where('customizer_design_id', $matchedDesign->id)->first();
+                    }
+                }
+
+                // If still not matched and is customized item, find recent unlinked tech pack (last 3 hours)
+                if (!$matchedTechPack && $isCustomized) {
+                    $cleanName = trim(explode('(', $productName)[0]);
+                    $matchedTechPack = \App\Models\TechPack::where(function ($q) use ($customer) {
+                        $q->whereNull('customer_id')
+                          ->orWhere('customer_id', $customer->id);
+                    })
+                    ->where('created_at', '>=', now()->subHours(3))
+                    ->where(function ($q) use ($cleanName) {
+                        $q->where('style_name', 'LIKE', "%{$cleanName}%")
+                          ->orWhere('style_name', 'LIKE', '%Spec%')
+                          ->orWhere('style_name', 'LIKE', '%Hoodie%');
+                    })
+                    ->latest()
+                    ->first();
+                }
+
+                // Associate tech pack and customizer design with this customer and exact order quantity
+                if ($matchedTechPack) {
+                    $matchedTechPack->update([
+                        'customer_id' => $customer->id,
+                        'total_units' => $qty,
+                        'size_breakdown' => $sizeBreakdown ?: $matchedTechPack->size_breakdown,
+                    ]);
+
+                    if ($matchedTechPack->customizerDesign) {
+                        $matchedTechPack->customizerDesign->update([
+                            'customer_id' => $customer->id,
+                            'size_breakdown' => $sizeBreakdown ?: $matchedTechPack->customizerDesign->size_breakdown,
+                        ]);
+                        $matchedDesign = $matchedTechPack->customizerDesign;
+                    }
+                }
+
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $product?->id,
+                    'tech_pack_id' => $matchedTechPack?->id,
+                    'customizer_design_id' => $matchedDesign?->id,
                     'sku' => $sku,
                     'product_name' => $productName,
                     'unit_price' => $unitPrice,
                     'quantity' => $qty,
-                    'size_breakdown' => $item['sizeBreakdown'] ?? null,
+                    'size_breakdown' => $sizeBreakdown,
                     'total_price' => $unitPrice * $qty,
                 ]);
             }

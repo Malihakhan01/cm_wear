@@ -7,6 +7,7 @@ import { useStoreModeStore } from "@/stores/useStoreModeStore";
 import { useCartStore } from "@/stores/useCartStore";
 import { useWishlistStore } from "@/stores/useWishlistStore";
 import { Heart, Sparkles, Box, Check, ShoppingBag, ArrowRight } from "lucide-react";
+import { getProductDemoImage } from "@/services/products.service";
 
 interface ProductCardProps {
   product: Product;
@@ -18,6 +19,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { isInWishlist, toggleItem } = useWishlistStore();
   const [isHovered, setIsHovered] = useState(false);
   const [addedToast, setAddedToast] = useState(false);
+
+  const demoImage = getProductDemoImage(product.category, product.name, product.subcategory);
+  const primaryImage = product.images?.[0] && product.images[0] !== "/placeholder.jpg" ? product.images[0] : demoImage;
+  const hoverImage = product.images?.[1] && product.images[1] !== "/placeholder.jpg" ? product.images[1] : primaryImage;
+  const displayImage = isHovered ? hoverImage : primaryImage;
 
   const inWishlist = isInWishlist(product.id);
 
@@ -84,9 +90,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div className="relative aspect-square bg-[#F4F4EF] overflow-hidden p-6">
         <Link href={`/products/${product.slug}`} className="block w-full h-full">
           <img
-            src={isHovered && product.images[1] ? product.images[1] : product.images[0]}
+            src={displayImage}
             onError={(e) => {
-              (e.target as HTMLImageElement).src = "/placeholder.jpg";
+              const target = e.target as HTMLImageElement;
+              if (target.src !== demoImage && !target.src.endsWith(demoImage)) {
+                target.src = demoImage;
+              }
             }}
             alt={product.name}
             className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition-transform duration-500"

@@ -171,13 +171,6 @@
             <span class="rounded-xl bg-blue-500/10 px-3 py-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-500/20">
                 {{ $techPacks->total() }} Total Tech Packs
             </span>
-
-            <form method="POST" action="{{ route('admin.tech-packs.deduplicate') }}" onsubmit="return confirm('Deduplicate tech packs safely? This archives identical redundant drafts while strictly preserving all customer designs, versions, and revision histories.')">
-                @csrf
-                <button type="submit" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-xs font-bold transition shadow-sm cursor-pointer" title="Clean redundant duplicates safely without deleting database records">
-                    <span>🧹 Clean Duplicates</span>
-                </button>
-            </form>
         </div>
     </div>
 
@@ -294,12 +287,45 @@
                                     </div>
                                 </td>
                                 <td class="py-4 text-xs text-slate-500">
-                                    <div class="font-semibold text-slate-700 dark:text-slate-300">
-                                        {{ $tp->customer->company_name ?? ($tp->customer->full_name ?? 'Studio Customizer') }}
-                                    </div>
-                                    @if($tp->customizerDesign)
-                                        <span class="text-[10px] text-emerald-600 font-mono">Linked: {{ $tp->customizerDesign->design_code }}</span>
+                                    @if($tp->customer)
+                                        <div class="space-y-0.5">
+                                            @if($tp->customer->company_name)
+                                                <div class="font-bold text-slate-900 dark:text-white flex items-center gap-1">
+                                                    <span>🏢</span> {{ $tp->customer->company_name }}
+                                                </div>
+                                            @endif
+                                            <div class="font-semibold text-slate-700 dark:text-slate-300">
+                                                {{ $tp->customer->full_name }}
+                                            </div>
+                                            <div class="text-[11px] text-blue-500 dark:text-blue-400 font-mono">
+                                                {{ $tp->customer->email }}
+                                            </div>
+                                            @if($tp->customer->phone)
+                                                <div class="text-[10px] text-slate-400 font-mono">
+                                                    📞 {{ $tp->customer->phone }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <div class="font-medium text-slate-500 italic">
+                                            Studio Customizer (Guest)
+                                        </div>
                                     @endif
+                                    <div class="mt-1.5 flex flex-wrap gap-1">
+                                        @if($tp->customizerDesign)
+                                            <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono font-bold bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded border border-emerald-500/20">
+                                                Linked: {{ $tp->customizerDesign->design_code }}
+                                            </span>
+                                        @endif
+                                        @php
+                                            $linkedOrder = $tp->orderItems->first()?->order;
+                                        @endphp
+                                        @if($linkedOrder)
+                                            <a href="{{ route('admin.orders.show', $linkedOrder->id) }}" class="text-[10px] text-blue-600 dark:text-blue-400 font-mono font-bold bg-blue-50 dark:bg-blue-950/40 px-1.5 py-0.5 rounded border border-blue-500/20 hover:underline">
+                                                Order: #{{ $linkedOrder->order_number }}
+                                            </a>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td class="py-4 text-xs text-slate-500">
                                     {{ $tp->created_at->format('M d, Y • H:i') }}
@@ -827,6 +853,45 @@
                                     </div>
                                 </template>
                             </div>
+                        </div>
+
+                        <!-- Commercial Buyer & Order Identity Card -->
+                        <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4 space-y-2 text-xs font-mono" x-show="selectedPack?.customer">
+                            <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-200 font-mono flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                    Commercial Buyer Account
+                                </span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 font-bold uppercase">
+                                    Verified Client
+                                </span>
+                            </div>
+                            <template x-if="selectedPack?.customer?.company_name">
+                                <div class="flex items-center justify-between text-slate-400 text-[11px] border-b border-slate-900 pb-1">
+                                    <span>Brand / Company:</span>
+                                    <strong class="text-white font-sans truncate max-w-[200px]" x-text="selectedPack?.customer?.company_name"></strong>
+                                </div>
+                            </template>
+                            <div class="flex items-center justify-between text-slate-400 text-[11px] border-b border-slate-900 pb-1">
+                                <span>Contact Name:</span>
+                                <strong class="text-slate-200" x-text="((selectedPack?.customer?.first_name || '') + ' ' + (selectedPack?.customer?.last_name || '')).trim()"></strong>
+                            </div>
+                            <div class="flex items-center justify-between text-slate-400 text-[11px] border-b border-slate-900 pb-1">
+                                <span>Email Address:</span>
+                                <strong class="text-blue-400" x-text="selectedPack?.customer?.email"></strong>
+                            </div>
+                            <template x-if="selectedPack?.customer?.phone">
+                                <div class="flex items-center justify-between text-slate-400 text-[11px] border-b border-slate-900 pb-1">
+                                    <span>Phone / WhatsApp:</span>
+                                    <strong class="text-emerald-400" x-text="selectedPack?.customer?.phone"></strong>
+                                </div>
+                            </template>
+                            <template x-if="selectedPack?.order_items && selectedPack.order_items.length > 0 && selectedPack.order_items[0].order">
+                                <div class="flex items-center justify-between text-slate-400 text-[11px] pt-0.5">
+                                    <span>Order Reference:</span>
+                                    <a :href="'/admin/orders/' + selectedPack.order_items[0].order.id" class="text-blue-400 font-bold hover:underline" x-text="'#' + selectedPack.order_items[0].order.order_number"></a>
+                                </div>
+                            </template>
                         </div>
 
                         <!-- Technical Specification Summary Card -->

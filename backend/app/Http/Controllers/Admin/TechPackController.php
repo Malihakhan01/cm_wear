@@ -15,6 +15,7 @@ class TechPackController extends Controller
             'approver',
             'customizerDesign.product.primaryImage',
             'customizerDesign.product.images',
+            'orderItems.order',
         ]);
 
         if ($request->filled('search')) {

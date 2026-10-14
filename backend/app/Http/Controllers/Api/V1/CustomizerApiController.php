@@ -164,6 +164,7 @@ class CustomizerApiController extends Controller
                 'zones' => $opt->value['zones'] ?? [],
                 'default_bom' => $opt->value['default_bom'] ?? [],
                 'pom_grading' => $opt->value['pom_grading'] ?? [],
+                'wholesale_tiers' => $opt->value['wholesale_tiers'] ?? [],
             ];
         });
 
@@ -221,6 +222,28 @@ class CustomizerApiController extends Controller
      */
     public function save(Request $request)
     {
+        // Normalize camelCase / alias inputs
+        if (!$request->filled('client_email')) {
+            if ($request->filled('clientEmail')) {
+                $request->merge(['client_email' => $request->clientEmail]);
+            } elseif ($request->filled('email')) {
+                $request->merge(['client_email' => $request->email]);
+            }
+        }
+        if (!$request->filled('client_name')) {
+            if ($request->filled('clientName')) {
+                $request->merge(['client_name' => $request->clientName]);
+            } elseif ($request->filled('name')) {
+                $request->merge(['client_name' => $request->name]);
+            }
+        }
+        if (!$request->filled('client_company') && $request->filled('clientCompany')) {
+            $request->merge(['client_company' => $request->clientCompany]);
+        }
+        if (!$request->filled('client_phone') && $request->filled('clientPhone')) {
+            $request->merge(['client_phone' => $request->clientPhone]);
+        }
+
         $validated = $request->validate([
             'design_code' => ['nullable', 'string', 'max:50'],
             'product_id' => ['required', 'exists:products,id'],

@@ -9,6 +9,8 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionHeading } from "@/components/common/SectionHeading";
+import { productsService } from "@/services/products.service";
+import { Product } from "@/types";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -16,16 +18,31 @@ if (typeof window !== "undefined") {
 
 export const FeaturedProductsSection: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [allProducts, setAllProducts] = useState<Product[]>(PRODUCTS_DATA);
   const { mode, toggleMode } = useStoreModeStore();
 
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const isInitialMount = useRef(true);
 
+  useEffect(() => {
+    productsService.getAll().then((prods) => {
+      setAllProducts(prods || []);
+    });
+
+    const handleUpdate = () => {
+      productsService.getAll().then((prods) => {
+        setAllProducts(prods || []);
+      });
+    };
+    window.addEventListener("tawfiq_products_updated", handleUpdate);
+    return () => window.removeEventListener("tawfiq_products_updated", handleUpdate);
+  }, []);
+
   const filteredProducts =
     selectedCategory === "all"
-      ? PRODUCTS_DATA.slice(0, 8)
-      : PRODUCTS_DATA.filter((p) => p.category === selectedCategory).slice(0, 8);
+      ? allProducts.slice(0, 8)
+      : allProducts.filter((p) => p.category === selectedCategory).slice(0, 8);
 
   const categoriesList = [
     { id: "all", label: "All Disciplines" },
@@ -198,34 +215,57 @@ export const FeaturedProductsSection: React.FC = () => {
         </div>
 
         {/* Products Grid (4 cols desktop) with 3D Perspective Elevation */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-6 pt-2"
-          style={{ perspective: "1200px" }}
-        >
-          {filteredProducts.map((p, idx) => (
-            <div
-              key={p.id}
-              data-card-index={idx}
-              className="product-card-entrance-wrapper h-full will-change-transform"
-              style={{
-                perspective: "1000px",
-                transformOrigin: "center bottom",
-              }}
-            >
-              <div
-                className="product-card-tilt-inner h-full transition-shadow duration-300 hover:shadow-2xl rounded-[2px]"
-                style={{
-                  transformStyle: "preserve-3d",
-                }}
-                onMouseMove={handleCardMouseMove}
-                onMouseLeave={handleCardMouseLeave}
+        {filteredProducts.length === 0 ? (
+          <div className="py-14 text-center border border-dashed border-[#DADBD2] rounded-[2px] bg-white my-4 p-8 space-y-3">
+            <p className="text-xs font-mono uppercase tracking-wider text-[#D61C24] font-bold">
+              Production Archive
+            </p>
+            <h3 className="text-lg font-bold uppercase tracking-tight text-[#0A0A0A] font-display">
+              Export Styles Updating
+            </h3>
+            <p className="text-xs sm:text-sm text-[#72726D] max-w-md mx-auto">
+              Our export apparel collections are currently being prepared by our Sialkot factory production team.
+            </p>
+            <div className="pt-2">
+              <Link
+                href="/catalog"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono uppercase font-bold rounded-[2px] transition-colors"
               >
-                <ProductCard product={p} />
-              </div>
+                <span>View Full Catalog</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <div
+            ref={gridRef}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-6 pt-2"
+            style={{ perspective: "1200px" }}
+          >
+            {filteredProducts.map((p, idx) => (
+              <div
+                key={p.id}
+                data-card-index={idx}
+                className="product-card-entrance-wrapper h-full will-change-transform"
+                style={{
+                  perspective: "1000px",
+                  transformOrigin: "center bottom",
+                }}
+              >
+                <div
+                  className="product-card-tilt-inner h-full transition-shadow duration-300 hover:shadow-2xl rounded-[2px]"
+                  style={{
+                    transformStyle: "preserve-3d",
+                  }}
+                  onMouseMove={handleCardMouseMove}
+                  onMouseLeave={handleCardMouseLeave}
+                >
+                  <ProductCard product={p} />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* View All CTA */}
         <div className="mt-12 text-center pt-8 border-t border-[#DADBD2] flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4">

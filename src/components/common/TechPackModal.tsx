@@ -200,15 +200,15 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
     : isVarsity
     ? "/varsity_jacket/front/body.png"
     : isEquestrian
-    ? "/equestrian/front (1) (1).png"
-    : "/hoodie/front/body.png";
+    ? "/equastarian/front (2) (1).png"
+    : "/hoodie/hoodie_front.png";
 
   const backPreviewAsset = isBasketball
     ? "/basketball/back (3) (1).png"
     : isVarsity
     ? "/varsity_jacket/back/body.png"
     : isEquestrian
-    ? "/equestrian/back (1) (1).png"
+    ? "/equastarian/back (2) (1).png"
     : "/hoodie/back_body.png";
 
   useEffect(() => {

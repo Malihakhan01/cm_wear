@@ -10,7 +10,7 @@ import { productsService } from "@/services/products.service";
 import { categoriesService } from "@/services/categories.service";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { useStoreModeStore } from "@/stores/useStoreModeStore";
-import { Search, SlidersHorizontal, ArrowRight } from "lucide-react";
+import { Search, SlidersHorizontal, ArrowRight, Box } from "lucide-react";
 
 function CatalogContent() {
   const searchParams = useSearchParams();
@@ -27,10 +27,16 @@ function CatalogContent() {
   const { mode, toggleMode } = useStoreModeStore();
 
   useEffect(() => {
+    const refreshProducts = () => {
+      Promise.all([productsService.getAll(), categoriesService.getAll()]).then(([prods, liveCats]) => {
+        setAllProducts(prods || []);
+      });
+    };
+
+    window.addEventListener("tawfiq_products_updated", refreshProducts);
+
     Promise.all([productsService.getAll(), categoriesService.getAll()]).then(([prods, liveCats]) => {
-      if (prods && prods.length > 0) {
-        setAllProducts(prods);
-      }
+      setAllProducts(prods || []);
 
       const mergedMap = new Map<string, Category>();
       CATEGORIES_DATA.forEach((c) => mergedMap.set(c.id, c));
@@ -151,18 +157,20 @@ function CatalogContent() {
               </p>
             </div>
 
-            {/* Mode Switcher */}
-            <div className="flex items-center gap-3 bg-[#20201E] border border-[#3A3A36] p-2 rounded-[2px]">
-              <span className="text-xs font-mono uppercase text-neutral-400 pl-2">
-                Purchasing Mode:
-              </span>
-              <button
-                onClick={toggleMode}
-                className="px-3.5 py-1.5 bg-[#0A0A0A] border border-[#D61C24] text-white text-xs font-mono uppercase font-bold rounded-[2px]"
-              >
-                <span className="text-[#FF333D]">{mode.toUpperCase()}</span>
-                <span className="text-[10px] text-neutral-400 ml-1.5">(Switch)</span>
-              </button>
+            {/* Actions: Mode Switcher */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 bg-[#20201E] border border-[#3A3A36] p-2 rounded-[2px]">
+                <span className="text-xs font-mono uppercase text-neutral-400 pl-2">
+                  Purchasing Mode:
+                </span>
+                <button
+                  onClick={toggleMode}
+                  className="px-3.5 py-1.5 bg-[#0A0A0A] border border-[#D61C24] text-white text-xs font-mono uppercase font-bold rounded-[2px]"
+                >
+                  <span className="text-[#FF333D]">{mode.toUpperCase()}</span>
+                  <span className="text-[10px] text-neutral-400 ml-1.5">(Switch)</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -283,7 +291,31 @@ function CatalogContent() {
             </div>
           </div>
 
-          {filteredProducts.length === 0 ? (
+          {allProducts.length === 0 ? (
+            <div className="py-20 text-center max-w-xl mx-auto space-y-4">
+              <div className="w-16 h-16 mx-auto bg-[#F4F4EF] border border-[#DADBD2] rounded-full flex items-center justify-center">
+                <Box className="w-8 h-8 text-[#D61C24]" />
+              </div>
+              <div className="space-y-2">
+                <span className="eyebrow-label text-[#D61C24]">CATALOG ARCHIVE</span>
+                <h2 className="text-2xl font-bold uppercase tracking-tight text-[#0A0A0A] font-display">
+                  Apparel Collections Updating
+                </h2>
+                <p className="text-sm text-[#72726D]">
+                  Our seasonal private-label export catalog is currently being updated. You can design custom styles in our 3D customizer studio or contact our factory production team.
+                </p>
+              </div>
+              <div className="pt-2">
+                <Link
+                  href="/customize/custom-hoodie"
+                  className="inline-flex px-6 py-3 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono uppercase font-bold rounded-[2px] transition-colors items-center justify-center gap-2 shadow-md"
+                >
+                  <span>Open 3D Customizer Studio</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          ) : filteredProducts.length === 0 ? (
             <div className="py-20 text-center space-y-4">
               <p className="text-sm text-[#72726D]">
                 No styles found matching the current search criteria.

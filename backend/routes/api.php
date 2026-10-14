@@ -26,6 +26,7 @@ Route::prefix('v1')->group(function () {
 
     // Products
     Route::get('/products', [ProductApiController::class, 'index']);
+    Route::post('/products/import-csv', [ProductApiController::class, 'importCsv']);
     Route::get('/products/{slug}', [ProductApiController::class, 'show']);
 
     // Categories

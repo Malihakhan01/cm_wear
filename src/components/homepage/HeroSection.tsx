@@ -19,88 +19,157 @@ interface HeroSlide {
   link: string;
 }
 
+// Exactly 8 Hero Slides matching the 8 images in public/HERO without any duplicates
 const HERO_SLIDES: HeroSlide[] = [
   {
-    id: "sportswear",
-    categoryLabel: "SPORTSWEAR",
-    categoryTag: "SPORTSWEAR · TEAMWEAR · PERFORMANCE",
+    id: "casual-wear",
+    categoryLabel: "STREETWEAR",
+    categoryTag: "STREETWEAR · HEAVYWEIGHT · PRIVATE LABEL",
     number: "01",
+    image: "/HERO/hero-streetwear.png",
+    titleLine1: "CUT FOR •",
+    titleLine2: "THE STREET",
+    description:
+      "Maximalist streetwear built your way: loopback French terry, rhinestones, puff print, chenille, and custom garment dye washes.",
+    accentColor: "#E85923",
+    specLabel: "SPEC: TI-CAS-001 • 450 GSM FRENCH TERRY",
+    link: "/casual-wear",
+  },
+  {
+    id: "equestrian-clothing",
+    categoryLabel: "EQUESTRIAN",
+    categoryTag: "EQUESTRIAN · LUXURY · WATERPROOF",
+    number: "02",
+    image: "/HERO/hero-equestrian.png",
+    titleLine1: "FORGED IN •",
+    titleLine2: "THE SADDLE",
+    description:
+      "Precision-tailored equestrian competition show jackets, 4-way stretch silicone grip breeches, and aerodynamic sun-shirts.",
+    accentColor: "#A31017",
+    specLabel: "SPEC: TI-EQ-002 • 4-WAY PERFORMANCE GRIP",
+    link: "/equestrian-clothing",
+  },
+  {
+    id: "ice-hockey",
+    categoryLabel: "ICE HOCKEY",
+    categoryTag: "PRO MATCH · REINFORCED · SUBLIMATED",
+    number: "03",
+    image: "/HERO/Dynamic Ice Hockey Turn in Motion.png",
+    titleLine1: "ENGINEERED FOR •",
+    titleLine2: "HIGH IMPACT",
+    description:
+      "Heavyweight double-reinforced hockey jerseys, ventilated fight straps, ergonomic padded pants, and custom team kits.",
+    accentColor: "#0284C7",
+    specLabel: "SPEC: TI-HOCKEY-003 • 330 GSM AIR-MESH",
+    link: "/ice-hockey",
+  },
+  {
+    id: "cycling",
+    categoryLabel: "CYCLING",
+    categoryTag: "AERODYNAMIC · SPEED · MOISTURE-WICKING",
+    number: "04",
+    image: "/HERO/Cinematic Forest Road Cyclist.png",
+    titleLine1: "BUILT FOR •",
+    titleLine2: "MAX VELOCITY",
+    description:
+      "Aerodynamic wind tunnel tested speed jerseys, Italian chamois bib shorts, windproof gilets, and thermal base layers.",
+    accentColor: "#10B981",
+    specLabel: "SPEC: TI-CYC-004 • ITALIAN PRO COMPRESS",
+    link: "/cycling",
+  },
+  {
+    id: "rugby",
+    categoryLabel: "RUGBY",
+    categoryTag: "TEAR-RESISTANT · COMBAT TOUGH · BAR-TACKED",
+    number: "05",
+    image: "/HERO/Lone Rugby Player Under Stadium Lights.png",
+    titleLine1: "UNBREAKABLE •",
+    titleLine2: "COLLISION GEAR",
+    description:
+      "Extreme tensile strength rugby jerseys, reinforced collar seams, bar-tacked grip zones, and heavy athletic match shorts.",
+    accentColor: "#F59E0B",
+    specLabel: "SPEC: TI-RGB-005 • 320 GSM POLY-SPANDEX",
+    link: "/rugby",
+  },
+  {
+    id: "basketball",
+    categoryLabel: "BASKETBALL",
+    categoryTag: "PRO COURT · MICRO-EYELET · DIAMOND MESH",
+    number: "06",
+    image: "/HERO/Contemplative Basketball Player on Urban Court (1).png",
+    titleLine1: "DOMINATE •",
+    titleLine2: "THE COURT",
+    description:
+      "Full court sublimated air-mesh uniforms, reversible diamond-mesh shorts, pro ribbed collars, and warm-up track suits.",
+    accentColor: "#EC4899",
+    specLabel: "SPEC: TI-BB-006 • DIAMOND DRI-FIT MESH",
+    link: "/basketball",
+  },
+  {
+    id: "ski-wear",
+    categoryLabel: "SKI WEAR",
+    categoryTag: "ALPINE 20K · 3-LAYER SHELL · WATERPROOF",
+    number: "07",
+    image: "/HERO/Cinematic Winter Skier Carving Through Snow.png",
+    titleLine1: "SUB-ZERO •",
+    titleLine2: "ALPINE SHIELD",
+    description:
+      "3-layer technical waterproof shells, sealed YKK Aquaguard taped seams, insulated thermal bibs, and blizzard proof down jackets.",
+    accentColor: "#38BDF8",
+    specLabel: "SPEC: TI-SKI-007 • 20,000 MM HYDROSTATIC",
+    link: "/ski-wear",
+  },
+  {
+    id: "go-karting-racing",
+    categoryLabel: "MOTORSPORT",
+    categoryTag: "MOTORSPORT · 500D CORDURA · RACING SUITS",
+    number: "08",
     image: "/HERO/hero-racing.png",
     titleLine1: "WE MAKE •",
     titleLine2: "WHAT MOVES",
     description:
       "Performance sportswear under your label. Loud prints, sharp fits, sampled before a single bulk piece is cut.",
     accentColor: "#D61C24",
-    specLabel: "SPEC: TI-RACE-001 • PRO-COMP",
-    link: "/catalog?category=go-karting-racing",
-  },
-  {
-    id: "streetwear",
-    categoryLabel: "STREETWEAR",
-    categoryTag: "STREETWEAR · HEAVYWEIGHT · PRIVATE LABEL",
-    number: "02",
-    image: "/HERO/hero-streetwear.png",
-    titleLine1: "CUT FOR",
-    titleLine2: "THE STREET",
-    description:
-      "Maximalist streetwear built your way: rhinestones, puff print, chenille and washes, made to order.",
-    accentColor: "#E85923",
-    specLabel: "SPEC: TI-CAS-001 • 450 GSM FRENCH TERRY",
-    link: "/catalog?category=casual-wear",
-  },
-  {
-    id: "equestrian",
-    categoryLabel: "EQUESTRIAN",
-    categoryTag: "EQUESTRIAN · LUXURY · WATERPROOF",
-    number: "03",
-    image: "/HERO/hero-equestrian.png",
-    titleLine1: "FORGED IN",
-    titleLine2: "THE CHASE",
-    description:
-      "Technical equestrian and motorsport gear engineered to withstand extreme elements, friction, and competition demands.",
-    accentColor: "#A31017",
-    specLabel: "SPEC: TI-EQ-004 • SHIELD PERFORMANCE",
-    link: "/catalog?category=equestrian-clothing",
+    specLabel: "SPEC: TI-RACE-008 • PRO-COMP",
+    link: "/go-karting-racing",
   },
 ];
 
-const SLIDE_DURATION_MS = 3600; // Snappier, faster slide transitions
+const SLIDE_DURATION_MS = 2800; // Snappy, cinematic slide transitions across all 8 categories
 
 export const HeroSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [activeIdx, setActiveIdx] = useState<number>(0);
-  const [progress, setProgress] = useState<number>(0);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
 
   // Always keep header visible
   useEffect(() => {
     useHeaderStore.getState().setHeaderVisible(true);
   }, []);
 
-  // Infinite Auto Animation Effect
+  // Infinite Auto Animation Effect across all 8 categories in sequential order
   useEffect(() => {
-    if (isPaused) return;
-
-    const intervalStep = 50; // update progress every 50ms for smooth bar fill
-    const stepIncrement = (intervalStep / SLIDE_DURATION_MS) * 100;
-
     const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          // Advance to next slide infinitely in a loop
-          setActiveIdx((curr) => (curr + 1) % HERO_SLIDES.length);
-          return 0;
-        }
-        return prev + stepIncrement;
-      });
-    }, intervalStep);
+      setActiveIdx((curr) => (curr + 1) % HERO_SLIDES.length);
+    }, SLIDE_DURATION_MS);
 
     return () => clearInterval(timer);
-  }, [isPaused]);
+  }, [activeIdx]);
+
+  // Automatically scroll active tab into view when cycling
+  useEffect(() => {
+    const activeTabEl = tabRefs.current[activeIdx];
+    if (activeTabEl) {
+      activeTabEl.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }, [activeIdx]);
 
   const goToSlide = useCallback((index: number) => {
     setActiveIdx(index);
-    setProgress(0);
   }, []);
 
   const handleScrollDown = () => {
@@ -120,13 +189,11 @@ export const HeroSection: React.FC = () => {
     <div
       ref={containerRef}
       className="relative w-full bg-[#0A0A0A] select-none"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Hero Stage - Normal natural scroll without pinned hijacking */}
+      {/* Hero Stage */}
       <section className="relative w-full h-screen min-h-[640px] max-h-[1080px] overflow-hidden bg-[#0A0A0A] text-white flex flex-col justify-between">
         {/* ======================================================== */}
-        {/* BACKGROUND SLIDES: INFINITE CROSSFADE WITH KEN BURNS ZOOM */}
+        {/* BACKGROUND SLIDES: CINEMATIC ANIMATION ON ALL SLIDES      */}
         {/* ======================================================== */}
         <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
           {HERO_SLIDES.map((slide, idx) => {
@@ -134,18 +201,16 @@ export const HeroSection: React.FC = () => {
             return (
               <div
                 key={slide.id}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-600 ease-in-out ${
+                className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
                   isActive ? "opacity-100 z-1" : "opacity-0 z-0 pointer-events-none"
                 }`}
               >
                 <img
                   src={slide.image}
                   alt={slide.categoryLabel}
-                  className={`w-full h-full object-cover object-[75%_center] md:object-[70%_center] brightness-100 filter contrast-105 transition-transform duration-[3800ms] ease-out ${
-                    isActive ? "scale-105" : "scale-100"
-                  }`}
+                  className="w-full h-full object-cover object-center brightness-100 contrast-105 select-none pointer-events-none scale-100"
                 />
-                {/* Subtle gradient focused only on the text area on left, keeping the model/rider on right bright & clear */}
+                {/* Subtle gradient focused only on the text area on left */}
                 <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/55 via-25% to-transparent pointer-events-none" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/40 via-transparent via-15% to-transparent pointer-events-none" />
               </div>
@@ -157,21 +222,40 @@ export const HeroSection: React.FC = () => {
         {/* TOP CONTROLS: CATEGORY TABS & SLIDE COUNTER              */}
         {/* ======================================================== */}
         <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 flex items-center justify-between">
-          {/* Top Left: Category Toggle Pills */}
-          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar max-w-[65%] sm:max-w-none">
+          {/* Top Left: Category Toggle Pills for all 8 categories with active animated progress effect */}
+          <div 
+            className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar max-w-[68%] sm:max-w-none pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
+          >
             {HERO_SLIDES.map((slide, idx) => {
               const isActive = activeIdx === idx;
               return (
                 <button
                   key={slide.id}
+                  ref={(el) => {
+                    tabRefs.current[idx] = el;
+                  }}
                   onClick={() => goToSlide(idx)}
-                  className={`px-2.5 sm:px-4 py-1 sm:py-1.5 text-[9px] sm:text-xs font-mono font-bold tracking-wider uppercase rounded-[2px] transition-all duration-200 cursor-pointer shrink-0 ${
+                  className={`relative overflow-hidden px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-[9px] sm:text-xs font-mono font-bold tracking-wider uppercase rounded-[2px] transition-all duration-200 cursor-pointer shrink-0 ${
                     isActive
-                      ? "bg-white text-[#0A0A0A] shadow-lg scale-100"
+                      ? "bg-white text-[#0A0A0A] shadow-lg ring-1 ring-white/60"
                       : "bg-black/50 hover:bg-black/80 text-white/70 border border-white/20 hover:border-white/50 backdrop-blur-sm"
                   }`}
                 >
-                  {slide.categoryLabel}
+                  <span className="relative z-10">{slide.categoryLabel}</span>
+                  {/* Animation progress effect active on current tab, moving seamlessly across all 8 tabs */}
+                  {isActive && (
+                    <span
+                      key={`tab-progress-${activeIdx}`}
+                      className="absolute bottom-0 left-0 h-[2.5px] bg-[#D61C24] animate-hero-progress z-20 pointer-events-none"
+                      style={{
+                        animationDuration: `${SLIDE_DURATION_MS}ms`,
+                      }}
+                    />
+                  )}
                 </button>
               );
             })}
@@ -185,9 +269,10 @@ export const HeroSection: React.FC = () => {
               </span>
               <div className="w-10 sm:w-16 h-[2px] bg-white/20 relative overflow-hidden rounded-full">
                 <div
-                  className="h-full bg-white transition-[width] duration-75 ease-linear"
+                  key={`top-progress-${activeIdx}`}
+                  className="h-full bg-white animate-hero-progress"
                   style={{
-                    width: `${progress}%`,
+                    animationDuration: `${SLIDE_DURATION_MS}ms`,
                   }}
                 />
               </div>

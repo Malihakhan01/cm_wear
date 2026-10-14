@@ -3,7 +3,8 @@ import ProductDetailClient from "./ProductDetailClient";
 import { PRODUCTS_DATA } from "@/data/products.data";
 
 export function generateStaticParams() {
-  return PRODUCTS_DATA.map((p) => ({ slug: p.slug }));
+  const slugs = PRODUCTS_DATA.map((p) => ({ slug: p.slug }));
+  return slugs.length > 0 ? slugs : [{ slug: "overview" }];
 }
 
 export default function Page() {

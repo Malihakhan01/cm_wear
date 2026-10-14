@@ -93,6 +93,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/customizer/options', [\App\Http\Controllers\Admin\CustomizerAdminController::class, 'storeOption'])->name('customizer.options.store');
         Route::post('/customizer/options/{option}/toggle', [\App\Http\Controllers\Admin\CustomizerAdminController::class, 'toggleOption'])->name('customizer.options.toggle');
         Route::delete('/customizer/options/{option}', [\App\Http\Controllers\Admin\CustomizerAdminController::class, 'deleteOption'])->name('customizer.options.destroy');
+        Route::post('/customizer/templates/{template}/pom', [\App\Http\Controllers\Admin\CustomizerAdminController::class, 'updatePomGrading'])->name('customizer.templates.pom');
+        Route::post('/customizer/templates/{template}/pricing', [\App\Http\Controllers\Admin\CustomizerAdminController::class, 'updateWholesaleTiers'])->name('customizer.templates.pricing');
         Route::post('/customizer/artworks/upload', [\App\Http\Controllers\Admin\CustomizerAdminController::class, 'uploadArtwork'])->name('customizer.artworks.upload');
         Route::delete('/customizer/artworks', [\App\Http\Controllers\Admin\CustomizerAdminController::class, 'deleteArtwork'])->name('customizer.artworks.destroy');
 

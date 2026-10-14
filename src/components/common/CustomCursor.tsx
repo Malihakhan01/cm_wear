@@ -5,7 +5,6 @@ import React, { useEffect, useState, useRef } from "react";
 export const CustomCursor: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isOverImage, setIsOverImage] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
 
@@ -31,63 +30,6 @@ export const CustomCursor: React.FC = () => {
       return;
     }
 
-    // Precise helper to identify if hovered element is an actual image or media element
-    const checkIsImageElement = (el: HTMLElement | null): boolean => {
-      let current: HTMLElement | null = el;
-      let depth = 0;
-
-      while (current && depth < 6 && current !== document.body) {
-        const tagName = current.tagName.toLowerCase();
-
-        // 1. Direct media elements
-        if (tagName === "img" || tagName === "picture" || tagName === "video" || tagName === "canvas") {
-          return true;
-        }
-
-        // 2. SVG customizer garment viewers
-        if (
-          tagName === "svg" &&
-          (current.classList.contains("garment-svg") ||
-            current.classList.contains("customizer-svg") ||
-            current.closest(".customizer-viewer-container") ||
-            current.closest("#viewer-front-container") ||
-            current.closest("#viewer-back-container"))
-        ) {
-          return true;
-        }
-
-        // 3. Explicit image cursor markers
-        const dataCursor = current.getAttribute("data-cursor");
-        if (dataCursor === "image" || dataCursor === "zoom" || dataCursor === "expand") {
-          return true;
-        }
-
-        // 4. Background image inline style
-        if (
-          current.style &&
-          current.style.backgroundImage &&
-          current.style.backgroundImage.includes("url(")
-        ) {
-          return true;
-        }
-
-        // 5. Specific image preview container classes
-        const classStr = current.className && typeof current.className === "string" ? current.className : "";
-        if (
-          classStr.includes("product-image-wrap") ||
-          classStr.includes("fabric-preview-img") ||
-          classStr.includes("hero-image-bg")
-        ) {
-          return true;
-        }
-
-        current = current.parentElement;
-        depth++;
-      }
-
-      return false;
-    };
-
     const handleMouseMove = (e: MouseEvent) => {
       targetPos.current = { x: e.clientX, y: e.clientY };
 
@@ -95,19 +37,12 @@ export const CustomCursor: React.FC = () => {
         setIsVisible(true);
         mousePos.current = { x: e.clientX, y: e.clientY };
       }
-
-      const target = e.target as HTMLElement | null;
-      if (!target) return;
-
-      const isImage = checkIsImageElement(target);
-      setIsOverImage(isImage);
     };
 
     const handleMouseDown = () => setIsPressed(true);
     const handleMouseUp = () => setIsPressed(false);
     const handleMouseLeave = () => {
       setIsVisible(false);
-      setIsOverImage(false);
     };
     const handleMouseEnter = () => setIsVisible(true);
 
@@ -155,11 +90,9 @@ export const CustomCursor: React.FC = () => {
       }}
     >
       <div
-        className={`-translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isOverImage
-            ? "w-20 h-20 shadow-2xl"
-            : "w-2.5 h-2.5 shadow-sm"
-        } ${isPressed ? "scale-75" : "scale-100"}`}
+        className={`-translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-transform duration-200 ease-out w-2.5 h-2.5 shadow-sm ${
+          isPressed ? "scale-75" : "scale-100"
+        }`}
       />
     </div>
   );

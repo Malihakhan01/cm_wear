@@ -37,6 +37,28 @@ export default function CheckoutPage() {
   const [phone, setPhone] = useState("");
   const [whatsAppUpdates, setWhatsAppUpdates] = useState(true);
 
+  // Sync client details from customizer only if explicitly entered earlier in popup or save form
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const popupSubmitted = sessionStorage.getItem("user_popup_submitted") === "true";
+      if (popupSubmitted) {
+        const savedEmail = sessionStorage.getItem("user_popup_submitted_email");
+        const savedName = sessionStorage.getItem("user_popup_submitted_name");
+        const savedCompany = sessionStorage.getItem("user_popup_submitted_company");
+        const savedPhone = sessionStorage.getItem("user_popup_submitted_phone");
+
+        if (savedEmail) setEmail(savedEmail);
+        if (savedName) {
+          const parts = savedName.trim().split(" ");
+          setFirstName(parts[0] || "");
+          setLastName(parts.slice(1).join(" ") || "");
+        }
+        if (savedCompany) setCompany(savedCompany);
+        if (savedPhone) setPhone(savedPhone);
+      }
+    }
+  }, []);
+
   // Simulated card inputs
   const [cardNumber, setCardNumber] = useState("•••• •••• •••• 4242");
   const [cardExpiry, setCardExpiry] = useState("12/28");
@@ -51,6 +73,15 @@ export default function CheckoutPage() {
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
+
+    // Save contact to localStorage for two-way customizer persistence
+    if (typeof window !== "undefined") {
+      if (email) localStorage.setItem("tawfiq_customizer_client_email", email);
+      const fullName = `${firstName} ${lastName}`.trim();
+      if (fullName) localStorage.setItem("tawfiq_customizer_client_name", fullName);
+      if (company) localStorage.setItem("tawfiq_customizer_client_company", company);
+      if (phone) localStorage.setItem("tawfiq_customizer_client_phone", phone);
+    }
 
     const initialOrderRef = `TI-${Math.floor(100000 + Math.random() * 900000)}`;
     let confirmedOrderRef = initialOrderRef;
@@ -90,6 +121,10 @@ export default function CheckoutPage() {
           sizeBreakdown: i.sizeBreakdown,
           isCustomized: i.isCustomized,
           customSummary: i.customSummary,
+          fabric: i.fabric,
+          gsm: i.gsm,
+          customDesignId: i.customDesignId,
+          tech_pack_code: i.techPackCode,
         })),
       });
 

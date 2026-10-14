@@ -53,4 +53,34 @@ class ProductApiController extends Controller
             'data' => $product,
         ]);
     }
+
+    public function importCsv(Request $request)
+    {
+        $request->validate([
+            'csv_file' => ['required', 'file', 'mimes:csv,txt', 'max:51200'],
+        ]);
+
+        $file = $request->file('csv_file');
+        $fileName = $file->getClientOriginalName();
+        $storedPath = $file->store('csv_imports', 'local');
+        $absolutePath = \Illuminate\Support\Facades\Storage::disk('local')->path($storedPath);
+
+        $job = \App\Models\ImportJob::create([
+            'user_id' => auth()->id() ?? null,
+            'file_name' => $fileName,
+            'file_path' => $absolutePath,
+            'status' => 'pending',
+        ]);
+
+        $parser = new \App\Services\WooCommerceCsvParserService();
+        $parser->process($job);
+        $job->refresh();
+
+        return response()->json([
+            'success' => true,
+            'message' => "CSV '{$fileName}' processed successfully",
+            'job' => $job,
+            'total_products' => Product::count(),
+        ]);
+    }
 }

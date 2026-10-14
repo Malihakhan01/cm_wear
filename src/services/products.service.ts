@@ -31,7 +31,6 @@ interface BackendProductRaw {
 
 const MAIN_CAT_IDS: MainCategoryId[] = [
   "casual-wear",
-  "streetwear",
   "equestrian-clothing",
   "ice-hockey",
   "cycling",
@@ -39,27 +38,62 @@ const MAIN_CAT_IDS: MainCategoryId[] = [
   "basketball",
   "ski-wear",
   "go-karting-racing",
-  "bavarian-wear",
-  "martial-arts",
 ];
 
-function normalizeImageUrl(url?: string): string {
-  if (!url) return "/placeholder.jpg";
-  if (url.includes("localhost:8000")) {
-    url = url.replace(/http:\/\/localhost:8000/, "");
+export function getProductDemoImage(category?: string, name?: string, subcategory?: string): string {
+  const text = `${name || ""} ${category || ""} ${subcategory || ""}`.toLowerCase();
+  if (text.includes("hoodie") || text.includes("fleece") || text.includes("sweatshirt") || text.includes("pullover")) {
+    return "/hoodie/hoodie_front.png";
+  }
+  if (text.includes("varsity") || text.includes("jacket") || text.includes("leather") || text.includes("bomber") || text.includes("coat")) {
+    return "/varsity_jacket/FRONT_BODY.png";
+  }
+  if (text.includes("basketball") || text.includes("jersey") || text.includes("mesh") || text.includes("court")) {
+    return "/basketball/front (3) (1).png";
+  }
+  if (text.includes("equestrian") || text.includes("riding") || text.includes("horse") || text.includes("breeches")) {
+    return "/equastarian/front (2) (1).png";
+  }
+  if (text.includes("cycling") || text.includes("cyclist") || text.includes("bike")) {
+    return "/categories/Cyclist Conquering the Mountain Pass.png";
+  }
+  if (text.includes("soccer") || text.includes("football") || text.includes("ball") || text.includes("team")) {
+    return "/categories/Confident Soccer Portrait with Ball.png";
+  }
+  if (text.includes("hockey")) {
+    return "/HERO/Dynamic Ice Hockey Turn in Motion.png";
+  }
+  return "/placeholder.jpg";
+}
+
+export function normalizeImageUrl(url?: string, category?: string, name?: string, subcategory?: string): string {
+  if (!url || url.trim() === "" || url === "/placeholder.jpg") {
+    return getProductDemoImage(category, name, subcategory);
   }
   if (url.startsWith("http://") || url.startsWith("https://")) {
     return url;
   }
+  if (
+    url.startsWith("/hoodie") ||
+    url.startsWith("/varsity") ||
+    url.startsWith("/basketball") ||
+    url.startsWith("/equastarian") ||
+    url.startsWith("/categories") ||
+    url.startsWith("/HERO") ||
+    url.startsWith("/images")
+  ) {
+    return url;
+  }
   const clean = url.replace(/^\/?storage\//, "").replace(/^\//, "");
-  return `/storage/${clean}`;
+  const backendBase = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+  return `${backendBase}/storage/${clean}`;
 }
 
 function mapBackendProductToFrontend(p: BackendProductRaw): Product {
   const primaryRaw = p.primary_image?.url || p.images?.[0]?.url;
-  const primaryImg = normalizeImageUrl(primaryRaw);
+  const primaryImg = normalizeImageUrl(primaryRaw, p.categories?.[0]?.slug, p.name, p.categories?.[1]?.slug);
   const rawGallery = p.images && p.images.length > 0
-    ? p.images.map((img) => normalizeImageUrl(img.url))
+    ? p.images.map((img) => normalizeImageUrl(img.url, p.categories?.[0]?.slug, p.name, p.categories?.[1]?.slug))
     : [primaryImg];
   const gallery = [primaryImg, ...rawGallery.filter((u) => u !== primaryImg)];
 
@@ -148,22 +182,67 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
   };
 }
 
+export function getLocalImportedProducts(): Product[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem("tawfiq_imported_products");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch (e) {
+    console.warn("Error reading imported products from localStorage", e);
+  }
+  return [];
+}
+
+export function saveLocalImportedProducts(products: Product[]): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem("tawfiq_imported_products", JSON.stringify(products));
+    window.dispatchEvent(new Event("tawfiq_products_updated"));
+  } catch (e) {
+    console.warn("Error saving imported products to localStorage", e);
+  }
+}
+
 export const productsService = {
   async getAll(): Promise<Product[]> {
+    const localImported = getLocalImportedProducts();
+    const staticBase = [...PRODUCTS_DATA, ...localImported];
+    const seen = new Set<string>();
+    const uniqueBase = staticBase.filter((p) => {
+      if (seen.has(p.slug)) return false;
+      seen.add(p.slug);
+      return true;
+    });
+
+    const sanitizedBase = uniqueBase.map((p) => {
+      const demoFallback = getProductDemoImage(p.category, p.name, p.subcategory);
+      const validImages = (p.images || []).map((img) => {
+        if (!img || img === "/placeholder.jpg") return demoFallback;
+        return img;
+      });
+      return {
+        ...p,
+        images: validImages.length > 0 ? validImages : [demoFallback],
+      };
+    });
+
     try {
       const res = await apiClient.get<{ data?: BackendProductRaw[] } | BackendProductRaw[]>("/products?per_page=250");
       const list = Array.isArray(res) ? res : res?.data;
       if (list && list.length > 0) {
         const liveProducts = list.map(mapBackendProductToFrontend);
         const liveSlugs = new Set(liveProducts.map((p) => p.slug));
-        const remainingStatic = PRODUCTS_DATA.filter((p) => !liveSlugs.has(p.slug));
+        const remainingStatic = sanitizedBase.filter((p) => !liveSlugs.has(p.slug));
         return [...liveProducts, ...remainingStatic];
       }
     } catch (e) {
       console.warn("Live backend products fetch fallback:", e);
     }
     await delay(50);
-    return [...PRODUCTS_DATA];
+    return sanitizedBase;
   },
 
   async getBySlug(slug: string): Promise<Product | null> {
@@ -176,7 +255,8 @@ export const productsService = {
       console.warn("Live backend product by slug fetch fallback:", e);
     }
     await delay(50);
-    return PRODUCTS_DATA.find((p) => p.slug === slug) || null;
+    const all = await this.getAll();
+    return all.find((p) => p.slug === slug) || null;
   },
 
   async getById(id: string): Promise<Product | null> {

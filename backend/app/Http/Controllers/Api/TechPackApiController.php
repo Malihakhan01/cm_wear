@@ -31,6 +31,10 @@ class TechPackApiController extends Controller
             'pdf_path' => 'nullable|string|max:500',
             'design_code' => 'nullable|string',
             'customer_id' => 'nullable|exists:customers,id',
+            'customer_email' => 'nullable|email|max:255',
+            'customer_name' => 'nullable|string|max:255',
+            'customer_company' => 'nullable|string|max:255',
+            'customer_phone' => 'nullable|string|max:50',
             'product_id' => 'nullable|exists:products,id',
             'parts_colors' => 'nullable|array',
             'artwork_layers' => 'nullable|array',
@@ -52,6 +56,37 @@ class TechPackApiController extends Controller
         $previewBack = $validated['preview_back'] ?? null;
         $this->processBase64Assets($artworkLayers, $previewFront, $previewBack);
 
+        // Resolve or create Customer if email or customer_id is provided
+        $customerId = $validated['customer_id'] ?? null;
+        if (!$customerId && !empty($validated['customer_email'])) {
+            $cName = trim($validated['customer_name'] ?? '');
+            $parts = explode(' ', $cName, 2);
+            $fName = $parts[0] ?: 'Client';
+            $lName = $parts[1] ?? '';
+
+            $customer = \App\Models\Customer::firstOrCreate(
+                ['email' => $validated['customer_email']],
+                [
+                    'first_name' => $fName,
+                    'last_name' => $lName,
+                    'company_name' => $validated['customer_company'] ?? null,
+                    'phone' => $validated['customer_phone'] ?? null,
+                    'whatsapp' => $validated['customer_phone'] ?? null,
+                    'status' => 'active',
+                ]
+            );
+            if (!$customer->wasRecentlyCreated) {
+                $customer->update(array_filter([
+                    'first_name' => $customer->first_name ?: $fName,
+                    'last_name' => $customer->last_name ?: $lName,
+                    'company_name' => $customer->company_name ?: ($validated['customer_company'] ?? null),
+                    'phone' => $customer->phone ?: ($validated['customer_phone'] ?? null),
+                    'whatsapp' => $customer->whatsapp ?: ($validated['customer_phone'] ?? null),
+                ]));
+            }
+            $customerId = $customer->id;
+        }
+
         $customizerDesignId = null;
 
         // If design_code is provided, link to existing CustomizerDesign
@@ -61,6 +96,7 @@ class TechPackApiController extends Controller
                 $customizerDesignId = $existingDesign->id;
                 // Update the design with latest visual/parts data
                 $existingDesign->update([
+                    'customer_id' => $customerId ?: $existingDesign->customer_id,
                     'parts_colors' => $validated['parts_colors'] ?? $existingDesign->parts_colors,
                     'artwork_layers' => $artworkLayers ?: $existingDesign->artwork_layers,
                     'monogram_state' => $validated['monogram_state'] ?? $existingDesign->monogram_state,
@@ -84,6 +120,7 @@ class TechPackApiController extends Controller
 
             if ($existingRecentDesign) {
                 $existingRecentDesign->update([
+                    'customer_id' => $customerId ?: $existingRecentDesign->customer_id,
                     'parts_colors' => $validated['parts_colors'],
                     'artwork_layers' => $artworkLayers,
                     'monogram_state' => $validated['monogram_state'] ?? null,
@@ -98,7 +135,7 @@ class TechPackApiController extends Controller
                 $newDesignCode = 'CD-' . strtoupper(Str::random(8));
                 $createdDesign = CustomizerDesign::create([
                     'product_id' => $validated['product_id'],
-                    'customer_id' => $validated['customer_id'] ?? null,
+                    'customer_id' => $customerId,
                     'design_code' => $newDesignCode,
                     'design_name' => $validated['style_name'],
                     'parts_colors' => $validated['parts_colors'],
@@ -141,8 +178,8 @@ class TechPackApiController extends Controller
         if (!$techPack && !empty($designFingerprint)) {
             $tpQuery = TechPack::where('design_fingerprint', $designFingerprint)
                 ->where('created_at', '>=', now()->subHours(1));
-            if (!empty($validated['customer_id'])) {
-                $tpQuery->where('customer_id', $validated['customer_id']);
+            if (!empty($customerId)) {
+                $tpQuery->where('customer_id', $customerId);
             }
             $techPack = $tpQuery->latest()->first();
         }
@@ -168,17 +205,55 @@ class TechPackApiController extends Controller
         ];
 
         $fabricDesc = $validated['fabric_spec'] ?? '450 GSM 100% Combed Cotton French Terry';
-        $defaultBom = $validated['bill_of_materials'] ?? [
-            ['item' => 'Main Body Fabric', 'spec' => $fabricDesc, 'consumption' => '1.45 meters'],
-            ['item' => 'Rib Knit 2x1', 'spec' => '95% Cotton / 5% Elastane 420 GSM', 'consumption' => '0.35 meters'],
-            ['item' => 'Sewing Thread', 'spec' => '100% Core-Spun Poly #40 Ticket 120', 'consumption' => '120 meters'],
-            ['item' => 'Neck Label', 'spec' => 'High-Density Damask Woven Label', 'consumption' => '1 pc'],
-            ['item' => 'Care Label', 'spec' => 'Satin Heat-Transfer / Printed', 'consumption' => '1 pc'],
-            ['item' => 'Packaging', 'spec' => '80-Micron Biodegradable Frosted Ziplock Polybag', 'consumption' => '1 pc'],
-        ];
+        $lowerStyle = strtolower($validated['style_name'] ?? '');
+
+        if (!empty($validated['bill_of_materials'])) {
+            $defaultBom = $validated['bill_of_materials'];
+        } elseif (str_contains($lowerStyle, 'varsity') || str_contains($lowerStyle, 'letterman')) {
+            $defaultBom = [
+                ['item' => 'Main Body Fabric', 'spec' => $fabricDesc ?: '24 oz Melton Wool (80% Wool / 20% Nylon)', 'consumption' => '1.35 meters'],
+                ['item' => 'Sleeve Shell', 'spec' => 'Full-Grain Supple Cowhide Leather 1.2-1.4mm', 'consumption' => '1.10 meters'],
+                ['item' => 'Interior Lining', 'spec' => '120 GSM Diamond Quilted Polyfill Satin', 'consumption' => '1.45 meters'],
+                ['item' => 'Rib Knit Trim', 'spec' => '2x2 Heavy Striped Wool/Cotton Rib-Knit', 'consumption' => '0.40 meters'],
+                ['item' => 'Hardware Snaps', 'spec' => 'Heavy-Duty Brass Enamel Coated Press Snaps', 'consumption' => '7 pcs'],
+                ['item' => 'Sewing Thread', 'spec' => 'Bonded Heavy Nylon / Core-Spun Poly #40', 'consumption' => '180 meters'],
+                ['item' => 'Neck & Care Label', 'spec' => 'High-Density Damask Woven Label', 'consumption' => '1 set'],
+                ['item' => 'Packaging', 'spec' => 'Heavy-Duty Frosted Garment Polybag with Hanger Slot', 'consumption' => '1 pc'],
+            ];
+        } elseif (str_contains($lowerStyle, 'basketball') || str_contains($lowerStyle, 'jersey')) {
+            $defaultBom = [
+                ['item' => 'Main Body Fabric', 'spec' => $fabricDesc ?: '200 GSM Diamond Weave Polyester Air-Mesh', 'consumption' => '1.10 meters'],
+                ['item' => 'Panel Inserts', 'spec' => '220 GSM 4-Way Stretch Interlock Mesh', 'consumption' => '0.35 meters'],
+                ['item' => 'Collar & Arm Trim', 'spec' => '1x1 Jacquard Flat-Knit Rib Collar', 'consumption' => '0.25 meters'],
+                ['item' => 'Drawcord & Aglets', 'spec' => 'Reinforced Flat Knitted Drawcord with Rubberized Aglets', 'consumption' => '1.20 meters'],
+                ['item' => 'Sewing Thread', 'spec' => 'Microfiber Core-Spun Poly #50 Ticket 140', 'consumption' => '95 meters'],
+                ['item' => 'Heat-Seal Label', 'spec' => 'Sublimated Tagless Heat-Transfer Neck Spec', 'consumption' => '1 pc'],
+                ['item' => 'Packaging', 'spec' => 'Recycled Frosted Ziplock Polybag with Vent Holes', 'consumption' => '1 pc'],
+            ];
+        } elseif (str_contains($lowerStyle, 'equestrian') || str_contains($lowerStyle, 'riding')) {
+            $defaultBom = [
+                ['item' => 'Main Body Fabric', 'spec' => $fabricDesc ?: '320 GSM 4-Way Stretch Italian Softshell (DWR)', 'consumption' => '1.60 meters'],
+                ['item' => 'Thermal Backing', 'spec' => 'Bonded Hydrophobic Micro-Grid Fleece Lining', 'consumption' => '1.40 meters'],
+                ['item' => 'Front Zipper', 'spec' => 'Waterproof YKK AquaGuard Double-Slider Zipper', 'consumption' => '1 pc (65cm)'],
+                ['item' => 'Pocket Hardware', 'spec' => 'Concealed Reverse-Coil YKK Zippers', 'consumption' => '2 pcs (18cm)'],
+                ['item' => 'Seam Sealing', 'spec' => '3-Layer Heat Activated Waterproof Seam Tape', 'consumption' => '8.5 meters'],
+                ['item' => 'Branding Trim', 'spec' => 'Reflective High-Density Silicone Molded Crest', 'consumption' => '1 pc'],
+                ['item' => 'Packaging', 'spec' => 'Breathable Non-Woven Atelier Suit Garment Carrier', 'consumption' => '1 pc'],
+            ];
+        } else {
+            $defaultBom = [
+                ['item' => 'Main Body Fabric', 'spec' => $fabricDesc ?: '450 GSM 100% Combed Cotton French Terry', 'consumption' => '1.45 meters'],
+                ['item' => 'Rib Knit 2x1', 'spec' => '95% Cotton / 5% Elastane 420 GSM Heavy Rib', 'consumption' => '0.35 meters'],
+                ['item' => 'Hood Drawcord', 'spec' => 'Heavy Round Knitted 100% Cotton Cord with Metal Tips', 'consumption' => '1.30 meters'],
+                ['item' => 'Drawcord Eyelets', 'spec' => 'Matte Black Powder-Coated Brass Eyelets', 'consumption' => '2 pcs'],
+                ['item' => 'Sewing Thread', 'spec' => '100% Core-Spun Poly #40 Ticket 120 (Flatlock)', 'consumption' => '140 meters'],
+                ['item' => 'Neck & Care Label', 'spec' => 'High-Density Damask Woven Label + Satin Care', 'consumption' => '1 set'],
+                ['item' => 'Packaging', 'spec' => '80-Micron Biodegradable Frosted Ziplock Polybag', 'consumption' => '1 pc'],
+            ];
+        }
 
         $techPackData = [
-            'customer_id' => $validated['customer_id'] ?? null,
+            'customer_id' => $customerId,
             'customizer_design_id' => $customizerDesignId,
             'design_fingerprint' => $designFingerprint,
             'status' => $techPack ? $techPack->status : 'submitted',
