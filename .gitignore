@@ -42,6 +42,8 @@ next-env.d.ts
 
 # Archives & Staging
 *.zip
+*.tar
+*.tar.gz
 backend_staging/
 backend/vendor/
 backend/node_modules/

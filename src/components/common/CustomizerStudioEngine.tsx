@@ -354,31 +354,30 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
   const getModelFromSlug = (s: string): "hoodie" | "varsity" | "equestrian" | "basketball" => {
     const lower = (s || "").toLowerCase();
     if (lower.includes("basketball") || lower.includes("court")) return "basketball";
-    if (lower.includes("equestrian") || lower.includes("riding") || lower.includes("breeches")) return "equestrian";
+    if (lower.includes("equestrian") || lower.includes("riding") || lower.includes("breeches")) return "varsity";
     if (lower.includes("hoodie") || lower.includes("sweatshirt")) return "hoodie";
     return "varsity";
   };
 
-  // Studio model switcher: hoodie vs varsity vs equestrian vs basketball
+  // Studio model switcher: hoodie vs varsity vs basketball
   const [activeStudioModel, setActiveStudioModel] = useState<"hoodie" | "varsity" | "equestrian" | "basketball">(() => {
-    return initialSlug ? getModelFromSlug(initialSlug) : "varsity";
+    const m = initialSlug ? getModelFromSlug(initialSlug) : "varsity";
+    return m === "equestrian" ? "varsity" : m;
   });
 
   // Sync when initialSlug changes
   React.useEffect(() => {
     if (!initialSlug) return;
     const model = getModelFromSlug(initialSlug);
-    setActiveStudioModel(model);
-    if (model === "varsity") {
+    const safeModel = model === "equestrian" ? "varsity" : model;
+    setActiveStudioModel(safeModel);
+    if (safeModel === "varsity") {
       setActivePart("body");
       setSelectedGsm(500);
-    } else if (model === "hoodie") {
+    } else if (safeModel === "hoodie") {
       setActivePart("body");
       setSelectedGsm(450);
-    } else if (model === "equestrian") {
-      setActivePart("body");
-      setSelectedGsm(320);
-    } else if (model === "basketball") {
+    } else if (safeModel === "basketball") {
       setActivePart("jersey");
       setSelectedGsm(200);
     }
@@ -1305,16 +1304,6 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                     title="Varsity Studio"
                   >
                     <span>Varsity</span>
-                  </button>
-                  <button
-                    onClick={() => { setActiveStudioModel("equestrian"); setActivePart("body"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(320); onModelChange?.("equestrian"); }}
-                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "equestrian"
-                        ? "bg-[#0B0B0B] text-white shadow-xs"
-                        : "text-neutral-600 hover:text-black"
-                      }`}
-                    title="Equestrian Studio"
-                  >
-                    <span>Equestrian</span>
                   </button>
                   <button
                     onClick={() => { setActiveStudioModel("basketball"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(200); onModelChange?.("basketball"); }}

@@ -141,6 +141,14 @@ export const Header: React.FC = () => {
             </Link>
 
             <Link
+              href="/exhibitions"
+              onMouseEnter={() => setMegaMenuOpen(false)}
+              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
+            >
+              Exhibitions
+            </Link>
+
+            <Link
               href="/customize"
               onMouseEnter={() => setMegaMenuOpen(false)}
               className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"

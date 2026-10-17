@@ -285,6 +285,21 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onCl
               <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
             </Link>
 
+            {/* Exhibitions */}
+            <Link
+              href="/exhibitions"
+              onClick={onClose}
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
+            >
+              <span className="flex items-center gap-1.5">
+                <span>Global Exhibitions</span>
+                <span className="text-[8.5px] font-mono text-white bg-[#D61C24] px-1.5 py-0.5 rounded-[2px] font-bold">
+                  ARCHIVE
+                </span>
+              </span>
+              <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
+            </Link>
+
             {/* Resources & Guides */}
             <Link
               href="/resources"

@@ -13,7 +13,6 @@ export default function CustomizeClient() {
     const slugMap: Record<string, string> = {
       varsity: "custom-varsity-jacket",
       hoodie: "custom-hoodie",
-      equestrian: "custom-riding-jacket",
       basketball: "custom-basketball-jersey",
     };
     const newSlug = slugMap[model] || "custom-varsity-jacket";

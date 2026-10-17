@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Search, ChevronDown, ChevronRight, HelpCircle, MessageSquare, ArrowRight, ShieldCheck, Clock, FileText } from "lucide-react";
 import { contentService } from "@/services/content.service";
 import { FaqItem } from "@/types";
+import { siteConfig } from "@/config/site.config";
 
 // Fallback items in case API is offline
 const INITIAL_FAQS: FaqItem[] = [
@@ -263,12 +264,12 @@ export default function FaqPage() {
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
                 <a
-                  href="https://wa.me/923484552164"
+                  href={`https://wa.me/${siteConfig.whatsAppFormattedNumber}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full text-center py-2 px-4 bg-transparent border border-[#2A2A28] hover:border-white text-neutral-300 hover:text-white text-xs font-mono transition-colors rounded-[2px]"
                 >
-                  WhatsApp: +92 348 4552164
+                  WhatsApp: {siteConfig.whatsAppNumber}
                 </a>
               </div>
             </div>

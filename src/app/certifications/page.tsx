@@ -121,6 +121,37 @@ export default function CertificationsPage() {
                     </span>
                   </div>
 
+                  {/* Live Certificate PDF Document Preview Box */}
+                  <a
+                    href={cert.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative block w-full aspect-[4/3] bg-neutral-900 rounded-[2px] overflow-hidden border border-[#E5E5E0] group-hover:border-[#D61C24] transition-colors cursor-pointer group/preview"
+                  >
+                    <object
+                      data={`${cert.pdfUrl}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0`}
+                      type="application/pdf"
+                      className="w-full h-full pointer-events-none select-none bg-neutral-950"
+                      title={`${cert.title} Preview`}
+                    >
+                      <iframe
+                        src={`${cert.pdfUrl}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0`}
+                        className="w-full h-full border-0 pointer-events-none select-none bg-neutral-950"
+                        title={`${cert.title} Preview`}
+                        loading="lazy"
+                      />
+                    </object>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent flex items-end justify-between p-3 pointer-events-none transition-opacity group-hover/preview:opacity-90">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-white bg-black/70 px-2 py-0.5 rounded border border-white/10 flex items-center gap-1.5 backdrop-blur-sm">
+                        <FileCheck className="w-3 h-3 text-emerald-400" />
+                        Legal Scan
+                      </span>
+                      <span className="text-[10px] font-mono text-white/90 bg-[#D61C24] px-2 py-0.5 rounded font-bold">
+                        Click to Open
+                      </span>
+                    </div>
+                  </a>
+
                   {/* Body */}
                   <div>
                     <h3 className="text-lg font-bold uppercase tracking-tight font-display text-black group-hover:text-[#D61C24] transition-colors leading-snug">

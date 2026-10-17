@@ -56,9 +56,9 @@ class DatabaseSeeder extends Seeder
 
         // 2. Default Admin User
         $admin = User::updateOrCreate(
-            ['email' => 'admin@example.com'],
+            ['email' => 'admin@cmsportswear.com'],
             [
-                'name' => 'Super Administrator',
+                'name' => 'CM Sports Wear Admin',
                 'password' => Hash::make('password'),
                 'status' => 'active',
             ]

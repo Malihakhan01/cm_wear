@@ -90,8 +90,7 @@ async function runDeploy() {
       `php artisan package:discover`,
       `php artisan config:clear`,
       `php artisan route:clear`,
-      `php artisan view:clear`,
-      `php artisan db:seed --class="Database\\\\Seeders\\\\DatabaseSeeder" --force`
+      `php artisan view:clear`
     ].join(' && '));
   }
 
@@ -105,6 +104,7 @@ async function runDeploy() {
       `rm -rf _next/static/chunks/*`,
       `tar -xzf ../frontend_core.tar.gz`,
       `rm -f ../frontend_core.tar.gz`,
+      `[ -d build ] || cp -r ../backend/public/build ./build 2>/dev/null || true`,
       `ls -lh index.html certifications/index.html about/index.html cm_logo/`
     ].join(' && '));
   }
@@ -151,8 +151,6 @@ async function runDeploy() {
   // STEP 6: Final Verification
   console.log('\n--- PHASE 6: VERIFYING DEPLOYED ENDPOINTS ---');
   await execRemote([
-    `echo "=== CHECKING API /api/v1/categories ==="`,
-    `php ${REMOTE_BASE}/backend/artisan tinker --execute="echo 'Categories: ' . App\\\\Models\\\\Category::count() . PHP_EOL;"`,
     `echo "=== CHECKING HOMEPAGE TITLE ==="`,
     `grep -o "<title[^>]*>[^<]*</title>" ${REMOTE_BASE}/public_html/index.html || true`,
     `echo "=== CHECKING CATALOGS PAGE TITLE ==="`,

@@ -161,6 +161,12 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/exhibitions" className="hover:text-white transition-colors text-white font-semibold flex items-center gap-1">
+                  <span>Global Trade Exhibitions</span>
+                  <span className="text-[9px] font-mono bg-[#D61C24] text-white px-1.5 py-0.2 rounded-[1px]">NEW</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/private-label" className="hover:text-white transition-colors">
                   OEM / Private Label Solutions
                 </Link>

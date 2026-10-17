@@ -26,7 +26,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
   const [companyName, setCompanyName] = useState("");
   const [phone, setPhone] = useState("");
   const [inquiryNotes, setInquiryNotes] = useState("");
-  const [selectedGarment, setSelectedGarment] = useState<"varsity" | "hoodie" | "equestrian" | "basketball">("varsity");
+  const [selectedGarment, setSelectedGarment] = useState<"varsity" | "hoodie" | "basketball">("varsity");
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittingAction, setSubmittingAction] = useState<"customize" | "inquiry" | null>(null);
@@ -39,7 +39,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
-  // 3D Product Showcase Animation State (Supports all 4 atelier products)
+  // 3D Product Showcase Animation State (Supports atelier products)
   const [activeShowcaseIdx, setActiveShowcaseIdx] = useState(0);
 
   const PRODUCTS_SHOWCASE = [
@@ -64,23 +64,13 @@ export const WelcomeCustomizerModal: React.FC = () => {
       slug: "custom-hoodie",
     },
     {
-      id: "equestrian",
-      name: "Italian Softshell Performance Equestrian Set",
-      spec: "4-Way Stretch Windproof Softshell • Performance Grip",
-      videoUrl: "/images/varsity_3d_rotating.mp4",
-      fallbackVideoUrl: "/images/popup_3d_rotation.mp4/Varsity_jacket_rotating_on_platform_20261013020156.mp4",
-      image: "/equastarian/front (2) (1).png",
-      tag: "Atelier Model #03",
-      slug: "custom-riding-jacket",
-    },
-    {
       id: "basketball",
       name: "Pro Court Diamond Air-Mesh Jersey",
       spec: "Micro-Eyelet Sublimated Air-Mesh • Pro Athletic Fit",
       videoUrl: "/images/varsity_3d_rotating.mp4",
       fallbackVideoUrl: "/images/popup_3d_rotation.mp4/Varsity_jacket_rotating_on_platform_20261013020156.mp4",
       image: "/basketball/front (3) (1).png",
-      tag: "Atelier Model #04",
+      tag: "Atelier Model #03",
       slug: "custom-basketball-jersey",
     },
   ];

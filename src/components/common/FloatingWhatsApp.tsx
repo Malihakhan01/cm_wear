@@ -37,7 +37,7 @@ export const FloatingWhatsApp: React.FC = () => {
           <span className="relative inline-flex rounded-full h-2 w-2 bg-[#25D366]"></span>
         </span>
         <span className="text-xs font-sans font-semibold tracking-wide">
-          Direct WhatsApp Support
+          WhatsApp: {siteConfig.whatsAppNumber}
         </span>
       </a>
 
