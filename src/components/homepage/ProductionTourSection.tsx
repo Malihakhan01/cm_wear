@@ -39,19 +39,33 @@ const MANUFACTURING_IMAGES = [
 ];
 
 export const ProductionTourSection: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
   const videoScrollRef = useRef<HTMLDivElement>(null);
   const imageScrollRef = useRef<HTMLDivElement>(null);
   const isImageHovered = useRef(false);
+  const isVisible = useRef(false);
 
   useEffect(() => {
     const el = imageScrollRef.current;
     if (!el) return;
 
     let animId: number;
-    const speed = 1.1; // Smooth continuous auto-sliding speed
+    const speed = 1.0;
+
+    // Use IntersectionObserver so the animation ONLY runs when the section is in the viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible.current = entry.isIntersecting;
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
 
     const step = () => {
-      if (!isImageHovered.current && el) {
+      if (isVisible.current && !isImageHovered.current && el) {
         el.scrollLeft += speed;
         // Halfway wrap for infinite seamless loop
         if (el.scrollLeft >= (el.scrollWidth - el.clientWidth) / 2) {
@@ -62,7 +76,10 @@ export const ProductionTourSection: React.FC = () => {
     };
 
     animId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(animId);
+    return () => {
+      cancelAnimationFrame(animId);
+      observer.disconnect();
+    };
   }, []);
 
   const scrollVideos = (direction: "left" | "right") => {
@@ -80,7 +97,7 @@ export const ProductionTourSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 sm:py-28 bg-[#0A0A0A] text-white border-b border-[#2A2A28] relative overflow-hidden">
+    <section ref={sectionRef} className="py-20 sm:py-28 bg-[#0A0A0A] text-white border-b border-[#2A2A28] relative overflow-hidden">
       {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
 
@@ -155,8 +172,7 @@ export const ProductionTourSection: React.FC = () => {
               ref={videoScrollRef}
               className="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-2"
             >
-              {/* Render duplicated list for infinite marquee feel */}
-              {[...MANUFACTURING_VIDEOS, ...MANUFACTURING_VIDEOS].map((videoSrc, idx) => (
+              {MANUFACTURING_VIDEOS.map((videoSrc, idx) => (
                 <div
                   key={`video-${idx}`}
                   className="shrink-0 w-[280px] sm:w-[340px] md:w-[380px] aspect-[16/10] bg-[#141414] border border-[#2A2A28] hover:border-[#D61C24] rounded-[2px] overflow-hidden transition-all shadow-lg"
@@ -165,7 +181,7 @@ export const ProductionTourSection: React.FC = () => {
                     src={videoSrc}
                     controls
                     playsInline
-                    preload="metadata"
+                    preload="none"
                     className="w-full h-full object-cover bg-black"
                   />
                 </div>

@@ -30,6 +30,40 @@ export const CustomCursor: React.FC = () => {
       return;
     }
 
+    let isRunning = false;
+    const startRender = () => {
+      if (!isRunning) {
+        isRunning = true;
+        rafId.current = requestAnimationFrame(render);
+      }
+    };
+
+    const render = () => {
+      const dx = targetPos.current.x - mousePos.current.x;
+      const dy = targetPos.current.y - mousePos.current.y;
+
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        mousePos.current.x = targetPos.current.x;
+        mousePos.current.y = targetPos.current.y;
+        if (ringRef.current) {
+          ringRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0)`;
+        }
+        isRunning = false;
+        rafId.current = null;
+        return;
+      }
+
+      const lerpFactor = 0.25;
+      mousePos.current.x += dx * lerpFactor;
+      mousePos.current.y += dy * lerpFactor;
+
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0)`;
+      }
+
+      rafId.current = requestAnimationFrame(render);
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
       targetPos.current = { x: e.clientX, y: e.clientY };
 
@@ -37,6 +71,7 @@ export const CustomCursor: React.FC = () => {
         setIsVisible(true);
         mousePos.current = { x: e.clientX, y: e.clientY };
       }
+      startRender();
     };
 
     const handleMouseDown = () => setIsPressed(true);
@@ -52,20 +87,7 @@ export const CustomCursor: React.FC = () => {
     document.addEventListener("mouseleave", handleMouseLeave, { passive: true });
     document.addEventListener("mouseenter", handleMouseEnter, { passive: true });
 
-    // High refresh rate 60-120fps lerp loop for cursor
-    const render = () => {
-      const lerpFactor = 0.25;
-      mousePos.current.x += (targetPos.current.x - mousePos.current.x) * lerpFactor;
-      mousePos.current.y += (targetPos.current.y - mousePos.current.y) * lerpFactor;
-
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0)`;
-      }
-
-      rafId.current = requestAnimationFrame(render);
-    };
-
-    rafId.current = requestAnimationFrame(render);
+    startRender();
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
