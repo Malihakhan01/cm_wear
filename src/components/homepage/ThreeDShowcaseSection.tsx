@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Box, Sparkles, ArrowRight, Palette } from "lucide-react";
-import { TAWFIQ_PALETTE } from "@/config/customizerProducts.config";
+import { CM_PALETTE } from "@/config/customizerProducts.config";
 
 // Dynamic import with ssr: false as instructed in Section 27 to keep primary global bundle lean
 const Product3DViewer = dynamic(
@@ -85,7 +85,7 @@ export const ThreeDShowcaseSection: React.FC = () => {
                 <span className="text-[#D61C24]">{bodyColor}</span>
               </div>
               <div className="grid grid-cols-5 gap-1.5">
-                {TAWFIQ_PALETTE.slice(0, 5).map((s) => (
+                {CM_PALETTE.slice(0, 5).map((s) => (
                   <button
                     key={s.id}
                     onClick={() => setBodyColor(s.hex)}
@@ -106,7 +106,7 @@ export const ThreeDShowcaseSection: React.FC = () => {
                 <span className="text-[#D61C24]">{sleeveColor}</span>
               </div>
               <div className="grid grid-cols-5 gap-1.5">
-                {TAWFIQ_PALETTE.slice(5, 10).map((s) => (
+                {CM_PALETTE.slice(5, 10).map((s) => (
                   <button
                     key={s.id}
                     onClick={() => setSleeveColor(s.hex)}
@@ -127,7 +127,7 @@ export const ThreeDShowcaseSection: React.FC = () => {
                 <span className="text-[#D61C24]">{accentColor}</span>
               </div>
               <div className="grid grid-cols-5 gap-1.5">
-                {TAWFIQ_PALETTE.slice(2, 7).map((s) => (
+                {CM_PALETTE.slice(2, 7).map((s) => (
                   <button
                     key={s.id}
                     onClick={() => setAccentColor(s.hex)}

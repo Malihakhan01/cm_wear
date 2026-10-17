@@ -53,3 +53,4 @@ backend/storage/framework/sessions/*
 backend/storage/framework/views/*
 backend/storage/logs/*
 !backend/storage/logs/.gitignore
+public/videos/20210213_115422.mp4

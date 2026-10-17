@@ -76,11 +76,11 @@
             <div class="flex flex-wrap sm:flex-nowrap items-center gap-3">
                 <select name="type" class="w-full sm:w-auto min-w-[170px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
                     <option value="">All Inquiry Types</option>
-                    <option value="customizer_lead" {{ request('type') === 'customizer_lead' ? 'selected' : '' }}>🌟 3D Customizer Lead</option>
+                    <option value="customizer_lead" {{ request('type') === 'customizer_lead' ? 'selected' : '' }}>🌟 Customizer Lead</option>
                     <option value="blank_inquiry" {{ request('type') === 'blank_inquiry' ? 'selected' : '' }}>✉️ Blank Manufacturing Inquiry</option>
                     <option value="bulk_manufacturing" {{ request('type') === 'bulk_manufacturing' ? 'selected' : '' }}>Bulk Production</option>
                     <option value="sample" {{ request('type') === 'sample' ? 'selected' : '' }}>Rapid Sampling</option>
-                    <option value="custom_design" {{ request('type') === 'custom_design' ? 'selected' : '' }}>3D Garment Customizer</option>
+                    <option value="custom_design" {{ request('type') === 'custom_design' ? 'selected' : '' }}>Garment Customizer</option>
                     <option value="tech_pack" {{ request('type') === 'tech_pack' ? 'selected' : '' }}>Tech Pack Development</option>
                 </select>
 
@@ -144,7 +144,7 @@
                                 <td class="py-4">
                                     @if($rfq->inquiry_type === 'customizer_lead')
                                         <span class="rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 px-2.5 py-1 text-xs font-bold inline-flex items-center gap-1">
-                                            <span>✨ 3D Popup Lead</span>
+                                            <span>✨ Customizer Lead</span>
                                         </span>
                                     @elseif($rfq->inquiry_type === 'blank_inquiry')
                                         <span class="rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2.5 py-1 text-xs font-bold inline-flex items-center gap-1">

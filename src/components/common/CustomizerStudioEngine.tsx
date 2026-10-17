@@ -71,7 +71,7 @@ export function getStudioGarmentProduct(model: "hoodie" | "varsity" | "equestria
       customizable: true,
       sampleAvailable: true,
       leadTime: "14–21 Days",
-      decorationMethods: ["3D High-Loft Puff Embroidery", "High-Density Screen Printing", "Varsity Wool Chenille"],
+      decorationMethods: ["High-Loft Puff Embroidery", "High-Density Screen Printing", "Varsity Wool Chenille"],
       featured: true,
       specifications: [
         { label: "Fabric Construction", value: "450 GSM 100% Combed Cotton French Terry" },
@@ -249,6 +249,19 @@ const INITIAL_BASKETBALL_COLORS: Record<string, string> = {
   shorts: "#CA8A04",
 };
 
+const isLightColor = (hex: string): boolean => {
+  if (!hex || typeof hex !== "string") return false;
+  const cleanHex = hex.replace("#", "");
+  if (cleanHex.length !== 6 && cleanHex.length !== 3) return false;
+  const fullHex = cleanHex.length === 3 
+    ? cleanHex.split("").map((c) => c + c).join("") 
+    : cleanHex;
+  const r = parseInt(fullHex.substring(0, 2), 16);
+  const g = parseInt(fullHex.substring(2, 4), 16);
+  const b = parseInt(fullHex.substring(4, 6), 16);
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  return brightness > 155;
+};
 
 export interface CustomizerStudioEngineProps {
   mode?: "homepage" | "studio";
@@ -511,8 +524,8 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
     const effectiveDecoration = customLetters?.craftStyle === "chenille"
       ? "Varsity Wool Chenille Embroidery"
       : customLetters?.enabled
-      ? "3D High-Loft Puff Embroidery"
-      : (effectiveProduct.decorationMethods?.[0] || "3D High-Loft Puff Embroidery");
+      ? "High-Loft Puff Embroidery"
+      : (effectiveProduct.decorationMethods?.[0] || "High-Loft Puff Embroidery");
 
     const effectiveFabricSpec = `${effectiveProduct.GSM || 450} GSM ${effectiveProduct.fabric} (${activeWash})`;
 
@@ -717,7 +730,7 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
         }] : [],
         previewFront: homePreviewFront,
         previewBack: homePreviewBack,
-        decorationMethod: customLetters?.craftStyle === "chenille" ? "Varsity Wool Chenille Embroidery" : "3D High-Loft Puff Embroidery",
+        decorationMethod: customLetters?.craftStyle === "chenille" ? "Varsity Wool Chenille Embroidery" : "High-Loft Puff Embroidery",
         washType: activeWash,
         fabricSpec: `${selectedGsm} GSM Atelier Fabric (${activeWash})`,
         targetGsm: selectedGsm,
@@ -757,6 +770,13 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
   const [equestrianPartColors, setEquestrianPartColors] = useState<Record<string, string>>(INITIAL_EQUESTRIAN_COLORS);
   // Basketball-specific part colors
   const [basketballPartColors, setBasketballPartColors] = useState<Record<string, string>>(INITIAL_BASKETBALL_COLORS);
+  // Selected Heritage Colorway Preset tracked per studio model (for Hoodie, Varsity, Equestrian, Basketball)
+  const [selectedPresetByModel, setSelectedPresetByModel] = useState<Record<string, string | null>>({
+    hoodie: "Burgundy & Bone",
+    varsity: "Ivy League",
+    equestrian: "Tournament Royal Navy",
+    basketball: "Showtime Gold & Royal",
+  });
   const [activeWash, setActiveWash] = useState("Clean Raw Mill Finish");
   const [distressLevel, setDistressLevel] = useState<"clean" | "subtle" | "heavy">("clean");
   const [selectedGsm, setSelectedGsm] = useState<number>(500);
@@ -976,6 +996,7 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
           : varsityParts;
 
   const handleColorSelect = (hex: string) => {
+    setSelectedPresetByModel((prev) => ({ ...prev, [activeStudioModel]: null }));
     if (activePart === "letters") {
       setCustomLetters((prev) => ({ ...prev, color: hex }));
     } else if (activeStudioModel === "hoodie") {
@@ -990,6 +1011,7 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
   };
 
   const handleApplyToAll = (hex: string) => {
+    setSelectedPresetByModel((prev) => ({ ...prev, [activeStudioModel]: null }));
     if (activeStudioModel === "hoodie") {
       setHoodiePartColors({
         body: hex, hood: hex, pocket: hex,
@@ -1013,6 +1035,54 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
 
   const handleApplyPreset = (presetColors: VarsityPartsState) => {
     setPartColors(presetColors);
+  };
+
+  const handleApplyPresetForModel = (presetName: string, colors: any) => {
+    setSelectedPresetByModel((prev) => ({ ...prev, [activeStudioModel]: presetName }));
+    if (activeStudioModel === "hoodie") {
+      setHoodiePartColors(colors);
+    } else if (activeStudioModel === "equestrian") {
+      setEquestrianPartColors(colors);
+    } else if (activeStudioModel === "basketball") {
+      setBasketballPartColors(colors);
+    } else {
+      setPartColors(colors);
+    }
+  };
+
+  const isPresetActive = (presetName: string, presetColors: any): boolean => {
+    // 1. Direct state match
+    if (selectedPresetByModel[activeStudioModel] === presetName) {
+      return true;
+    }
+    // 2. Color verification match
+    if (activeStudioModel === "hoodie") {
+      return (
+        (hoodiePartColors.body || "").toLowerCase() === (presetColors.body || "").toLowerCase() &&
+        (hoodiePartColors.pocket || "").toLowerCase() === (presetColors.pocket || "").toLowerCase() &&
+        (hoodiePartColors.hood || "").toLowerCase() === (presetColors.hood || "").toLowerCase()
+      );
+    }
+    if (activeStudioModel === "equestrian") {
+      return (
+        (equestrianPartColors.body || "").toLowerCase() === (presetColors.body || "").toLowerCase() &&
+        (equestrianPartColors.sleeves || "").toLowerCase() === (presetColors.sleeves || "").toLowerCase() &&
+        (equestrianPartColors.ribs || "").toLowerCase() === (presetColors.ribs || "").toLowerCase()
+      );
+    }
+    if (activeStudioModel === "basketball") {
+      const pJersey = presetColors.jersey || presetColors.body;
+      return (
+        (basketballPartColors.jersey || "").toLowerCase() === (pJersey || "").toLowerCase() &&
+        (basketballPartColors.shorts || "").toLowerCase() === (presetColors.shorts || "").toLowerCase()
+      );
+    }
+    // Varsity
+    return (
+      (partColors.body || "").toLowerCase() === (presetColors.body || "").toLowerCase() &&
+      (partColors.sleeves || "").toLowerCase() === (presetColors.sleeves || "").toLowerCase() &&
+      (partColors.collar || "").toLowerCase() === (presetColors.collar || "").toLowerCase()
+    );
   };
 
   // Enforce strictly max 3 uppercase letters
@@ -1078,6 +1148,12 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
     setHoodiePartColors(INITIAL_HOODIE_COLORS);
     setEquestrianPartColors(INITIAL_EQUESTRIAN_COLORS);
     setBasketballPartColors(INITIAL_BASKETBALL_COLORS);
+    setSelectedPresetByModel({
+      hoodie: "Burgundy & Bone",
+      varsity: "Ivy League",
+      equestrian: "Tournament Royal Navy",
+      basketball: "Showtime Gold & Royal",
+    });
     setSleeveStyle("striped");
     setPocketStyle("striped");
     setSelectedButtonFinish("silver");
@@ -2332,18 +2408,28 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                                 : partColors[activePart as keyof VarsityPartsState]
                         )?.toLowerCase() || "";
                         const isSelected = currentColor === swatch.hex.toLowerCase();
+                        const isLight = isLightColor(swatch.hex);
                         return (
                           <button
                             key={swatch.id}
                             onClick={() => handleColorSelect(swatch.hex)}
-                            className={`w-7 h-7 rounded-full border transition-all relative cursor-pointer ${isSelected
-                                ? "ring-2 ring-black ring-offset-2 scale-110 shadow-xs"
+                            className={`w-7 h-7 rounded-full border transition-all relative cursor-pointer flex items-center justify-center ${
+                              isSelected
+                                ? "ring-2 ring-black ring-offset-2 scale-110 shadow-md border-transparent"
                                 : "border-black/20 hover:scale-105"
-                              }`}
+                            }`}
                             style={{ backgroundColor: swatch.hex }}
                             title={`${swatch.name} (${swatch.hex})`}
                             aria-label={swatch.name}
-                          />
+                          >
+                            {isSelected && (
+                              <Check
+                                className={`w-3.5 h-3.5 ${
+                                  isLight ? "text-black" : "text-white"
+                                } stroke-[3] drop-shadow-sm`}
+                              />
+                            )}
+                          </button>
                         );
                       })}
                     </div>
@@ -2458,163 +2544,255 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {activeStudioModel === "hoodie" ? (
                         // Hoodie presets with distinct shades for Body, Pocket, Cap, Sleeves
-                        HOODIE_COLOR_PRESETS.map((preset) => (
-                          <button
-                            key={preset.name}
-                            onClick={() => setHoodiePartColors(preset.colors)}
-                            className="flex items-center gap-2.5 p-2 rounded-[2px] border border-[#E6E6E2] hover:border-black/60 text-left transition-all bg-white group hover:shadow-xs cursor-pointer"
-                          >
-                            {/* 4-Part Segmented Swatch: Body • Pocket • Cap (Hood) • Sleeves */}
-                            <div className="flex gap-0.5 shrink-0" title="Body • Pocket • Cap • Sleeves">
-                              <span
-                                className="w-2.5 h-6 rounded-l-[2px] border border-black/15"
-                                style={{ backgroundColor: preset.colors.body }}
-                                title={`Body: ${preset.colors.body}`}
-                              />
-                              <span
-                                className="w-2.5 h-6 border-y border-black/15"
-                                style={{ backgroundColor: preset.colors.pocket }}
-                                title={`Pocket: ${preset.colors.pocket}`}
-                              />
-                              <span
-                                className="w-2.5 h-6 border-y border-black/15"
-                                style={{ backgroundColor: preset.colors.hood }}
-                                title={`Cap / Hood: ${preset.colors.hood}`}
-                              />
-                              <span
-                                className="w-2.5 h-6 rounded-r-[2px] border border-black/15"
-                                style={{ backgroundColor: preset.colors.sleeves }}
-                                title={`Sleeves: ${preset.colors.sleeves}`}
-                              />
-                            </div>
-                            <div className="min-w-0">
-                              <span className="text-[11px] font-bold text-black block truncate group-hover:text-[#D10115] transition-colors">
-                                {preset.name}
-                              </span>
-                              <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
-                                {preset.tag}
-                              </span>
-                            </div>
-                          </button>
-                        ))
+                        HOODIE_COLOR_PRESETS.map((preset) => {
+                          const isSelected = isPresetActive(preset.name, preset.colors);
+                          return (
+                            <button
+                              key={preset.name}
+                              onClick={() => handleApplyPresetForModel(preset.name, preset.colors)}
+                              className={`flex items-center gap-2.5 p-2 rounded-[3px] text-left transition-all cursor-pointer relative ${
+                                isSelected
+                                  ? "bg-[#F5F5F0] border-2 border-[#0B0B0B] shadow-sm ring-1 ring-black/10"
+                                  : "bg-white border border-[#E6E6E2] hover:border-black/60 group hover:shadow-xs"
+                              }`}
+                            >
+                              {/* 4-Part Segmented Swatch: Body • Pocket • Cap (Hood) • Sleeves */}
+                              <div
+                                className={`flex gap-0.5 shrink-0 rounded-[2px] p-0.5 transition-all ${
+                                  isSelected ? "bg-black/5 ring-1 ring-black/15" : ""
+                                }`}
+                                title="Body • Pocket • Cap • Sleeves"
+                              >
+                                <span
+                                  className="w-2.5 h-6 rounded-l-[2px] border border-black/15"
+                                  style={{ backgroundColor: preset.colors.body }}
+                                  title={`Body: ${preset.colors.body}`}
+                                />
+                                <span
+                                  className="w-2.5 h-6 border-y border-black/15"
+                                  style={{ backgroundColor: preset.colors.pocket }}
+                                  title={`Pocket: ${preset.colors.pocket}`}
+                                />
+                                <span
+                                  className="w-2.5 h-6 border-y border-black/15"
+                                  style={{ backgroundColor: preset.colors.hood }}
+                                  title={`Cap / Hood: ${preset.colors.hood}`}
+                                />
+                                <span
+                                  className="w-2.5 h-6 rounded-r-[2px] border border-black/15"
+                                  style={{ backgroundColor: preset.colors.sleeves }}
+                                  title={`Sleeves: ${preset.colors.sleeves}`}
+                                />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center justify-between gap-1">
+                                  <span
+                                    className={`text-[11px] font-bold block truncate transition-colors ${
+                                      isSelected ? "text-black" : "text-black group-hover:text-[#D10115]"
+                                    }`}
+                                  >
+                                    {preset.name}
+                                  </span>
+                                  {isSelected && (
+                                    <span className="w-4 h-4 rounded-full bg-[#0B0B0B] text-white flex items-center justify-center shrink-0 shadow-xs">
+                                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
+                                  {preset.tag}
+                                </span>
+                              </div>
+                            </button>
+                          );
+                        })
                       ) : activeStudioModel === "equestrian" ? (
                         // Equestrian presets with distinct shades for Body, Sleeves, Ribs, Leggings
-                        EQUESTRIAN_COLOR_PRESETS.map((preset) => (
-                          <button
-                            key={preset.name}
-                            onClick={() => setEquestrianPartColors(preset.colors)}
-                            className="flex items-center gap-2.5 p-2 rounded-[2px] border border-[#E6E6E2] hover:border-black/60 text-left transition-all bg-white group hover:shadow-xs cursor-pointer"
-                          >
-                            {/* 4-Part Segmented Swatch: Body • Sleeves • Ribs • Leggings */}
-                            <div className="flex gap-0.5 shrink-0" title="Body • Sleeves • Ribs • Leggings">
-                              <span
-                                className="w-2.5 h-6 rounded-l-[2px] border border-black/15"
-                                style={{ backgroundColor: preset.colors.body }}
-                                title={`Body: ${preset.colors.body}`}
-                              />
-                              <span
-                                className="w-2.5 h-6 border-y border-black/15"
-                                style={{ backgroundColor: preset.colors.sleeves }}
-                                title={`Sleeves: ${preset.colors.sleeves}`}
-                              />
-                              <span
-                                className="w-2.5 h-6 border-y border-black/15"
-                                style={{ backgroundColor: preset.colors.ribs }}
-                                title={`Ribs: ${preset.colors.ribs}`}
-                              />
-                              <span
-                                className="w-2.5 h-6 rounded-r-[2px] border border-black/15"
-                                style={{ backgroundColor: preset.colors.leggings }}
-                                title={`Leggings: ${preset.colors.leggings}`}
-                              />
-                            </div>
-                            <div className="min-w-0">
-                              <span className="text-[11px] font-bold text-black block truncate group-hover:text-[#D10115] transition-colors">
-                                {preset.name}
-                              </span>
-                              <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
-                                {preset.tag}
-                              </span>
-                            </div>
-                          </button>
-                        ))
+                        EQUESTRIAN_COLOR_PRESETS.map((preset) => {
+                          const isSelected = isPresetActive(preset.name, preset.colors);
+                          return (
+                            <button
+                              key={preset.name}
+                              onClick={() => handleApplyPresetForModel(preset.name, preset.colors)}
+                              className={`flex items-center gap-2.5 p-2 rounded-[3px] text-left transition-all cursor-pointer relative ${
+                                isSelected
+                                  ? "bg-[#F5F5F0] border-2 border-[#0B0B0B] shadow-sm ring-1 ring-black/10"
+                                  : "bg-white border border-[#E6E6E2] hover:border-black/60 group hover:shadow-xs"
+                              }`}
+                            >
+                              {/* 4-Part Segmented Swatch: Body • Sleeves • Ribs • Leggings */}
+                              <div
+                                className={`flex gap-0.5 shrink-0 rounded-[2px] p-0.5 transition-all ${
+                                  isSelected ? "bg-black/5 ring-1 ring-black/15" : ""
+                                }`}
+                                title="Body • Sleeves • Ribs • Leggings"
+                              >
+                                <span
+                                  className="w-2.5 h-6 rounded-l-[2px] border border-black/15"
+                                  style={{ backgroundColor: preset.colors.body }}
+                                  title={`Body: ${preset.colors.body}`}
+                                />
+                                <span
+                                  className="w-2.5 h-6 border-y border-black/15"
+                                  style={{ backgroundColor: preset.colors.sleeves }}
+                                  title={`Sleeves: ${preset.colors.sleeves}`}
+                                />
+                                <span
+                                  className="w-2.5 h-6 border-y border-black/15"
+                                  style={{ backgroundColor: preset.colors.ribs }}
+                                  title={`Ribs: ${preset.colors.ribs}`}
+                                />
+                                <span
+                                  className="w-2.5 h-6 rounded-r-[2px] border border-black/15"
+                                  style={{ backgroundColor: preset.colors.leggings }}
+                                  title={`Leggings: ${preset.colors.leggings}`}
+                                />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center justify-between gap-1">
+                                  <span
+                                    className={`text-[11px] font-bold block truncate transition-colors ${
+                                      isSelected ? "text-black" : "text-black group-hover:text-[#D10115]"
+                                    }`}
+                                  >
+                                    {preset.name}
+                                  </span>
+                                  {isSelected && (
+                                    <span className="w-4 h-4 rounded-full bg-[#0B0B0B] text-white flex items-center justify-center shrink-0 shadow-xs">
+                                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
+                                  {preset.tag}
+                                </span>
+                              </div>
+                            </button>
+                          );
+                        })
                       ) : activeStudioModel === "basketball" ? (
                         // Basketball presets with distinct shades for Jersey, Ribs, Shorts
-                        BASKETBALL_COLOR_PRESETS.map((preset) => (
-                          <button
-                            key={preset.name}
-                            onClick={() => setBasketballPartColors(preset.colors)}
-                            className="flex items-center gap-2.5 p-2 rounded-[2px] border border-[#E6E6E2] hover:border-black/60 text-left transition-all bg-white group hover:shadow-xs cursor-pointer"
-                          >
-                            {/* 3-Part Segmented Swatch: Jersey • Ribs • Shorts */}
-                            <div className="flex gap-0.5 shrink-0" title="Jersey • Ribs • Shorts">
-                              <span
-                                className="w-3.5 h-6 rounded-l-[2px] border border-black/15"
-                                style={{ backgroundColor: preset.colors.jersey }}
-                                title={`Jersey: ${preset.colors.jersey}`}
-                              />
-                              <span
-                                className="w-3.5 h-6 border-y border-black/15"
-                                style={{ backgroundColor: preset.colors.ribs }}
-                                title={`Ribs: ${preset.colors.ribs}`}
-                              />
-                              <span
-                                className="w-3.5 h-6 rounded-r-[2px] border border-black/15"
-                                style={{ backgroundColor: preset.colors.shorts }}
-                                title={`Shorts: ${preset.colors.shorts}`}
-                              />
-                            </div>
-                            <div className="min-w-0">
-                              <span className="text-[11px] font-bold text-black block truncate group-hover:text-[#D10115] transition-colors">
-                                {preset.name}
-                              </span>
-                              <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
-                                {preset.tag}
-                              </span>
-                            </div>
-                          </button>
-                        ))
+                        BASKETBALL_COLOR_PRESETS.map((preset) => {
+                          const isSelected = isPresetActive(preset.name, preset.colors);
+                          return (
+                            <button
+                              key={preset.name}
+                              onClick={() => handleApplyPresetForModel(preset.name, preset.colors)}
+                              className={`flex items-center gap-2.5 p-2 rounded-[3px] text-left transition-all cursor-pointer relative ${
+                                isSelected
+                                  ? "bg-[#F5F5F0] border-2 border-[#0B0B0B] shadow-sm ring-1 ring-black/10"
+                                  : "bg-white border border-[#E6E6E2] hover:border-black/60 group hover:shadow-xs"
+                              }`}
+                            >
+                              {/* 3-Part Segmented Swatch: Jersey • Ribs • Shorts */}
+                              <div
+                                className={`flex gap-0.5 shrink-0 rounded-[2px] p-0.5 transition-all ${
+                                  isSelected ? "bg-black/5 ring-1 ring-black/15" : ""
+                                }`}
+                                title="Jersey • Ribs • Shorts"
+                              >
+                                <span
+                                  className="w-3.5 h-6 rounded-l-[2px] border border-black/15"
+                                  style={{ backgroundColor: preset.colors.jersey || preset.colors.body }}
+                                  title={`Jersey: ${preset.colors.jersey || preset.colors.body}`}
+                                />
+                                <span
+                                  className="w-3.5 h-6 border-y border-black/15"
+                                  style={{ backgroundColor: preset.colors.ribs }}
+                                  title={`Ribs: ${preset.colors.ribs}`}
+                                />
+                                <span
+                                  className="w-3.5 h-6 rounded-r-[2px] border border-black/15"
+                                  style={{ backgroundColor: preset.colors.shorts }}
+                                  title={`Shorts: ${preset.colors.shorts}`}
+                                />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center justify-between gap-1">
+                                  <span
+                                    className={`text-[11px] font-bold block truncate transition-colors ${
+                                      isSelected ? "text-black" : "text-black group-hover:text-[#D10115]"
+                                    }`}
+                                  >
+                                    {preset.name}
+                                  </span>
+                                  {isSelected && (
+                                    <span className="w-4 h-4 rounded-full bg-[#0B0B0B] text-white flex items-center justify-center shrink-0 shadow-xs">
+                                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
+                                  {preset.tag}
+                                </span>
+                              </div>
+                            </button>
+                          );
+                        })
                       ) : (
                         // Varsity presets with distinct shades for Body, Sleeves, Ribs, Pocket
-                        COLOR_PRESETS.map((preset) => (
-                          <button
-                            key={preset.name}
-                            onClick={() => handleApplyPreset(preset.colors)}
-                            className="flex items-center gap-2.5 p-2 rounded-[2px] border border-[#E6E6E2] hover:border-black/60 text-left transition-all bg-white group hover:shadow-xs cursor-pointer"
-                          >
-                            {/* 4-Part Segmented Swatch: Body • Sleeves • Ribs • Pocket */}
-                            <div className="flex gap-0.5 shrink-0" title="Body • Sleeves • Ribs • Pocket">
-                              <span
-                                className="w-2.5 h-6 rounded-l-[2px] border border-black/15"
-                                style={{ backgroundColor: preset.colors.body }}
-                                title={`Body: ${preset.colors.body}`}
-                              />
-                              <span
-                                className="w-2.5 h-6 border-y border-black/15"
-                                style={{ backgroundColor: preset.colors.sleeves }}
-                                title={`Sleeves: ${preset.colors.sleeves}`}
-                              />
-                              <span
-                                className="w-2.5 h-6 border-y border-black/15"
-                                style={{ backgroundColor: preset.colors.collar }}
-                                title={`Ribs: ${preset.colors.collar}`}
-                              />
-                              <span
-                                className="w-2.5 h-6 rounded-r-[2px] border border-black/15"
-                                style={{ backgroundColor: preset.colors.pockets }}
-                                title={`Pocket: ${preset.colors.pockets}`}
-                              />
-                            </div>
-                            <div className="min-w-0">
-                              <span className="text-[11px] font-bold text-black block truncate group-hover:text-[#D10115] transition-colors">
-                                {preset.name}
-                              </span>
-                              <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
-                                {preset.tag}
-                              </span>
-                            </div>
-                          </button>
-                        ))
+                        COLOR_PRESETS.map((preset) => {
+                          const isSelected = isPresetActive(preset.name, preset.colors);
+                          return (
+                            <button
+                              key={preset.name}
+                              onClick={() => handleApplyPresetForModel(preset.name, preset.colors)}
+                              className={`flex items-center gap-2.5 p-2 rounded-[3px] text-left transition-all cursor-pointer relative ${
+                                isSelected
+                                  ? "bg-[#F5F5F0] border-2 border-[#0B0B0B] shadow-sm ring-1 ring-black/10"
+                                  : "bg-white border border-[#E6E6E2] hover:border-black/60 group hover:shadow-xs"
+                              }`}
+                            >
+                              {/* 4-Part Segmented Swatch: Body • Sleeves • Ribs • Pocket */}
+                              <div
+                                className={`flex gap-0.5 shrink-0 rounded-[2px] p-0.5 transition-all ${
+                                  isSelected ? "bg-black/5 ring-1 ring-black/15" : ""
+                                }`}
+                                title="Body • Sleeves • Ribs • Pocket"
+                              >
+                                <span
+                                  className="w-2.5 h-6 rounded-l-[2px] border border-black/15"
+                                  style={{ backgroundColor: preset.colors.body }}
+                                  title={`Body: ${preset.colors.body}`}
+                                />
+                                <span
+                                  className="w-2.5 h-6 border-y border-black/15"
+                                  style={{ backgroundColor: preset.colors.sleeves }}
+                                  title={`Sleeves: ${preset.colors.sleeves}`}
+                                />
+                                <span
+                                  className="w-2.5 h-6 border-y border-black/15"
+                                  style={{ backgroundColor: preset.colors.collar }}
+                                  title={`Ribs: ${preset.colors.collar}`}
+                                />
+                                <span
+                                  className="w-2.5 h-6 rounded-r-[2px] border border-black/15"
+                                  style={{ backgroundColor: preset.colors.pockets }}
+                                  title={`Pocket: ${preset.colors.pockets}`}
+                                />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center justify-between gap-1">
+                                  <span
+                                    className={`text-[11px] font-bold block truncate transition-colors ${
+                                      isSelected ? "text-black" : "text-black group-hover:text-[#D10115]"
+                                    }`}
+                                  >
+                                    {preset.name}
+                                  </span>
+                                  {isSelected && (
+                                    <span className="w-4 h-4 rounded-full bg-[#0B0B0B] text-white flex items-center justify-center shrink-0 shadow-xs">
+                                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wide block truncate">
+                                  {preset.tag}
+                                </span>
+                              </div>
+                            </button>
+                          );
+                        })
                       )}
                     </div>
                   </div>

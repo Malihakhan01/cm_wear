@@ -76,14 +76,14 @@ export default function CheckoutPage() {
 
     // Save contact to localStorage for two-way customizer persistence
     if (typeof window !== "undefined") {
-      if (email) localStorage.setItem("tawfiq_customizer_client_email", email);
+      if (email) localStorage.setItem("cm_customizer_client_email", email);
       const fullName = `${firstName} ${lastName}`.trim();
-      if (fullName) localStorage.setItem("tawfiq_customizer_client_name", fullName);
-      if (company) localStorage.setItem("tawfiq_customizer_client_company", company);
-      if (phone) localStorage.setItem("tawfiq_customizer_client_phone", phone);
+      if (fullName) localStorage.setItem("cm_customizer_client_name", fullName);
+      if (company) localStorage.setItem("cm_customizer_client_company", company);
+      if (phone) localStorage.setItem("cm_customizer_client_phone", phone);
     }
 
-    const initialOrderRef = `TI-${Math.floor(100000 + Math.random() * 900000)}`;
+    const initialOrderRef = `CM-${Math.floor(100000 + Math.random() * 900000)}`;
     let confirmedOrderRef = initialOrderRef;
 
     // Forward order to Laravel backend
@@ -148,7 +148,7 @@ export default function CheckoutPage() {
     };
 
     if (typeof window !== "undefined") {
-      sessionStorage.setItem("tawfiq-industry-last-order", JSON.stringify(orderSummary));
+      sessionStorage.setItem("cm-wear-last-order", JSON.stringify(orderSummary));
     }
 
     clearCart();
@@ -429,7 +429,7 @@ export default function CheckoutPage() {
                 {paymentMethod === "bank_transfer" && (
                   <div className="p-4 bg-[#F4F4EF] rounded-[2px] border border-[#DADBD2] text-xs font-mono space-y-1.5">
                     <div className="font-bold uppercase text-black">Commercial Bank Wire Details (Sialkot Facility):</div>
-                    <div className="text-[#72726D]">Beneficiary: TAWFIQ INDUSTRY Apparel Manufacturing Ltd.</div>
+                    <div className="text-[#72726D]">Beneficiary: CM SPORTS WEAR</div>
                     <div className="text-[#72726D]">Bank: Standard Chartered Bank (Pakistan)</div>
                     <div className="text-[#72726D]">IBAN: PK36SCBL0000001284920194</div>
                     <div className="text-[#72726D]">SWIFT / BIC: SCBLPKKHIXXX</div>

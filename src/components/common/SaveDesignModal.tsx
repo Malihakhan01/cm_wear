@@ -38,10 +38,10 @@ export const SaveDesignModal: React.FC<SaveDesignModalProps> = ({
       if (!popupSubmitted && typeof window !== "undefined") {
         // If popup was NOT submitted, ensure any legacy stale emails in localStorage are purged
         try {
-          localStorage.removeItem("tawfiq_user_email");
+          localStorage.removeItem("cm_user_email");
           localStorage.removeItem("user_inquiry_email");
           localStorage.removeItem("user_design_email");
-          localStorage.removeItem("tawfiq_customizer_client_email");
+          localStorage.removeItem("cm_customizer_client_email");
         } catch (e) {}
       }
 
@@ -72,13 +72,13 @@ export const SaveDesignModal: React.FC<SaveDesignModalProps> = ({
 
     try {
       if (typeof window !== "undefined") {
-        localStorage.setItem("tawfiq_user_email", cleanEmail);
+        localStorage.setItem("cm_user_email", cleanEmail);
         localStorage.setItem("user_design_email", cleanEmail);
         localStorage.setItem("user_inquiry_email", cleanEmail);
         sessionStorage.setItem("user_design_email", cleanEmail);
         sessionStorage.setItem("user_inquiry_email", cleanEmail);
         if (name.trim()) {
-          localStorage.setItem("tawfiq_user_name", name.trim());
+          localStorage.setItem("cm_user_name", name.trim());
           localStorage.setItem("user_design_name", name.trim());
           localStorage.setItem("user_inquiry_name", name.trim());
           sessionStorage.setItem("user_design_name", name.trim());
@@ -249,7 +249,7 @@ export const SaveDesignModal: React.FC<SaveDesignModalProps> = ({
                       const val = e.target.value;
                       setEmail(val);
                       if (typeof window !== "undefined") {
-                        localStorage.setItem("tawfiq_user_email", val.trim());
+                        localStorage.setItem("cm_user_email", val.trim());
                         localStorage.setItem("user_design_email", val.trim());
                         localStorage.setItem("user_inquiry_email", val.trim());
                         sessionStorage.setItem("user_design_email", val.trim());
@@ -280,7 +280,7 @@ export const SaveDesignModal: React.FC<SaveDesignModalProps> = ({
                     const val = e.target.value;
                     setName(val);
                     if (typeof window !== "undefined") {
-                      localStorage.setItem("tawfiq_user_name", val.trim());
+                      localStorage.setItem("cm_user_name", val.trim());
                       localStorage.setItem("user_design_name", val.trim());
                       localStorage.setItem("user_inquiry_name", val.trim());
                       sessionStorage.setItem("user_design_name", val.trim());

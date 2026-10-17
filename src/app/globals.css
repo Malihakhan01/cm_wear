@@ -2,11 +2,11 @@
 @import "tailwindcss";
 
 :root {
-  /* TAWFIQ INDUSTRY Core Design Tokens */
+  /* CM SPORTS WEAR Core Design Tokens */
   --sf-black: #0A0A0A;
   --sf-white: #FFFFFF;
   --sf-off-white: #F4F4EF;
-  /* Brand Theme Tokens (Derived from TAWFIQ INDUSTRIES Logo: Crimson Red + Carbon Black + White) */
+  /* Brand Theme Tokens (Derived from CM SPORTS WEAR Logo: Crimson Red + Carbon Black + White) */
   --sf-red: #D90429;
   --sf-red-dark: #9E001B;
   --sf-red-light: #EF233C;
@@ -56,7 +56,8 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* Native high-refresh rate scrolling without browser interpolation delay */
+    scroll-behavior: auto;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     overflow-x: clip;
     max-width: 100%;

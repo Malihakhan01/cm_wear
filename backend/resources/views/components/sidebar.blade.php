@@ -25,11 +25,11 @@
         
         <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 overflow-hidden">
             <div x-show="!sidebarExpanded" class="flex h-10 w-10 min-w-[2.5rem] items-center justify-center rounded-2xl bg-blue-600/10 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400 font-extrabold text-sm tracking-wider">
-                TI
+                CM
             </div>
             <div x-show="sidebarExpanded" x-transition.opacity.duration.200ms class="flex flex-col whitespace-nowrap overflow-hidden">
                 <span class="text-base font-extrabold tracking-tight text-slate-900 dark:text-white truncate">
-                    {{ \App\Models\Setting::get('site_name', config('app.name', 'TAWFIQ INDUSTRIES')) }}
+                    {{ \App\Models\Setting::get('site_name', config('app.name', 'CM SPORTS WEAR')) }}
                 </span>
                 <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
                     Studio & Factory
@@ -94,6 +94,16 @@
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
             <span x-show="sidebarExpanded" x-transition.opacity.duration.150ms class="truncate">Categories</span>
         </a>
+
+        <a href="{{ route('admin.menus.index') }}" 
+           :title="!sidebarExpanded ? 'Header Menu' : ''"
+           class="flex items-center rounded-2xl font-semibold text-sm transition-all duration-150 {{ request()->routeIs('admin.menus.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 font-bold shadow-sm' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/70 dark:hover:text-white' }}"
+           :class="sidebarExpanded ? 'gap-3 px-3.5 py-2.5' : 'justify-center p-3'">
+            <svg class="w-5 h-5 flex-shrink-0 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+            <span x-show="sidebarExpanded" x-transition.opacity.duration.150ms class="truncate">Header Menu</span>
+            <span x-show="sidebarExpanded" class="ml-auto rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">Mega</span>
+        </a>
+
 
         <!-- Section: Manufacturing & Orders -->
         <div x-show="sidebarExpanded" class="pt-4 px-3 pb-1 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
@@ -236,7 +246,7 @@
     <!-- User Mini Profile Footer -->
     <div class="shrink-0 border-t border-slate-200 p-3.5 dark:border-slate-800">
         <div class="flex items-center" :class="sidebarExpanded ? 'gap-3' : 'justify-center'">
-            <a href="{{ route('admin.profile.edit') }}" class="flex h-9 w-9 min-w-[2.25rem] items-center justify-center rounded-xl bg-blue-600 font-bold text-white shadow-md shadow-blue-600/20 overflow-hidden hover:opacity-90 transition" :title="auth()->user()->name ?? 'Admin'">
+            <a href="{{ route('admin.profile.edit') }}" class="flex h-9 w-9 min-w-[2.25rem] items-center justify-center rounded-xl bg-blue-600 font-bold text-white shadow-md shadow-blue-600/20 overflow-hidden hover:opacity-90 transition" title="{{ auth()->user()->name ?? 'Admin' }}">
                 @if(auth()->user()?->avatar_url)
                     <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="h-full w-full object-cover">
                 @else

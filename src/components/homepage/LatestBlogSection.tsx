@@ -56,14 +56,20 @@ const DEFAULT_HOMEPAGE_POSTS: BlogPostItem[] = [
 
 export const LatestBlogSection: React.FC = () => {
   const [posts, setPosts] = useState<BlogPostItem[]>(DEFAULT_HOMEPAGE_POSTS);
+  const [totalCount, setTotalCount] = useState<number>(7);
 
   useEffect(() => {
     let isMounted = true;
     async function loadLatest() {
       try {
         const res = await contentService.getBlogs({ per_page: 3 });
-        if (isMounted && res && res.posts && res.posts.length > 0) {
-          setPosts(res.posts.slice(0, 3));
+        if (isMounted && res) {
+          if (res.posts && res.posts.length > 0) {
+            setPosts(res.posts.slice(0, 3));
+          }
+          if (res.meta?.total) {
+            setTotalCount(res.meta.total);
+          }
         }
       } catch (err) {
         console.error("LatestBlogSection fetch error:", err);
@@ -79,23 +85,26 @@ export const LatestBlogSection: React.FC = () => {
     <section className="bg-white py-20 border-b border-[#DADBD2] select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header with Link to All Articles */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
-          <SectionHeading
-            eyebrow="FACTORY INSIGHTS & SPECIFICATIONS"
-            eyebrowColor="#D61C24"
-            title="Manufacturing Blog & Whitepapers"
-            description="Deep-dive technical guides on fabric density, pattern engineering, private label tech packs, and commercial export logistics."
-          />
-
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase font-bold text-[#0A0A0A] hover:text-[#D61C24] transition-colors pb-8 shrink-0"
-          >
-            <span>View All Editorial Guides ({posts.length}+)</span>
-            <ArrowRight className="w-4 h-4 text-[#D61C24]" />
-          </Link>
-        </div>
+        {/* Header with Integrated Action CTA */}
+        <SectionHeading
+          eyebrow="FACTORY INSIGHTS & SPECIFICATIONS"
+          eyebrowColor="#D61C24"
+          title={
+            <>
+              MANUFACTURING<br />BLOG &amp; WHITEPAPERS
+            </>
+          }
+          description="Deep-dive technical guides on fabric density, pattern engineering, private label tech packs, and commercial export logistics."
+          action={
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-1.5 text-xs font-mono uppercase font-bold text-[#0A0A0A] hover:text-[#D61C24] transition-colors group pt-1"
+            >
+              <span>View All Editorial Guides ({totalCount > 0 ? totalCount : posts.length}+)</span>
+              <ArrowRight className="w-4 h-4 text-[#D61C24] transition-transform group-hover:translate-x-1" />
+            </Link>
+          }
+        />
 
         {/* 3 Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
@@ -115,6 +124,14 @@ export const LatestBlogSection: React.FC = () => {
                     <img
                       src={cover}
                       alt={post.title}
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (target.src !== fallbackImg && !target.src.endsWith(fallbackImg)) {
+                          target.src = fallbackImg;
+                        }
+                      }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3">
@@ -150,7 +167,7 @@ export const LatestBlogSection: React.FC = () => {
                 {/* Footer */}
                 <div className="px-6 pb-6 pt-3 border-t border-[#F4F4EF] flex items-center justify-between">
                   <span className="text-[11px] font-mono text-[#72726D]">
-                    TAWFIQ Technical
+                    CM Technical
                   </span>
 
                   <Link

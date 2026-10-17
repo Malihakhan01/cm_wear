@@ -1,4 +1,4 @@
-# Tawfiq Industries — Frontend Integration Blueprint
+# CM SPORTS WEAR — Frontend Integration Blueprint
 
 This document specifies the technical architecture and API contracts linking the **Next.js 16 Frontend** (`http://localhost:3000`) with this **Laravel 11 Backend API Core** (`http://localhost:8000`).
 
@@ -13,18 +13,18 @@ This document specifies the technical architecture and API contracts linking the
 | **Admin Panel** | `http://localhost:8000/admin` | Laravel Blade + Tailwind CSS | Factory floor administration, RFQ reviews, WooCommerce product CSV imports, Kanban |
 
 ### Configuration Files
-- **Frontend Environment:** `d:\Tawfiq_industry\.env.local`
+- **Frontend Environment:** `.env.local`
   ```env
   NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
   NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
   ```
-- **Backend Environment:** `d:\Tawfiq_industry\backend\.env`
+- **Backend Environment:** `backend/.env`
   ```env
   APP_URL=http://localhost:8000
   FRONTEND_URL=http://localhost:3000
   SANCTUM_STATEFUL_DOMAINS=localhost:3000,127.0.0.1:3000
   ```
-- **Backend CORS:** `d:\Tawfiq_industry\backend\config\cors.php`
+- **Backend CORS:** `backend/config/cors.php`
   - Explicitly configured to accept CORS preflight and requests from `http://localhost:3000`.
 
 ---
@@ -132,13 +132,12 @@ This document specifies the technical architecture and API contracts linking the
 
 ### Terminal 1: Backend (Laravel API Server)
 ```bash
-cd d:\Tawfiq_industry\backend
+cd backend
 php artisan serve --port=8000
 ```
 
 ### Terminal 2: Frontend (Next.js Application)
 ```bash
-cd d:\Tawfiq_industry
 npm run dev
 ```
 

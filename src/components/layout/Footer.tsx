@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/config/site.config";
-import { CheckCircle2, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, CheckCircle2 } from "lucide-react";
 
 export const Footer: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -14,8 +14,11 @@ export const Footer: React.FC = () => {
     if (email) {
       setSubscribed(true);
       try {
-        const { apiClient } = await import("@/services/api.client");
-        await apiClient.post("/inquiries/newsletter", { email });
+        await fetch(`${siteConfig.apiUrl}/inquiries/newsletter`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
       } catch (err) {
         console.warn("Newsletter backend sync fallback:", err);
       }
@@ -75,33 +78,86 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-xs font-mono uppercase font-bold text-white tracking-widest mb-4 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 bg-[#D61C24] rounded-full" />
-              Products (8 Categories)
+              Products (9 Categories)
             </h4>
             <ul className="space-y-2.5 text-xs text-neutral-400">
-              {siteConfig.mainCategories.map((c) => (
-                <li key={c.id}>
-                  <Link
-                    href={`/catalog?category=${c.id}`}
-                    className="hover:text-white transition-colors flex items-center gap-2"
-                  >
-                    <span className="text-[10px] font-mono text-[#D61C24]">{c.number}</span>
-                    <span>{c.name}</span>
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link href="/catalog?category=team-sports-wear" className="hover:text-white transition-colors">
+                  <span className="text-[#FF333D] font-mono mr-1.5">01</span>
+                  Team Sports Wear
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalog?category=martial-arts-combat-wear" className="hover:text-white transition-colors">
+                  <span className="text-[#FF333D] font-mono mr-1.5">02</span>
+                  Martial Arts & Combat Wear
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalog?category=activewear-fitness" className="hover:text-white transition-colors">
+                  <span className="text-[#FF333D] font-mono mr-1.5">03</span>
+                  Activewear & Fitness
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalog?category=casual-lifestyle-wear" className="hover:text-white transition-colors">
+                  <span className="text-[#FF333D] font-mono mr-1.5">04</span>
+                  Casual & Lifestyle Wear
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalog?category=jackets-outerwear" className="hover:text-white transition-colors">
+                  <span className="text-[#FF333D] font-mono mr-1.5">05</span>
+                  Jackets & Outerwear
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalog?category=kids-youth-wear" className="hover:text-white transition-colors">
+                  <span className="text-[#FF333D] font-mono mr-1.5">06</span>
+                  Kids & Youth Wear
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalog?category=workwear-medical-wear" className="hover:text-white transition-colors">
+                  <span className="text-[#FF333D] font-mono mr-1.5">07</span>
+                  Workwear & Medical Wear
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalog?category=sports-accessories" className="hover:text-white transition-colors">
+                  <span className="text-[#FF333D] font-mono mr-1.5">08</span>
+                  Sports Accessories
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalog?category=gloves" className="hover:text-white transition-colors">
+                  <span className="text-[#FF333D] font-mono mr-1.5">09</span>
+                  Gloves
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Column 2: Services */}
+          {/* Column 2: Manufacturing & Services */}
           <div>
             <h4 className="text-xs font-mono uppercase font-bold text-white tracking-widest mb-4 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 bg-[#D61C24] rounded-full" />
-              Manufacturing &amp; Services
+              Manufacturing & Services
             </h4>
             <ul className="space-y-2.5 text-xs text-neutral-400">
               <li>
                 <Link href="/manufacturing" className="hover:text-white transition-colors">
-                  Apparel Manufacturing
+                  Apparel Manufacturing Facility
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalogs" className="hover:text-white transition-colors text-white font-semibold">
+                  Official PDF Product Catalogs
+                </Link>
+              </li>
+              <li>
+                <Link href="/certifications" className="hover:text-white transition-colors text-white font-semibold">
+                  Chamber & Industry Certificates
                 </Link>
               </li>
               <li>
@@ -115,13 +171,8 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/resources" className="hover:text-white transition-colors">
-                  Technical Resources &amp; Guides
-                </Link>
-              </li>
-              <li>
                 <Link href="/customization" className="hover:text-white transition-colors">
-                  Decoration &amp; Printing
+                  Decoration & Printing
                 </Link>
               </li>
               <li>
@@ -145,45 +196,49 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2.5 text-xs text-neutral-400">
               <li>
-                <Link href="/about" className="hover:text-white transition-colors">
-                  About TAWFIQ INDUSTRIES
+                <Link href="/about" className="hover:text-white transition-colors font-semibold text-white">
+                  About CM SPORTS WEAR
                 </Link>
               </li>
               <li className="flex items-start gap-1.5 text-neutral-400">
                 <MapPin className="w-3.5 h-3.5 text-[#D61C24] shrink-0 mt-0.5" />
-                <span className="leading-snug">PO SAME 51310, ADDHA, Daska Rd, Beerh, Sialkot, 51310</span>
+                <span className="leading-snug">{siteConfig.address.full}</span>
               </li>
               <li>
                 <a
-                  href="mailto:info@tawfiqindustry.com"
+                  href={`mailto:${siteConfig.supportEmail}`}
                   className="hover:text-white transition-colors flex items-center gap-1.5"
                 >
                   <Mail className="w-3.5 h-3.5 text-[#D61C24]" />
-                  <span>info@tawfiqindustry.com</span>
+                  <span>{siteConfig.supportEmail}</span>
                 </a>
               </li>
               <li>
                 <a
-                  href="tel:03484552164"
+                  href={`tel:${siteConfig.whatsAppFormattedNumber}`}
                   className="hover:text-white transition-colors flex items-center gap-1.5"
                 >
                   <Phone className="w-3.5 h-3.5 text-[#D61C24]" />
-                  <span>03484552164</span>
+                  <span>{siteConfig.whatsAppNumber}</span>
                 </a>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-white transition-colors">
-                  Blog & Articles
+                <a
+                  href="tel:+92523558586"
+                  className="hover:text-white transition-colors flex items-center gap-1.5"
+                >
+                  <Phone className="w-3.5 h-3.5 text-[#D61C24]" />
+                  <span>+92-52-3558586</span>
+                </a>
+              </li>
+              <li>
+                <Link href="/catalogs" className="hover:text-white transition-colors">
+                  Download Catalogues
                 </Link>
               </li>
               <li>
-                <Link href="/resources" className="hover:text-white transition-colors">
-                  Technical Apparel Guides
-                </Link>
-              </li>
-              <li>
-                <Link href="/materials" className="hover:text-white transition-colors">
-                  Fabric & GSM Library
+                <Link href="/certifications" className="hover:text-white transition-colors">
+                  Export Accreditations
                 </Link>
               </li>
             </ul>
@@ -207,18 +262,8 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/shipping" className="hover:text-white transition-colors">
-                  Commercial Incoterms (DDP/FOB)
-                </Link>
-              </li>
-              <li>
                 <Link href="/saved-designs" className="hover:text-white transition-colors">
                   Client Saved Designs
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="hover:text-white transition-colors">
-                  Manufacturing Blog & Insights
                 </Link>
               </li>
               <li>
@@ -227,8 +272,8 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/account" className="hover:text-white transition-colors">
-                  Client Portal
+                <Link href="/contact" className="hover:text-white transition-colors">
+                  Factory Logistics & Visit
                 </Link>
               </li>
             </ul>
@@ -236,17 +281,17 @@ export const Footer: React.FC = () => {
 
         </div>
 
-        {/* Bottom Legal & All Rights Reserved Line - Directly Above Site Name as in Screenshot 2 */}
+        {/* Bottom Legal & All Rights Reserved Line */}
         <div className="pt-10 pb-4 border-t border-[#2A2A28] flex flex-col sm:flex-row items-center justify-between text-neutral-400 text-xs font-mono gap-3">
           <div>
-            &copy; {new Date().getFullYear()} Tawfiq Industries. All rights reserved.
+            &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </div>
           <div className="flex items-center gap-4 text-[11px] text-neutral-500">
-            <Link href="/blog" className="hover:text-white transition-colors text-neutral-400">Blog</Link>
+            <Link href="/catalogs" className="hover:text-white transition-colors text-neutral-400">Catalogs</Link>
+            <span>&bull;</span>
+            <Link href="/certifications" className="hover:text-white transition-colors text-neutral-400">Certifications</Link>
             <span>&bull;</span>
             <Link href="/resources/faq" className="hover:text-white transition-colors text-neutral-400">FAQs</Link>
-            <span>&bull;</span>
-            <Link href="/resources" className="hover:text-white transition-colors">Privacy Policy</Link>
             <span>&bull;</span>
             <Link href="/resources" className="hover:text-white transition-colors">Terms of Manufacturing</Link>
             <span>&bull;</span>
@@ -254,7 +299,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Site Name in Bottom: Modern, non-italic bold architectural typography */}
+        {/* Site Name in Bottom: Modern Architectural Bold Typography */}
         <div className="w-full select-none pointer-events-none overflow-hidden pt-4 pb-0 -mb-1">
           <svg
             viewBox="0 0 1200 95"
@@ -268,14 +313,14 @@ export const Footer: React.FC = () => {
               fill="#FFFFFF"
               className="uppercase select-none"
               style={{
-                fontSize: "82px",
+                fontSize: "76px",
                 fontWeight: 900,
                 fontStyle: "normal",
                 fontFamily: "'Archivo', 'Space Grotesk', system-ui, -apple-system, sans-serif",
-                letterSpacing: "0.06em",
+                letterSpacing: "0.08em",
               }}
             >
-              TAWFIQ INDUSTRIES
+              CM SPORTS WEAR
             </text>
           </svg>
         </div>

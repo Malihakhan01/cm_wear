@@ -16,9 +16,9 @@ export default function CustomizationServicesPage() {
       moq: 50,
     },
     {
-      name: "3D High-Loft Puff Print",
+      name: "High-Loft Puff Print",
       tagline: "Dimensional Foaming Ink",
-      desc: "Specialty foaming agent expanding under heat curing to form architectural 3D relief on heavyweight cotton blanks.",
+      desc: "Specialty foaming agent expanding under heat curing to form architectural relief on heavyweight cotton blanks.",
       bestUses: "Streetwear chest arches, vintage collegiate branding, sleeve lettering.",
       garments: "Heavyweight French Terry Hoodies, Crewnecks",
       durability: "80+ Wash Cycles",
@@ -34,7 +34,7 @@ export default function CustomizationServicesPage() {
       moq: 30,
     },
     {
-      name: "Tajima 3D Foam Embroidery",
+      name: "Tajima Foam Embroidery",
       tagline: "15-Needle Structural Crests",
       desc: "High-density satin stitching embroidered over 3mm high-density EVA foam for raised dimension and sharp perimeter contour.",
       bestUses: "Chest crests, cap badges, tournament emblems, varsity typography.",
@@ -128,7 +128,7 @@ export default function CustomizationServicesPage() {
               Decoration & Customization Capabilities
             </h1>
             <p className="text-sm sm:text-base text-neutral-300 leading-relaxed font-sans">
-              State-of-the-art embellishment lines operating directly inside our Sialkot campus. From high-density screen printing to Japanese 3D Tajima embroidery and Italian sublimation.
+              State-of-the-art embellishment lines operating directly inside our Sialkot campus. From high-density screen printing to Japanese Tajima embroidery and Italian sublimation.
             </p>
           </div>
         </div>

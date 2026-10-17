@@ -125,7 +125,7 @@ export default function BlogPostDetailPage() {
           <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-neutral-400 pt-2 border-t border-[#20201E]">
             <span className="flex items-center gap-2">
               <User className="w-3.5 h-3.5 text-[#FF333D]" />
-              {post.author?.name || "TAWFIQ Technical Editorial Team"}
+              {post.author?.name || "CM Technical Editorial Team"}
             </span>
             <span className="flex items-center gap-2">
               <Calendar className="w-3.5 h-3.5 text-neutral-500" />

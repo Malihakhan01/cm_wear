@@ -19,7 +19,7 @@ export const useStoreModeStore = create<StoreModeState>()(
         })),
     }),
     {
-      name: "tawfiq-industry-store-mode",
+      name: "cm-wear-store-mode",
     }
   )
 );

@@ -1,0 +1,77 @@
+DirectoryIndex index.html index.php
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_headers.c>
+    # Never cache HTML so users always see the latest release immediately
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Force HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # 2. Pass Authorization header to PHP
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # 3. Direct assets
+    RewriteRule ^storage/(.*)$ storage/$1 [L]
+    RewriteRule ^build/(.*)$ build/$1 [L]
+
+    # 4. Laravel Backend routes -> backend_entry.php
+    RewriteRule ^api(/.*)?$ backend_entry.php [L,QSA]
+    RewriteRule ^admin(/.*)?$ backend_entry.php [L,QSA]
+    RewriteRule ^login$ backend_entry.php [L,QSA]
+    RewriteRule ^logout$ backend_entry.php [L,QSA]
+    RewriteRule ^password(/.*)?$ backend_entry.php [L,QSA]
+    RewriteRule ^sanctum(/.*)?$ backend_entry.php [L,QSA]
+
+    # 5. Existing static files, directories with index.html -> serve directly
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteCond %{REQUEST_FILENAME}/index.html -f
+    RewriteRule ^ - [L]
+
+    # 6. Clean URLs for Next.js exported pages
+    RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+    RewriteRule ^([^/]+)/?$ $1/index.html [L]
+
+    RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+    RewriteRule ^([^/]+)/?$ $1.html [L]
+
+    RewriteCond %{DOCUMENT_ROOT}/$1/$2/index.html -f
+    RewriteRule ^([^/]+)/([^/]+)/?$ $1/$2/index.html [L]
+
+    RewriteCond %{DOCUMENT_ROOT}/$1/$2.html -f
+    RewriteRule ^([^/]+)/([^/]+)/?$ $1/$2.html [L]
+
+    RewriteCond %{DOCUMENT_ROOT}/$1/$2/$3/index.html -f
+    RewriteRule ^([^/]+)/([^/]+)/([^/]+)/?$ $1/$2/$3/index.html [L]
+
+    RewriteCond %{DOCUMENT_ROOT}/$1/$2/$3.html -f
+    RewriteRule ^([^/]+)/([^/]+)/([^/]+)/?$ $1/$2/$3.html [L]
+
+    # Dynamic category fallback -> redirect to catalog with category query
+    RewriteCond %{REQUEST_URI} ^/(category|collections)/([^/]+)/?$ [NC]
+    RewriteRule ^(category|collections)/([^/]+)/?$ /catalog?category=$2 [R=301,L]
+
+    # Dynamic product detail fallback (serves Next.js product page template with live API hydration)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^products/([^/]+)/?$ products/overview.html [L]
+
+
+    # 7. Fallback to 404
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ 404/index.html [L]
+</IfModule>

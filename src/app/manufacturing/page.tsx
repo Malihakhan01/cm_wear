@@ -32,8 +32,8 @@ export default function ManufacturingPage() {
     },
     {
       number: "05",
-      title: "Tajima 3D Multi-Head Embroidery",
-      desc: "Bank of 15-needle Japanese Tajima embroidery heads delivering 3D high-density puff foam, collegiate chenille looping, and direct crest embroidery.",
+      title: "Tajima Multi-Head Embroidery",
+      desc: "Bank of 15-needle Japanese Tajima embroidery heads delivering high-density puff foam, collegiate chenille looping, and direct crest embroidery.",
       icon: Factory,
     },
     {

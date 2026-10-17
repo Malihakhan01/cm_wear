@@ -26,27 +26,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   className = "",
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      {
-        threshold: 0.15,
-        rootMargin: "0px 0px -40px 0px",
-      }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const [isVisible, setIsVisible] = useState(true);
 
   const isDark = theme === "dark";
 

@@ -64,6 +64,19 @@ class Product extends Model
         'garment_parts_config' => 'array',
     ];
 
+    public function getDescriptionAttribute($value): string
+    {
+        if (!$value) return '';
+        return str_replace(["\\r\\n", "\\n", "\\r"], "\n", $value);
+    }
+
+    public function getShortDescriptionAttribute($value): string
+    {
+        if (!$value) return '';
+        return str_replace(["\\r\\n", "\\n", "\\r"], "\n", $value);
+    }
+
+
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'category_product')

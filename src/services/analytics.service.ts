@@ -24,7 +24,7 @@ export const analyticsService = {
       }
       // Console telemetry for developer inspection
       if (process.env.NODE_ENV !== "production") {
-        console.log(`[TAWFIQ INDUSTRY Analytics] Event: ${eventName}`, params);
+        console.log(`[CM SPORTS WEAR Analytics] Event: ${eventName}`, params);
       }
     }
   },

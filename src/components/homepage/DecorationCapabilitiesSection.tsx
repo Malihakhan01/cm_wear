@@ -16,9 +16,9 @@ export const DecorationCapabilitiesSection: React.FC = () => {
     },
     {
       id: "puff-print",
-      name: "3D High-Loft Puff Print",
+      name: "High-Loft Puff Print",
       tag: "Dimensional Textured Foam",
-      desc: "Expansive high-loft foaming ink expanding under heat curing to create tactile 3D relief on oversized blanks.",
+      desc: "Expansive high-loft foaming ink expanding under heat curing to create tactile relief on oversized blanks.",
       bestFor: "Streetwear typography, chest arches, sleeve branding",
       garments: "French Terry Hoodies, Crewnecks, Sweatpants",
     },
@@ -32,7 +32,7 @@ export const DecorationCapabilitiesSection: React.FC = () => {
     },
     {
       id: "embroidery",
-      name: "Tajima 3D Foam Embroidery",
+      name: "Tajima Foam Embroidery",
       tag: "15-Needle Japanese Precision",
       desc: "Satin stitch density over 3mm high-density EVA foam creating crisp structural crests and collegiate lettering.",
       bestFor: "Team crests, breast badges, varsity caps, sleeve emblems",

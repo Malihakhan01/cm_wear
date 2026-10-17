@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { TAWFIQ_PALETTE } from "@/config/customizerProducts.config";
+import { CM_PALETTE } from "@/config/customizerProducts.config";
 import { Sparkles, ArrowRight, RotateCcw, Palette, Layers } from "lucide-react";
 
 export const ConfiguratorTeaserSection: React.FC = () => {
@@ -178,7 +178,7 @@ export const ConfiguratorTeaserSection: React.FC = () => {
               {/* Real-time Watermark / Stamp */}
               <div className="absolute top-8 text-center pointer-events-none">
                 <span className="text-[10px] font-mono tracking-widest uppercase font-bold text-black/40">
-                  TAWFIQ INDUSTRY LAB
+                  CM SPORTS WEAR LAB
                 </span>
               </div>
             </div>
@@ -244,7 +244,7 @@ export const ConfiguratorTeaserSection: React.FC = () => {
                 </span>
               </div>
               <div className="grid grid-cols-5 gap-2">
-                {TAWFIQ_PALETTE.slice(0, 10).map((swatch) => {
+                {CM_PALETTE.slice(0, 10).map((swatch) => {
                   const isSelected = colors[activePart] === swatch.hex;
                   return (
                     <button

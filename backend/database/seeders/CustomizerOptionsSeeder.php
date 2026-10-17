@@ -165,7 +165,7 @@ class CustomizerOptionsSeeder extends Seeder
         $methods = [
             [
                 'key' => 'dec_tajima_3d_foam_embroidery',
-                'name' => 'Tajima 3D Foam High-Loft Embroidery',
+                'name' => 'Tajima Foam High-Loft Embroidery',
                 'value' => [
                     'tagline' => '15-Needle Structural Crests',
                     'desc' => 'High-density satin stitching embroidered over 3mm high-density EVA foam for raised dimension and razor-sharp perimeter contour.',
@@ -243,7 +243,7 @@ class CustomizerOptionsSeeder extends Seeder
             ],
             [
                 'key' => 'dec_silicone_badges',
-                'name' => 'Silicone & Rubberized 3D Badges',
+                'name' => 'Silicone & Rubberized Badges',
                 'value' => [
                     'tagline' => 'Tactile High-Friction Grip',
                     'desc' => 'Liquid silicone injected into precision micro-molds, producing matte dimensional rubber badges with luxury hand.',

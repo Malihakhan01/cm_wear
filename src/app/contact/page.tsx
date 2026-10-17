@@ -86,7 +86,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <a
-                href={`https://wa.me/${siteConfig.whatsAppFormattedNumber}?text=${encodeURIComponent("Hello TAWFIQ INDUSTRIES, I would like to inquire about apparel manufacturing.")}`}
+                href={`https://wa.me/${siteConfig.whatsAppFormattedNumber}?text=${encodeURIComponent("Hello CM SPORTS WEAR, I would like to inquire about apparel manufacturing.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3 bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-mono uppercase font-bold tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2"

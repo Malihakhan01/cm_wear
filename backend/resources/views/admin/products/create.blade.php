@@ -76,7 +76,7 @@
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2">Product Type *</label>
                             <select name="product_type" required class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-950">
-                                <option value="customizable_apparel" selected>3D / 2D Customizable Garment</option>
+                                <option value="customizable_apparel" selected>Customizable Garment</option>
                                 <option value="simple">Simple Apparel Blank</option>
                                 <option value="variable">Variable Product (Multi-Size/Color)</option>
                             </select>
@@ -314,7 +314,7 @@
 
                         <label class="flex items-center gap-3 cursor-pointer">
                             <input type="checkbox" name="is_customizable" value="1" checked class="rounded border-slate-300 text-blue-600 focus:ring-0">
-                            <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Enable 2D/3D Customizer</span>
+                            <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Enable Customizer</span>
                         </label>
 
                         <label class="flex items-center gap-3 cursor-pointer">

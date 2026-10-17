@@ -1,14 +1,9 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useRef, useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight, MoveHorizontal } from "lucide-react";
 import { useHeaderStore } from "@/stores/useHeaderStore";
 import { SectionHeading } from "@/components/common/SectionHeading";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 interface ProcessStep {
   step: string;
@@ -51,63 +46,98 @@ const PROCESS_STEPS: ProcessStep[] = [
 ];
 
 export const FabricLibrarySection: React.FC = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
-  // Pinned Horizontal Scroll with GSAP ScrollTrigger
+  const [isDragging, setIsDragging] = useState(false);
+  const isMouseDownRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const hasMovedRef = useRef(false);
+
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isScrollable, setIsScrollable] = useState(true);
+
+  // Guarantee header is always visible throughout the site
   useEffect(() => {
-    if (!sectionRef.current || !trackRef.current) return;
+    useHeaderStore.getState().setHeaderVisible(true);
+  }, []);
 
-    const ctx = gsap.context(() => {
-      const track = trackRef.current!;
+  const checkScrollRaf = useRef<number | null>(null);
 
-      const calculateDistance = () => {
-        const trackWidth = track.scrollWidth;
-        const viewportWidth = window.innerWidth;
-        const distance = trackWidth - viewportWidth + 140;
-        return -Math.max(distance, 500);
-      };
+  const updateScrollState = () => {
+    if (checkScrollRaf.current) return;
+    checkScrollRaf.current = window.requestAnimationFrame(() => {
+      checkScrollRaf.current = null;
+      if (!scrollContainerRef.current) return;
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      const maxScroll = scrollWidth - clientWidth;
+      const hasOverflow = maxScroll > 10;
+      setIsScrollable(hasOverflow);
+      setCanScrollLeft(hasOverflow && scrollLeft > 15);
+      setCanScrollRight(hasOverflow && scrollLeft < maxScroll - 15);
 
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: () => `+=${Math.max(Math.abs(calculateDistance()) * 1.3, 1100)}`,
-        pin: true,
-        scrub: 1.2,
-        invalidateOnRefresh: true,
-        animation: gsap.to(track, {
-          x: calculateDistance,
-          ease: "none",
-        }),
-        onToggle: (self) => {
-          // Hide header while horizontal pinned scroll is active
-          useHeaderStore.getState().setHeaderVisible(!self.isActive);
-        },
-        onUpdate: (self) => {
-          if (progressBarRef.current) {
-            progressBarRef.current.style.width = `${self.progress * 100}%`;
-          }
-        },
-      });
-    }, sectionRef);
+      if (progressBarRef.current && maxScroll > 0) {
+        const progress = Math.min(Math.max(scrollLeft / maxScroll, 0), 1);
+        progressBarRef.current.style.transform = `scaleX(${progress})`;
+      }
+    });
+  };
 
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    updateScrollState();
+    el.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
     return () => {
-      // Ensure header is restored when unmounting
-      useHeaderStore.getState().setHeaderVisible(true);
-      ctx.revert();
+      if (checkScrollRaf.current) window.cancelAnimationFrame(checkScrollRaf.current);
+      el.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
     };
   }, []);
 
+  // Mouse Drag Handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    const { scrollWidth, clientWidth } = scrollContainerRef.current;
+    if (scrollWidth <= clientWidth + 5) return;
+
+    isMouseDownRef.current = true;
+    hasMovedRef.current = false;
+    startXRef.current = e.pageX - scrollContainerRef.current.offsetLeft;
+    scrollLeftRef.current = scrollContainerRef.current.scrollLeft;
+    setIsDragging(true);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isMouseDownRef.current || !scrollContainerRef.current) return;
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 1.5;
+    if (Math.abs(walk) > 5) {
+      hasMovedRef.current = true;
+    }
+    scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walk;
+    updateScrollState();
+  };
+
+  const handleMouseUpOrLeave = () => {
+    isMouseDownRef.current = false;
+    setIsDragging(false);
+  };
+
+  const scroll = (direction: "left" | "right") => {
+    if (!scrollContainerRef.current) return;
+    const offset = direction === "left" ? -400 : 400;
+    scrollContainerRef.current.scrollBy({ left: offset, behavior: "smooth" });
+  };
+
   return (
-    <section
-      ref={sectionRef}
-      className="relative bg-[#0A0A0A] text-white min-h-[620px] sm:min-h-[680px] h-screen w-full select-none overflow-hidden flex flex-col justify-between border-b border-white/10"
-    >
-      {/* Inner Container with calibrated padding to guarantee cards & text are 100% visible on all viewports */}
-      <div className="max-w-7xl mx-auto w-full h-full flex flex-col justify-between pt-6 sm:pt-9 lg:pt-11 pb-5 sm:pb-7 px-4 sm:px-6 lg:px-8">
+    <section className="relative bg-[#0A0A0A] text-white py-20 sm:py-24 w-full select-none overflow-hidden border-b border-white/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header */}
+        {/* Header with Navigation Controls */}
         <SectionHeading
           theme="dark"
           eyebrow="PRODUCTION TIMELINE"
@@ -118,36 +148,76 @@ export const FabricLibrarySection: React.FC = () => {
             </>
           }
           description="One seamless process for every line. Physical pre-production sample approved before bulk manufacturing begins."
-          className="shrink-0 pb-1 sm:pb-2 mb-2 sm:mb-4 border-none"
+          action={
+            <div className="flex items-center gap-3">
+              {isScrollable && (
+                <div className="hidden lg:flex items-center gap-1.5 text-[11px] font-mono text-neutral-400 uppercase tracking-wider mr-1">
+                  <MoveHorizontal className="w-3.5 h-3.5 text-[#D61C24]" />
+                  <span>Drag to explore</span>
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => scroll("left")}
+                disabled={!canScrollLeft}
+                aria-label="Scroll timeline left"
+                className="w-10 h-10 rounded-full bg-[#161616] hover:bg-[#222222] border border-white/10 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer text-white shadow-xs"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => scroll("right")}
+                disabled={!canScrollRight}
+                aria-label="Scroll timeline right"
+                className="w-10 h-10 rounded-full bg-[#161616] hover:bg-[#222222] border border-white/10 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer text-white shadow-xs"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          }
         />
 
-        {/* Horizontal Scrolling Track */}
-        <div className="w-full flex-1 flex items-center py-2 sm:py-3 my-auto min-h-[300px]">
-          <div
-            ref={trackRef}
-            className="flex items-stretch gap-4 sm:gap-7 px-2 sm:px-8 w-max will-change-transform"
-          >
+        {/* Horizontal Draggable & Scrollable Process Cards Track */}
+        <div
+          ref={scrollContainerRef}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUpOrLeave}
+          onMouseLeave={handleMouseUpOrLeave}
+          className={`w-full overflow-x-auto select-none pb-6 pt-2 no-scrollbar ${
+            isScrollable ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-default"
+          }`}
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          <div className="flex items-stretch gap-5 sm:gap-7 w-max">
             {PROCESS_STEPS.map((step) => (
               <div
                 key={step.step}
-                className="w-[275px] sm:w-[360px] lg:w-[380px] shrink-0 bg-white rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col transition-transform hover:-translate-y-1 duration-300"
+                className="w-[275px] sm:w-[350px] lg:w-[375px] shrink-0 bg-white rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col transition-transform hover:-translate-y-1 duration-300"
               >
-                {/* Upper Image with Step Number (wide landscape aspect ratio) */}
-                <div
-                  className="relative w-full h-[175px] sm:h-[215px] overflow-hidden bg-[#1C1C1C] shrink-0"
-                >
+                {/* Upper Image with Step Number */}
+                <div className="relative w-full h-[175px] sm:h-[215px] overflow-hidden bg-[#1C1C1C] shrink-0">
                   <img
                     src={step.image}
                     alt={step.title}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 pointer-events-none select-none"
                   />
-                  {/* Step number on image matching reference */}
                   <span className="absolute top-3.5 left-4 text-3xl sm:text-5xl font-bold font-display text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] select-none pointer-events-none leading-none">
                     {step.step}
                   </span>
                 </div>
 
-                {/* Lower Card Info with EXACT reference DevTools specs: padding 18px 20px 22px */}
+                {/* Lower Card Info */}
                 <div
                   className="bg-white flex flex-col justify-start shrink-0 w-full min-h-[105px]"
                   style={{
@@ -155,7 +225,6 @@ export const FabricLibrarySection: React.FC = () => {
                     boxSizing: "border-box",
                   }}
                 >
-                  {/* Heading matching reference DevTools: 15px, #121212, uppercase, Helvetica Neue */}
                   <h3
                     className="text-[15px] font-bold uppercase tracking-tight not-italic"
                     style={{
@@ -171,7 +240,6 @@ export const FabricLibrarySection: React.FC = () => {
                     {step.title}
                   </h3>
 
-                  {/* Paragraph matching reference DevTools: 13.5px, #1212129E, mt 6px, Helvetica Neue */}
                   <p
                     className="text-[13.5px]"
                     style={{
@@ -194,11 +262,11 @@ export const FabricLibrarySection: React.FC = () => {
 
         {/* Bottom Section: Sleek Progress Line */}
         <div className="w-full relative flex flex-col items-center shrink-0 pt-4 pb-2">
-          <div className="w-full h-[2px] bg-white/15 relative overflow-hidden">
+          <div className="w-full h-[2px] bg-white/15 relative overflow-hidden rounded-full">
             <div
               ref={progressBarRef}
-              className="absolute top-0 left-0 bottom-0 bg-white transition-all duration-75"
-              style={{ width: "0%" }}
+              className="absolute top-0 left-0 bottom-0 w-full bg-[#D61C24] origin-left will-change-transform transition-transform duration-100 ease-out"
+              style={{ transform: "scaleX(0)" }}
             />
           </div>
         </div>

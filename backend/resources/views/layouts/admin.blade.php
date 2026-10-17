@@ -25,7 +25,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin Dashboard') — {{ \App\Models\Setting::get('site_name', config('app.name', 'TAWFIQ INDUSTRIES')) }}</title>
+    <title>@yield('title', 'Admin Dashboard') — {{ \App\Models\Setting::get('site_name', config('app.name', 'CM SPORTS WEAR')) }}</title>
 
 
 
@@ -93,7 +93,7 @@
 
             <!-- Admin Footer -->
             <footer class="mt-auto shrink-0 border-t border-slate-200 bg-white/50 px-6 py-4 text-center text-xs text-slate-500 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400">
-                &copy; {{ date('Y') }} {{ \App\Models\Setting::get('site_name', config('app.name', 'TAWFIQ INDUSTRIES')) }} — Core Commerce Engine.
+                &copy; {{ date('Y') }} {{ \App\Models\Setting::get('site_name', config('app.name', 'CM SPORTS WEAR')) }} — Core Commerce Engine.
             </footer>
         </div>
     </div>

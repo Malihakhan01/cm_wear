@@ -22,7 +22,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2">Store / Brand Name</label>
-                    <input type="text" name="site_name" value="{{ old('site_name', $settings['site_name']->value ?? 'TAWFIQ INDUSTRIES') }}" class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-950">
+                    <input type="text" name="site_name" value="{{ old('site_name', $settings['site_name']->value ?? 'CM SPORTS WEAR') }}" class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-950">
                 </div>
 
                 <div>

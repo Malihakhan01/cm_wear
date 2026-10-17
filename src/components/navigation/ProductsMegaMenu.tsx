@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { siteConfig } from "@/config/site.config";
+import { menuService, MegaMenuPillar } from "@/services/menu.service";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 interface ProductsMegaMenuProps {
@@ -13,10 +13,30 @@ interface ProductsMegaMenuProps {
 
 export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onClose }) => {
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
+  const [categories, setCategories] = useState<MegaMenuPillar[]>(() =>
+    siteConfig.mainCategories.map((c) => ({
+      id: c.id,
+      slug: c.slug,
+      name: c.name,
+      number: c.number,
+      image: c.image,
+      tagline: "Minimum order 30–50 pieces with full Pantone lab-dip matching and custom tech-pack development.",
+      subcategories: c.subcategories,
+    }))
+  );
+
+  useEffect(() => {
+    menuService.getHeaderMegaMenu().then((livePillars) => {
+      if (livePillars && livePillars.length > 0) {
+        setCategories(livePillars);
+      }
+    });
+  }, []);
 
   if (!isOpen) return null;
 
-  const activeCategory = siteConfig.mainCategories[activeCategoryIndex];
+  const activeCategory = categories[activeCategoryIndex] || categories[0];
+  if (!activeCategory) return null;
 
   return (
     <div
@@ -29,14 +49,14 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
           {/* Column 1: Category Selector (4 cols) */}
           <div className="col-span-4 border-r border-[#DADBD2] pr-6 space-y-1">
             <div className="text-[10px] font-mono uppercase tracking-widest text-[#72726D] mb-3 px-3">
-              {String(siteConfig.mainCategories.length).padStart(2, "0")} Specialized Apparel Categories
+              {String(categories.length).padStart(2, "0")} Specialized Apparel Categories
             </div>
 
-            {siteConfig.mainCategories.map((cat, idx) => {
+            {categories.map((cat, idx) => {
               const isActive = idx === activeCategoryIndex;
               return (
                 <div
-                  key={cat.id}
+                  key={cat.id || cat.slug || idx}
                   onMouseEnter={() => setActiveCategoryIndex(idx)}
                   className={`group flex items-center justify-between px-3 py-2.5 rounded-[2px] transition-all cursor-pointer ${
                     isActive
@@ -45,7 +65,7 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
                   }`}
                 >
                   <Link
-                    href={`/catalog?category=${cat.id}`}
+                    href={`/catalog?category=${cat.slug || cat.id}`}
                     onClick={onClose}
                     className="flex items-center gap-3 w-full"
                   >
@@ -54,7 +74,7 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
                         isActive ? "text-[#FF333D]" : "text-[#72726D]"
                       }`}
                     >
-                      {cat.number}
+                      {cat.number || (idx + 1 < 10 ? `0${idx + 1}` : idx + 1)}
                     </span>
                     <span className="text-sm font-semibold tracking-tight uppercase">
                       {cat.name}
@@ -85,7 +105,7 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
                   </h3>
                 </div>
                 <Link
-                  href={`/catalog?category=${activeCategory.id}`}
+                  href={`/catalog?category=${activeCategory.slug || activeCategory.id}`}
                   onClick={onClose}
                   className="text-xs font-mono uppercase text-[#D61C24] hover:text-[#A31017] flex items-center gap-1 font-semibold"
                 >
@@ -95,10 +115,10 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
 
               {/* Subcategories 2-column list */}
               <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
-                {activeCategory.subcategories.map((sub) => (
+                {(activeCategory.subcategories || []).map((sub) => (
                   <Link
                     key={sub}
-                    href={`/catalog?category=${activeCategory.id}&subcategory=${encodeURIComponent(sub)}`}
+                    href={`/catalog?category=${activeCategory.slug || activeCategory.id}&subcategory=${encodeURIComponent(sub)}`}
                     onClick={onClose}
                     className="text-xs text-[#72726D] hover:text-[#0A0A0A] hover:translate-x-1 transition-all py-1 flex items-center gap-2"
                   >
@@ -130,7 +150,13 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
             <div>
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2px] mb-3 bg-[#0A0A0A]">
                 <img
-                  src={activeCategory.image}
+                  src={activeCategory.image || "/categories/Casual wear (1).png"}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    if (!target.src.endsWith("/categories/Casual wear (1).png")) {
+                      target.src = "/categories/Casual wear (1).png";
+                    }
+                  }}
                   alt={activeCategory.name}
                   className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 transition-transform duration-500"
                 />
@@ -143,12 +169,12 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
                 {activeCategory.name} Sourcing
               </div>
               <p className="text-[11px] text-[#72726D] leading-relaxed mb-3">
-                Minimum order 30–50 pieces with full Pantone lab-dip matching and custom tech-pack development.
+                {activeCategory.tagline || "Minimum order 30–50 pieces with full Pantone lab-dip matching and custom tech-pack development."}
               </p>
             </div>
 
             <Link
-              href={`/request-quote?category=${activeCategory.id}`}
+              href={`/request-quote?category=${activeCategory.slug || activeCategory.id}`}
               onClick={onClose}
               className="w-full text-center py-2 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono uppercase font-semibold transition-colors rounded-[2px]"
             >

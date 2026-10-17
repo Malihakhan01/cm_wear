@@ -7,14 +7,14 @@ import { CheckCircle2, Package, Mail, MessageCircle, ArrowRight, ShieldCheck } f
 
 function OrderConfirmationContent() {
   const searchParams = useSearchParams();
-  const orderNumber = searchParams.get("order") || "TI-849201";
+  const orderNumber = searchParams.get("order") || "CM-849201";
 
   const [orderData, setOrderData] = useState<any>(null);
 
   useEffect(() => {
     // 1. Load from session storage if available
     if (typeof window !== "undefined") {
-      const stored = sessionStorage.getItem("tawfiq-industry-last-order");
+      const stored = sessionStorage.getItem("cm-wear-last-order");
       if (stored) {
         try {
           const parsed = JSON.parse(stored);

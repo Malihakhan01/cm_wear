@@ -45,12 +45,12 @@ export const WelcomeCustomizerModal: React.FC = () => {
   const PRODUCTS_SHOWCASE = [
     {
       id: "varsity",
-      name: "Heritage 3D Varsity Jacket",
+      name: "Heritage Varsity Jacket",
       spec: "500 GSM Melton Wool & Full-Grain Cowhide Leather",
       videoUrl: "/images/varsity_3d_rotating.mp4",
       fallbackVideoUrl: "/images/popup_3d_rotation.mp4/Varsity_jacket_rotating_on_platform_20261013020156.mp4",
       image: "/varsity_jacket/front/body.png",
-      tag: "3D Atelier Model #01",
+      tag: "Atelier Model #01",
       slug: "custom-varsity-jacket",
     },
     {
@@ -60,7 +60,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
       videoUrl: "/images/varsity_3d_rotating.mp4",
       fallbackVideoUrl: "/images/popup_3d_rotation.mp4/Varsity_jacket_rotating_on_platform_20261013020156.mp4",
       image: "/hoodie/hoodie_front.png",
-      tag: "3D Atelier Model #02",
+      tag: "Atelier Model #02",
       slug: "custom-hoodie",
     },
     {
@@ -70,7 +70,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
       videoUrl: "/images/varsity_3d_rotating.mp4",
       fallbackVideoUrl: "/images/popup_3d_rotation.mp4/Varsity_jacket_rotating_on_platform_20261013020156.mp4",
       image: "/equastarian/front (2) (1).png",
-      tag: "3D Atelier Model #03",
+      tag: "Atelier Model #03",
       slug: "custom-riding-jacket",
     },
     {
@@ -80,7 +80,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
       videoUrl: "/images/varsity_3d_rotating.mp4",
       fallbackVideoUrl: "/images/popup_3d_rotation.mp4/Varsity_jacket_rotating_on_platform_20261013020156.mp4",
       image: "/basketball/front (3) (1).png",
-      tag: "3D Atelier Model #04",
+      tag: "Atelier Model #04",
       slug: "custom-basketball-jersey",
     },
   ];
@@ -97,7 +97,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
     // Check if modal was already dismissed in this session (or force open via query param ?welcome=true)
     const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
     const forceOpen = urlParams?.get("welcome") === "true" || urlParams?.get("welcome") === "1";
-    const dismissed = sessionStorage.getItem("tawfiq_welcome_popup_dismissed");
+    const dismissed = sessionStorage.getItem("cm_welcome_popup_dismissed");
 
     if (!dismissed || forceOpen) {
       const timer = setTimeout(() => {
@@ -111,25 +111,25 @@ export const WelcomeCustomizerModal: React.FC = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedEmail =
-        localStorage.getItem("tawfiq_user_email") ||
+        localStorage.getItem("cm_user_email") ||
         localStorage.getItem("user_inquiry_email") ||
         localStorage.getItem("user_design_email") ||
         sessionStorage.getItem("user_inquiry_email") ||
         sessionStorage.getItem("user_design_email") ||
         "";
       const storedName =
-        localStorage.getItem("tawfiq_user_name") ||
+        localStorage.getItem("cm_user_name") ||
         localStorage.getItem("user_inquiry_name") ||
         localStorage.getItem("user_design_name") ||
         sessionStorage.getItem("user_inquiry_name") ||
         "";
       const storedCompany =
-        localStorage.getItem("tawfiq_user_company") ||
+        localStorage.getItem("cm_user_company") ||
         localStorage.getItem("user_inquiry_company") ||
         sessionStorage.getItem("user_inquiry_company") ||
         "";
       const storedPhone =
-        localStorage.getItem("tawfiq_user_phone") ||
+        localStorage.getItem("cm_user_phone") ||
         localStorage.getItem("user_inquiry_phone") ||
         sessionStorage.getItem("user_inquiry_phone") ||
         "";
@@ -154,17 +154,17 @@ export const WelcomeCustomizerModal: React.FC = () => {
   }, [isOpen]);
 
   const handleClose = () => {
-    sessionStorage.setItem("tawfiq_welcome_popup_dismissed", "true");
+    sessionStorage.setItem("cm_welcome_popup_dismissed", "true");
     sessionStorage.removeItem("user_popup_submitted");
     sessionStorage.removeItem("user_popup_submitted_email");
     sessionStorage.removeItem("user_popup_submitted_name");
     sessionStorage.removeItem("user_popup_submitted_company");
     sessionStorage.removeItem("user_popup_submitted_phone");
     try {
-      localStorage.removeItem("tawfiq_user_email");
+      localStorage.removeItem("cm_user_email");
       localStorage.removeItem("user_inquiry_email");
       localStorage.removeItem("user_design_email");
-      localStorage.removeItem("tawfiq_customizer_client_email");
+      localStorage.removeItem("cm_customizer_client_email");
     } catch (e) {}
     setIsOpen(false);
   };
@@ -219,16 +219,16 @@ export const WelcomeCustomizerModal: React.FC = () => {
             }
           ],
           requirements: {
-            source: "3d_welcome_popup",
+            source: "welcome_popup",
             garment_id: chosenGarmentObj.id,
             garment_name: chosenGarmentObj.name,
             garment_spec: chosenGarmentObj.spec,
             inquiry_notes: inquiryNotes.trim() || null,
-            lead_source: "3D Turntable Atelier Modal",
+            lead_source: "Turntable Atelier Modal",
           },
           message: inquiryNotes.trim() 
-            ? `Lead from 3D Popup: ${inquiryNotes.trim()} [Selected: ${chosenGarmentObj.name}]`
-            : `Lead from 3D Popup: Client selected '${chosenGarmentObj.name}' to start customizer session. Work email unlocked for technical CAD specs.`,
+            ? `Lead from Customizer Popup: ${inquiryNotes.trim()} [Selected: ${chosenGarmentObj.name}]`
+            : `Lead from Customizer Popup: Client selected '${chosenGarmentObj.name}' to start customizer session. Work email unlocked for technical CAD specs.`,
         });
 
         // Store in sessionStorage for current session sync with SaveDesignModal
@@ -249,7 +249,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
           if (rfqResponse?.rfq_number) {
             sessionStorage.setItem("user_inquiry_rfq_number", rfqResponse.rfq_number);
           }
-          sessionStorage.setItem("tawfiq_welcome_popup_dismissed", "true");
+          sessionStorage.setItem("cm_welcome_popup_dismissed", "true");
         }
 
         // Subscribe to drops
@@ -307,7 +307,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
         sessionStorage.setItem("user_inquiry_company", companyName.trim());
         sessionStorage.setItem("user_inquiry_phone", phone.trim());
         sessionStorage.setItem("user_inquiry_notes", inquiryNotes.trim());
-        sessionStorage.setItem("tawfiq_welcome_popup_dismissed", "true");
+        sessionStorage.setItem("cm_welcome_popup_dismissed", "true");
         setInquirySent(true);
       }
     } catch (err) {
@@ -369,7 +369,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 bg-[#0e0f12] z-10">
                 <div className="w-9 h-9 rounded-full border-2 border-[#D61C24]/30 border-t-[#D61C24] animate-spin" />
                 <span className="text-[10.5px] font-mono text-slate-400 uppercase tracking-widest animate-pulse">
-                  Loading 3D Model...
+                  Loading Garment Model...
                 </span>
               </div>
             )}
@@ -405,11 +405,11 @@ export const WelcomeCustomizerModal: React.FC = () => {
           
           <div className="space-y-3.5">
             
-            {/* Top Subtitle Eyebrow in Signature Tawfiq Theme */}
+            {/* Top Subtitle Eyebrow in Signature CM SPORTS WEAR Theme */}
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#D61C24] animate-ping" />
               <span className="text-[10px] font-mono uppercase font-bold text-[#D61C24] tracking-widest">
-                TAWFIQ INDUSTRIES &bull; SIALKOT FACTORY ATELIER
+                CM SPORTS WEAR &bull; SIALKOT FACTORY ATELIER
               </span>
             </div>
 
@@ -473,7 +473,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
                         const val = e.target.value;
                         setFullName(val);
                         if (typeof window !== "undefined") {
-                          localStorage.setItem("tawfiq_user_name", val.trim());
+                          localStorage.setItem("cm_user_name", val.trim());
                           localStorage.setItem("user_inquiry_name", val.trim());
                           localStorage.setItem("user_design_name", val.trim());
                           sessionStorage.setItem("user_inquiry_name", val.trim());
@@ -496,7 +496,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
                         const val = e.target.value;
                         setCompanyName(val);
                         if (typeof window !== "undefined") {
-                          localStorage.setItem("tawfiq_user_company", val.trim());
+                          localStorage.setItem("cm_user_company", val.trim());
                           localStorage.setItem("user_inquiry_company", val.trim());
                           sessionStorage.setItem("user_inquiry_company", val.trim());
                         }
@@ -525,7 +525,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
                         const val = e.target.value;
                         setEmail(val);
                         if (typeof window !== "undefined") {
-                          localStorage.setItem("tawfiq_user_email", val.trim());
+                          localStorage.setItem("cm_user_email", val.trim());
                           localStorage.setItem("user_inquiry_email", val.trim());
                           localStorage.setItem("user_design_email", val.trim());
                           sessionStorage.setItem("user_inquiry_email", val.trim());
@@ -549,7 +549,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
                         const val = e.target.value;
                         setPhone(val);
                         if (typeof window !== "undefined") {
-                          localStorage.setItem("tawfiq_user_phone", val.trim());
+                          localStorage.setItem("cm_user_phone", val.trim());
                           localStorage.setItem("user_inquiry_phone", val.trim());
                           sessionStorage.setItem("user_inquiry_phone", val.trim());
                         }
@@ -612,7 +612,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
 
           </div>
 
-          {/* Micro Trust Bottom Bar in Tawfiq Theme */}
+          {/* Micro Trust Bottom Bar in CM SPORTS WEAR Theme */}
           <div className="pt-3 border-t border-[#1B2232] flex items-center justify-between text-[10px] font-mono text-slate-400">
             <span className="flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />

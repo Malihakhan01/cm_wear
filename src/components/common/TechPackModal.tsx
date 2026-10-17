@@ -195,13 +195,30 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
       product.category?.toLowerCase().includes("hoodie")
     );
 
+  const frontProductImage = (product.images && product.images[0]) || "";
+  const backProductImage = (product.images && (product.images[1] || product.images[0])) || "";
+  const hasRealFrontImage = Boolean(
+    frontProductImage &&
+    !frontProductImage.includes("placeholder") &&
+    !frontProductImage.includes("default-product")
+  );
+  const hasRealBackImage = Boolean(
+    backProductImage &&
+    !backProductImage.includes("placeholder") &&
+    !backProductImage.includes("default-product")
+  );
+
   const frontPreviewAsset = isBasketball
     ? "/basketball/front (3) (1).png"
     : isVarsity
     ? "/varsity_jacket/front/body.png"
     : isEquestrian
     ? "/equastarian/front (2) (1).png"
-    : "/hoodie/hoodie_front.png";
+    : hasRealFrontImage
+    ? frontProductImage
+    : isHoodie
+    ? "/hoodie/hoodie_front.png"
+    : frontProductImage || "/hoodie/hoodie_front.png";
 
   const backPreviewAsset = isBasketball
     ? "/basketball/back (3) (1).png"
@@ -209,7 +226,11 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
     ? "/varsity_jacket/back/body.png"
     : isEquestrian
     ? "/equastarian/back (2) (1).png"
-    : "/hoodie/back_body.png";
+    : hasRealBackImage
+    ? backProductImage
+    : isHoodie
+    ? "/hoodie/back_body.png"
+    : backProductImage || "/hoodie/back_body.png";
 
   useEffect(() => {
     setMounted(true);
@@ -229,7 +250,7 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
         fabricSpec: `${state.gsm || 450} GSM ${product.fabric || "Combed Cotton Fleece"} (${state.washId || "Clean Raw Mill"})`,
         targetGsm: state.gsm || 450,
         sizeBreakdown: state.sizeBreakdown,
-        decorationMethod: state.decorationMethodId || "3D Puff Embroidery / Screen Print",
+        decorationMethod: state.decorationMethodId || "Puff Embroidery / Screen Print",
         washType: state.washId || "Clean Raw Mill Finish",
         trimsConfig: state.trims,
         stitchingNotes: "Double-needle flatlock topstitching. 100% pre-shrunk wash test under AQL 2.5 protocol.",
@@ -329,7 +350,7 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
   const resolvedLetterFontFamily = matchedFont?.family || firstTextLayer?.font || "'Alfa Slab One', 'Arial Black', sans-serif";
   const letterCraft = state.decorationMethodId?.includes("chenille")
     ? "CHENILLE"
-    : state.decorationMethodId?.toUpperCase() || (isVarsity ? "CHENILLE" : isBasketball ? "FULL-BLEED SUBLIMATION / TWILL" : isEquestrian ? "3D METALLIC EMBROIDERY" : "SCREEN PRINT");
+    : state.decorationMethodId?.toUpperCase() || (isVarsity ? "CHENILLE" : isBasketball ? "FULL-BLEED SUBLIMATION / TWILL" : isEquestrian ? "METALLIC EMBROIDERY" : "SCREEN PRINT");
   const letterColor = firstTextLayer?.color || (isBasketball ? "#FFFFFF" : isEquestrian ? "#FBBF24" : "#FBBF24");
   const letterBaseFelt = firstTextLayer?.outlineColor || (isBasketball ? (state.partColors.ribs || "#111B2C") : state.partColors.body === "#FFFFFF" ? "#0B0B0B" : "#FFFFFF");
   const letterCount = Math.max(1, letterText.length);
@@ -1597,7 +1618,57 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
       );
     }
 
-    // 5. Fallback SVG Garment Elevation (T-shirts, Pants, Shorts, etc.)
+    // 5. Authentic Catalog Specimen Photo Elevation (Cheerleading, Martial Arts, Sportswear, etc.)
+    if (hasRealFrontImage && !isVarsity && !isBasketball && !isEquestrian && !isHoodie) {
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-2">
+          <img
+            src={frontProductImage}
+            alt={product.name + " Front Spec"}
+            className="w-full h-full max-h-[260px] object-contain drop-shadow-md rounded-[2px]"
+          />
+          {hasFrontText && frontTextLayer && (
+            <div
+              style={{
+                position: "absolute",
+                left: `${((frontTextLayer.x ?? 210) / CANVAS_REF) * 100}%`,
+                top: `${((frontTextLayer.y ?? 200) / CANVAS_REF) * 100}%`,
+                transform: `translate(-50%, -50%) rotate(${frontTextLayer.rotation ?? 0}deg)`,
+                color: frontLetterColor,
+                fontFamily: frontResolvedFontFamily,
+                fontSize: isForPrint ? "9px" : `${Math.max(8, Math.round((frontTextLayer.fontSize ?? 22) * 0.45))}px`,
+                fontWeight: frontTextLayer.fontWeight || "bold",
+                letterSpacing: "0.5px",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {frontLetterText}
+            </div>
+          )}
+          {frontArtworks.map((art) => {
+            const artSize = isForPrint ? 28 : Math.max(24, Math.round((art.width ?? 120) * (art.scale ?? 1) * 0.28));
+            return (
+              <div
+                key={art.id}
+                style={{
+                  position: "absolute",
+                  left: `${((art.x ?? 210) / CANVAS_REF) * 100}%`,
+                  top: `${((art.y ?? 200) / CANVAS_REF) * 100}%`,
+                  transform: `translate(-50%, -50%) rotate(${art.rotation ?? 0}deg)`,
+                  width: `${artSize}px`,
+                  height: `${artSize}px`,
+                  opacity: art.opacity ?? 1,
+                }}
+              >
+                <img src={art.url} alt={art.name} className="w-full h-full object-contain drop-shadow" />
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    // 6. Fallback SVG Garment Elevation (T-shirts, Pants, Shorts, etc.)
     return (
       <div className="w-full h-full relative flex items-center justify-center p-2">
         <GarmentSvg
@@ -2171,6 +2242,57 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
       );
     }
 
+    // 5. Authentic Catalog Specimen Photo Elevation (Cheerleading, Martial Arts, Sportswear, etc.)
+    if (hasRealBackImage && !isVarsity && !isBasketball && !isEquestrian && !isHoodie) {
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-2">
+          <img
+            src={backProductImage}
+            alt={product.name + " Back Spec"}
+            className="w-full h-full max-h-[260px] object-contain drop-shadow-md rounded-[2px]"
+          />
+          {hasBackText && backTextLayer && (
+            <div
+              style={{
+                position: "absolute",
+                left: `${((backTextLayer.x ?? 210) / CANVAS_REF) * 100}%`,
+                top: `${((backTextLayer.y ?? 200) / CANVAS_REF) * 100}%`,
+                transform: `translate(-50%, -50%) rotate(${backTextLayer.rotation ?? 0}deg)`,
+                color: backTextLayer.color || letterColor,
+                fontFamily: backTextLayer.font || "'Alfa Slab One', 'Arial Black', sans-serif",
+                fontSize: `${Math.max(8, Math.round((backTextLayer.fontSize ?? 22) * 0.45))}px`,
+                fontWeight: backTextLayer.fontWeight || "bold",
+                letterSpacing: "0.5px",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {backTextLayer.text}
+            </div>
+          )}
+          {backArtworks.map((art) => {
+            const artSize = Math.max(24, Math.round((art.width ?? 120) * (art.scale ?? 1) * 0.28));
+            return (
+              <div
+                key={art.id}
+                style={{
+                  position: "absolute",
+                  left: `${((art.x ?? 210) / CANVAS_REF) * 100}%`,
+                  top: `${((art.y ?? 200) / CANVAS_REF) * 100}%`,
+                  transform: `translate(-50%, -50%) rotate(${art.rotation ?? 0}deg)`,
+                  width: `${artSize}px`,
+                  height: `${artSize}px`,
+                  opacity: art.opacity ?? 1,
+                }}
+              >
+                <img src={art.url} alt={art.name} className="w-full h-full object-contain drop-shadow" />
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    // 6. Fallback SVG Garment Elevation
     return (
       <div className="w-full h-full relative flex items-center justify-center p-2">
         <GarmentSvg
@@ -2373,7 +2495,7 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
                           FRONT SPEC
                         </span>
                         <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400 font-semibold whitespace-nowrap">
-                          2D / 3D
+                          Vector Spec
                         </span>
                       </div>
                     </div>
@@ -2646,7 +2768,7 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
               <div className="flex items-start justify-between border-b-2 border-black pb-2 mb-3">
                 <div>
                   <h1 className="text-base font-black tracking-tight text-neutral-900 uppercase">
-                    TAWFIQ ATELIER &bull; FACTORY MANUFACTURING BLUEPRINT
+                    CM SPORTS WEAR &bull; FACTORY MANUFACTURING BLUEPRINT
                   </h1>
                   <p className="text-[10px] font-bold text-[#D10115] uppercase tracking-wide">
                     TECH-PACK SPEC &mdash; {product.name.toUpperCase()} (SKU: {product.sku || product.id.toUpperCase()})

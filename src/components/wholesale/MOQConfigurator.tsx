@@ -110,7 +110,7 @@ export const MOQConfigurator: React.FC<MOQConfiguratorProps> = ({ product, onSuc
     "Screen Print",
     "Sublimation",
     "Tajima Embroidery",
-    "3D Puff Print",
+    "High-Loft Puff Print",
     "DTF Transfer",
     "Custom Labels",
     "Custom Packaging",

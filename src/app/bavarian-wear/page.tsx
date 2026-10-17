@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Bavarian Wear & Trachten Apparel Manufacturing | Tawfiq Industries",
+  title: "Bavarian Wear & Trachten Apparel Manufacturing | CM SPORTS WEAR",
   description: "Wholesale Bavarian Wear, embroidered Trachten bodices, and traditional Alpine folk apparel for private label brands. Low 50 pc MOQ from Sialkot.",
 };
 

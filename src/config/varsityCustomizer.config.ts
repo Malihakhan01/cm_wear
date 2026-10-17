@@ -44,9 +44,9 @@ export interface SampleLogoOption {
 
 export const SAMPLE_LOGOS: SampleLogoOption[] = [
   {
-    id: "logo-tawfiq",
-    name: "Tawfiq Industries Crest",
-    url: "/images/logo.png",
+    id: "logo-cm",
+    name: "CM Sports Wear Emblem",
+    url: "/cm_logo/Red and White Wear Emblem.png",
     category: "Brand",
   },
   {
@@ -251,7 +251,7 @@ export const CRAFT_TECHNIQUES = [
   },
   {
     id: "puff",
-    name: "3D High-Loft Puff",
+    name: "High-Loft Puff",
     badge: "Dimensional",
     description: "Dense satin embroidery stitched over 3mm high-density foam",
   },

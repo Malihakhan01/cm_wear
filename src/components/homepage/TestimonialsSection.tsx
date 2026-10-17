@@ -26,8 +26,8 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
     company: "Vance Atelier (New York, USA)",
     discipline: "Streetwear & Casual Blanks",
     quote:
-      "TAWFIQ INDUSTRY's 450 GSM French Terry is by far the highest quality blank we have tested out of South Asia. The drape, double-hood density, and minimal shrinkage give our luxury label an incredible margin advantage.",
-    verifiedOrder: "Order Ref: TI-849201 • 500 Units",
+      "CM SPORTS WEAR's 450 GSM French Terry is by far the highest quality blank we have tested out of South Asia. The drape, double-hood density, and minimal shrinkage give our luxury label an incredible margin advantage.",
+    verifiedOrder: "Order Ref: CM-849201 • 500 Units",
     country: "🇺🇸 USA",
     rating: 5,
   },
@@ -35,23 +35,23 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
     id: 2,
     author: "Henrik Lindqvist",
     role: "Head of Equipment",
-    company: "Nordic Peloton Club (Stockholm, Sweden)",
-    discipline: "Custom Cycling Apparel",
+    company: "Nordic Athletic Club (Stockholm, Sweden)",
+    discipline: "Custom Teamwear & Kits",
     quote:
-      "We ordered 300 sublimated race jerseys with aerodynamic dimpled sleeves and high-density chamois bibs. The color registration was exact to our CMYK vectors, and our riders praised the breathability across a 200km event.",
-    verifiedOrder: "Order Ref: TI-302194 • 300 Kits",
+      "We ordered 300 sublimated match jerseys with reinforced seams and moisture-wicking speed mesh. The color registration was exact to our CMYK vectors, and our players praised the breathability across the entire tournament.",
+    verifiedOrder: "Order Ref: CM-302194 • 300 Kits",
     country: "🇸🇪 Sweden",
     rating: 5,
   },
   {
     id: 3,
-    author: "Eleanor Sterling",
-    role: "Founder & Lead Designer",
-    company: "Sterling & Co. Equestrian (Cotswolds, UK)",
-    discipline: "Equestrian Competition Wear",
+    author: "Marcus Vance",
+    role: "Head Coach & Gym Owner",
+    company: "Vanguard Combat Academy (London, UK)",
+    discipline: "Martial Arts & Combat Gear",
     quote:
-      "Tailoring Italian bonded softshell show jackets requires immense needle skill. TAWFIQ INDUSTRY's master pattern makers executed our silhouette flawlessly. The silicone full-seat grip on their breeches is tournament grade.",
-    verifiedOrder: "Order Ref: TI-118492 • 250 Units",
+      "Manufacturing competition-grade BJJ Gis and MMA fight shorts requires immense needle skill. CM SPORTS WEAR's master pattern makers executed our reinforced gussets flawlessly. The pearl weave fabric density is world-class.",
+    verifiedOrder: "Order Ref: CM-118492 • 250 Units",
     country: "🇬🇧 UK",
     rating: 5,
   },
@@ -134,34 +134,33 @@ export const TestimonialsSection: React.FC = () => {
     <section className="bg-[#F4F4EF] py-20 sm:py-24 border-b border-[#DADBD2] select-none relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Header with Navigation Controls */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-2">
-          <SectionHeading
-            eyebrow="BUYER PERSPECTIVES"
-            eyebrowColor="#D61C24"
-            title="Trusted by Discerning Label Founders"
-            description="Independent testimonials from direct-to-consumer apparel founders, wholesale distributors, and sports federations."
-          />
-
-          {reviews.length > 3 && (
-            <div className="flex items-center gap-2 mb-8">
-              <button
-                onClick={handlePrev}
-                aria-label="Previous testimonials"
-                className="w-10 h-10 rounded-[2px] bg-white border border-[#DADBD2] hover:border-[#D61C24] hover:text-[#D61C24] flex items-center justify-center transition-colors shadow-sm"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={handleNext}
-                aria-label="Next testimonials"
-                className="w-10 h-10 rounded-[2px] bg-white border border-[#DADBD2] hover:border-[#D61C24] hover:text-[#D61C24] flex items-center justify-center transition-colors shadow-sm"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          )}
-        </div>
+        {/* Header with Integrated Navigation Controls */}
+        <SectionHeading
+          eyebrow="BUYER PERSPECTIVES"
+          eyebrowColor="#D61C24"
+          title="Trusted by Discerning Label Founders"
+          description="Independent testimonials from direct-to-consumer apparel founders, wholesale distributors, and sports federations."
+          action={
+            reviews.length > 3 ? (
+              <div className="flex items-center gap-2 pt-1">
+                <button
+                  onClick={handlePrev}
+                  aria-label="Previous testimonials"
+                  className="w-9 h-9 rounded-[2px] bg-white border border-[#DADBD2] hover:border-[#D61C24] hover:text-[#D61C24] flex items-center justify-center transition-colors shadow-xs cursor-pointer"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  aria-label="Next testimonials"
+                  className="w-9 h-9 rounded-[2px] bg-white border border-[#DADBD2] hover:border-[#D61C24] hover:text-[#D61C24] flex items-center justify-center transition-colors shadow-xs cursor-pointer"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            ) : null
+          }
+        />
 
         {/* 3 Interactive Testimonial Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 pt-2">

@@ -149,7 +149,7 @@
     <!-- Factory Document Header -->
     <div class="header-bar">
         <div>
-            <div class="brand-title">TAWFIQ INDUSTRIES — FACTORY SPECIFICATION SHEET</div>
+            <div class="brand-title">CM SPORTS WEAR — FACTORY SPECIFICATION SHEET</div>
             <div style="font-size: 13px; font-weight: 700; margin-top: 4px;">{{ $techPack->style_name }}</div>
             <div style="font-size: 10px; color: #64748b; font-family: 'JetBrains Mono', monospace; margin-top: 2px;">
                 Fabric: {{ $techPack->fabric_spec }} ({{ $techPack->target_gsm }} GSM) • Season: {{ $techPack->season }} • Version: v{{ $techPack->version ?? '1.0' }}
@@ -276,7 +276,7 @@
     <div class="grid-2">
         <div class="section-box">
             <div class="section-title">Stitching & Embellishment Guidelines</div>
-            <p style="font-size: 10px; margin-bottom: 6px;"><strong>Decoration Method:</strong> {{ $techPack->decoration_method ?? '3D Puff Embroidery / Direct Print' }}</p>
+            <p style="font-size: 10px; margin-bottom: 6px;"><strong>Decoration Method:</strong> {{ $techPack->decoration_method ?? 'Puff Embroidery / Direct Print' }}</p>
             <p style="font-size: 10px; margin-bottom: 6px;"><strong>Wash Standard:</strong> {{ $techPack->wash_type ?? 'Clean Raw Mill Finish' }}</p>
             <p style="font-size: 10px; color: #475569;"><strong>Stitching Notes:</strong> {{ $techPack->stitching_notes ?? 'Double-needle flatlock topstitching along seams. 100% pre-shrunk wash test under AQL 2.5 protocol.' }}</p>
         </div>
@@ -301,7 +301,7 @@
     </div>
 
     <div style="margin-top: 16px; text-align: center; font-size: 9px; color: #94a3b8; font-family: 'JetBrains Mono', monospace;">
-        CONFIDENTIAL FACTORY PRODUCTION SPECIFICATION • TAWFIQ INDUSTRIES SIALKOT FACILITY 01 • DOCUMENT ID: {{ $techPack->code }}
+        CONFIDENTIAL FACTORY PRODUCTION SPECIFICATION • CM SPORTS WEAR SIALKOT FACILITY • DOCUMENT ID: {{ $techPack->code }}
     </div>
 
 </body>

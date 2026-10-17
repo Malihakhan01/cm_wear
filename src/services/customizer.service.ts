@@ -95,9 +95,9 @@ export const DECORATIONS_DATA: DecorationMethod[] = [
   },
   {
     id: "puff-embroidery",
-    name: "3D High-Loft Puff Embroidery",
+    name: "High-Loft Puff Embroidery",
     slug: "3d-puff-embroidery",
-    description: "Dense satin stitching over 2.5mm to 3.5mm high-density foam, producing bold 3D architectural dimension.",
+    description: "Dense satin stitching over 2.5mm to 3.5mm high-density foam, producing bold architectural dimension.",
     image: "/images/decorations/puff-embroidery.jpg",
     recommendedFor: ["Hoodie Chests", "Varsity Backs", "Snapback Caps", "Sweatpants"],
     complexity: "High-End / Luxury",
@@ -139,7 +139,7 @@ export const DECORATIONS_DATA: DecorationMethod[] = [
   },
   {
     id: "rubber-pvc-patch",
-    name: "Molded 3D Silicone & Rubber Badges",
+    name: "Molded Silicone & Rubber Badges",
     slug: "silicone-pvc-badge",
     description: "Die-cast soft silicone rubber with recessed stitch channel for clean overlocking directly onto garments.",
     image: "/images/decorations/silicone-patch.jpg",

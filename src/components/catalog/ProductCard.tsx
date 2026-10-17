@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Product } from "@/types";
 import { useStoreModeStore } from "@/stores/useStoreModeStore";
@@ -19,13 +19,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { isInWishlist, toggleItem } = useWishlistStore();
   const [isHovered, setIsHovered] = useState(false);
   const [addedToast, setAddedToast] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const demoImage = getProductDemoImage(product.category, product.name, product.subcategory);
   const primaryImage = product.images?.[0] && product.images[0] !== "/placeholder.jpg" ? product.images[0] : demoImage;
   const hoverImage = product.images?.[1] && product.images[1] !== "/placeholder.jpg" ? product.images[1] : primaryImage;
   const displayImage = isHovered ? hoverImage : primaryImage;
 
-  const inWishlist = isInWishlist(product.id);
+  const inWishlist = mounted && isInWishlist(product.id);
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -91,6 +96,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Link href={`/products/${product.slug}`} className="block w-full h-full">
           <img
             src={displayImage}
+            loading="lazy"
+            decoding="async"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               if (target.src !== demoImage && !target.src.endsWith(demoImage)) {
@@ -98,7 +105,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               }
             }}
             alt={product.name}
-            className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
           />
         </Link>
       </div>

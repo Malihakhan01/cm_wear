@@ -28,7 +28,7 @@ const INITIAL_ARTICLES: BlogPostItem[] = [
     },
     author: {
       id: 1,
-      name: "TAWFIQ Technical Editorial Team",
+      name: "CM Technical Editorial Team",
     },
   },
   {
@@ -50,7 +50,7 @@ const INITIAL_ARTICLES: BlogPostItem[] = [
     },
     author: {
       id: 1,
-      name: "TAWFIQ Technical Editorial Team",
+      name: "CM Technical Editorial Team",
     },
   },
   {
@@ -72,7 +72,7 @@ const INITIAL_ARTICLES: BlogPostItem[] = [
     },
     author: {
       id: 1,
-      name: "TAWFIQ Technical Editorial Team",
+      name: "CM Technical Editorial Team",
     },
   },
   {
@@ -94,7 +94,7 @@ const INITIAL_ARTICLES: BlogPostItem[] = [
     },
     author: {
       id: 1,
-      name: "TAWFIQ Technical Editorial Team",
+      name: "CM Technical Editorial Team",
     },
   },
 ];
@@ -241,7 +241,7 @@ export default function BlogListingPage() {
               <div className="pt-6 border-t border-[#F4F4EF] flex items-center justify-between">
                 <div className="text-xs font-mono text-[#72726D] flex items-center gap-1.5">
                   <User className="w-3.5 h-3.5 text-[#D61C24]" />
-                  <span>TAWFIQ Technical Team</span>
+                  <span>CM Technical Team</span>
                 </div>
 
                 <Link
@@ -379,7 +379,7 @@ export default function BlogListingPage() {
                     {/* Footer */}
                     <div className="px-6 pb-6 pt-2 border-t border-[#F4F4EF] flex items-center justify-between">
                       <span className="text-[11px] font-mono text-[#72726D]">
-                        TAWFIQ Team
+                        CM Technical Team
                       </span>
 
                       <Link

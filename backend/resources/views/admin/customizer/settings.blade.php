@@ -410,7 +410,7 @@
 
                 <div>
                     <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Technique Name *</label>
-                    <input type="text" name="name" x-model="decData.name" required placeholder="e.g. 3D Puff High-Density Embroidery" class="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+                    <input type="text" name="name" x-model="decData.name" required placeholder="e.g. Puff High-Density Embroidery" class="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-xs text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
                 </div>
 
                 <div>

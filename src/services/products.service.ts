@@ -1,6 +1,6 @@
 import { Product, FilterState, MainCategoryId } from "@/types";
 import { PRODUCTS_DATA } from "@/data/products.data";
-import { delay, stripHtml } from "@/lib/utils";
+import { delay, stripHtml, cleanProductText, parseHtmlTableSpecs } from "@/lib/utils";
 import { apiClient } from "@/services/api.client";
 
 export { PRODUCTS_DATA };
@@ -30,6 +30,7 @@ interface BackendProductRaw {
 }
 
 const MAIN_CAT_IDS: MainCategoryId[] = [
+  "sportswear",
   "casual-wear",
   "equestrian-clothing",
   "ice-hockey",
@@ -56,6 +57,9 @@ export function getProductDemoImage(category?: string, name?: string, subcategor
   }
   if (text.includes("cycling") || text.includes("cyclist") || text.includes("bike")) {
     return "/categories/Cyclist Conquering the Mountain Pass.png";
+  }
+  if (text.includes("rugby")) {
+    return "/categories/rugby-action-match.png";
   }
   if (text.includes("soccer") || text.includes("football") || text.includes("ball") || text.includes("team")) {
     return "/categories/Confident Soccer Portrait with Ball.png";
@@ -141,6 +145,28 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
     }
   }
 
+  const rawDesc = p.description || "";
+  const rawShortDesc = p.short_description || "";
+  const tableSpecs = parseHtmlTableSpecs(rawShortDesc || rawDesc);
+  const cleanedDesc = cleanProductText(rawDesc || rawShortDesc);
+
+  let shortDesc = "";
+  if (rawShortDesc && !rawShortDesc.includes("<table") && !rawShortDesc.includes("Specification")) {
+    shortDesc = cleanProductText(rawShortDesc);
+  } else {
+    const firstPara = cleanedDesc.split("\n\n")[0] || cleanedDesc;
+    shortDesc = firstPara.length > 250 ? firstPara.substring(0, 247) + "..." : firstPara;
+  }
+
+  const fabricSpec = tableSpecs.find((s) => s.label.toLowerCase().includes("fabric"));
+  const fitSpec = tableSpecs.find((s) => s.label.toLowerCase().includes("fit"));
+
+  const mergedSpecs = tableSpecs.length > 0 ? tableSpecs : [
+    { label: "Fabric Construction", value: "Technical Engineered Knit / Weave" },
+    { label: "Fit Silhouette", value: p.meta?.fit || "Athletic Pro Cut" },
+    { label: "Factory Origin", value: "Sialkot Industrial Facility" },
+  ];
+
   return {
     id: String(p.id),
     name: p.name,
@@ -148,8 +174,8 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
     sku: p.sku || `TI-${p.id}`,
     category: catSlug,
     subcategory: subSlug,
-    description: stripHtml(p.description || p.short_description || ""),
-    shortDescription: stripHtml(p.short_description || p.description || ""),
+    description: cleanedDesc,
+    shortDescription: shortDesc,
     images: gallery,
     retailPrice: Number(p.regular_price || p.sale_price || 65),
     wholesalePrice: Number(p.meta?.wholesale_price || p.sale_price || 35),
@@ -160,9 +186,9 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
       { id: "c-grey", name: "Heather Grey", hex: "#7E7E7E" },
       { id: "c-red", name: "Factory Red", hex: "#D61C24" },
     ],
-    fabric: "100% Technical Engineered Fabric",
+    fabric: fabricSpec ? fabricSpec.value : "100% Technical Engineered Fabric",
     material: "Technical Knitted Fleece / Performance Poly",
-    fit: p.meta?.fit || "Athletic Pro Cut",
+    fit: fitSpec ? fitSpec.value : (p.meta?.fit || "Athletic Pro Cut"),
     technicalFeatures: [
       "Aerodynamic & Ergonomic Construction",
       "Reinforced Seams & Bar-tacking",
@@ -174,18 +200,14 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
     decorationMethods: ["Embroidery", "Screen Printing", "Sublimation"],
     featured: Boolean(p.is_featured),
     threeDModel: p.three_d_model_url,
-    specifications: [
-      { label: "Fabric Construction", value: "Technical Engineered Knit / Weave" },
-      { label: "Fit Silhouette", value: p.meta?.fit || "Athletic Pro Cut" },
-      { label: "Factory Origin", value: "Sialkot Industrial Facility" },
-    ],
+    specifications: mergedSpecs,
   };
 }
 
 export function getLocalImportedProducts(): Product[] {
   if (typeof window === "undefined") return [];
   try {
-    const raw = localStorage.getItem("tawfiq_imported_products");
+    const raw = localStorage.getItem("cm_imported_products");
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed)) return parsed;
@@ -199,8 +221,8 @@ export function getLocalImportedProducts(): Product[] {
 export function saveLocalImportedProducts(products: Product[]): void {
   if (typeof window === "undefined") return;
   try {
-    localStorage.setItem("tawfiq_imported_products", JSON.stringify(products));
-    window.dispatchEvent(new Event("tawfiq_products_updated"));
+    localStorage.setItem("cm_imported_products", JSON.stringify(products));
+    window.dispatchEvent(new Event("cm_products_updated"));
   } catch (e) {
     console.warn("Error saving imported products to localStorage", e);
   }

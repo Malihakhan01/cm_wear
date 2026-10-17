@@ -335,7 +335,7 @@ export const trackingService = {
                 ? ("in_progress" as const)
                 : ("pending" as const),
               estimatedCompletion: m.completed_at ? m.completed_at.split("T")[0] : `Phase ${idx + 1}`,
-              location: "Tawfiq Industries Sialkot Facility",
+              location: "CM Sports Wear Sialkot Facility",
             }))
           : DEFAULT_STAGES;
 

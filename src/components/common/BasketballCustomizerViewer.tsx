@@ -55,7 +55,7 @@ export const BasketballCustomizerViewer: React.FC<BasketballCustomizerViewerProp
   onUpdateLogo,
   onRemoveLogo,
   playerNumber = "23",
-  playerName = "TAWFIQ",
+  playerName = "CM SPORTS",
   children,
 }) => {
   const canvasRef = useRef<HTMLDivElement>(null);

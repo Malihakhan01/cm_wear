@@ -10,7 +10,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h2 class="text-xl font-bold text-slate-900 dark:text-white">All Products</h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Manage apparel blanks, 3D customizable garments, and variants</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Manage apparel blanks, customizable garments, and variants</p>
         </div>
 
         <div class="flex items-center gap-3">
@@ -43,7 +43,7 @@
                     <option value="">All Product Types</option>
                     <option value="simple" {{ request('type') === 'simple' ? 'selected' : '' }}>Simple</option>
                     <option value="variable" {{ request('type') === 'variable' ? 'selected' : '' }}>Variable (WooCommerce)</option>
-                    <option value="customizable_apparel" {{ request('type') === 'customizable_apparel' ? 'selected' : '' }}>3D Customizable Garment</option>
+                    <option value="customizable_apparel" {{ request('type') === 'customizable_apparel' ? 'selected' : '' }}>Customizable Garment</option>
                 </select>
 
                 <select name="status" class="w-full sm:w-auto min-w-[140px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">

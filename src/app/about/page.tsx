@@ -121,13 +121,13 @@ export default function AboutPage() {
           <div className="max-w-3xl space-y-5">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#FF333D] animate-pulse" />
-              <span className="eyebrow-label text-[#FF333D]">THE TAWFIQ INDUSTRY HERITAGE</span>
+              <span className="eyebrow-label text-[#FF333D]">THE CM SPORTS WEAR HERITAGE</span>
             </div>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold uppercase tracking-tight text-white font-display leading-[0.93]">
               Engineered Apparel Manufacturing &amp; Global Export
             </h1>
             <p className="text-sm sm:text-base text-neutral-300 leading-relaxed font-sans max-w-2xl">
-              Founded in Sialkot, Pakistan—the global epicenter of high-performance sportswear and technical athletic apparel—TAWFIQ INDUSTRY bridges artisanal pattern cutting with modern computerized production and worldwide private label export.
+              Founded in Sialkot, Pakistan—the global epicenter of high-performance sportswear and technical athletic apparel—CM SPORTS WEAR bridges artisanal pattern cutting with modern computerized production and worldwide private label export.
             </p>
 
             <div className="pt-4 flex flex-wrap items-center gap-3">
@@ -153,58 +153,33 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 2. Facility Showcase Section with Factory Image */}
+      {/* 2. Facility Showcase Section */}
       <section className="py-20 bg-[#F4F4EF] border-b border-[#DADBD2]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            {/* Left: Text Info & Specs */}
-            <div className="lg:col-span-6 space-y-6">
-              <div>
-                <span className="eyebrow-label text-[#D61C24]">SIALKOT PRODUCTION CAMPUS</span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold uppercase tracking-tight text-[#0A0A0A] font-display mt-1.5 leading-[0.95]">
-                  Vertical Control. Zero Subcontracting.
-                </h2>
-              </div>
+          <div className="max-w-3xl space-y-3">
+            <span className="eyebrow-label text-[#D61C24]">SIALKOT PRODUCTION CAMPUS</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold uppercase tracking-tight text-[#0A0A0A] font-display leading-[0.95]">
+              Vertical Control. Zero Subcontracting.
+            </h2>
+            <p className="text-xs sm:text-sm text-[#72726D] leading-relaxed font-sans pt-1">
+              Traditional garment exporters frequently broker manufacturing across unverified third-party stitchers. <strong className="text-black font-semibold">CM SPORTS WEAR</strong> operates on an uncompromised vertical ecosystem: raw yarn inspection, computerized CAD cutting, screen printing, Tajima embroidery, precision stitching, and optical needle detection all happen inside our state-of-the-art facility.
+            </p>
+          </div>
 
-              <p className="text-xs sm:text-sm text-[#72726D] leading-relaxed font-sans">
-                Traditional garment exporters frequently broker manufacturing across unverified third-party stitchers. <strong className="text-black font-semibold">TAWFIQ INDUSTRY</strong> operates on an uncompromised vertical ecosystem: raw yarn inspection, computerized CAD cutting, screen printing, Tajima embroidery, precision stitching, and optical needle detection all happen inside our state-of-the-art facility.
-              </p>
-
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                {facilitySpecs.map((spec, i) => (
-                  <div key={i} className="bg-white border border-[#DADBD2] p-4 rounded-[2px] shadow-2xs">
-                    <div className="text-base sm:text-lg font-black text-black font-mono">{spec.value}</div>
-                    <div className="text-[10px] font-mono uppercase font-bold text-[#D61C24] mt-0.5">{spec.label}</div>
-                    <p className="text-[11px] text-[#72726D] mt-1 line-clamp-2">{spec.desc}</p>
-                  </div>
-                ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {facilitySpecs.map((spec, i) => (
+              <div key={i} className="bg-white border border-[#DADBD2] p-5 rounded-[2px] shadow-2xs hover:border-[#D61C24] transition-colors">
+                <div className="text-lg sm:text-xl font-black text-black font-mono">{spec.value}</div>
+                <div className="text-[10.5px] font-mono uppercase font-bold text-[#D61C24] mt-1">{spec.label}</div>
+                <p className="text-xs text-[#72726D] mt-2 leading-relaxed">{spec.desc}</p>
               </div>
+            ))}
+          </div>
 
-              <div className="text-xs font-mono text-[#72726D] pt-1">
-                📍 Factory Address: {siteConfig.address.full}
-              </div>
-            </div>
-
-            {/* Right: Factory Image Frame */}
-            <div className="lg:col-span-6">
-              <div className="relative bg-white border border-[#DADBD2] p-2 sm:p-3 rounded-[2px] shadow-md group">
-                <div className="relative aspect-4/3 overflow-hidden bg-neutral-900 rounded-[2px]">
-                  <img
-                    src="/images/about us/factory_image.png"
-                    alt="TAWFIQ INDUSTRY Manufacturing Campus Facility"
-                    className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
-                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-xs font-mono">
-                    <span className="bg-[#D61C24] px-2 py-0.5 rounded-[1px] font-bold uppercase text-[10px] tracking-wider">
-                      PRIMARY PRODUCTION PLANT
-                    </span>
-                    <span className="text-neutral-300 text-[11px]">Sialkot, Pakistan</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="text-xs font-mono text-[#72726D] pt-2 border-t border-[#DADBD2]/60 flex flex-wrap items-center justify-between gap-3">
+            <span>📍 Factory Address: {siteConfig.address.full}</span>
+            <span className="text-[#D61C24] font-semibold">AQL 2.5 Quality Assurance Standard &bull; Direct Export</span>
           </div>
 
         </div>
@@ -299,7 +274,7 @@ export default function AboutPage() {
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
             <span className="eyebrow-label text-[#D61C24]">THE FACTORY ADVANTAGE</span>
             <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-[#0A0A0A] font-display">
-              Why Global Brands Choose TAWFIQ INDUSTRY
+              Why Global Brands Choose CM SPORTS WEAR
             </h2>
             <p className="text-xs sm:text-sm text-[#72726D]">
               Direct factory contracts, transparent wholesale pricing, and uncompromised craftsmanship.
@@ -336,7 +311,7 @@ export default function AboutPage() {
               START YOUR CUSTOM APPAREL PRODUCTION
             </span>
             <h4 className="text-2xl sm:text-4xl font-bold uppercase tracking-tight text-white font-display">
-              Begin Partnering with TAWFIQ INDUSTRY
+              Begin Partnering with CM SPORTS WEAR
             </h4>
             <p className="text-xs sm:text-sm text-neutral-400">
               Submit your tech pack or request a physical pre-production sample to evaluate our stitching, drape, and embellishment quality firsthand.

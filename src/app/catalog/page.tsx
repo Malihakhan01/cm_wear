@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Category } from "@/types";
@@ -10,7 +10,7 @@ import { productsService } from "@/services/products.service";
 import { categoriesService } from "@/services/categories.service";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { useStoreModeStore } from "@/stores/useStoreModeStore";
-import { Search, SlidersHorizontal, ArrowRight, Box } from "lucide-react";
+import { Search, SlidersHorizontal, ArrowRight, Box, ChevronDown } from "lucide-react";
 
 function CatalogContent() {
   const searchParams = useSearchParams();
@@ -24,6 +24,10 @@ function CatalogContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "moq-asc">("featured");
 
+  const [hoveredCat, setHoveredCat] = useState<Category | null>(null);
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number } | null>(null);
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const { mode, toggleMode } = useStoreModeStore();
 
   useEffect(() => {
@@ -33,7 +37,8 @@ function CatalogContent() {
       });
     };
 
-    window.addEventListener("tawfiq_products_updated", refreshProducts);
+    window.addEventListener("cm_products_updated", refreshProducts);
+    return () => window.removeEventListener("cm_products_updated", refreshProducts);
 
     Promise.all([productsService.getAll(), categoriesService.getAll()]).then(([prods, liveCats]) => {
       setAllProducts(prods || []);
@@ -114,6 +119,99 @@ function CatalogContent() {
     if (sub) setActiveSubcategory(sub);
   }, [searchParams]);
 
+  useEffect(() => {
+    const handleScrollOrResize = () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+      setHoveredCat(null);
+      setDropdownPos(null);
+    };
+
+    window.addEventListener("scroll", handleScrollOrResize, { passive: true });
+    window.addEventListener("resize", handleScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", handleScrollOrResize);
+      window.removeEventListener("resize", handleScrollOrResize);
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleCategoryMouseEnter = (cat: Category, btnElement: HTMLButtonElement) => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    if (!cat.subcategories || cat.subcategories.length === 0) {
+      setHoveredCat(null);
+      setDropdownPos(null);
+      return;
+    }
+
+    const rect = btnElement.getBoundingClientRect();
+    const dropdownWidth = 320;
+    let left = rect.left;
+
+    if (typeof window !== "undefined") {
+      if (left + dropdownWidth > window.innerWidth - 16) {
+        left = Math.max(16, window.innerWidth - dropdownWidth - 16);
+      }
+      if (left < 16) {
+        left = 16;
+      }
+    }
+
+    setDropdownPos({
+      top: rect.bottom + 4,
+      left: left,
+    });
+    setHoveredCat(cat);
+  };
+
+  const handleMouseLeave = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    closeTimeoutRef.current = setTimeout(() => {
+      setHoveredCat(null);
+      setDropdownPos(null);
+    }, 220);
+  };
+
+  const handleDropdownMouseEnter = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
+
+  const handleDropdownMouseLeave = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    closeTimeoutRef.current = setTimeout(() => {
+      setHoveredCat(null);
+      setDropdownPos(null);
+    }, 220);
+  };
+
+  const getSubcategoryCount = (category: Category, subName: string): number => {
+    const targetSub = subName.toLowerCase().replace(/[-_]/g, " ").trim();
+    return allProducts.filter((p) => {
+      const catMatch =
+        p.category === category.id ||
+        p.category === category.slug ||
+        p.category.toLowerCase() === category.id.toLowerCase() ||
+        p.category.toLowerCase() === category.slug.toLowerCase();
+      if (!catMatch) return false;
+      if (!p.subcategory) return false;
+      const pSub = p.subcategory.toLowerCase().replace(/[-_]/g, " ").trim();
+      return pSub === targetSub || pSub.includes(targetSub) || targetSub.includes(pSub);
+    }).length;
+  };
+
   const currentCategoryData = categories.find((c) => c.id === activeCategory || c.slug === activeCategory);
 
   const filteredProducts = allProducts.filter((p) => {
@@ -181,68 +279,117 @@ function CatalogContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
           
           {/* Category Tabs */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+          <div
+            onScroll={() => {
+              if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+              setHoveredCat(null);
+              setDropdownPos(null);
+            }}
+            className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none"
+          >
             <button
               onClick={() => {
                 setActiveCategory("all");
                 setActiveSubcategory("all");
+                setHoveredCat(null);
+                setDropdownPos(null);
               }}
-              className={`px-3.5 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] transition-all shrink-0 ${
+              onMouseEnter={() => {
+                if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+                setHoveredCat(null);
+                setDropdownPos(null);
+              }}
+              className={`px-3.5 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] transition-all shrink-0 cursor-pointer ${
                 activeCategory === "all"
-                  ? "bg-[#0A0A0A] text-white"
-                  : "bg-white text-[#72726D] hover:text-black border border-[#DADBD2]"
+                  ? "bg-[#0A0A0A] text-white border border-[#0A0A0A]"
+                  : "bg-white text-[#72726D] hover:text-black border border-[#DADBD2] hover:border-black"
               }`}
             >
               All Disciplines ({allProducts.length})
             </button>
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => {
-                  setActiveCategory(cat.id);
-                  setActiveSubcategory("all");
-                }}
-                className={`px-3.5 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] transition-all shrink-0 flex items-center gap-1.5 ${
-                  activeCategory === cat.id
-                    ? "bg-[#0A0A0A] text-white"
-                    : "bg-white text-[#72726D] hover:text-black border border-[#DADBD2]"
-                }`}
-              >
-                <span className="text-[10px] text-[#D61C24]">{cat.number}</span>
-                <span>{cat.name}</span>
-              </button>
-            ))}
-          </div>
+            {categories.map((cat) => {
+              const isHovered = hoveredCat?.id === cat.id;
+              const isActive = activeCategory === cat.id || activeCategory === cat.slug;
+              const hasSubcategories = cat.subcategories && cat.subcategories.length > 0;
 
-          {/* Subcategories (if specific category selected) */}
-          {currentCategoryData && (
-            <div className="flex items-center gap-1.5 overflow-x-auto pt-1 pb-1 scrollbar-none border-t border-[#DADBD2]">
-              <span className="text-[10px] font-mono uppercase font-bold text-[#72726D] shrink-0 mr-1">
-                Subcategories:
-              </span>
-              <button
-                onClick={() => setActiveSubcategory("all")}
-                className={`px-2.5 py-1 text-[11px] font-mono uppercase rounded-[2px] transition-colors shrink-0 ${
-                  activeSubcategory === "all"
-                    ? "bg-[#D61C24] text-white font-bold"
-                    : "bg-white text-[#72726D] hover:text-black border border-[#DADBD2]"
-                }`}
-              >
-                All
-              </button>
-              {currentCategoryData.subcategories.map((sub) => (
+              return (
                 <button
-                  key={sub.id}
-                  onClick={() => setActiveSubcategory(sub.name)}
-                  className={`px-2.5 py-1 text-[11px] font-mono uppercase rounded-[2px] transition-colors shrink-0 ${
-                    activeSubcategory === sub.name
-                      ? "bg-[#D61C24] text-white font-bold"
-                      : "bg-white text-[#72726D] hover:text-black border border-[#DADBD2]"
+                  key={cat.id}
+                  onClick={() => {
+                    setActiveCategory(cat.id);
+                    setActiveSubcategory("all");
+                    setHoveredCat(null);
+                    setDropdownPos(null);
+                  }}
+                  onMouseEnter={(e) => handleCategoryMouseEnter(cat, e.currentTarget)}
+                  onMouseLeave={handleMouseLeave}
+                  className={`px-3.5 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
+                    isHovered
+                      ? "bg-[#D61C24] text-white border border-[#D61C24] shadow-sm"
+                      : isActive
+                      ? "bg-[#0A0A0A] text-white border border-[#0A0A0A]"
+                      : "bg-white text-[#72726D] hover:text-black border border-[#DADBD2] hover:border-black"
                   }`}
                 >
-                  {sub.name}
+                  <span
+                    className={`text-[10px] ${
+                      isHovered ? "text-white/90" : isActive ? "text-[#FF333D]" : "text-[#D61C24]"
+                    }`}
+                  >
+                    {cat.number}
+                  </span>
+                  <span>{cat.name}</span>
+                  {hasSubcategories && (
+                    <ChevronDown
+                      className={`w-3 h-3 transition-transform duration-200 ${
+                        isHovered ? "rotate-180 text-white" : "text-[#72726D]"
+                      }`}
+                    />
+                  )}
                 </button>
-              ))}
+              );
+            })}
+          </div>
+
+          {/* Active Filter Indicator Tags (Subcategories removed from slide) */}
+          {(activeCategory !== "all" || activeSubcategory !== "all") && (
+            <div className="flex items-center gap-2 pt-1 border-t border-[#DADBD2] text-xs font-mono flex-wrap">
+              <span className="text-[10px] text-[#72726D] uppercase font-bold tracking-wider">Filtered By:</span>
+              {activeCategory !== "all" && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#0A0A0A] text-white text-[11px] font-mono uppercase rounded-[2px]">
+                  <span>{currentCategoryData?.name || activeCategory}</span>
+                  {activeSubcategory === "all" && (
+                    <button
+                      onClick={() => setActiveCategory("all")}
+                      className="hover:text-[#FF333D] font-bold text-sm leading-none ml-1 cursor-pointer"
+                      title="Clear category filter"
+                    >
+                      ×
+                    </button>
+                  )}
+                </span>
+              )}
+              {activeSubcategory !== "all" && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#D61C24] text-white text-[11px] font-mono uppercase rounded-[2px] font-bold">
+                  <span>{activeSubcategory}</span>
+                  <button
+                    onClick={() => setActiveSubcategory("all")}
+                    className="hover:text-black font-bold text-sm leading-none ml-1 cursor-pointer"
+                    title="Clear subcategory filter"
+                  >
+                    ×
+                  </button>
+                </span>
+              )}
+              <button
+                onClick={() => {
+                  setActiveCategory("all");
+                  setActiveSubcategory("all");
+                }}
+                className="text-[10px] text-[#D61C24] hover:underline uppercase font-bold ml-1 cursor-pointer"
+              >
+                Clear Filters
+              </button>
             </div>
           )}
 
@@ -302,7 +449,7 @@ function CatalogContent() {
                   Apparel Collections Updating
                 </h2>
                 <p className="text-sm text-[#72726D]">
-                  Our seasonal private-label export catalog is currently being updated. You can design custom styles in our 3D customizer studio or contact our factory production team.
+                  Our seasonal private-label export catalog is currently being updated. You can design custom styles in our customizer studio or contact our factory production team.
                 </p>
               </div>
               <div className="pt-2">
@@ -310,7 +457,7 @@ function CatalogContent() {
                   href="/customize/custom-hoodie"
                   className="inline-flex px-6 py-3 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono uppercase font-bold rounded-[2px] transition-colors items-center justify-center gap-2 shadow-md"
                 >
-                  <span>Open 3D Customizer Studio</span>
+                  <span>Open Customizer Studio</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -341,6 +488,85 @@ function CatalogContent() {
 
         </div>
       </section>
+
+      {/* Subcategory Hover Dropdown Menu */}
+      {hoveredCat && dropdownPos && (
+        <div
+          style={{
+            position: "fixed",
+            top: `${dropdownPos.top}px`,
+            left: `${dropdownPos.left}px`,
+            zIndex: 9999,
+          }}
+          onMouseEnter={handleDropdownMouseEnter}
+          onMouseLeave={handleDropdownMouseLeave}
+          className="w-80 bg-white border border-[#DADBD2] shadow-2xl rounded-[2px] overflow-hidden animate-in fade-in zoom-in-95 duration-150 select-none"
+        >
+          {/* Dropdown Header */}
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#F0F0ED] bg-[#FAFAF8]">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0A0A0A] truncate pr-2">
+              {hoveredCat.name}
+            </span>
+            <button
+              onClick={() => {
+                setActiveCategory(hoveredCat.id);
+                setActiveSubcategory("all");
+                setHoveredCat(null);
+                setDropdownPos(null);
+              }}
+              className="text-[10px] font-mono uppercase font-bold text-[#72726D] hover:text-[#D61C24] transition-colors shrink-0 flex items-center gap-1 cursor-pointer"
+            >
+              <span>View All</span>
+              <ArrowRight className="w-2.5 h-2.5" />
+            </button>
+          </div>
+
+          {/* Subcategory List */}
+          <div className="max-h-[360px] overflow-y-auto py-1.5 scrollbar-thin">
+            {(hoveredCat.subcategories || []).map((sub) => {
+              const isSelected =
+                (activeCategory === hoveredCat.id || activeCategory === hoveredCat.slug) &&
+                activeSubcategory.toLowerCase() === sub.name.toLowerCase();
+              const count = getSubcategoryCount(hoveredCat, sub.name);
+
+              return (
+                <button
+                  key={sub.id || sub.slug || sub.name}
+                  onClick={() => {
+                    setActiveCategory(hoveredCat.id);
+                    setActiveSubcategory(sub.name);
+                    setHoveredCat(null);
+                    setDropdownPos(null);
+                  }}
+                  className={`w-full group px-4 py-2 flex items-center justify-between text-left transition-colors text-xs cursor-pointer ${
+                    isSelected
+                      ? "bg-[#FFF1F2] text-[#D61C24] font-semibold"
+                      : "text-[#333333] hover:bg-[#FFF1F2] hover:text-[#D61C24]"
+                  }`}
+                >
+                  <span className="flex items-center gap-2 truncate">
+                    <span
+                      className={`text-sm leading-none shrink-0 ${
+                        isSelected ? "text-[#D61C24]" : "text-[#A8A8A8] group-hover:text-[#D61C24]"
+                      }`}
+                    >
+                      •
+                    </span>
+                    <span className="truncate">{sub.name}</span>
+                  </span>
+                  <span
+                    className={`text-[11px] font-mono ml-2 shrink-0 ${
+                      isSelected ? "text-[#D61C24] font-bold" : "text-[#72726D] group-hover:text-[#D61C24]"
+                    }`}
+                  >
+                    ({count})
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
     </div>
   );

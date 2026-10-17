@@ -105,8 +105,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $cat2 = \App\Models\BlogCategory::updateOrCreate(['slug' => 'customizer-guides'], [
-            'name' => 'Customizer & 3D Design',
-            'description' => 'How-to guides on leveraging 3D mockups and precision embroidery placement.',
+            'name' => 'Customizer & Design Studio',
+            'description' => 'How-to guides on leveraging mockups and precision embroidery placement.',
             'sort_order' => 2,
             'is_active' => true,
         ]);
@@ -134,7 +134,7 @@ class DatabaseSeeder extends Seeder
                 'country' => 'United Kingdom',
                 'country_flag' => '🇬🇧',
                 'rating' => 5,
-                'quote' => 'The fabric weight and vintage acid wash consistency exceeded our expectations. The 3D customizer shortened our sampling turnaround by 2 weeks.',
+                'quote' => 'The fabric weight and vintage acid wash consistency exceeded our expectations. The customizer shortened our sampling turnaround by 2 weeks.',
                 'sort_order' => 1,
                 'is_featured' => true,
                 'is_active' => true,
@@ -174,8 +174,8 @@ class DatabaseSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'topic' => 'Customizer & 3D Tools',
-                'question' => 'Can we export factory-ready vector tech packs from the 3D customizer?',
+                'topic' => 'Customizer & Factory Tools',
+                'question' => 'Can we export factory-ready vector tech packs from the customizer?',
                 'answer' => 'Yes! The customizer automatically compiles Pantone references, print coordinate dimensions, stitch specs, and size grading splits into a factory PDF tech pack.',
                 'sort_order' => 3,
                 'is_active' => true,

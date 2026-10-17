@@ -16,83 +16,92 @@ interface CategoryCardItem {
 }
 
 // Exactly 8 categories matching the 01-08 divisions:
-// Row 1 (Top 4 cards: 01 to 04)
+// Row 1 (Categories 01 to 05)
 const ROW_ONE_CATEGORIES: CategoryCardItem[] = [
   {
-    id: "casual-wear",
-    name: "CASUAL WEAR",
+    id: "team-sports-wear",
+    name: "TEAM SPORTS WEAR",
     number: "01",
-    badge: "STREETWEAR",
-    subcategories: ["Hoodies & Sweatshirts", "T-Shirts", "Sweatpants", "Cargo Pants"],
-    image: "/categories/Casual wear (1).png",
-    link: "/casual-wear",
+    badge: "PRO MATCH",
+    subcategories: ["Ice Hockey", "Soccer & Football", "Basketball", "Rugby & Cricket"],
+    image: "/categories/teamsports_wear.png",
+    link: "/catalog?category=team-sports-wear",
   },
   {
-    id: "equestrian-clothing",
-    name: "EQUESTRIAN CLOTHING",
+    id: "martial-arts-combat-wear",
+    name: "MARTIAL ARTS & COMBAT",
     number: "02",
-    badge: "EQUESTRIAN",
-    subcategories: ["Riding Jackets", "Silicone Breeches", "Show Shirts", "Polo Tops"],
-    image: "/categories/Equestrian wear.png",
-    link: "/equestrian-clothing",
+    badge: "COMBAT SPORTS",
+    subcategories: ["BJJ & Grappling", "MMA Fight Shorts", "Boxing & Muay Thai", "Karate & Judo"],
+    image: "/categories/martial arts.png",
+    link: "/catalog?category=martial-arts-combat-wear",
   },
   {
-    id: "ice-hockey",
-    name: "ICE HOCKEY",
+    id: "activewear-fitness",
+    name: "ACTIVEWEAR & FITNESS",
     number: "03",
-    badge: "TEAM SPORTS",
-    subcategories: ["Pro Match Jerseys", "Hockey Pants", "Padded Shorts", "Team Kits"],
-    image: "/categories/Teamsport Wear.png",
-    link: "/ice-hockey",
+    badge: "ATHLEISURE",
+    subcategories: ["Gym & Training Wear", "Compression Wear", "Women’s Activewear", "Running & Athletics"],
+    image: "/categories/activewear.png",
+    link: "/catalog?category=activewear-fitness",
   },
   {
-    id: "cycling",
-    name: "CYCLING",
+    id: "casual-lifestyle-wear",
+    name: "CASUAL & LIFESTYLE",
     number: "04",
-    badge: "AERO SPEED",
-    subcategories: ["Speed Jerseys", "Bib Shorts", "Windproof Gilets", "Thermal Layers"],
-    image: "/categories/Cyclist Conquering the Mountain Pass.png",
-    link: "/cycling",
+    badge: "STREETWEAR",
+    subcategories: ["T-Shirts & Polos", "450 GSM Hoodies", "Matching Tracksuits", "Joggers & Shorts"],
+    image: "/categories/casualwear.png",
+    link: "/catalog?category=casual-lifestyle-wear",
+  },
+  {
+    id: "jackets-outerwear",
+    name: "JACKETS & OUTERWEAR",
+    number: "05",
+    badge: "OUTERWEAR",
+    subcategories: ["Varsity Jackets", "Leather Jackets", "Technical Softshells", "Windbreakers"],
+    image: "/categories/jacket wear.png",
+    link: "/catalog?category=jackets-outerwear",
   },
 ];
 
-// Row 2 (Bottom 4 cards: 05 to 08)
+// Row 2 (Categories 06 to 09)
 const ROW_TWO_CATEGORIES: CategoryCardItem[] = [
   {
-    id: "rugby",
-    name: "RUGBY",
-    number: "05",
-    badge: "HIGH IMPACT",
-    subcategories: ["Tear-Resistant Jerseys", "Rugby Shorts", "Training Smocks"],
-    image: "/categories/Confident Soccer Portrait with Ball.png",
-    link: "/rugby",
-  },
-  {
-    id: "basketball",
-    name: "BASKETBALL",
+    id: "kids-youth-wear",
+    name: "KIDS & YOUTH WEAR",
     number: "06",
-    badge: "PRO MESH",
-    subcategories: ["Sublimated Uniforms", "Reversible Shorts", "Warmup Sets"],
-    image: "/categories/Skyward Saintfour Basketball Portrait.png",
-    link: "/basketball",
+    badge: "JUNIOR CUT",
+    subcategories: ["Youth Team Kits", "Kids’ Activewear", "Junior Hoodies", "Training Tracksuits"],
+    image: "/categories/kids wear.png",
+    link: "/catalog?category=kids-youth-wear",
   },
   {
-    id: "ski-wear",
-    name: "SKI WEAR",
+    id: "workwear-medical-wear",
+    name: "WORKWEAR & MEDICAL",
     number: "07",
-    badge: "ALPINE 20K",
-    subcategories: ["3-Layer Shells", "Waterproof Pants", "Thermal Down Bibs"],
-    image: "/categories/Outdoor.png",
-    link: "/ski-wear",
+    badge: "DUTY GRADE",
+    subcategories: ["Medical Scrubs", "Industrial Uniforms", "Utility Work Polos"],
+    image: "/categories/work wear.png",
+    link: "/catalog?category=workwear-medical-wear",
   },
   {
-    id: "go-karting-racing",
-    name: "GO-KARTING & RACING",
+    id: "sports-accessories",
+    name: "SPORTS ACCESSORIES",
     number: "08",
-    badge: "RACING SUITS",
-    subcategories: ["Karting Suits", "Paddock Jackets", "Mechanic Overalls"],
-    image: "/categories/Charles Leclerc Monza 2025.jpg",
-    link: "/go-karting-racing",
+    badge: "FIELD GEAR",
+    subcategories: ["Knit Team Socks", "Reversible Bibs", "Caps & Visors", "Wrist & Headbands"],
+    image: "/categories/Vibrant Multisport Gear Court Flat Lay.png",
+    link: "/catalog?category=sports-accessories",
+  },
+  {
+    id: "gloves",
+    name: "PERFORMANCE GLOVES",
+    number: "09",
+    badge: "PRECISION GRIP",
+    subcategories: ["Ice Hockey Gloves", "Goalkeeper Latex", "Boxing & MMA Gloves", "Batting Gloves"],
+    image: "/categories/gloves.png",
+    link: "/catalog?category=gloves",
   },
 ];
 
@@ -108,14 +117,20 @@ export const CategoryGridSection: React.FC = () => {
   const [canScrollRight, setCanScrollRight] = useState(false);
   const [isScrollableState, setIsScrollableState] = useState(false);
 
-  // Check scroll position for arrow buttons
+  const checkScrollRaf = useRef<number | null>(null);
+
+  // Check scroll position for arrow buttons (RAF throttled)
   const checkScroll = () => {
-    if (!scrollContainerRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-    const hasOverflow = scrollWidth > clientWidth + 10;
-    setIsScrollableState(hasOverflow);
-    setCanScrollLeft(hasOverflow && scrollLeft > 15);
-    setCanScrollRight(hasOverflow && scrollLeft < scrollWidth - clientWidth - 15);
+    if (checkScrollRaf.current) return;
+    checkScrollRaf.current = window.requestAnimationFrame(() => {
+      checkScrollRaf.current = null;
+      if (!scrollContainerRef.current) return;
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      const hasOverflow = scrollWidth > clientWidth + 10;
+      setIsScrollableState(hasOverflow);
+      setCanScrollLeft(hasOverflow && scrollLeft > 15);
+      setCanScrollRight(hasOverflow && scrollLeft < scrollWidth - clientWidth - 15);
+    });
   };
 
   useEffect(() => {
@@ -125,6 +140,7 @@ export const CategoryGridSection: React.FC = () => {
     el.addEventListener("scroll", checkScroll, { passive: true });
     window.addEventListener("resize", checkScroll);
     return () => {
+      if (checkScrollRaf.current) window.cancelAnimationFrame(checkScrollRaf.current);
       el.removeEventListener("scroll", checkScroll);
       window.removeEventListener("resize", checkScroll);
     };
@@ -292,17 +308,16 @@ const CardItem: React.FC<{
     <img
       src={cat.image}
       alt={cat.name}
+      loading="lazy"
+      decoding="async"
       draggable={false}
-      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out brightness-95 group-hover:brightness-105 pointer-events-none select-none"
+      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out brightness-95 group-hover:brightness-105 pointer-events-none select-none"
     />
 
     {/* Gradient Vignette for Text Legibility */}
     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent pointer-events-none" />
 
-    {/* Top-Right Badge: DIV // 01 */}
-    <div className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 z-10 bg-black/70 backdrop-blur-md px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-[4px] border border-white/10 text-[9px] sm:text-[10px] font-mono tracking-widest uppercase text-white/80 font-bold pointer-events-none">
-      <span>DIV // {cat.number}</span>
-    </div>
+
 
     {/* Bottom Card Overlay */}
     <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 z-10 pointer-events-none">

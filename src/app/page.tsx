@@ -10,6 +10,8 @@ import { LatestBlogSection } from "@/components/homepage/LatestBlogSection";
 import { FaqSection } from "@/components/homepage/FaqSection";
 import { FinalQuoteCtaSection } from "@/components/homepage/FinalQuoteCtaSection";
 import { WelcomeCustomizerModal } from "@/components/homepage/WelcomeCustomizerModal";
+import { ProductionTourSection } from "@/components/homepage/ProductionTourSection";
+import { ExhibitionsSection } from "@/components/homepage/ExhibitionsSection";
 
 export default function HomePage() {
   return (
@@ -20,7 +22,7 @@ export default function HomePage() {
       {/* 01. Editorial Hero */}
       <HeroSection />
 
-      {/* 02. Interactive Customization Studio (Directly after Hero - Tawfiq Industry Customizer) */}
+      {/* 02. Interactive Customization Studio (Directly after Hero - CM SPORTS WEAR Customizer Studio) */}
       <CustomizerDemoSection />
 
       {/* 03. Category Introduction & Editorial Grid (Off-White) */}
@@ -29,13 +31,19 @@ export default function HomePage() {
       {/* 04. Featured Products Catalog with Wholesale/Retail Pricing (White) */}
       <FeaturedProductsSection />
 
-      {/* 05. Every Finish Made To Order (Interactive Finish Showcase) */}
+      {/* 05. Inside Sialkot Campus - Advanced Vertical Manufacturing & Videos */}
+      <ProductionTourSection />
+
+      {/* 06. Every Finish Made To Order (Interactive Finish Showcase) */}
       <ManufacturingStorySection />
 
-      {/* 06. Sketch to Shipment (Pinned Horizontal Process Track) */}
+      {/* 07. Sketch to Shipment (Pinned Horizontal Process Track) */}
       <FabricLibrarySection />
 
-      {/* 07. Buyer Perspectives & Testimonials (Off-White) */}
+      {/* 08. Global Trade Exhibitions & International Stand History */}
+      <ExhibitionsSection />
+
+      {/* 09. Buyer Perspectives & Testimonials (Off-White) */}
       <TestimonialsSection />
 
       {/* 08. Manufacturing Blog & Technical Whitepapers (White) */}

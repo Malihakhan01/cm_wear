@@ -59,9 +59,9 @@ export const quotesService = {
     // Store in localStorage if in client for offline resilience
     if (typeof window !== "undefined") {
       try {
-        const stored = JSON.parse(localStorage.getItem("tawfiq-industry-quotes") || "[]");
+        const stored = JSON.parse(localStorage.getItem("cm-wear-quotes") || "[]");
         stored.unshift(newQuote);
-        localStorage.setItem("tawfiq-industry-quotes", JSON.stringify(stored));
+        localStorage.setItem("cm-wear-quotes", JSON.stringify(stored));
       } catch (err) {
         console.error("Failed to persist quote locally", err);
       }
@@ -74,7 +74,7 @@ export const quotesService = {
     await delay(100);
     if (typeof window !== "undefined") {
       try {
-        return JSON.parse(localStorage.getItem("tawfiq-industry-quotes") || "[]");
+        return JSON.parse(localStorage.getItem("cm-wear-quotes") || "[]");
       } catch {
         return [];
       }

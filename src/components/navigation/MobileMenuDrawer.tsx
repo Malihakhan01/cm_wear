@@ -4,8 +4,10 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { siteConfig } from "@/config/site.config";
+import { menuService, MegaMenuPillar } from "@/services/menu.service";
 import { useStoreModeStore } from "@/stores/useStoreModeStore";
-import { X, ChevronDown, ArrowRight, MessageCircle, Sparkles, Factory, Tag, ShieldCheck, Truck, BookOpen, Users, Mail } from "lucide-react";
+import { useWishlistStore } from "@/stores/useWishlistStore";
+import { X, ChevronDown, ArrowRight, MessageCircle, Sparkles, Factory, Tag, ShieldCheck, Truck, BookOpen, Users, Mail, Heart } from "lucide-react";
 
 interface MobileMenuDrawerProps {
   isOpen: boolean;
@@ -15,11 +17,28 @@ interface MobileMenuDrawerProps {
 export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onClose }) => {
   const [productsExpanded, setProductsExpanded] = useState(false);
   const { mode, toggleMode } = useStoreModeStore();
+  const wishlistItems = useWishlistStore((state) => state.items);
   const [mounted, setMounted] = useState(false);
+  const [categories, setCategories] = useState<MegaMenuPillar[]>(() =>
+    siteConfig.mainCategories.map((c) => ({
+      id: c.id,
+      slug: c.slug,
+      name: c.name,
+      number: c.number,
+      image: c.image,
+      subcategories: c.subcategories,
+    }))
+  );
 
   useEffect(() => {
     setMounted(true);
+    menuService.getHeaderMegaMenu().then((livePillars) => {
+      if (livePillars && livePillars.length > 0) {
+        setCategories(livePillars);
+      }
+    });
   }, []);
+
 
   useEffect(() => {
     if (isOpen) {
@@ -49,21 +68,13 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onCl
           <Link
             href="/"
             onClick={onClose}
-            className="flex items-center gap-2 group"
+            className="flex items-center group"
           >
             <img
-              src="/logo (2).png"
-              alt="TAWFIQ INDUSTRIES"
-              className="h-8 w-auto object-contain transition-transform group-hover:scale-105"
+              src="/cm_logo/Red and White Wear Emblem.png"
+              alt="CM SPORTS WEAR"
+              className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
             />
-            <div className="flex flex-col leading-none">
-              <span className="text-sm font-black tracking-tight uppercase font-display text-[#0A0A0A]">
-                TAWFIQ
-              </span>
-              <span className="text-[7.5px] font-mono tracking-[0.25em] uppercase text-neutral-500 font-bold">
-                INDUSTRIES
-              </span>
-            </div>
           </Link>
           <button
             onClick={onClose}
@@ -100,6 +111,18 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onCl
           {/* Navigation Links */}
           <nav className="divide-y divide-neutral-100/90">
             
+            {/* Home Link */}
+            <div className="py-0.5">
+              <Link
+                href="/"
+                onClick={onClose}
+                className="w-full flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
+              >
+                <span>Home</span>
+                <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
+              </Link>
+            </div>
+
             {/* Products with Accordion & Direct Link */}
             <div className="py-0.5">
               <div className="w-full flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 transition-colors group">
@@ -108,7 +131,7 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onCl
                   onClick={onClose}
                   className="text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 group-hover:text-[#D61C24] transition-colors flex-1"
                 >
-                  Products (8 Categories)
+                  Products (9 Categories)
                 </Link>
                 <button
                   type="button"
@@ -126,10 +149,10 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onCl
 
               {productsExpanded && (
                 <div className="ml-2 pl-3 py-2 space-y-1 border-l-2 border-[#D61C24] bg-[#F8F9F7] rounded-r-[3px] my-1">
-                  {siteConfig.mainCategories.map((cat) => (
+                  {categories.map((cat) => (
                     <Link
-                      key={cat.id}
-                      href={`/catalog?category=${cat.id}`}
+                      key={cat.id || cat.slug}
+                      href={`/catalog?category=${cat.slug || cat.id}`}
                       onClick={onClose}
                       className="flex items-center justify-between text-[11px] font-mono uppercase font-semibold text-neutral-600 hover:text-[#D61C24] py-1 px-1.5 rounded hover:bg-white/80 transition-colors"
                     >
@@ -166,8 +189,28 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onCl
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="text-[8.5px] font-mono text-[#D61C24] bg-[#D61C24]/10 px-1.5 py-0.5 rounded-[2px] font-bold">
-                  3D LIVE
+                  STUDIO
                 </span>
+                <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
+              </span>
+            </Link>
+
+            {/* Wishlist Link */}
+            <Link
+              href="/wishlist"
+              onClick={onClose}
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
+            >
+              <span className="flex items-center gap-2">
+                <Heart className="w-3.5 h-3.5 text-[#D61C24]" />
+                <span>Wishlist</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                {wishlistItems.length > 0 && (
+                  <span className="text-[9px] font-mono text-white bg-[#D61C24] px-1.5 py-0.5 rounded-full font-bold">
+                    {wishlistItems.length}
+                  </span>
+                )}
                 <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
               </span>
             </Link>
@@ -219,6 +262,26 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onCl
               className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
             >
               <span>Blog & Articles</span>
+              <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
+            </Link>
+
+            {/* Official Catalogs */}
+            <Link
+              href="/catalogs"
+              onClick={onClose}
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
+            >
+              <span>Catalogs (8 PDFs)</span>
+              <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
+            </Link>
+
+            {/* Certifications */}
+            <Link
+              href="/certifications"
+              onClick={onClose}
+              className="flex items-center justify-between py-2 px-1.5 rounded-md hover:bg-neutral-50 text-[12.5px] sm:text-xs font-mono uppercase font-bold tracking-wider text-neutral-800 hover:text-[#D61C24] transition-colors group"
+            >
+              <span>Certifications</span>
               <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#D61C24] group-hover:translate-x-0.5 transition-all" />
             </Link>
 

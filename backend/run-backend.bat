@@ -1,7 +1,7 @@
 @echo off
-title Tawfiq Industries - Backend Server
+title CM SPORTS WEAR - Backend Server
 echo ========================================================
-echo   TAWFIQ INDUSTRIES - Laravel Backend API Server
+echo   CM SPORTS WEAR - Laravel Backend API Server
 echo ========================================================
 echo.
 cd /d "%~dp0"

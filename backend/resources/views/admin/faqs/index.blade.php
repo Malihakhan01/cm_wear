@@ -21,7 +21,7 @@
                     <input type="text" name="topic" required placeholder="e.g. Manufacturing & Lead Times" list="topicList" class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-950">
                     <datalist id="topicList">
                         <option value="General">
-                        <option value="Customizer & 3D Tools">
+                        <option value="Customizer & Factory Tools">
                         <option value="MOQ & Bulk Pricing">
                         <option value="Manufacturing & Lead Times">
                         <option value="Sampling & Prototypes">

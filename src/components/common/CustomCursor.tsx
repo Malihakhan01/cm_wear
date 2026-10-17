@@ -47,14 +47,14 @@ export const CustomCursor: React.FC = () => {
     const handleMouseEnter = () => setIsVisible(true);
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("mouseleave", handleMouseLeave);
-    document.addEventListener("mouseenter", handleMouseEnter);
+    window.addEventListener("mousedown", handleMouseDown, { passive: true });
+    window.addEventListener("mouseup", handleMouseUp, { passive: true });
+    document.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+    document.addEventListener("mouseenter", handleMouseEnter, { passive: true });
 
-    // High refresh rate 60-120fps lerp loop for the inverted cursor
+    // High refresh rate 60-120fps lerp loop for cursor
     const render = () => {
-      const lerpFactor = 0.22;
+      const lerpFactor = 0.25;
       mousePos.current.x += (targetPos.current.x - mousePos.current.x) * lerpFactor;
       mousePos.current.y += (targetPos.current.y - mousePos.current.y) * lerpFactor;
 
@@ -75,7 +75,7 @@ export const CustomCursor: React.FC = () => {
       document.removeEventListener("mouseenter", handleMouseEnter);
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
-  }, [isVisible]);
+  }, []);
 
   if (!mounted || isTouch) return null;
 

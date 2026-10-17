@@ -575,8 +575,8 @@ function RequestQuoteContent() {
                 {[
                   "Screen Print",
                   "Sublimation",
-                  "Tajima 3D Embroidery",
-                  "3D Puff Print",
+                  "Tajima Foam Embroidery",
+                  "High-Loft Puff Print",
                   "Laser Tackle Twill",
                   "DTF Transfer",
                   "Custom Labels",

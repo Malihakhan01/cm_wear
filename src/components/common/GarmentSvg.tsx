@@ -24,10 +24,10 @@ export const GarmentSvg: React.FC<GarmentSvgProps> = ({
   let resolvedType: GarmentSvgProps["type"] = "hoodie";
 
   if (targetStr.includes("varsity")) resolvedType = "varsity";
-  else if (targetStr.includes("hoodie")) resolvedType = "hoodie";
-  else if (targetStr.includes("t-shirt") || targetStr.includes("tee") || targetStr.includes("shirt") || targetStr.includes("top")) resolvedType = "tshirt";
+  else if (targetStr.includes("hoodie") || targetStr.includes("sweatshirt")) resolvedType = "hoodie";
+  else if (targetStr.includes("t-shirt") || targetStr.includes("tee") || targetStr.includes("shirt") || targetStr.includes("top") || targetStr.includes("uniform") || targetStr.includes("cheer") || targetStr.includes("sport") || targetStr.includes("jersey")) resolvedType = "tshirt";
   else if (targetStr.includes("blazer")) resolvedType = "blazer";
-  else if (targetStr.includes("jacket") || targetStr.includes("bomber")) resolvedType = "jacket";
+  else if (targetStr.includes("jacket") || targetStr.includes("bomber") || targetStr.includes("outerwear")) resolvedType = "jacket";
   else if (targetStr.includes("dress")) resolvedType = "dress";
   else if (targetStr.includes("corset")) resolvedType = "corset";
   else if (targetStr.includes("pant") || targetStr.includes("trouser") || targetStr.includes("jogger")) resolvedType = "trousers";
@@ -36,6 +36,7 @@ export const GarmentSvg: React.FC<GarmentSvgProps> = ({
   else if (targetStr.includes("cap") || targetStr.includes("beanie") || targetStr.includes("hat")) resolvedType = "cap";
   else if (targetStr.includes("casual")) resolvedType = "tshirt";
   else if (targetStr.includes("fashion")) resolvedType = "dress";
+  else resolvedType = "tshirt";
 
   const effectiveBaseColor = color || partColors.body || partColors.front || partColors.upper || "#222224";
   const bodyColor = effectiveBaseColor;

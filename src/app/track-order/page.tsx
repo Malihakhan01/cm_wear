@@ -31,7 +31,7 @@ function TrackOrderContent() {
     let initialTarget = queryOrder;
 
     if (!initialTarget && typeof window !== "undefined") {
-      const stored = sessionStorage.getItem("tawfiq-industry-last-order");
+      const stored = sessionStorage.getItem("cm-wear-last-order");
       if (stored) {
         try {
           const parsed = JSON.parse(stored);

@@ -17,7 +17,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/health', function () {
         return response()->json([
             'status' => 'operational',
-            'app' => 'Tawfiq Industries Backend API Core',
+            'app' => 'CM Sports Wear Backend API Core',
             'version' => '1.0.0',
             'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
             'timestamp' => now()->toIso8601String(),
@@ -32,6 +32,10 @@ Route::prefix('v1')->group(function () {
     // Categories
     Route::get('/categories', [CategoryApiController::class, 'index']);
     Route::get('/categories/{slug}', [CategoryApiController::class, 'show']);
+
+    // Navigation & Dynamic Mega Menu
+    Route::get('/menu/header', [\App\Http\Controllers\Api\V1\MenuApiController::class, 'header']);
+
 
     // 2D/3D Customizer State Engine, Dynamic Config & Artwork Vault
     Route::get('/customizer/config', [CustomizerApiController::class, 'config']);

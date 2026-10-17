@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Sign In') — {{ \App\Models\Setting::get('site_name', config('app.name', 'TAWFIQ INDUSTRIES')) }}</title>
+    <title>@yield('title', 'Sign In') — {{ \App\Models\Setting::get('site_name', config('app.name', 'CM SPORTS WEAR')) }}</title>
 
 
 

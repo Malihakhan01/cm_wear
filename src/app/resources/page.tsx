@@ -144,7 +144,7 @@ export default function ResourcesPage() {
                   Frequently Asked Questions (FAQs) →
                 </h3>
                 <p className="text-xs text-[#72726D] mt-2 leading-relaxed">
-                  Clear answers on 50-piece minimums, 5–7 day prototyping, 3D tech pack exports, and DDP shipping terms.
+                  Clear answers on 50-piece minimums, 5–7 day prototyping, tech pack exports, and DDP shipping terms.
                 </p>
               </div>
               <span className="text-xs font-mono font-bold uppercase text-[#D61C24]">

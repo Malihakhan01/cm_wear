@@ -33,7 +33,7 @@ export const useSavedDesignStore = create<SavedDesignState>()(
       clearDesigns: () => set({ designs: [] }),
     }),
     {
-      name: "tawfiq-industry-saved-designs",
+      name: "cm-wear-saved-designs",
     }
   )
 );

@@ -81,7 +81,7 @@ The frontend seamlessly communicates with the **Laravel 11 Backend** located in 
 ## 📁 Project Structure
 
 ```
-d:\Tawfiq_industry\
+CM_SPORTS_WEAR/
 ├── src/
 │   ├── app/                           # Next.js App Router Pages
 │   │   ├── page.tsx                   # Homepage (Hero, 3D Demo, Categories, Story)

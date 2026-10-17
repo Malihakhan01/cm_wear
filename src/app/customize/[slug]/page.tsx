@@ -5,7 +5,7 @@ import { CATEGORIES_DATA } from "@/data/categories.data";
 
 export function generateStaticParams() {
   const baseSlugs = [
-    // Core 3D Atelier models
+    // Core Atelier models
     "custom-varsity-jacket",
     "custom-hoodie",
     "custom-riding-jacket",
@@ -61,7 +61,7 @@ export function generateStaticParams() {
 
 export default function Page() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-white font-mono">Loading 3D Customizer...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-white font-mono">Loading Customizer Studio...</div>}>
       <CustomizeClient />
     </Suspense>
   );

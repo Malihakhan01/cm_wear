@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Martial Arts Uniforms & Gis Manufacturing | Tawfiq Industries",
+  title: "Martial Arts Uniforms & Gis Manufacturing | CM SPORTS WEAR",
   description: "Wholesale Brazilian Jiu-Jitsu gis, Karate uniforms, Taekwondo doboks, and combat apparel for private label fight brands. Low 50 pc MOQ from Sialkot.",
 };
 

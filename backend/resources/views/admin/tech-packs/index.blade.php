@@ -696,7 +696,7 @@
                                 </div>
                                 <div class="w-full mt-2 pt-2 border-t border-slate-800 flex items-center justify-between">
                                     <span class="text-[10px] font-mono font-bold tracking-wider text-slate-300 uppercase">FRONT ELEVATION</span>
-                                    <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-semibold whitespace-nowrap">2D / 3D Spec</span>
+                                    <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-semibold whitespace-nowrap">Tech Pack Spec</span>
                                 </div>
                             </div>
 
@@ -938,7 +938,7 @@
                                 <div class="bg-slate-900/80 border border-slate-800 p-2.5 rounded-lg flex items-center justify-between">
                                     <span class="text-[11px] text-slate-400 font-mono">Decoration Method:</span>
                                     <span class="text-xs font-bold text-purple-400 flex items-center gap-1">
-                                        🧵 <span x-text="selectedPack?.decoration_method || '3D High-Density Puff Embroidery'"></span>
+                                        🧵 <span x-text="selectedPack?.decoration_method || 'High-Density Puff Embroidery'"></span>
                                     </span>
                                 </div>
                                 <div class="bg-slate-900/80 border border-slate-800 p-2.5 rounded-lg flex items-center justify-between">
@@ -1149,7 +1149,7 @@
             <!-- Bottom Action Footer (Sticky, Never Overflows) -->
             <div class="shrink-0 p-3 sm:p-4 border-t border-slate-800 bg-[#0A0E17] flex items-center justify-between">
                 <div class="text-[11px] font-mono text-slate-500 hidden sm:block">
-                    TAWFIQ INDUSTRIES &bull; ATELIER SPECIFICATION SHEET
+                    CM SPORTS WEAR &bull; ATELIER SPECIFICATION SHEET
                 </div>
 
                 <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">

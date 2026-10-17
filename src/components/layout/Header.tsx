@@ -11,6 +11,7 @@ import { ProductsMegaMenu } from "@/components/navigation/ProductsMegaMenu";
 import { MobileMenuDrawer } from "@/components/navigation/MobileMenuDrawer";
 import { SearchModal } from "@/components/common/SearchModal";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { useWishlistStore } from "@/stores/useWishlistStore";
 import {
   Search,
   ShoppingBag,
@@ -18,6 +19,7 @@ import {
   ChevronDown,
   Sparkles,
   ArrowUpRight,
+  Heart,
 } from "lucide-react";
 
 export const Header: React.FC = () => {
@@ -33,14 +35,24 @@ export const Header: React.FC = () => {
   const { mode, toggleMode } = useStoreModeStore();
   const { toggleCart, getTotalPieces } = useCartStore();
   const isVisible = useHeaderStore((state) => state.isVisible);
+  const wishlistItems = useWishlistStore((state) => state.items);
 
   const totalPieces = getTotalPieces();
 
-  // Scroll listener: detects when user has scrolled down to apply background color
+  // Scroll listener: detects when user has scrolled down to apply background color (RAF throttled)
   useEffect(() => {
     setMounted(true);
+    let ticking = false;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY > 20;
+          setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     handleScroll();
@@ -51,9 +63,7 @@ export const Header: React.FC = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 select-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
-        } ${
+        className={`fixed top-0 left-0 right-0 z-50 select-none transition-[background-color,border-color,box-shadow] duration-200 ease-out will-change-transform translate-y-0 opacity-100 ${
           isHome
             ? isScrolled
               ? "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 shadow-lg text-white"
@@ -63,20 +73,31 @@ export const Header: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between relative">
           
-          {/* Left: Brand Identity Logo (Official TAWFIQ INDUSTRIES Emblem & Wordmark) */}
+          {/* Left: Brand Identity Logo (Official CM SPORTS WEAR Emblem) */}
           <Link
             href="/"
             className="flex items-center group shrink-0 z-10"
           >
             <img
-              src="/logo (2).png"
-              alt="TAWFIQ INDUSTRIES"
-              className="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-md"
+              src="/cm_logo/Red and White Wear Emblem.png"
+              alt="CM SPORTS WEAR"
+              className="h-11 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-md"
             />
           </Link>
 
-          {/* Center: Desktop Navigation (Moved to Middle) */}
-          <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+          {/* Center: Desktop Navigation centered between logo and right actions */}
+          <nav className="hidden lg:flex items-center justify-center flex-1 mx-4 xl:mx-8 gap-4 xl:gap-6 2xl:gap-7 z-10 flex-nowrap">
+            {/* Home menu item */}
+            <Link
+              href="/"
+              onMouseEnter={() => setMegaMenuOpen(false)}
+              className={`text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap transition-colors ${
+                isHome ? "text-white font-bold" : "text-white/80 hover:text-white"
+              }`}
+            >
+              Home
+            </Link>
+
             {/* Products with Mega Menu trigger */}
             <div
               className="relative flex items-center"
@@ -85,7 +106,7 @@ export const Header: React.FC = () => {
               <Link
                 href="/catalog"
                 onClick={() => setMegaMenuOpen(false)}
-                className={`flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider font-semibold py-2 transition-colors cursor-pointer ${
+                className={`flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap transition-colors cursor-pointer ${
                   megaMenuOpen ? "text-[#FF333D]" : "text-white/80 hover:text-white"
                 }`}
               >
@@ -104,9 +125,25 @@ export const Header: React.FC = () => {
             </div>
 
             <Link
+              href="/catalogs"
+              onMouseEnter={() => setMegaMenuOpen(false)}
+              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
+            >
+              Catalogs
+            </Link>
+
+            <Link
+              href="/certifications"
+              onMouseEnter={() => setMegaMenuOpen(false)}
+              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
+            >
+              Certifications
+            </Link>
+
+            <Link
               href="/customize"
               onMouseEnter={() => setMegaMenuOpen(false)}
-              className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider font-semibold text-white/80 hover:text-white transition-colors"
+              className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#FF333D]" />
               <span>Customize</span>
@@ -115,7 +152,7 @@ export const Header: React.FC = () => {
             <Link
               href="/about"
               onMouseEnter={() => setMegaMenuOpen(false)}
-              className="text-xs font-mono uppercase tracking-wider font-semibold text-white/80 hover:text-white transition-colors"
+              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
             >
               About
             </Link>
@@ -123,14 +160,14 @@ export const Header: React.FC = () => {
             <Link
               href="/contact"
               onMouseEnter={() => setMegaMenuOpen(false)}
-              className="text-xs font-mono uppercase tracking-wider font-semibold text-white/80 hover:text-white transition-colors"
+              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
             >
               Contact Us
             </Link>
           </nav>
 
-          {/* Right: Actions (Wishlist and Saved icons removed) */}
-          <div className="flex items-center gap-2 sm:gap-3 z-10">
+          {/* Right: Actions */}
+          <div className="flex items-center gap-2 sm:gap-3 z-10 shrink-0">
             {/* Search Trigger */}
             <button
               onClick={() => setSearchModalOpen(true)}
@@ -151,6 +188,20 @@ export const Header: React.FC = () => {
                 {mounted ? mode : "wholesale"}
               </span>
             </button>
+
+            {/* Wishlist Link (Directly before Cart Drawer Trigger) */}
+            <Link
+              href="/wishlist"
+              className="relative p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-[2px] transition-colors cursor-pointer"
+              title="Saved Wishlist"
+            >
+              <Heart className="w-4 h-4" />
+              {mounted && wishlistItems.length > 0 && (
+                <span className="absolute top-1 right-1 min-w-3.5 h-3.5 px-0.5 bg-[#D61C24] text-white text-[9px] font-mono font-bold rounded-full flex items-center justify-center">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </Link>
 
             {/* Cart Drawer Trigger */}
             <button

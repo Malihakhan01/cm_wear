@@ -47,6 +47,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Categories Taxonomy
         Route::resource('categories', CategoryController::class)->only(['index', 'store', 'destroy']);
 
+        // Appearance & Header Mega Menu Manager (WordPress Appearance > Menus style)
+        Route::get('/menus', [\App\Http\Controllers\Admin\MenuController::class, 'index'])->name('menus.index');
+        Route::post('/menus', [\App\Http\Controllers\Admin\MenuController::class, 'update'])->name('menus.update');
+        Route::post('/menus/sync', [\App\Http\Controllers\Admin\MenuController::class, 'syncFromDb'])->name('menus.sync');
+        Route::post('/menus/reset', [\App\Http\Controllers\Admin\MenuController::class, 'reset'])->name('menus.reset');
+
+
         // Inquiries, RFQs, Contact Messages & Subscribers
         Route::get('/inquiries', [RfqController::class, 'index'])->name('inquiries.index');
         Route::get('/inquiries/{rfq}', [RfqController::class, 'show'])->name('inquiries.show');

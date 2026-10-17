@@ -91,7 +91,7 @@ export const useCartStore = create<CartState>()(
       },
     }),
     {
-      name: "tawfiq-industry-cart-storage",
+      name: "cm-wear-cart-storage",
     }
   )
 );

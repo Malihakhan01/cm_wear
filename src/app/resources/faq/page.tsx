@@ -45,9 +45,9 @@ const INITIAL_FAQS: FaqItem[] = [
   },
   {
     id: 6,
-    topic: "Customizer & 3D Tools",
-    question: "How does the online 3D Customizer export into factory production files?",
-    answer: "Our customizer compiles your 3D canvas selections, Pantone hex codes, placement coordinates, custom badges, and size grade breakdowns directly into an industry-standard PDF tech pack and vector cutting file for our production floor.",
+    topic: "Customizer & Factory Tools",
+    question: "How does the online Customizer export into factory production files?",
+    answer: "Our customizer compiles your canvas selections, Pantone hex codes, placement coordinates, custom badges, and size grade breakdowns directly into an industry-standard PDF tech pack and vector cutting file for our production floor.",
     sort_order: 6,
   },
   {
@@ -147,7 +147,7 @@ export default function FaqPage() {
               Frequently Asked Questions
             </h1>
             <p className="text-sm sm:text-base text-neutral-300 leading-relaxed font-sans">
-              Authoritative guidance on MOQs, rapid prototyping, fabric GSM specs, 3D tech packs, private label packaging, and worldwide commercial export terms.
+              Authoritative guidance on MOQs, rapid prototyping, fabric GSM specs, factory tech packs, private label packaging, and worldwide commercial export terms.
             </p>
           </div>
 

@@ -10,7 +10,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h2 class="text-xl font-bold text-slate-900 dark:text-white">Saved Customer Designs Vault</h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400">All customer-saved 2D/3D garment configurations with component colors, artwork layers, monograms, and linked Tech Packs.</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">All customer-saved garment configurations with component colors, artwork layers, monograms, and linked Tech Packs.</p>
         </div>
 
         <div class="flex items-center gap-3">
@@ -435,7 +435,7 @@
                             rel="noopener noreferrer"
                             class="inline-flex items-center gap-1.5 px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition shadow-sm"
                         >
-                            <span>Open in 3D Studio</span>
+                            <span>Open in Studio</span>
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                         </a>
                     </template>

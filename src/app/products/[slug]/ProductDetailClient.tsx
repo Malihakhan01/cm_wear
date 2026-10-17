@@ -10,7 +10,6 @@ import { useCartStore } from "@/stores/useCartStore";
 import { useWishlistStore } from "@/stores/useWishlistStore";
 import { MOQConfigurator } from "@/components/wholesale/MOQConfigurator";
 import { WhatsAppInquiryButton } from "@/components/common/WhatsAppInquiryButton";
-import { TechPackModal } from "@/components/common/TechPackModal";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { Product, CustomizerState } from "@/types";
 import {
@@ -30,21 +29,39 @@ import {
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const slug = params?.slug as string;
+  const rawParamSlug = params?.slug as string;
 
+  const getEffectiveSlug = () => {
+    if (typeof window !== "undefined") {
+      const parts = window.location.pathname.split("/").filter(Boolean);
+      const last = parts[parts.length - 1];
+      if (last && last !== "products" && last !== "overview") {
+        return decodeURIComponent(last);
+      }
+    }
+    return rawParamSlug || "";
+  };
+
+  const [slug, setSlug] = useState<string>(getEffectiveSlug);
   const [product, setProduct] = useState<Product | null>(
     () => PRODUCTS_DATA.find((p) => p.slug === slug) || null
   );
-  const [loading, setLoading] = useState(!product);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!product && slug) {
-      productsService.getBySlug(slug).then((p) => {
+    const currentSlug = getEffectiveSlug();
+    setSlug(currentSlug);
+
+    if (currentSlug && currentSlug !== "overview") {
+      setLoading(true);
+      productsService.getBySlug(currentSlug).then((p) => {
         if (p) setProduct(p);
         setLoading(false);
       });
+    } else {
+      setLoading(false);
     }
-  }, [slug, product]);
+  }, [rawParamSlug]);
 
   const { mode, toggleMode } = useStoreModeStore();
   const { addItem } = useCartStore();
@@ -55,7 +72,11 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || "L");
   const [retailQuantity, setRetailQuantity] = useState(1);
   const [addedToast, setAddedToast] = useState(false);
-  const [isTechPackOpen, setIsTechPackOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (product) {
@@ -153,7 +174,7 @@ export default function ProductDetailPage() {
 
   return (
     <div className="w-full bg-white select-none">
-      
+
       {/* Breadcrumbs Toolbar */}
       <div className="border-b border-[#DADBD2] bg-[#F4F4EF] py-3">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -182,10 +203,10 @@ export default function ProductDetailPage() {
       {/* Main Product Layout */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
-          {/* Left Column: Gallery & 3D (7 cols) */}
+
+          {/* Left Column: Gallery & Model (7 cols) */}
           <div className="lg:col-span-7 space-y-4">
-            
+
             {/* Main Stage Image */}
             <div className="relative aspect-square bg-[#F4F4EF] border border-[#DADBD2] rounded-[2px] p-8 flex items-center justify-center overflow-hidden group">
               <img
@@ -237,11 +258,10 @@ export default function ProductDetailPage() {
                   <button
                     key={i}
                     onClick={() => setActiveImageIndex(i)}
-                    className={`w-20 h-20 bg-[#F4F4EF] rounded-[2px] border p-2 flex items-center justify-center shrink-0 transition-all cursor-pointer ${
-                      activeImageIndex === i
+                    className={`w-20 h-20 bg-[#F4F4EF] rounded-[2px] border p-2 flex items-center justify-center shrink-0 transition-all cursor-pointer ${activeImageIndex === i
                         ? "border-[#0A0A0A] ring-2 ring-[#D61C24]/30"
                         : "border-[#DADBD2] hover:border-black"
-                    }`}
+                      }`}
                   >
                     <img
                       src={img || demoImage}
@@ -277,7 +297,7 @@ export default function ProductDetailPage() {
 
             {/* Expandable Specifications Sections directly below Product Image */}
             <div className="pt-6 space-y-3">
-              
+
               {/* Product Overview & Description */}
               <div className="border border-[#DADBD2] rounded-[2px] overflow-hidden shadow-xs">
                 <button
@@ -289,9 +309,8 @@ export default function ProductDetailPage() {
                     Product Overview & Description
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      openSections.overview ? "rotate-180" : ""
-                    }`}
+                    className={`w-4 h-4 transition-transform duration-200 ${openSections.overview ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
                 {openSections.overview && (
@@ -322,9 +341,8 @@ export default function ProductDetailPage() {
                     Fabric, Material & GSM
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      openSections.fabric ? "rotate-180" : ""
-                    }`}
+                    className={`w-4 h-4 transition-transform duration-200 ${openSections.fabric ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
                 {openSections.fabric && (
@@ -364,9 +382,8 @@ export default function ProductDetailPage() {
                     Customization, Printing & Labels
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      openSections.customization ? "rotate-180" : ""
-                    }`}
+                    className={`w-4 h-4 transition-transform duration-200 ${openSections.customization ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
                 {openSections.customization && (
@@ -395,9 +412,8 @@ export default function ProductDetailPage() {
                     Shipping, Lead Times & Export Terms
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      openSections.shipping ? "rotate-180" : ""
-                    }`}
+                    className={`w-4 h-4 transition-transform duration-200 ${openSections.shipping ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
                 {openSections.shipping && (
@@ -416,7 +432,7 @@ export default function ProductDetailPage() {
 
           {/* Right Column: Specification & Ordering (5 cols, sticky) */}
           <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-24 h-fit">
-            
+
             {/* Header Information */}
             <div className="space-y-2 border-b border-[#DADBD2] pb-6">
               <div className="flex items-center justify-between text-xs font-mono text-[#72726D]">
@@ -459,14 +475,13 @@ export default function ProductDetailPage() {
 
                 <button
                   onClick={() => toggleItem(product)}
-                  className={`p-2 rounded-full border transition-colors cursor-pointer ${
-                    isInWishlist(product.id)
+                  className={`p-2 rounded-full border transition-colors cursor-pointer ${mounted && isInWishlist(product.id)
                       ? "bg-[#D61C24] text-white border-[#D61C24]"
                       : "bg-white text-[#72726D] border-[#DADBD2] hover:text-black"
-                  }`}
-                  title="Wishlist"
+                    }`}
+                  title={mounted && isInWishlist(product.id) ? "Remove from Wishlist" : "Save to Wishlist"}
                 >
-                  <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? "fill-white" : ""}`} />
+                  <Heart className={`w-4 h-4 ${mounted && isInWishlist(product.id) ? "fill-white" : ""}`} />
                 </button>
               </div>
             </div>
@@ -489,11 +504,10 @@ export default function ProductDetailPage() {
                       <button
                         key={c.id}
                         onClick={() => setSelectedColor(c)}
-                        className={`w-7 h-7 rounded-full border flex items-center justify-center transition-transform cursor-pointer ${
-                          selectedColor.id === c.id
+                        className={`w-7 h-7 rounded-full border flex items-center justify-center transition-transform cursor-pointer ${selectedColor.id === c.id
                             ? "ring-2 ring-[#D61C24] scale-110"
                             : "border-black/20 hover:scale-105"
-                        }`}
+                          }`}
                         style={{ backgroundColor: c.hex }}
                         title={c.name}
                       />
@@ -512,11 +526,10 @@ export default function ProductDetailPage() {
                       <button
                         key={s}
                         onClick={() => setSelectedSize(s)}
-                        className={`px-3.5 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] border transition-colors cursor-pointer ${
-                          selectedSize === s
+                        className={`px-3.5 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] border transition-colors cursor-pointer ${selectedSize === s
                             ? "bg-[#0A0A0A] text-white border-[#0A0A0A]"
                             : "bg-white text-[#0A0A0A] border-[#DADBD2] hover:border-black"
-                        }`}
+                          }`}
                       >
                         {s}
                       </button>
@@ -570,17 +583,8 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Direct Action Buttons (Section 14: Add to Cart, Request Quote, WhatsApp, Tech Pack) */}
+            {/* Direct Action Buttons (Section 14: Add to Cart, Request Quote, WhatsApp) */}
             <div className="space-y-2 pt-2 border-t border-[#DADBD2]">
-              <button
-                type="button"
-                onClick={() => setIsTechPackOpen(true)}
-                className="w-full py-3 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono uppercase font-bold tracking-wider rounded-[2px] transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer"
-              >
-                <FileText className="w-4 h-4 text-[#FF333D]" />
-                <span>View & Export Factory Tech Pack (PDF)</span>
-              </button>
-
               <Link
                 href={`/request-quote?product=${encodeURIComponent(product.name)}&category=${product.category}&sku=${encodeURIComponent(product.sku)}&moq=${product.MOQ}&fabric=${encodeURIComponent(product.fabric)}`}
                 className="w-full py-3 bg-[#F4F4EF] hover:bg-[#DADBD2] border border-[#DADBD2] text-[#0A0A0A] text-xs font-mono uppercase font-bold tracking-wider rounded-[2px] text-center transition-colors flex items-center justify-center gap-2 cursor-pointer"
@@ -627,15 +631,6 @@ export default function ProductDetailPage() {
         )}
 
       </div>
-
-      {/* Interactive Tech Pack Spec Sheet Modal */}
-      {isTechPackOpen && (
-        <TechPackModal
-          product={product}
-          state={techPackState}
-          onClose={() => setIsTechPackOpen(false)}
-        />
-      )}
 
     </div>
   );

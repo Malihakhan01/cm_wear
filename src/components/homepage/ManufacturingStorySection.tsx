@@ -2,12 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionHeading } from "@/components/common/SectionHeading";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 interface FinishItem {
   number: string;
@@ -19,7 +14,7 @@ interface FinishItem {
 const FINISHES: FinishItem[] = [
   {
     number: "01",
-    title: "3D PUFF EMBROIDERY",
+    title: "SCULPTED PUFF EMBROIDERY",
     desc: "Satin stitches over foam for a raised, sculpted logo.",
     image: "/images/fabrics/Crimson Embroidered Jewel Flower.png",
   },
@@ -85,42 +80,6 @@ export const ManufacturingStorySection: React.FC = () => {
     });
   }, []);
 
-  // Entrance scroll animation using ScrollTrigger
-  useEffect(() => {
-    if (!sectionRef.current || !rowsContainerRef.current) return;
-
-    const rows = Array.from(
-      rowsContainerRef.current.querySelectorAll<HTMLElement>(".finish-row-item")
-    );
-    if (rows.length === 0) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        rows,
-        {
-          opacity: 0,
-          y: 35,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.75,
-          stagger: 0.08,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: rowsContainerRef.current,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    }, sectionRef);
-
-    return () => {
-      ctx.revert();
-    };
-  }, []);
-
   const handleMouseEnter = (index: number, e: React.MouseEvent) => {
     setActiveIndex(index);
     if (!sectionRef.current || !cardRef.current) return;
@@ -137,7 +96,7 @@ export const ManufacturingStorySection: React.FC = () => {
     gsap.to(cardRef.current, {
       opacity: 1,
       scale: 1,
-      duration: 0.3,
+      duration: 0.25,
       ease: "power2.out",
     });
 
@@ -146,7 +105,8 @@ export const ManufacturingStorySection: React.FC = () => {
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!sectionRef.current || !cardRef.current) return;
+    // Only track position when an item is actually hovered to avoid wasteful layout recalculations
+    if (activeIndex === null || !sectionRef.current || !cardRef.current) return;
 
     const rect = sectionRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -169,7 +129,7 @@ export const ManufacturingStorySection: React.FC = () => {
     gsap.to(cardRef.current, {
       opacity: 0,
       scale: 0.88,
-      duration: 0.25,
+      duration: 0.2,
       ease: "power2.in",
     });
   };

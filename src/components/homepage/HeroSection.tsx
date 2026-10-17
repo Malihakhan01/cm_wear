@@ -19,119 +19,49 @@ interface HeroSlide {
   link: string;
 }
 
-// Exactly 8 Hero Slides matching the 8 images in public/HERO without any duplicates
+// Hero Slides matching the high-resolution imagery in public/HERO
 const HERO_SLIDES: HeroSlide[] = [
   {
-    id: "casual-wear",
-    categoryLabel: "STREETWEAR",
-    categoryTag: "STREETWEAR · HEAVYWEIGHT · PRIVATE LABEL",
+    id: "team-sports-wear",
+    categoryLabel: "TEAM SPORTS WEAR",
+    categoryTag: "PRO MATCH · REINFORCED · SUBLIMATED TEAM KITS",
     number: "01",
-    image: "/HERO/hero-streetwear.png",
-    titleLine1: "CUT FOR •",
-    titleLine2: "THE STREET",
-    description:
-      "Maximalist streetwear built your way: loopback French terry, rhinestones, puff print, chenille, and custom garment dye washes.",
-    accentColor: "#E85923",
-    specLabel: "SPEC: TI-CAS-001 • 450 GSM FRENCH TERRY",
-    link: "/casual-wear",
-  },
-  {
-    id: "equestrian-clothing",
-    categoryLabel: "EQUESTRIAN",
-    categoryTag: "EQUESTRIAN · LUXURY · WATERPROOF",
-    number: "02",
-    image: "/HERO/hero-equestrian.png",
-    titleLine1: "FORGED IN •",
-    titleLine2: "THE SADDLE",
-    description:
-      "Precision-tailored equestrian competition show jackets, 4-way stretch silicone grip breeches, and aerodynamic sun-shirts.",
-    accentColor: "#A31017",
-    specLabel: "SPEC: TI-EQ-002 • 4-WAY PERFORMANCE GRIP",
-    link: "/equestrian-clothing",
-  },
-  {
-    id: "ice-hockey",
-    categoryLabel: "ICE HOCKEY",
-    categoryTag: "PRO MATCH · REINFORCED · SUBLIMATED",
-    number: "03",
-    image: "/HERO/Dynamic Ice Hockey Turn in Motion.png",
-    titleLine1: "ENGINEERED FOR •",
-    titleLine2: "HIGH IMPACT",
-    description:
-      "Heavyweight double-reinforced hockey jerseys, ventilated fight straps, ergonomic padded pants, and custom team kits.",
-    accentColor: "#0284C7",
-    specLabel: "SPEC: TI-HOCKEY-003 • 330 GSM AIR-MESH",
-    link: "/ice-hockey",
-  },
-  {
-    id: "cycling",
-    categoryLabel: "CYCLING",
-    categoryTag: "AERODYNAMIC · SPEED · MOISTURE-WICKING",
-    number: "04",
-    image: "/HERO/Cinematic Forest Road Cyclist.png",
-    titleLine1: "BUILT FOR •",
-    titleLine2: "MAX VELOCITY",
-    description:
-      "Aerodynamic wind tunnel tested speed jerseys, Italian chamois bib shorts, windproof gilets, and thermal base layers.",
-    accentColor: "#10B981",
-    specLabel: "SPEC: TI-CYC-004 • ITALIAN PRO COMPRESS",
-    link: "/cycling",
-  },
-  {
-    id: "rugby",
-    categoryLabel: "RUGBY",
-    categoryTag: "TEAR-RESISTANT · COMBAT TOUGH · BAR-TACKED",
-    number: "05",
-    image: "/HERO/Lone Rugby Player Under Stadium Lights.png",
-    titleLine1: "UNBREAKABLE •",
-    titleLine2: "COLLISION GEAR",
-    description:
-      "Extreme tensile strength rugby jerseys, reinforced collar seams, bar-tacked grip zones, and heavy athletic match shorts.",
-    accentColor: "#F59E0B",
-    specLabel: "SPEC: TI-RGB-005 • 320 GSM POLY-SPANDEX",
-    link: "/rugby",
-  },
-  {
-    id: "basketball",
-    categoryLabel: "BASKETBALL",
-    categoryTag: "PRO COURT · MICRO-EYELET · DIAMOND MESH",
-    number: "06",
-    image: "/HERO/Contemplative Basketball Player on Urban Court (1).png",
+    image: "/HERO/Cinematic Basketball Duo in Arena.png",
     titleLine1: "DOMINATE •",
-    titleLine2: "THE COURT",
+    titleLine2: "THE ARENA",
     description:
-      "Full court sublimated air-mesh uniforms, reversible diamond-mesh shorts, pro ribbed collars, and warm-up track suits.",
-    accentColor: "#EC4899",
-    specLabel: "SPEC: TI-BB-006 • DIAMOND DRI-FIT MESH",
-    link: "/basketball",
+      "Pro arena jerseys, diamond air-knit mesh uniforms, reinforced coverstitching, and tournament team kits crafted for collegiate and professional leagues.",
+    accentColor: "#E85923",
+    specLabel: "SPEC: CM-TEAM-001 • 330 GSM SPEED MESH",
+    link: "/catalog?category=team-sports-wear",
   },
   {
-    id: "ski-wear",
-    categoryLabel: "SKI WEAR",
-    categoryTag: "ALPINE 20K · 3-LAYER SHELL · WATERPROOF",
-    number: "07",
-    image: "/HERO/Cinematic Winter Skier Carving Through Snow.png",
-    titleLine1: "SUB-ZERO •",
-    titleLine2: "ALPINE SHIELD",
+    id: "martial-arts-combat-wear",
+    categoryLabel: "COMBAT SPORTS",
+    categoryTag: "BJJ GIS · FIGHT SHORTS · COMPRESSION APPAREL",
+    number: "02",
+    image: "/HERO/Cinematic MMA Fighters in Industrial Gym (1).png",
+    titleLine1: "FORGED FOR •",
+    titleLine2: "THE CAGE",
     description:
-      "3-layer technical waterproof shells, sealed YKK Aquaguard taped seams, insulated thermal bibs, and blizzard proof down jackets.",
-    accentColor: "#38BDF8",
-    specLabel: "SPEC: TI-SKI-007 • 20,000 MM HYDROSTATIC",
-    link: "/ski-wear",
-  },
-  {
-    id: "go-karting-racing",
-    categoryLabel: "MOTORSPORT",
-    categoryTag: "MOTORSPORT · 500D CORDURA · RACING SUITS",
-    number: "08",
-    image: "/HERO/hero-racing.png",
-    titleLine1: "WE MAKE •",
-    titleLine2: "WHAT MOVES",
-    description:
-      "Performance sportswear under your label. Loud prints, sharp fits, sampled before a single bulk piece is cut.",
+      "Championship BJJ Gis, 4-way stretch fight rash guards, tear-resistant combat shorts, and competition doboks engineered for high friction.",
     accentColor: "#D61C24",
-    specLabel: "SPEC: TI-RACE-008 • PRO-COMP",
-    link: "/go-karting-racing",
+    specLabel: "SPEC: CM-COMBAT-002 • 550 GSM PEARL WEAVE",
+    link: "/catalog?category=martial-arts-combat-wear",
+  },
+  {
+    id: "workwear-medical-wear",
+    categoryLabel: "WORKWEAR & UNIFORMS",
+    categoryTag: "DUTY-GRADE · FLUID-SHIELD · REINFORCED TWILL",
+    number: "03",
+    image: "/HERO/Emergency Response Heroes.png",
+    titleLine1: "BUILT FOR •",
+    titleLine2: "EVERY SHIFT",
+    description:
+      "Antimicrobial medical scrubs, industrial work uniforms, utility polo shirts, and high-visibility response apparel engineered to protect.",
+    accentColor: "#0284C7",
+    specLabel: "SPEC: CM-WORK-003 • LIQUID-REPELLENT TWILL",
+    link: "/catalog?category=workwear-medical-wear",
   },
 ];
 
@@ -211,6 +141,9 @@ export const HeroSection: React.FC = () => {
                 <img
                   src={slide.image}
                   alt={slide.categoryLabel}
+                  loading={idx === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  fetchPriority={idx === 0 ? "high" : "low"}
                   className="w-full h-full object-cover object-center brightness-100 contrast-105 select-none pointer-events-none scale-100"
                 />
                 {/* Subtle gradient focused only on the text area on left */}

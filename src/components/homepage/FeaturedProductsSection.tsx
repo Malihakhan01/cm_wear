@@ -6,24 +6,14 @@ import { PRODUCTS_DATA } from "@/data/products.data";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { useStoreModeStore } from "@/stores/useStoreModeStore";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionHeading } from "@/components/common/SectionHeading";
 import { productsService } from "@/services/products.service";
 import { Product } from "@/types";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 export const FeaturedProductsSection: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [allProducts, setAllProducts] = useState<Product[]>(PRODUCTS_DATA);
   const { mode, toggleMode } = useStoreModeStore();
-
-  const sectionRef = useRef<HTMLElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-  const isInitialMount = useRef(true);
 
   useEffect(() => {
     productsService.getAll().then((prods) => {
@@ -35,8 +25,8 @@ export const FeaturedProductsSection: React.FC = () => {
         setAllProducts(prods || []);
       });
     };
-    window.addEventListener("tawfiq_products_updated", handleUpdate);
-    return () => window.removeEventListener("tawfiq_products_updated", handleUpdate);
+    window.addEventListener("cm_products_updated", handleUpdate);
+    return () => window.removeEventListener("cm_products_updated", handleUpdate);
   }, []);
 
   const filteredProducts =
@@ -56,126 +46,8 @@ export const FeaturedProductsSection: React.FC = () => {
     { id: "go-karting-racing", label: "Racing" },
   ];
 
-  // 3D Mouse Parallax Handlers
-  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateX = ((centerY - y) / centerY) * 6;
-    const rotateY = ((x - centerX) / centerX) * 6;
-
-    gsap.to(card, {
-      rotateX,
-      rotateY,
-      scale: 1.025,
-      duration: 0.25,
-      ease: "power2.out",
-      transformPerspective: 900,
-    });
-  };
-
-  const handleCardMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = e.currentTarget;
-    gsap.to(card, {
-      rotateX: 0,
-      rotateY: 0,
-      scale: 1,
-      duration: 0.45,
-      ease: "power2.out",
-    });
-  };
-
-  useEffect(() => {
-    if (!sectionRef.current || !gridRef.current) return;
-
-    const cards = Array.from(
-      gridRef.current.querySelectorAll<HTMLElement>(".product-card-entrance-wrapper")
-    );
-    if (cards.length === 0) return;
-
-    const ctx = gsap.context(() => {
-      const isInitial = isInitialMount.current;
-      isInitialMount.current = false;
-
-      const width = window.innerWidth;
-      const colsPerRow = width >= 1024 ? 4 : width >= 640 ? 2 : 1;
-
-      // Group cards into rows to trigger per-row 3D elevation on scroll
-      const rows: HTMLElement[][] = [];
-      for (let i = 0; i < cards.length; i += colsPerRow) {
-        rows.push(cards.slice(i, i + colsPerRow));
-      }
-
-      if (isInitial) {
-        // Initial page load: Setup ScrollTrigger to reveal cards on scroll down
-        rows.forEach((rowCards) => {
-          if (rowCards.length === 0) return;
-          const triggerEl = rowCards[0];
-
-          rowCards.forEach((card, idx) => {
-            gsap.fromTo(
-              card,
-              {
-                opacity: 0,
-                y: 55,
-                scale: 0.93,
-                rotateX: 12,
-                transformOrigin: "center bottom",
-              },
-              {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                rotateX: 0,
-                duration: 0.8,
-                delay: (idx % colsPerRow) * 0.08,
-                ease: "power3.out",
-                scrollTrigger: {
-                  trigger: triggerEl,
-                  start: "top 88%",
-                  toggleActions: "play none none none",
-                },
-              }
-            );
-          });
-        });
-      } else {
-        // Category tab switched: Immediately animate newly mounted cards with 3D elevation
-        cards.forEach((card, idx) => {
-          gsap.fromTo(
-            card,
-            {
-              opacity: 0,
-              y: 45,
-              scale: 0.94,
-              rotateX: 10,
-              transformOrigin: "center bottom",
-            },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              rotateX: 0,
-              duration: 0.75,
-              delay: (idx % colsPerRow) * 0.06,
-              ease: "power3.out",
-            }
-          );
-        });
-      }
-    }, sectionRef);
-
-    return () => {
-      ctx.revert();
-    };
-  }, [selectedCategory, filteredProducts.length]);
-
   return (
-    <section ref={sectionRef} className="bg-white py-20 border-b border-[#DADBD2] select-none">
+    <section className="bg-white py-20 border-b border-[#DADBD2] select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
@@ -238,28 +110,15 @@ export const FeaturedProductsSection: React.FC = () => {
           </div>
         ) : (
           <div
-            ref={gridRef}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-6 pt-2"
-            style={{ perspective: "1200px" }}
           >
             {filteredProducts.map((p, idx) => (
               <div
                 key={p.id}
                 data-card-index={idx}
                 className="product-card-entrance-wrapper h-full will-change-transform"
-                style={{
-                  perspective: "1000px",
-                  transformOrigin: "center bottom",
-                }}
               >
-                <div
-                  className="product-card-tilt-inner h-full transition-shadow duration-300 hover:shadow-2xl rounded-[2px]"
-                  style={{
-                    transformStyle: "preserve-3d",
-                  }}
-                  onMouseMove={handleCardMouseMove}
-                  onMouseLeave={handleCardMouseLeave}
-                >
+                <div className="h-full rounded-[2px] transition-transform duration-200 hover:-translate-y-1">
                   <ProductCard product={p} />
                 </div>
               </div>
