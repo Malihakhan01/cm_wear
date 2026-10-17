@@ -1,5 +1,5 @@
 /**
- * TAWFIQ INDUSTRIES - HIGH-PERFORMANCE CSV PRODUCT IMPORTER
+ * CM SPORTS WEAR - HIGH-PERFORMANCE CSV PRODUCT IMPORTER
  * Parses WooCommerce exports, Shopify exports, or custom apparel CSVs
  * and updates src/data/products.data.ts with clean TypeScript structures.
  *
