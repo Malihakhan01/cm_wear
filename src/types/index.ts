@@ -89,6 +89,7 @@ export interface Product {
   specifications: { label: string; value: string }[];
   garmentParts?: GarmentPart[];
   washOptions?: string[];
+  rawCategories?: Array<{ id: string | number; name: string; slug: string; parentId?: string | number | null }>;
 }
 
 export type GarmentView = "front" | "back" | "left" | "right" | "threeD";

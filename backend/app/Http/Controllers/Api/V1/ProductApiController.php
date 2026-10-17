@@ -11,7 +11,23 @@ class ProductApiController extends Controller
     public function index(Request $request)
     {
         $query = Product::where('status', 'published')
-            ->with(['categories', 'primaryImage', 'images', 'wholesaleTiers', 'variants.attributeValues']);
+            ->select([
+                'id',
+                'name',
+                'slug',
+                'sku',
+                'short_description',
+                'regular_price',
+                'sale_price',
+                'wholesale_price',
+                'moq',
+                'lead_time_days',
+                'default_gsm',
+                'fit',
+                'is_featured',
+                'product_type',
+            ])
+            ->with(['categories', 'primaryImage', 'images']);
 
         if ($request->filled('category')) {
             $catSlug = $request->category;
@@ -36,8 +52,19 @@ class ProductApiController extends Controller
             $query->where('is_featured', true);
         }
 
-        $perPage = min($request->integer('per_page', 250), 500);
+        $perPage = min($request->integer('per_page', 250), 1000);
         $products = $query->latest()->paginate($perPage);
+
+        $products->getCollection()->transform(function ($product) {
+            $product->meta = [
+                'wholesale_price' => $product->wholesale_price,
+                'moq' => $product->moq,
+                'fit' => $product->fit,
+                'default_gsm' => $product->default_gsm,
+                'lead_time_days' => $product->lead_time_days,
+            ];
+            return $product;
+        });
 
         return response()->json($products);
     }

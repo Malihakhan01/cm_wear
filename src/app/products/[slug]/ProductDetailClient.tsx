@@ -27,11 +27,21 @@ import {
   Download,
 } from "lucide-react";
 
-export default function ProductDetailPage() {
+interface ProductDetailClientProps {
+  initialSlug?: string;
+}
+
+export default function ProductDetailPage({ initialSlug }: ProductDetailClientProps = {}) {
   const params = useParams();
-  const rawParamSlug = params?.slug as string;
+  const rawParamSlug = (params?.slug as string) || initialSlug || "";
 
   const getEffectiveSlug = () => {
+    if (initialSlug && initialSlug !== "overview") {
+      return decodeURIComponent(initialSlug);
+    }
+    if (rawParamSlug && rawParamSlug !== "overview") {
+      return decodeURIComponent(rawParamSlug);
+    }
     if (typeof window !== "undefined") {
       const parts = window.location.pathname.split("/").filter(Boolean);
       const last = parts[parts.length - 1];
@@ -39,7 +49,7 @@ export default function ProductDetailPage() {
         return decodeURIComponent(last);
       }
     }
-    return rawParamSlug || "";
+    return rawParamSlug || initialSlug || "";
   };
 
   const [slug, setSlug] = useState<string>(getEffectiveSlug);
@@ -59,9 +69,14 @@ export default function ProductDetailPage() {
         setLoading(false);
       });
     } else {
-      setLoading(false);
+      productsService.getAll().then((all) => {
+        if (all && all.length > 0) {
+          setProduct(all[0]);
+        }
+        setLoading(false);
+      });
     }
-  }, [rawParamSlug]);
+  }, [rawParamSlug, initialSlug]);
 
   const { mode, toggleMode } = useStoreModeStore();
   const { addItem } = useCartStore();
@@ -100,14 +115,49 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center font-mono text-xs">
-        Loading Garment Spec...
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center select-none font-mono">
+        <div className="w-10 h-10 border-2 border-[#D61C24] border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="text-xs uppercase font-bold tracking-wider text-[#0A0A0A]">
+          Loading Garment Spec...
+        </div>
+        <div className="text-[10px] text-[#72726D] mt-1">
+          Export Tech Pack &amp; Silhouette Dimensions
+        </div>
       </div>
     );
   }
 
   if (!product) {
-    return notFound();
+    return (
+      <div className="min-h-[70vh] bg-[#FFFFFF] flex flex-col items-center justify-center p-6 text-center select-none">
+        <div className="w-16 h-16 rounded-full bg-[#F4F4EF] border border-[#DADBD2] flex items-center justify-center mb-4">
+          <Box className="w-8 h-8 text-[#D61C24]" />
+        </div>
+        <span className="text-[11px] font-mono uppercase tracking-widest text-[#D61C24] font-bold mb-1">
+          Apparel Archive
+        </span>
+        <h2 className="text-2xl font-bold uppercase tracking-tight text-[#0A0A0A] mb-2 font-display">
+          Product Silhouette Unavailable
+        </h2>
+        <p className="text-xs text-[#72726D] max-w-md mb-6 font-mono leading-relaxed">
+          The requested garment specification or style identifier is currently being updated in our export catalog.
+        </p>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/catalog/"
+            className="px-5 py-2.5 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono uppercase font-bold tracking-wider rounded-[2px] transition-colors"
+          >
+            Browse Apparel Catalog
+          </Link>
+          <Link
+            href="/request-quote"
+            className="px-5 py-2.5 bg-[#F4F4EF] hover:bg-[#DADBD2] border border-[#DADBD2] text-[#0A0A0A] text-xs font-mono uppercase font-bold tracking-wider rounded-[2px] transition-colors"
+          >
+            Custom Tech Pack Quote
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   const demoImage = getProductDemoImage(product.category, product.name, product.subcategory);

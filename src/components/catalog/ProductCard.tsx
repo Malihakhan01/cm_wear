@@ -93,7 +93,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       {/* Main Image Area (Dominates Card, clean unblocked view) */}
       <div className="relative aspect-square bg-[#F4F4EF] overflow-hidden p-6">
-        <Link href={`/products/${product.slug}`} className="block w-full h-full">
+        <Link href={`/products/${product.slug}/`} prefetch={false} className="block w-full h-full">
           <img
             src={displayImage}
             loading="lazy"
@@ -121,7 +121,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           {/* Title */}
           <Link
-            href={`/products/${product.slug}`}
+            href={`/products/${product.slug}/`}
+            prefetch={false}
             className="text-sm font-bold uppercase tracking-tight text-[#0A0A0A] group-hover:text-[#D61C24] transition-colors line-clamp-1 mb-2"
           >
             {product.name}
@@ -192,7 +193,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </button>
 
             <Link
-              href={`/products/${product.slug}`}
+              href={`/products/${product.slug}/`}
+              prefetch={false}
               className="px-3.5 py-2 bg-white hover:bg-[#F4F4EF] text-[#0A0A0A] border border-[#DADBD2] hover:border-[#0A0A0A] rounded-[2px] text-[10px] font-mono uppercase font-bold text-center transition-colors shrink-0 cursor-pointer"
               title="View Product Details"
             >

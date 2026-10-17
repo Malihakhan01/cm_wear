@@ -46,7 +46,7 @@ export const CategoryPageTemplate: React.FC<CategoryPageTemplateProps> = ({
               Home
             </Link>
             <span>/</span>
-            <Link href="/catalog" className="hover:text-white transition-colors">
+            <Link href="/catalog/" className="hover:text-white transition-colors">
               Catalog
             </Link>
             <span>/</span>

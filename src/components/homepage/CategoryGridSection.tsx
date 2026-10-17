@@ -15,93 +15,93 @@ interface CategoryCardItem {
   link: string;
 }
 
-// Exactly 8 categories matching the 01-08 divisions:
+// Exactly matching the divisions and slugs in the live site DB:
 // Row 1 (Categories 01 to 05)
 const ROW_ONE_CATEGORIES: CategoryCardItem[] = [
   {
-    id: "team-sports-wear",
+    id: "sportswear",
     name: "TEAM SPORTS WEAR",
     number: "01",
     badge: "PRO MATCH",
     subcategories: ["Ice Hockey", "Soccer & Football", "Basketball", "Rugby & Cricket"],
     image: "/categories/teamsports_wear.png",
-    link: "/catalog?category=team-sports-wear",
+    link: "/catalog/?category=sportswear",
   },
   {
-    id: "martial-arts-combat-wear",
+    id: "martial-arts",
     name: "MARTIAL ARTS & COMBAT",
     number: "02",
     badge: "COMBAT SPORTS",
     subcategories: ["BJJ & Grappling", "MMA Fight Shorts", "Boxing & Muay Thai", "Karate & Judo"],
     image: "/categories/martial arts.png",
-    link: "/catalog?category=martial-arts-combat-wear",
+    link: "/catalog/?category=martial-arts",
   },
   {
-    id: "activewear-fitness",
+    id: "fitness-wear",
     name: "ACTIVEWEAR & FITNESS",
     number: "03",
     badge: "ATHLEISURE",
     subcategories: ["Gym & Training Wear", "Compression Wear", "Women’s Activewear", "Running & Athletics"],
     image: "/categories/activewear.png",
-    link: "/catalog?category=activewear-fitness",
+    link: "/catalog/?category=fitness-wear",
   },
   {
-    id: "casual-lifestyle-wear",
+    id: "casual-wear",
     name: "CASUAL & LIFESTYLE",
     number: "04",
     badge: "STREETWEAR",
     subcategories: ["T-Shirts & Polos", "450 GSM Hoodies", "Matching Tracksuits", "Joggers & Shorts"],
     image: "/categories/casualwear.png",
-    link: "/catalog?category=casual-lifestyle-wear",
+    link: "/catalog/?category=casual-wear",
   },
   {
-    id: "jackets-outerwear",
-    name: "JACKETS & OUTERWEAR",
+    id: "safety-wear",
+    name: "WORKWEAR & MEDICAL",
     number: "05",
-    badge: "OUTERWEAR",
-    subcategories: ["Varsity Jackets", "Leather Jackets", "Technical Softshells", "Windbreakers"],
-    image: "/categories/jacket wear.png",
-    link: "/catalog?category=jackets-outerwear",
+    badge: "DUTY GRADE",
+    subcategories: ["Medical Scrubs", "Industrial Uniforms", "Utility Work Polos", "Safety Suits"],
+    image: "/categories/work wear.png",
+    link: "/catalog/?category=safety-wear",
   },
 ];
 
 // Row 2 (Categories 06 to 09)
 const ROW_TWO_CATEGORIES: CategoryCardItem[] = [
   {
+    id: "gloves",
+    name: "PERFORMANCE GLOVES",
+    number: "06",
+    badge: "PRECISION GRIP",
+    subcategories: ["Ice Hockey Gloves", "Goalkeeper Latex", "Boxing & MMA Gloves", "Safety Gloves"],
+    image: "/categories/gloves.png",
+    link: "/catalog/?category=gloves",
+  },
+  {
+    id: "jackets-outerwear",
+    name: "JACKETS & OUTERWEAR",
+    number: "07",
+    badge: "OUTERWEAR",
+    subcategories: ["Varsity Jackets", "Leather Jackets", "Technical Softshells", "Windbreakers"],
+    image: "/categories/jacket wear.png",
+    link: "/catalog/?category=jackets-outerwear",
+  },
+  {
     id: "kids-youth-wear",
     name: "KIDS & YOUTH WEAR",
-    number: "06",
+    number: "08",
     badge: "JUNIOR CUT",
     subcategories: ["Youth Team Kits", "Kids’ Activewear", "Junior Hoodies", "Training Tracksuits"],
     image: "/categories/kids wear.png",
-    link: "/catalog?category=kids-youth-wear",
-  },
-  {
-    id: "workwear-medical-wear",
-    name: "WORKWEAR & MEDICAL",
-    number: "07",
-    badge: "DUTY GRADE",
-    subcategories: ["Medical Scrubs", "Industrial Uniforms", "Utility Work Polos"],
-    image: "/categories/work wear.png",
-    link: "/catalog?category=workwear-medical-wear",
+    link: "/catalog/?category=kids-youth-wear",
   },
   {
     id: "sports-accessories",
     name: "SPORTS ACCESSORIES",
-    number: "08",
+    number: "09",
     badge: "FIELD GEAR",
     subcategories: ["Knit Team Socks", "Reversible Bibs", "Caps & Visors", "Wrist & Headbands"],
     image: "/categories/Vibrant Multisport Gear Court Flat Lay.png",
-    link: "/catalog?category=sports-accessories",
-  },
-  {
-    id: "gloves",
-    name: "PERFORMANCE GLOVES",
-    number: "09",
-    badge: "PRECISION GRIP",
-    subcategories: ["Ice Hockey Gloves", "Goalkeeper Latex", "Boxing & MMA Gloves", "Batting Gloves"],
-    image: "/categories/gloves.png",
-    link: "/catalog?category=gloves",
+    link: "/catalog/?category=sports-accessories",
   },
 ];
 
@@ -238,7 +238,7 @@ export const CategoryGridSection: React.FC = () => {
 
               {/* Explore All Button */}
               <Link
-                href="/catalog"
+                href="/catalog/"
                 className="px-5 py-2.5 bg-white hover:bg-neutral-200 text-[#0A0A0A] text-xs font-mono font-bold uppercase tracking-wider rounded-[2px] transition-colors flex items-center gap-2 shrink-0 ml-1"
               >
                 <span>EXPLORE ALL</span>

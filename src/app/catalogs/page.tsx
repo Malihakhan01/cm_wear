@@ -173,34 +173,57 @@ export default function CatalogsPage() {
                     </div>
                   </div>
 
-                  {/* Live PDF Document Preview Box */}
+                  {/* Sleek Publication Cover Preview Card */}
                   <a
                     href={item.fileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative block w-full aspect-[4/3] bg-neutral-900 rounded-[2px] overflow-hidden border border-[#E5E5E0] group-hover:border-[#D61C24] transition-colors cursor-pointer group/preview"
+                    className="relative block w-full aspect-[4/3] bg-gradient-to-br from-[#1C1C1A] via-[#121210] to-[#0A0A0A] rounded-[2px] overflow-hidden border border-[#2A2A28] group-hover:border-[#D61C24] transition-all cursor-pointer group/preview shadow-inner p-4"
                   >
-                    <object
-                      data={`${item.fileUrl}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0`}
-                      type="application/pdf"
-                      className="w-full h-full pointer-events-none select-none bg-neutral-950"
-                      title={`${item.title} Preview`}
-                    >
-                      <iframe
-                        src={`${item.fileUrl}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0`}
-                        className="w-full h-full border-0 pointer-events-none select-none bg-neutral-950"
-                        title={`${item.title} Preview`}
-                        loading="lazy"
+                    {/* Architectural Grid Background */}
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
+
+                    {/* Watermark Logo in Corner */}
+                    <div className="absolute -bottom-6 -right-6 w-32 h-32 opacity-10 pointer-events-none select-none">
+                      <img
+                        src="/cm_logo/Red and White Wear Emblem.png"
+                        alt=""
+                        className="w-full h-full object-contain filter grayscale"
                       />
-                    </object>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent flex items-end justify-between p-3 pointer-events-none transition-opacity group-hover/preview:opacity-90">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-white bg-black/70 px-2 py-0.5 rounded border border-white/10 flex items-center gap-1.5 backdrop-blur-sm">
-                        <FileText className="w-3 h-3 text-[#D61C24]" />
-                        PDF Preview
-                      </span>
-                      <span className="text-[10px] font-mono text-white/90 bg-[#D61C24] px-2 py-0.5 rounded font-bold">
-                        Click to Open
-                      </span>
+                    </div>
+
+                    {/* Cover Content */}
+                    <div className="relative z-10 h-full flex flex-col justify-between">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[9px] font-mono uppercase tracking-widest text-[#FF333D] font-bold bg-[#D61C24]/10 border border-[#D61C24]/30 px-2 py-0.5 rounded-[1px]">
+                          OFFICIAL SPEC BOOK
+                        </span>
+                        <span className="text-[10px] font-mono text-neutral-400">
+                          {item.pages}
+                        </span>
+                      </div>
+
+                      <div className="space-y-1 my-auto py-2">
+                        <div className="w-8 h-8 rounded-[2px] bg-white/5 border border-white/10 flex items-center justify-center text-[#FF333D] mb-2 group-hover/preview:scale-110 transition-transform">
+                          <FileText className="w-4 h-4" />
+                        </div>
+                        <div className="text-xs font-bold font-mono uppercase text-white tracking-wide line-clamp-2">
+                          {item.title}
+                        </div>
+                        <div className="text-[10px] font-mono text-neutral-400">
+                          Universal Vector PDF &bull; {item.size}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2 border-t border-white/10 text-[10px] font-mono text-neutral-300">
+                        <span className="flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#D61C24]" />
+                          Verified Factory Copy
+                        </span>
+                        <span className="text-[#FF333D] font-bold group-hover/preview:translate-x-0.5 transition-transform flex items-center gap-1">
+                          Open &rarr;
+                        </span>
+                      </div>
                     </div>
                   </a>
 

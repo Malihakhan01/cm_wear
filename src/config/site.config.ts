@@ -14,6 +14,10 @@ export const siteConfig = {
   phone2: "+92-52-3558586",
   supportEmail: "info@cmsportswear.com",
   inquiryEmail: "info@cmsportswear.com",
+  socialLinks: {
+    facebook: "https://www.facebook.com/CMwears",
+    instagram: "https://www.instagram.com/caremaster_llc/",
+  },
   address: {
     campus: "Taj Palace, Khadim Ali Road",
     city: "Sialkot",
@@ -30,7 +34,7 @@ export const siteConfig = {
   ],
   navItems: [
     { title: "Home", href: "/" },
-    { title: "Products", href: "/catalog", hasMegaMenu: true },
+    { title: "Products", href: "/catalog/", hasMegaMenu: true },
     { title: "Catalogs", href: "/catalogs" },
     { title: "Certifications", href: "/certifications" },
     { title: "Exhibitions", href: "/exhibitions" },

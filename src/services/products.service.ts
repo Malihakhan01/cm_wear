@@ -17,7 +17,7 @@ interface BackendProductRaw {
   is_featured?: boolean;
   product_type?: string;
   three_d_model_url?: string;
-  categories?: Array<{ id: number; name: string; slug: string }>;
+  categories?: Array<{ id: number | string; name: string; slug: string; parent_id?: number | string | null }>;
   primary_image?: { url: string };
   images?: Array<{ url: string }>;
   meta?: {
@@ -101,17 +101,20 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
     : [primaryImg];
   const gallery = [primaryImg, ...rawGallery.filter((u) => u !== primaryImg)];
 
-  // Match main category and subcategory intelligently from assigned categories
-  const mainCat = p.categories?.find((c) => MAIN_CAT_IDS.includes(c.slug as MainCategoryId))
+  // 1. Match root parent category (parent_id === null or undefined or 0)
+  const rootCat = p.categories?.find((c) => c.parent_id === null || c.parent_id === undefined || c.parent_id === 0)
+    || p.categories?.find((c) => MAIN_CAT_IDS.includes(c.slug as MainCategoryId))
     || p.categories?.[0];
 
-  const subCat = p.categories?.find((c) => c.slug !== mainCat?.slug && c.name?.toLowerCase() !== mainCat?.name?.toLowerCase())
-    || p.categories?.[1];
+  // 2. Match child subcategory (has a parent_id, or distinct from rootCat)
+  const childCat = p.categories?.find((c) => (c.parent_id !== null && c.parent_id !== undefined && c.parent_id !== 0) && c.slug !== rootCat?.slug)
+    || p.categories?.find((c) => c.id !== rootCat?.id && c.slug !== rootCat?.slug && c.name?.toLowerCase() !== rootCat?.name?.toLowerCase())
+    || (p.categories && p.categories.length > 1 && p.categories[0]?.slug === rootCat?.slug ? p.categories[1] : undefined);
 
-  const catSlug = (mainCat?.slug || "casual-wear") as MainCategoryId;
+  const catSlug = (rootCat?.slug || "casual-wear") as MainCategoryId;
 
   // Format clean human-readable subcategory label
-  let subSlug = subCat?.name || subCat?.slug;
+  let subSlug = childCat?.name || childCat?.slug;
   if (!subSlug || subSlug.toLowerCase() === catSlug.toLowerCase()) {
     const pNameLower = p.name.toLowerCase();
     if (pNameLower.includes("bodice")) {
@@ -141,7 +144,7 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
     } else if (catSlug === "martial-arts") {
       subSlug = "Martial Arts Uniforms";
     } else {
-      subSlug = mainCat?.name || "Apparel";
+      subSlug = rootCat?.name || "Apparel";
     }
   }
 
@@ -201,6 +204,12 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
     featured: Boolean(p.is_featured),
     threeDModel: p.three_d_model_url,
     specifications: mergedSpecs,
+    rawCategories: p.categories?.map((c) => ({
+      id: c.id,
+      name: c.name,
+      slug: c.slug,
+      parentId: c.parent_id ?? null,
+    })),
   };
 }
 
@@ -228,57 +237,198 @@ export function saveLocalImportedProducts(products: Product[]): void {
   }
 }
 
-export const productsService = {
-  async getAll(): Promise<Product[]> {
-    const localImported = getLocalImportedProducts();
-    const staticBase = [...PRODUCTS_DATA, ...localImported];
-    const seen = new Set<string>();
-    const uniqueBase = staticBase.filter((p) => {
-      if (seen.has(p.slug)) return false;
-      seen.add(p.slug);
-      return true;
-    });
+let memoryProductsCache: Product[] | null = null;
+let inFlightPromise: Promise<Product[]> | null = null;
+let lastFetchTime = 0;
+const CACHED_PRODUCTS_STORAGE_KEY = "cm_cached_products_catalog_v1";
 
-    const sanitizedBase = uniqueBase.map((p) => {
-      const demoFallback = getProductDemoImage(p.category, p.name, p.subcategory);
-      const validImages = (p.images || []).map((img) => {
-        if (!img || img === "/placeholder.jpg") return demoFallback;
-        return img;
-      });
-      return {
-        ...p,
-        images: validImages.length > 0 ? validImages : [demoFallback],
-      };
-    });
-
+export function getCachedProducts(): Product[] {
+  if (memoryProductsCache && memoryProductsCache.length > 0) {
+    return memoryProductsCache;
+  }
+  if (typeof window !== "undefined") {
     try {
-      const res = await apiClient.get<{ data?: BackendProductRaw[] } | BackendProductRaw[]>("/products?per_page=250");
-      const list = Array.isArray(res) ? res : res?.data;
-      if (list && list.length > 0) {
-        const liveProducts = list.map(mapBackendProductToFrontend);
-        const liveSlugs = new Set(liveProducts.map((p) => p.slug));
-        const remainingStatic = sanitizedBase.filter((p) => !liveSlugs.has(p.slug));
-        return [...liveProducts, ...remainingStatic];
+      const stored = localStorage.getItem(CACHED_PRODUCTS_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          memoryProductsCache = parsed;
+          return parsed;
+        }
       }
     } catch (e) {
-      console.warn("Live backend products fetch fallback:", e);
+      // Storage unavailable / JSON error
     }
-    await delay(50);
-    return sanitizedBase;
+  }
+  return [];
+}
+
+function saveProductsToLocalStorage(products: Product[]): void {
+  if (typeof window === "undefined") return;
+  try {
+    const compact = products.map((p) => ({
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      sku: p.sku,
+      category: p.category,
+      subcategory: p.subcategory,
+      description: p.description,
+      shortDescription: p.shortDescription,
+      images: p.images,
+      retailPrice: p.retailPrice,
+      wholesalePrice: p.wholesalePrice,
+      MOQ: p.MOQ,
+      sizes: p.sizes,
+      colors: p.colors,
+      fabric: p.fabric,
+      material: p.material,
+      fit: p.fit,
+      leadTime: p.leadTime,
+      featured: p.featured,
+      specifications: p.specifications,
+      rawCategories: p.rawCategories,
+    }));
+    localStorage.setItem(CACHED_PRODUCTS_STORAGE_KEY, JSON.stringify(compact));
+  } catch (e) {
+    console.warn("Could not save products to localStorage:", e);
+  }
+}
+
+export const productsService = {
+  getCachedProducts(): Product[] {
+    return getCachedProducts();
+  },
+
+  async getAll(forceFresh = false): Promise<Product[]> {
+    // 1. Instant Cache Hit: Return cached products immediately if fresh enough (< 3 minutes)
+    const now = Date.now();
+    const cached = getCachedProducts();
+    const isFresh = now - lastFetchTime < 180000;
+
+    if (!forceFresh && cached.length > 0) {
+      if (!isFresh && !inFlightPromise) {
+        // Trigger background revalidation quietly without blocking caller
+        this.revalidateInBackground();
+      }
+      return cached;
+    }
+
+    // 2. De-duplicate concurrent calls: if already fetching, reuse the active promise
+    if (inFlightPromise) {
+      return inFlightPromise;
+    }
+
+    inFlightPromise = (async () => {
+      const localImported = getLocalImportedProducts();
+      const staticBase = [...PRODUCTS_DATA, ...localImported];
+      const seen = new Set<string>();
+      const uniqueBase = staticBase.filter((p) => {
+        if (seen.has(p.slug)) return false;
+        seen.add(p.slug);
+        return true;
+      });
+
+      const sanitizedBase = uniqueBase.map((p) => {
+        const demoFallback = getProductDemoImage(p.category, p.name, p.subcategory);
+        const validImages = (p.images || []).map((img) => {
+          if (!img || img === "/placeholder.jpg") return demoFallback;
+          return img;
+        });
+        return {
+          ...p,
+          images: validImages.length > 0 ? validImages : [demoFallback],
+        };
+      });
+
+      try {
+        // Fetch up to 1000 products in one single fast request
+        const resPage1 = await apiClient.get<{ data?: BackendProductRaw[]; total?: number } | BackendProductRaw[]>(
+          `/products?per_page=1000&page=1&_t=${now}`
+        );
+        const list1 = Array.isArray(resPage1) ? resPage1 : resPage1?.data || [];
+        const total = !Array.isArray(resPage1) && resPage1?.total ? resPage1.total : list1.length;
+
+        let allLiveRaw: BackendProductRaw[] = [...list1];
+        if (total > list1.length) {
+          // If total ever exceeds 1000, fetch page 2
+          const resPage2 = await apiClient.get<{ data?: BackendProductRaw[] }>(
+            `/products?per_page=1000&page=2&_t=${now}`
+          );
+          if (resPage2?.data && Array.isArray(resPage2.data)) {
+            allLiveRaw = [...allLiveRaw, ...resPage2.data];
+          }
+        }
+
+        if (allLiveRaw.length > 0) {
+          const liveProducts = allLiveRaw.map(mapBackendProductToFrontend);
+          const liveSlugs = new Set(liveProducts.map((p) => p.slug));
+          const remainingStatic = sanitizedBase.filter((p) => !liveSlugs.has(p.slug));
+          const combined = [...liveProducts, ...remainingStatic];
+
+          memoryProductsCache = combined;
+          lastFetchTime = Date.now();
+          saveProductsToLocalStorage(combined);
+
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("cm_products_updated", { detail: combined }));
+          }
+
+          return combined;
+        }
+      } catch (e) {
+        console.warn("Live backend products fetch fallback:", e);
+      }
+
+      if (cached.length > 0) {
+        return cached;
+      }
+
+      return sanitizedBase;
+    })().finally(() => {
+      inFlightPromise = null;
+    });
+
+    return inFlightPromise;
+  },
+
+  revalidateInBackground(): void {
+    if (typeof window === "undefined" || inFlightPromise) return;
+    this.getAll(true).catch(() => {});
   },
 
   async getBySlug(slug: string): Promise<Product | null> {
+    const cleanSlug = decodeURIComponent(slug).trim();
     try {
-      const res = await apiClient.get<{ data?: BackendProductRaw }>(`/products/${slug}`);
+      const res = await apiClient.get<{ data?: BackendProductRaw }>(`/products/${encodeURIComponent(cleanSlug)}`);
       if (res?.data) {
         return mapBackendProductToFrontend(res.data);
       }
     } catch (e) {
       console.warn("Live backend product by slug fetch fallback:", e);
     }
-    await delay(50);
-    const all = await this.getAll();
-    return all.find((p) => p.slug === slug) || null;
+
+    try {
+      // Robust fuzzy/prefix fallback across all products
+      const all = await this.getAll();
+      const normSlug = cleanSlug.toLowerCase().replace(/[-_]/g, "");
+      const matched = all.find((p) => {
+        const pNorm = p.slug.toLowerCase().replace(/[-_]/g, "");
+        return (
+          p.slug === cleanSlug ||
+          pNorm === normSlug ||
+          p.slug.startsWith(cleanSlug.replace(/-+$/, "")) ||
+          cleanSlug.startsWith(p.slug) ||
+          (cleanSlug.length > 10 && pNorm.includes(normSlug)) ||
+          (pNorm.length > 10 && normSlug.includes(pNorm))
+        );
+      });
+      if (matched) return matched;
+    } catch (e) {
+      console.warn("Fuzzy product slug match error:", e);
+    }
+
+    return null;
   },
 
   async getById(id: string): Promise<Product | null> {

@@ -64,10 +64,23 @@ Options -Indexes +FollowSymLinks
     RewriteCond %{REQUEST_URI} ^/(category|collections)/([^/]+)/?$ [NC]
     RewriteRule ^(category|collections)/([^/]+)/?$ /catalog?category=$2 [R=301,L]
 
+    # Dynamic Product Detail SPA fallback: any /products/* that is not a static file serves products/overview/index.html
+    RewriteCond %{REQUEST_URI} ^/products/([^/]+)/?$ [NC]
+    RewriteCond %{DOCUMENT_ROOT}/products/$1/index.html !-f
+    RewriteCond %{DOCUMENT_ROOT}/products/$1.html !-f
+    RewriteRule ^products/([^/]+)/?$ products/overview/index.html [L]
 
+    # 7. Static assets and Next.js internal chunks: never rewrite to HTML, return HTTP 404
+    RewriteCond %{REQUEST_URI} ^/_next/ [OR]
+    RewriteCond %{REQUEST_URI} \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp|avif|mp4|json|map)$ [NC]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ - [R=404,L]
 
-    # 7. Fallback to 404
+    # 8. Fallback for non-existent routes
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^ 404/index.html [L]
+    RewriteRule ^ - [R=404,L]
 </IfModule>
+
+ErrorDocument 404 /404/index.html
+

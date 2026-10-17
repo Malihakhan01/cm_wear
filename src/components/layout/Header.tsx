@@ -12,6 +12,7 @@ import { MobileMenuDrawer } from "@/components/navigation/MobileMenuDrawer";
 import { SearchModal } from "@/components/common/SearchModal";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { useWishlistStore } from "@/stores/useWishlistStore";
+import { productsService } from "@/services/products.service";
 import {
   Search,
   ShoppingBag,
@@ -104,7 +105,8 @@ export const Header: React.FC = () => {
               onMouseEnter={() => setMegaMenuOpen(true)}
             >
               <Link
-                href="/catalog"
+                href="/catalog/"
+                prefetch={true}
                 onClick={() => setMegaMenuOpen(false)}
                 className={`flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap transition-colors cursor-pointer ${
                   megaMenuOpen ? "text-[#FF333D]" : "text-white/80 hover:text-white"
@@ -112,63 +114,70 @@ export const Header: React.FC = () => {
               >
                 <span>Products</span>
                 <ChevronDown
-                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                  className={`w-3.5 h-3.5 transition-transform duration-200 pointer-events-none ${
                     megaMenuOpen ? "rotate-180" : ""
                   }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setMegaMenuOpen((prev) => !prev);
-                  }}
                 />
               </Link>
             </div>
 
             <Link
-              href="/catalogs"
+              href="/catalogs/"
+              prefetch={true}
+              onClick={() => setMegaMenuOpen(false)}
               onMouseEnter={() => setMegaMenuOpen(false)}
-              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
+              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors cursor-pointer"
             >
               Catalogs
             </Link>
 
             <Link
-              href="/certifications"
+              href="/certifications/"
+              prefetch={true}
+              onClick={() => setMegaMenuOpen(false)}
               onMouseEnter={() => setMegaMenuOpen(false)}
-              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
+              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors cursor-pointer"
             >
               Certifications
             </Link>
 
             <Link
-              href="/exhibitions"
+              href="/exhibitions/"
+              prefetch={true}
+              onClick={() => setMegaMenuOpen(false)}
               onMouseEnter={() => setMegaMenuOpen(false)}
-              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
+              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors cursor-pointer"
             >
               Exhibitions
             </Link>
 
             <Link
-              href="/customize"
+              href="/customize/"
+              prefetch={true}
+              onClick={() => setMegaMenuOpen(false)}
               onMouseEnter={() => setMegaMenuOpen(false)}
-              className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
+              className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#FF333D]" />
               <span>Customize</span>
             </Link>
 
             <Link
-              href="/about"
+              href="/about/"
+              prefetch={true}
+              onClick={() => setMegaMenuOpen(false)}
               onMouseEnter={() => setMegaMenuOpen(false)}
-              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
+              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors cursor-pointer"
             >
               About
             </Link>
 
             <Link
-              href="/contact"
+              href="/contact/"
+              prefetch={true}
+              onClick={() => setMegaMenuOpen(false)}
               onMouseEnter={() => setMegaMenuOpen(false)}
-              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors"
+              className="text-xs font-mono uppercase tracking-wider font-semibold py-2 whitespace-nowrap text-white/80 hover:text-white transition-colors cursor-pointer"
             >
               Contact Us
             </Link>

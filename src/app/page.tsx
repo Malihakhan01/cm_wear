@@ -9,16 +9,12 @@ import { TestimonialsSection } from "@/components/homepage/TestimonialsSection";
 import { LatestBlogSection } from "@/components/homepage/LatestBlogSection";
 import { FaqSection } from "@/components/homepage/FaqSection";
 import { FinalQuoteCtaSection } from "@/components/homepage/FinalQuoteCtaSection";
-import { WelcomeCustomizerModal } from "@/components/homepage/WelcomeCustomizerModal";
 import { ProductionTourSection } from "@/components/homepage/ProductionTourSection";
 import { ExhibitionsSection } from "@/components/homepage/ExhibitionsSection";
 
 export default function HomePage() {
   return (
     <div className="w-full">
-      {/* Interactive Customizer & Blank Inquiry Welcome Popup */}
-      <WelcomeCustomizerModal />
-
       {/* 01. Editorial Hero */}
       <HeroSection />
 

@@ -101,7 +101,6 @@ async function runDeploy() {
     await uploadWithProgress(frontendCoreTar, `${REMOTE_BASE}/frontend_core.tar.gz`);
     await execRemote([
       `cd ${REMOTE_BASE}/public_html`,
-      `rm -rf _next/static/chunks/*`,
       `tar -xzf ../frontend_core.tar.gz`,
       `rm -f ../frontend_core.tar.gz`,
       `[ -d build ] || cp -r ../backend/public/build ./build 2>/dev/null || true`,

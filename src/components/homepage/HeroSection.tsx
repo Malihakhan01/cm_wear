@@ -33,7 +33,7 @@ const HERO_SLIDES: HeroSlide[] = [
       "Pro arena jerseys, diamond air-knit mesh uniforms, reinforced coverstitching, and tournament team kits crafted for collegiate and professional leagues.",
     accentColor: "#E85923",
     specLabel: "SPEC: CM-TEAM-001 • 330 GSM SPEED MESH",
-    link: "/catalog?category=team-sports-wear",
+    link: "/catalog/?category=team-sports-wear",
   },
   {
     id: "martial-arts-combat-wear",
@@ -47,7 +47,7 @@ const HERO_SLIDES: HeroSlide[] = [
       "Championship BJJ Gis, 4-way stretch fight rash guards, tear-resistant combat shorts, and competition doboks engineered for high friction.",
     accentColor: "#D61C24",
     specLabel: "SPEC: CM-COMBAT-002 • 550 GSM PEARL WEAVE",
-    link: "/catalog?category=martial-arts-combat-wear",
+    link: "/catalog/?category=martial-arts-combat-wear",
   },
   {
     id: "workwear-medical-wear",
@@ -61,7 +61,7 @@ const HERO_SLIDES: HeroSlide[] = [
       "Antimicrobial medical scrubs, industrial work uniforms, utility polo shirts, and high-visibility response apparel engineered to protect.",
     accentColor: "#0284C7",
     specLabel: "SPEC: CM-WORK-003 • LIQUID-REPELLENT TWILL",
-    link: "/catalog?category=workwear-medical-wear",
+    link: "/catalog/?category=workwear-medical-wear",
   },
 ];
 
