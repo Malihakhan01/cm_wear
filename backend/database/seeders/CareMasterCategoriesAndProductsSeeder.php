@@ -7,7 +7,7 @@ use App\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
-class TawfiqCategoriesAndProductsSeeder extends Seeder
+class CareMasterCategoriesAndProductsSeeder extends Seeder
 {
     public function run(): void
     {
@@ -207,7 +207,7 @@ class TawfiqCategoriesAndProductsSeeder extends Seeder
         $streetCat = Category::where('slug', 'streetwear')->first();
         $casCat = Category::where('slug', 'casual-wear')->first();
 
-        $hoodieProd = Product::where('sku', 'TI-HD-001')->first();
+        $hoodieProd = Product::where('sku', 'CM-HD-001')->first();
         if ($hoodieProd && $streetCat) {
             $hoodieProd->categories()->sync(array_filter([$streetCat->id, $casCat?->id, $hoodieCat?->id]));
         }

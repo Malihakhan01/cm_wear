@@ -9,7 +9,7 @@ $routes = [
     'http://localhost:3000/saved-designs' => 'Frontend Saved Designs Page'
 ];
 
-echo "=== TAWFIQ INDUSTRIES: HTTP ENDPOINT VERIFICATION ===\n\n";
+echo "=== CM SPORTS WEAR: HTTP ENDPOINT VERIFICATION ===\n\n";
 
 foreach ($routes as $url => $name) {
     $ctx = stream_context_create(['http' => ['timeout' => 8, 'ignore_errors' => true]]);

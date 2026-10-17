@@ -11,7 +11,7 @@ use App\Models\NewsletterSubscription;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\InquiryApiController;
 
-echo "=== TAWFIQ INDUSTRIES: POPUP INQUIRY BACKEND INTEGRATION TEST ===\n\n";
+echo "=== CM SPORTS WEAR: POPUP INQUIRY BACKEND INTEGRATION TEST ===\n\n";
 
 $initialRfqCount = Rfq::count();
 $initialContactCount = ContactMessage::count();

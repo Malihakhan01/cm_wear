@@ -81,9 +81,9 @@ class DatabaseSeeder extends Seeder
 
         // 4. Default Whitelabel Settings
         $defaultSettings = [
-            ['key' => 'site_name', 'value' => 'TAWFIQ INDUSTRIES', 'group' => 'general', 'type' => 'string'],
-            ['key' => 'site_tagline', 'value' => 'Next-generation apparel customizer and manufacturing platform', 'group' => 'general', 'type' => 'string'],
-            ['key' => 'contact_email', 'value' => 'inquiries@example.com', 'group' => 'general', 'type' => 'string'],
+            ['key' => 'site_name', 'value' => 'CM SPORTS WEAR', 'group' => 'general', 'type' => 'string'],
+            ['key' => 'site_tagline', 'value' => 'Premium Custom Sportswear & Performance Apparel Manufacturing', 'group' => 'general', 'type' => 'string'],
+            ['key' => 'contact_email', 'value' => 'info@cmsportswear.pk', 'group' => 'general', 'type' => 'string'],
             ['key' => 'currency_code', 'value' => 'USD', 'group' => 'pricing', 'type' => 'string'],
             ['key' => 'currency_symbol', 'value' => '$', 'group' => 'pricing', 'type' => 'string'],
             ['key' => 'default_moq', 'value' => '50', 'group' => 'pricing', 'type' => 'number'],
@@ -218,7 +218,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'unread',
         ]);
 
-        // 9. Tawfiq Industry Categories & Product Taxonomy
-        $this->call(TawfiqCategoriesAndProductsSeeder::class);
+        // 9. CM Sports Wear Categories & Product Taxonomy
+        $this->call(CareMasterCategoriesAndProductsSeeder::class);
     }
 }

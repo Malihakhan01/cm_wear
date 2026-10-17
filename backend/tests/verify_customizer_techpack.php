@@ -28,7 +28,7 @@ use App\Http\Controllers\Api\V1\CustomizerApiController;
 use App\Http\Controllers\Api\TechPackApiController;
 use App\Http\Controllers\Admin\TechPackController;
 
-echo "=== TAWFIQ INDUSTRIES: CUSTOMIZER & TECH PACK VERIFICATION SUITE ===\n\n";
+echo "=== CM SPORTS WEAR: CUSTOMIZER & TECH PACK VERIFICATION SUITE ===\n\n";
 
 $passCount = 0;
 $failCount = 0;
@@ -197,7 +197,7 @@ $testTp = TechPack::create([
     'target_gsm' => 450,
     'parts_colors' => ['body' => '#0A0A0A'],
     'pom_measurements' => ['chest_width' => 60, 'body_length' => 72],
-    'bill_of_materials' => [['item' => 'French Terry', 'supplier' => 'Tawfiq Mill']],
+    'bill_of_materials' => [['item' => 'French Terry', 'supplier' => 'CM Mill']],
     'status' => 'submitted',
     'version' => '1.0',
 ]);

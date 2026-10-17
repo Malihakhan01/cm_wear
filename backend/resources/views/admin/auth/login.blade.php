@@ -8,7 +8,7 @@
     <!-- Header -->
     <div class="text-center mb-8">
         <h1 class="text-2xl font-extrabold text-white tracking-tight">
-            {{ \App\Models\Setting::get('site_name', config('app.name', 'TAWFIQ INDUSTRIES')) }}
+            {{ \App\Models\Setting::get('site_name', config('app.name', 'CM SPORTS WEAR')) }}
         </h1>
         <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mt-1">
             Manufacturing & Admin Studio

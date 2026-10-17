@@ -64,10 +64,6 @@ Options -Indexes +FollowSymLinks
     RewriteCond %{REQUEST_URI} ^/(category|collections)/([^/]+)/?$ [NC]
     RewriteRule ^(category|collections)/([^/]+)/?$ /catalog?category=$2 [R=301,L]
 
-    # Dynamic product detail fallback (serves Next.js product page template with live API hydration)
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^products/([^/]+)/?$ products/overview.html [L]
 
 
     # 7. Fallback to 404

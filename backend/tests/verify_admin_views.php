@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\TechPackController;
 use App\Http\Controllers\Admin\CustomizerAdminController;
 
-echo "=== TAWFIQ INDUSTRIES: ADMIN BLADE VIEW RENDERING TESTS ===\n\n";
+echo "=== CM SPORTS WEAR: ADMIN BLADE VIEW RENDERING TESTS ===\n\n";
 
 $admin = User::first();
 if (!$admin) {
