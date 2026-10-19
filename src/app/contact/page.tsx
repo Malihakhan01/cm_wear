@@ -50,7 +50,7 @@ export default function ContactPage() {
   return (
     <div className="bg-[#0A0A0A] text-white min-h-screen pt-28 pb-20 select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header Breadcrumb & Title */}
         <div className="mb-12 border-b border-white/10 pb-8">
           <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#FF333D] mb-3">
@@ -66,10 +66,10 @@ export default function ContactPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
+
           {/* Left: Contact Info & Direct Channels (5 cols) */}
           <div className="lg:col-span-5 space-y-6">
-            
+
             {/* Quick WhatsApp Action Card */}
             <div className="p-6 bg-[#141414] border border-white/10 rounded-2xl space-y-4">
               <div className="flex items-center gap-3">
@@ -98,19 +98,27 @@ export default function ContactPage() {
 
             {/* Factory & Procurement Details */}
             <div className="p-6 bg-[#141414] border border-white/10 rounded-2xl space-y-6">
-              
+
               <div className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-[#FF333D] shrink-0 mt-0.5" />
-                <div>
+                <div className="space-y-1">
                   <div className="text-[11px] font-mono uppercase text-neutral-400">
-                    Procurement & Inquiries
+                    Procurement & Direct Inquiries
                   </div>
-                  <a
-                    href={`mailto:${siteConfig.inquiryEmail}`}
-                    className="text-sm font-mono text-white hover:text-[#FF333D] transition-colors"
-                  >
-                    {siteConfig.inquiryEmail}
-                  </a>
+                  <div>
+                    <a
+                      href="mailto:cmwear10@gmail.com"
+                      className="text-sm font-mono text-white hover:text-[#FF333D] transition-colors block"
+                    >
+                      cmwear10@gmail.com
+                    </a>
+                    <a
+                      href="mailto:sales@caremaster.pk"
+                      className="text-sm font-mono text-white hover:text-[#FF333D] transition-colors block mt-0.5"
+                    >
+                      sales@caremaster.pk
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -175,7 +183,7 @@ export default function ContactPage() {
           {/* Right: Direct Inquiry Form (7 cols) */}
           <div className="lg:col-span-7">
             <div className="p-8 sm:p-10 bg-[#141414] border border-white/10 rounded-2xl">
-              
+
               {submitted ? (
                 <div className="py-16 text-center space-y-4">
                   <div className="w-14 h-14 bg-[#25D366]/10 border border-[#25D366]/30 text-[#25D366] rounded-full mx-auto flex items-center justify-center">
@@ -244,7 +252,7 @@ export default function ContactPage() {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="buyer@brand.com"
+                        placeholder="name@company.com"
                         className="w-full bg-[#1C1C1C] border border-white/10 focus:border-[#FF333D] px-4 py-3 text-sm text-white placeholder-neutral-600 rounded-xl focus:outline-hidden font-sans"
                       />
                     </div>

@@ -42,10 +42,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/products/import/{job}/retry', [WooCommerceImportController::class, 'retry'])->name('products.import.retry');
         Route::delete('/products/import/{job}', [WooCommerceImportController::class, 'destroy'])->name('products.import.destroy');
         Route::delete('/products/{product}/images/{image}', [ProductController::class, 'deleteImage'])->name('products.images.destroy');
+        Route::post('/products/bulk-delete', [ProductController::class, 'bulkDestroy'])->name('products.bulk-delete');
         Route::resource('products', ProductController::class);
 
         // Categories Taxonomy
-        Route::resource('categories', CategoryController::class)->only(['index', 'store', 'destroy']);
+        Route::resource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
 
         // Appearance & Header Mega Menu Manager (WordPress Appearance > Menus style)
         Route::get('/menus', [\App\Http\Controllers\Admin\MenuController::class, 'index'])->name('menus.index');

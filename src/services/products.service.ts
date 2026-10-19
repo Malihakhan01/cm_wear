@@ -75,7 +75,7 @@ export function normalizeImageUrl(url?: string, category?: string, name?: string
     return getProductDemoImage(category, name, subcategory);
   }
   if (url.startsWith("http://") || url.startsWith("https://")) {
-    return url;
+    return url.replace("https://darkcyan-bear-847672.hostingersite.com", "https://cmsportswear.pk");
   }
   if (
     url.startsWith("/hoodie") ||
@@ -89,7 +89,14 @@ export function normalizeImageUrl(url?: string, category?: string, name?: string
     return url;
   }
   const clean = url.replace(/^\/?storage\//, "").replace(/^\//, "");
-  const backendBase = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+  let backendBase = process.env.NEXT_PUBLIC_BACKEND_URL;
+  if (!backendBase) {
+    if (typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")) {
+      backendBase = "http://127.0.0.1:8000";
+    } else {
+      backendBase = "https://cmsportswear.pk";
+    }
+  }
   return `${backendBase}/storage/${clean}`;
 }
 

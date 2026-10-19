@@ -9,7 +9,7 @@ export async function generateStaticParams() {
   });
 
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://darkcyan-bear-847672.hostingersite.com/api/v1";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://cmsportswear.pk/api/v1";
     const [res1, res2] = await Promise.all([
       fetch(`${apiUrl}/products?per_page=500&page=1`, { cache: "no-store" }),
       fetch(`${apiUrl}/products?per_page=500&page=2`, { cache: "no-store" }),

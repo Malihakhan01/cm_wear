@@ -7,13 +7,13 @@ export const siteConfig = {
   tagline: "Engineered High-Performance Teamwear, Combat Sports & Technical Apparel Manufacturing",
   description:
     "Next-generation export manufacturing facility in Sialkot, Pakistan. Specializing in team sportswear, combat sports wear, activewear, lifestyle blanks, technical jackets, workwear, and specialized gloves for international clubs, brands, and private labels.",
-  url: "https://darkcyan-bear-847672.hostingersite.com",
-  apiUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1",
+  url: "https://cmsportswear.pk",
+  apiUrl: process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://localhost:8000/api/v1" : "https://cmsportswear.pk/api/v1"),
   whatsAppNumber: "+92-3006162842",
   whatsAppFormattedNumber: "923006162842",
   phone2: "+92-52-3558586",
-  supportEmail: "info@cmsportswear.com",
-  inquiryEmail: "info@cmsportswear.com",
+  supportEmail: "cmwear10@gmail.com",
+  inquiryEmail: "sales@caremaster.pk",
   socialLinks: {
     facebook: "https://www.facebook.com/CMwears",
     instagram: "https://www.instagram.com/caremaster_llc/",

@@ -75,7 +75,14 @@ Options -Indexes +FollowSymLinks
     RewriteRule ^password(/.*)?$ backend_entry.php [L,QSA]
     RewriteRule ^sanctum(/.*)?$ backend_entry.php [L,QSA]
 
-    # 5. Existing static files, directories with index.html -> serve directly
+    # 5. Next.js App Router RSC payload rewrites (dot-flattened -> directory/__PAGE__.txt)
+    RewriteCond %{DOCUMENT_ROOT}/$1/__PAGE__.txt -f
+    RewriteRule ^(.+)\.__PAGE__\.txt$ $1/__PAGE__.txt [L,QSA]
+
+    RewriteCond %{DOCUMENT_ROOT}/$1/index.txt -f
+    RewriteRule ^([^/]+)\.txt$ $1/index.txt [L,QSA]
+
+    # 6. Existing static files, directories with index.html -> serve directly
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 

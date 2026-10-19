@@ -31,10 +31,10 @@
           action="{{ route('admin.products.update', $product->id) }}" 
           enctype="multipart/form-data"
           x-data="{
-              name: '{{ addslashes(old('name', $product->name)) }}',
-              shortDesc: '{{ addslashes(old('short_description', $product->short_description ?? '')) }}',
-              metaTitle: '{{ addslashes(old('meta_title', $product->meta_title ?? '')) }}',
-              metaDescription: '{{ addslashes(old('meta_description', $product->meta_description ?? '')) }}',
+              name: {{ Js::from(old('name', $product->name ?? '')) }},
+              shortDesc: {{ Js::from(old('short_description', $product->short_description ?? '')) }},
+              metaTitle: {{ Js::from(old('meta_title', $product->meta_title ?? '')) }},
+              metaDescription: {{ Js::from(old('meta_description', $product->meta_description ?? '')) }},
               metaTitleManuallyEdited: {{ (old('meta_title', $product->meta_title) ? 'true' : 'false') }},
               metaDescManuallyEdited: {{ (old('meta_description', $product->meta_description) ? 'true' : 'false') }},
               primaryImagePreview: null,

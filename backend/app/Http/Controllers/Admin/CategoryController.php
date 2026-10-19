@@ -17,7 +17,11 @@ class CategoryController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        return view('admin.categories.index', compact('categories'));
+        $totalCategories = Category::count();
+        $totalParents = $categories->count();
+        $totalSubcategories = Category::whereNotNull('parent_id')->count();
+
+        return view('admin.categories.index', compact('categories', 'totalCategories', 'totalParents', 'totalSubcategories'));
     }
 
     public function store(Request $request)
@@ -44,6 +48,39 @@ class CategoryController extends Controller
 
         return redirect()->route('admin.categories.index')
             ->with('success', "Category '{$validated['name']}' created successfully.");
+    }
+
+    public function update(Request $request, Category $category)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:categories,slug,' . $category->id],
+            'parent_id' => ['nullable', 'exists:categories,id', function ($attribute, $value, $fail) use ($category) {
+                if ($value == $category->id) {
+                    $fail('A category cannot be its own parent.');
+                }
+            }],
+            'tagline' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+        ]);
+
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['name']);
+        } else {
+            $validated['slug'] = Str::slug($validated['slug']);
+        }
+
+        $baseSlug = $validated['slug'];
+        $counter = 1;
+        while (Category::where('slug', $validated['slug'])->where('id', '!=', $category->id)->exists()) {
+            $validated['slug'] = "{$baseSlug}-{$counter}";
+            $counter++;
+        }
+
+        $category->update($validated);
+
+        return redirect()->route('admin.categories.index')
+            ->with('success', "Category '{$category->name}' updated successfully.");
     }
 
     public function destroy(Category $category)

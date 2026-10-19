@@ -6,7 +6,12 @@ echo ========================================================
 echo.
 cd /d "%~dp0"
 
-if exist "C:\xampp\php\php.exe" (
+if exist "D:\xampp\php\php.exe" (
+    echo [OK] Using PHP from: D:\xampp\php\php.exe
+    echo [OK] Backend API starting at http://127.0.0.1:8000
+    echo.
+    "D:\xampp\php\php.exe" artisan serve --port=8000
+) else if exist "C:\xampp\php\php.exe" (
     echo [OK] Using PHP from: C:\xampp\php\php.exe
     echo [OK] Backend API starting at http://127.0.0.1:8000
     echo.

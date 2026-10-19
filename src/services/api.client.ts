@@ -1,6 +1,17 @@
 import { siteConfig } from "@/config/site.config";
 
-const BASE_URL = siteConfig.apiUrl.replace(/\/$/, "");
+export function getApiBaseUrl(): string {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "");
+  }
+  if (typeof window !== "undefined") {
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+      return "http://localhost:8000/api/v1";
+    }
+    return `${window.location.origin}/api/v1`;
+  }
+  return (siteConfig.apiUrl || "https://cmsportswear.pk/api/v1").replace(/\/$/, "");
+}
 
 interface FetchOptions extends RequestInit {
   timeoutMs?: number;
@@ -9,7 +20,7 @@ interface FetchOptions extends RequestInit {
 export const apiClient = {
   async get<T>(endpoint: string, options: FetchOptions = {}): Promise<T | null> {
     const { timeoutMs = 8000, ...customConfig } = options;
-    const url = `${BASE_URL}/${endpoint.replace(/^\//, "")}`;
+    const url = `${getApiBaseUrl()}/${endpoint.replace(/^\//, "")}`;
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -41,7 +52,7 @@ export const apiClient = {
 
   async post<T, B = unknown>(endpoint: string, body: B, options: FetchOptions = {}): Promise<T | null> {
     const { timeoutMs = 12000, ...customConfig } = options;
-    const url = `${BASE_URL}/${endpoint.replace(/^\//, "")}`;
+    const url = `${getApiBaseUrl()}/${endpoint.replace(/^\//, "")}`;
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -77,7 +88,7 @@ export const apiClient = {
 
   async upload<T>(endpoint: string, formData: FormData, options: FetchOptions = {}): Promise<T | null> {
     const { timeoutMs = 20000, ...customConfig } = options;
-    const url = `${BASE_URL}/${endpoint.replace(/^\//, "")}`;
+    const url = `${getApiBaseUrl()}/${endpoint.replace(/^\//, "")}`;
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);

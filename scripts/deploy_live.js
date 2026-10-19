@@ -158,7 +158,7 @@ async function runDeploy() {
 
   console.log('\n==========================================');
   console.log('ALL DEPLOYMENT PHASES COMPLETED SUCCESSFULLY!');
-  console.log('Live shared domain: https://darkcyan-bear-847672.hostingersite.com/');
+  console.log('Live domain: https://cmsportswear.pk/');
   console.log('==========================================\n');
 
   conn.end();

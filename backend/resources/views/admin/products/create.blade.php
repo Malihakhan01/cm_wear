@@ -16,10 +16,10 @@
           action="{{ route('admin.products.store') }}" 
           enctype="multipart/form-data"
           x-data="{
-              name: '{{ addslashes(old('name', '')) }}',
-              shortDesc: '{{ addslashes(old('short_description', '')) }}',
-              metaTitle: '{{ addslashes(old('meta_title', '')) }}',
-              metaDescription: '{{ addslashes(old('meta_description', '')) }}',
+              name: {{ Js::from(old('name', '')) }},
+              shortDesc: {{ Js::from(old('short_description', '')) }},
+              metaTitle: {{ Js::from(old('meta_title', '')) }},
+              metaDescription: {{ Js::from(old('meta_description', '')) }},
               metaTitleManuallyEdited: {{ old('meta_title') ? 'true' : 'false' }},
               metaDescManuallyEdited: {{ old('meta_description') ? 'true' : 'false' }},
               primaryImagePreview: null,

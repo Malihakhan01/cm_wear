@@ -22,7 +22,10 @@ return [
     'allowed_origins' => [
         'http://localhost:3000',
         'http://127.0.0.1:3000',
-        env('FRONTEND_URL', 'http://localhost:3000'),
+        'https://cmsportswear.pk',
+        'https://www.cmsportswear.pk',
+        'https://darkcyan-bear-847672.hostingersite.com',
+        env('FRONTEND_URL', 'https://cmsportswear.pk'),
     ],
 
     'allowed_origins_patterns' => [],

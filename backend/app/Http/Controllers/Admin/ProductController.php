@@ -336,5 +336,16 @@ class ProductController extends Controller
             }
         }
     }
-}
+    public function bulkDestroy(Request $request)
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer', 'exists:products,id'],
+        ]);
 
+        $count = Product::whereIn('id', $validated['ids'])->delete();
+
+        return redirect()->route('admin.products.index')
+            ->with('success', "{$count} product(s) successfully deleted.");
+    }
+}
