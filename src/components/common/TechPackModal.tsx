@@ -121,6 +121,44 @@ const ASSET_EQ_BACK_RIBS = "/equastarian/ribs (3) (1).png";
 const ASSET_EQ_FRONT_LEGGINGS = "/equastarian/front legngs] (1).png";
 const ASSET_EQ_BACK_LEGGINGS = "/equastarian/leggings back (1).png";
 
+const ASSET_BSB_FRONT_JERSEY = "/baseball-uniform/front_jersey.png";
+const ASSET_BSB_FRONT_SLEEVES = "/baseball-uniform/front_sleeves.png";
+const ASSET_BSB_FRONT_TRIM = "/baseball-uniform/front_trim.png";
+const ASSET_BSB_FRONT_PANTS = "/baseball-uniform/front_pants.png";
+const ASSET_BSB_FRONT_BELT = "/baseball-uniform/front_belt.png";
+
+const ASSET_BSB_BACK_JERSEY = "/baseball-uniform/back_jersey.png";
+const ASSET_BSB_BACK_SLEEVES = "/baseball-uniform/back_sleeves.png";
+const ASSET_BSB_BACK_TRIM = "/baseball-uniform/back_trim.png";
+const ASSET_BSB_BACK_PANTS = "/baseball-uniform/back_pants.png";
+const ASSET_BSB_BACK_BELT = "/baseball-uniform/back_belt.png";
+
+// Ice Hockey High-Resolution Tech Pack Asset Layers
+const ASSET_HOCKEY_FRONT_BASE = "/icehockey-uniform/front_base.png";
+const ASSET_HOCKEY_FRONT_JERSEY = "/icehockey-uniform/front_jersey.png";
+const ASSET_HOCKEY_FRONT_SLEEVES = "/icehockey-uniform/front_sleeves.png";
+const ASSET_HOCKEY_FRONT_PANTS = "/icehockey-uniform/front_pants.png";
+const ASSET_HOCKEY_FRONT_SOCKS = "/icehockey-uniform/front_socks.png";
+
+const ASSET_HOCKEY_BACK_BASE = "/icehockey-uniform/back_base.png";
+const ASSET_HOCKEY_BACK_JERSEY = "/icehockey-uniform/back_jersey.png";
+const ASSET_HOCKEY_BACK_SLEEVES = "/icehockey-uniform/back_sleeves.png";
+const ASSET_HOCKEY_BACK_PANTS = "/icehockey-uniform/back_pants.png";
+const ASSET_HOCKEY_BACK_SOCKS = "/icehockey-uniform/back_socks.png";
+
+// Martial Arts High-Resolution Tech Pack Asset Layers
+const ASSET_MARTIAL_FRONT_BASE = "/martial-arts/front_base.png";
+const ASSET_MARTIAL_FRONT_JACKET = "/martial-arts/front_jacket.png";
+const ASSET_MARTIAL_FRONT_SLEEVES = "/martial-arts/front_sleeves.png";
+const ASSET_MARTIAL_FRONT_BELT = "/martial-arts/front_belt.png";
+const ASSET_MARTIAL_FRONT_PANTS = "/martial-arts/front_pants.png";
+
+const ASSET_MARTIAL_BACK_BASE = "/martial-arts/back_base.png";
+const ASSET_MARTIAL_BACK_JACKET = "/martial-arts/back_jacket.png";
+const ASSET_MARTIAL_BACK_SLEEVES = "/martial-arts/back_sleeves.png";
+const ASSET_MARTIAL_BACK_BELT = "/martial-arts/back_belt.png";
+const ASSET_MARTIAL_BACK_PANTS = "/martial-arts/back_pants.png";
+
 const getMaskStyle = (assetPath: string) => {
   const encoded = encodeURI(assetPath);
   return {
@@ -174,6 +212,30 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
     product.subcategory?.toLowerCase().includes("basketball")
   );
 
+  const isBaseball = Boolean(
+    state.productId?.includes("baseball") ||
+    product.slug?.includes("baseball") ||
+    product.category?.toLowerCase().includes("baseball") ||
+    product.subcategory?.toLowerCase().includes("baseball")
+  );
+
+  const isIceHockey = Boolean(
+    state.productId?.includes("icehockey") ||
+    state.productId?.includes("hockey") ||
+    product.slug?.includes("icehockey") ||
+    product.slug?.includes("hockey") ||
+    product.category?.toLowerCase().includes("hockey") ||
+    product.subcategory?.toLowerCase().includes("hockey")
+  );
+
+  const isMartialArts = Boolean(
+    state.productId?.includes("martial") ||
+    state.productId?.includes("gi") ||
+    product.slug?.includes("martial") ||
+    product.category?.toLowerCase().includes("martial") ||
+    product.subcategory?.toLowerCase().includes("martial")
+  );
+
   const isEquestrian = Boolean(
     state.productId?.includes("equestrian") ||
     state.productId?.includes("riding") ||
@@ -186,6 +248,9 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
   const isHoodie =
     !isVarsity &&
     !isBasketball &&
+    !isBaseball &&
+    !isIceHockey &&
+    !isMartialArts &&
     !isEquestrian &&
     Boolean(
       state.productId?.includes("hoodie") ||
@@ -208,7 +273,13 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
     !backProductImage.includes("default-product")
   );
 
-  const frontPreviewAsset = isBasketball
+  const frontPreviewAsset = isIceHockey
+    ? "/icehockey-uniform/front_base.png"
+    : isMartialArts
+    ? "/martial-arts/front_base.png"
+    : isBaseball
+    ? "/baseball-uniform/front_base.png"
+    : isBasketball
     ? "/basketball/front (3) (1).png"
     : isVarsity
     ? "/varsity_jacket/front/body.png"
@@ -220,7 +291,13 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
     ? "/hoodie/hoodie_front.png"
     : frontProductImage || "/hoodie/hoodie_front.png";
 
-  const backPreviewAsset = isBasketball
+  const backPreviewAsset = isIceHockey
+    ? "/icehockey-uniform/back_base.png"
+    : isMartialArts
+    ? "/martial-arts/back_base.png"
+    : isBaseball
+    ? "/baseball-uniform/back_base.png"
+    : isBasketball
     ? "/basketball/back (3) (1).png"
     : isVarsity
     ? "/varsity_jacket/back/body.png"
@@ -1143,6 +1220,213 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
       );
     }
 
+    // Baseball Front Elevation
+    if (isBaseball) {
+      const jerseyColor = state.partColors.jersey || "#FFFFFF";
+      const sleevesColor = state.partColors.sleeves || "#FFFFFF";
+      const trimColor = state.partColors.trim || "#0B0B0B";
+      const pantsColor = state.partColors.pants || "#FFFFFF";
+      const beltColor = state.partColors.belt || "#0B0B0B";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            {/* 1. Baseball Pants */}
+            <img
+              src={ASSET_BSB_FRONT_PANTS}
+              alt="Baseball Pants Front"
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundColor: pantsColor,
+                ...getMaskStyle(ASSET_BSB_FRONT_PANTS),
+                ...getLayerBlendStyle(pantsColor, 0.9),
+              }}
+            />
+
+            {/* 2. Belt & Loops */}
+            <img
+              src={ASSET_BSB_FRONT_BELT}
+              alt="Baseball Belt Front"
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-xs"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundColor: beltColor,
+                ...getMaskStyle(ASSET_BSB_FRONT_BELT),
+                ...getLayerBlendStyle(beltColor, 0.95),
+              }}
+            />
+
+            {/* 3. Sleeves */}
+            <img
+              src={ASSET_BSB_FRONT_SLEEVES}
+              alt="Baseball Sleeves Front"
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundColor: sleevesColor,
+                ...getMaskStyle(ASSET_BSB_FRONT_SLEEVES),
+                ...getLayerBlendStyle(sleevesColor, 0.88),
+              }}
+            />
+
+            {/* 4. Jersey Torso */}
+            <img
+              src={ASSET_BSB_FRONT_JERSEY}
+              alt="Baseball Jersey Torso Front"
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-md"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundColor: jerseyColor,
+                ...getMaskStyle(ASSET_BSB_FRONT_JERSEY),
+                ...getLayerBlendStyle(jerseyColor, 0.88),
+              }}
+            />
+
+            {/* 5. Piping & Trim */}
+            <img
+              src={ASSET_BSB_FRONT_TRIM}
+              alt="Baseball Trim Front"
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundColor: trimColor,
+                ...getMaskStyle(ASSET_BSB_FRONT_TRIM),
+                ...getLayerBlendStyle(trimColor, 0.95),
+              }}
+            />
+
+            {/* Front Monogram / Letters */}
+            {hasFrontText && frontLetterText && (
+              <div
+                style={{
+                  position: "absolute",
+                  left: `${((frontTextLayer?.x ?? 210) / CANVAS_REF) * 100}%`,
+                  top: `${((frontTextLayer?.y ?? 130) / CANVAS_REF) * 100}%`,
+                  transform: "translate(-50%, -50%)",
+                  zIndex: 25,
+                }}
+              >
+                <svg
+                  width={frontLetterCount === 1 ? "52" : frontLetterCount === 2 ? "80" : "105"}
+                  height="45"
+                  viewBox="0 0 120 70"
+                  className="overflow-visible"
+                >
+                  <text
+                    x="60"
+                    y="52"
+                    textAnchor="middle"
+                    className="font-black uppercase select-none"
+                    style={{
+                      fontFamily: frontResolvedFontFamily,
+                      fontSize: `${frontLetterFontSize}px`,
+                      letterSpacing: frontLetterCount === 1 ? "0px" : "2px",
+                    }}
+                    fill={frontLetterBaseFelt}
+                    stroke={frontLetterBaseFelt}
+                    strokeWidth={frontStrokeWidthFelt}
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                  >
+                    {frontLetterText.toUpperCase()}
+                  </text>
+                  <text
+                    x="60"
+                    y="52"
+                    textAnchor="middle"
+                    className="font-black uppercase select-none"
+                    style={{
+                      fontFamily: frontResolvedFontFamily,
+                      fontSize: `${frontLetterFontSize}px`,
+                      letterSpacing: frontLetterCount === 1 ? "0px" : "2px",
+                    }}
+                    fill={frontLetterColor}
+                    stroke="rgba(0,0,0,0.25)"
+                    strokeWidth={1.2}
+                    strokeLinejoin="round"
+                  >
+                    {frontLetterText.toUpperCase()}
+                  </text>
+                </svg>
+              </div>
+            )}
+
+            {/* Front Artworks */}
+            {frontArtworks.map((art) => {
+              const artSize = isForPrint ? 26 : Math.max(22, Math.round((art.width ?? 120) * (art.scale ?? 1) * 0.26));
+              return (
+                <div
+                  key={art.id}
+                  style={{
+                    position: "absolute",
+                    left: `${((art.x ?? 210) / CANVAS_REF) * 100}%`,
+                    top: `${((art.y ?? 100) / CANVAS_REF) * 100}%`,
+                    transform: `translate(-50%, -50%) rotate(${art.rotation ?? 0}deg)`,
+                    width: `${artSize}px`,
+                    height: `${artSize}px`,
+                    opacity: art.opacity ?? 1,
+                  }}
+                >
+                  <img src={art.url} alt={art.name} className="w-full h-full object-contain" />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // Ice Hockey Front Elevation
+    if (isIceHockey) {
+      const jerseyColor = state.partColors.jersey || "#DC2626";
+      const sleevesColor = state.partColors.sleeves || "#0A0A0A";
+      const pantsColor = state.partColors.pants || "#0A0A0A";
+      const socksColor = state.partColors.socks || "#DC2626";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_HOCKEY_FRONT_BASE} alt="Ice Hockey Base Front" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: socksColor, ...getMaskStyle(ASSET_HOCKEY_FRONT_SOCKS), ...getLayerBlendStyle(socksColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: pantsColor, ...getMaskStyle(ASSET_HOCKEY_FRONT_PANTS), ...getLayerBlendStyle(pantsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_HOCKEY_FRONT_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_HOCKEY_FRONT_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Martial Arts Front Elevation
+    if (isMartialArts) {
+      const jacketColor = state.partColors.jacket || "#F8FAFC";
+      const sleevesColor = state.partColors.sleeves || "#F8FAFC";
+      const beltColor = state.partColors.belt || "#0B0B0B";
+      const pantsColor = state.partColors.pants || "#F8FAFC";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_MARTIAL_FRONT_BASE} alt="Martial Arts Base Front" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: pantsColor, ...getMaskStyle(ASSET_MARTIAL_FRONT_PANTS), ...getLayerBlendStyle(pantsColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_MARTIAL_FRONT_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jacketColor, ...getMaskStyle(ASSET_MARTIAL_FRONT_JACKET), ...getLayerBlendStyle(jacketColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: beltColor, ...getMaskStyle(ASSET_MARTIAL_FRONT_BELT), ...getLayerBlendStyle(beltColor, 0.95) }} />
+          </div>
+        </div>
+      );
+    }
+
     // 2. Equestrian Front Elevation
     if (isEquestrian) {
       const bodyColor = state.partColors.body || "#111B2C";
@@ -1880,6 +2164,213 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
                 </div>
               );
             })}
+          </div>
+        </div>
+      );
+    }
+
+    // Baseball Back Elevation
+    if (isBaseball) {
+      const jerseyColor = state.partColors.jersey || "#FFFFFF";
+      const sleevesColor = state.partColors.sleeves || "#FFFFFF";
+      const trimColor = state.partColors.trim || "#0B0B0B";
+      const pantsColor = state.partColors.pants || "#FFFFFF";
+      const beltColor = state.partColors.belt || "#0B0B0B";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            {/* 1. Baseball Pants Back */}
+            <img
+              src={ASSET_BSB_BACK_PANTS}
+              alt="Baseball Pants Back"
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundColor: pantsColor,
+                ...getMaskStyle(ASSET_BSB_BACK_PANTS),
+                ...getLayerBlendStyle(pantsColor, 0.9),
+              }}
+            />
+
+            {/* 2. Belt & Loops Back */}
+            <img
+              src={ASSET_BSB_BACK_BELT}
+              alt="Baseball Belt Back"
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-xs"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundColor: beltColor,
+                ...getMaskStyle(ASSET_BSB_BACK_BELT),
+                ...getLayerBlendStyle(beltColor, 0.95),
+              }}
+            />
+
+            {/* 3. Sleeves Back */}
+            <img
+              src={ASSET_BSB_BACK_SLEEVES}
+              alt="Baseball Sleeves Back"
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundColor: sleevesColor,
+                ...getMaskStyle(ASSET_BSB_BACK_SLEEVES),
+                ...getLayerBlendStyle(sleevesColor, 0.88),
+              }}
+            />
+
+            {/* 4. Jersey Torso Back */}
+            <img
+              src={ASSET_BSB_BACK_JERSEY}
+              alt="Baseball Jersey Torso Back"
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-md"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundColor: jerseyColor,
+                ...getMaskStyle(ASSET_BSB_BACK_JERSEY),
+                ...getLayerBlendStyle(jerseyColor, 0.88),
+              }}
+            />
+
+            {/* 5. Piping & Trim Back */}
+            <img
+              src={ASSET_BSB_BACK_TRIM}
+              alt="Baseball Trim Back"
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundColor: trimColor,
+                ...getMaskStyle(ASSET_BSB_BACK_TRIM),
+                ...getLayerBlendStyle(trimColor, 0.95),
+              }}
+            />
+
+            {/* Back Text Overlay */}
+            {hasBackText && backTextLayer && (
+              <div
+                style={{
+                  position: "absolute",
+                  left: `${((backTextLayer.x ?? 210) / CANVAS_REF) * 100}%`,
+                  top: `${((backTextLayer.y ?? 140) / CANVAS_REF) * 100}%`,
+                  transform: "translate(-50%, -50%)",
+                  zIndex: 25,
+                }}
+              >
+                <svg
+                  width={backLetterCount === 1 ? "65" : backLetterCount === 2 ? "100" : "135"}
+                  height="55"
+                  viewBox="0 0 120 70"
+                  className="overflow-visible"
+                >
+                  <text
+                    x="60"
+                    y="52"
+                    textAnchor="middle"
+                    className="font-black uppercase select-none"
+                    style={{
+                      fontFamily: backResolvedFontFamily,
+                      fontSize: `${backLetterFontSize}px`,
+                      letterSpacing: backLetterCount === 1 ? "0px" : "2px",
+                    }}
+                    fill={backLetterBaseFelt}
+                    stroke={backLetterBaseFelt}
+                    strokeWidth={backStrokeWidthFelt}
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                  >
+                    {backLetterText.toUpperCase()}
+                  </text>
+                  <text
+                    x="60"
+                    y="52"
+                    textAnchor="middle"
+                    className="font-black uppercase select-none"
+                    style={{
+                      fontFamily: backResolvedFontFamily,
+                      fontSize: `${backLetterFontSize}px`,
+                      letterSpacing: backLetterCount === 1 ? "0px" : "2px",
+                    }}
+                    fill={backLetterColor}
+                    stroke="rgba(0,0,0,0.25)"
+                    strokeWidth={1.2}
+                    strokeLinejoin="round"
+                  >
+                    {backLetterText.toUpperCase()}
+                  </text>
+                </svg>
+              </div>
+            )}
+
+            {/* Back Artworks */}
+            {backArtworks.map((art) => {
+              const artSize = isForPrint ? 26 : Math.max(22, Math.round((art.width ?? 120) * (art.scale ?? 1) * 0.22));
+              return (
+                <div
+                  key={art.id}
+                  style={{
+                    position: "absolute",
+                    left: `${((art.x ?? 210) / CANVAS_REF) * 100}%`,
+                    top: `${((art.y ?? 120) / CANVAS_REF) * 100}%`,
+                    transform: `translate(-50%, -50%) rotate(${art.rotation ?? 0}deg)`,
+                    width: `${artSize}px`,
+                    height: `${artSize}px`,
+                    opacity: art.opacity ?? 1,
+                  }}
+                >
+                  <img src={art.url} alt={art.name} className="w-full h-full object-contain" />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // Ice Hockey Back Elevation
+    if (isIceHockey) {
+      const jerseyColor = state.partColors.jersey || "#DC2626";
+      const sleevesColor = state.partColors.sleeves || "#0A0A0A";
+      const pantsColor = state.partColors.pants || "#0A0A0A";
+      const socksColor = state.partColors.socks || "#DC2626";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_HOCKEY_BACK_BASE} alt="Ice Hockey Base Back" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: socksColor, ...getMaskStyle(ASSET_HOCKEY_BACK_SOCKS), ...getLayerBlendStyle(socksColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: pantsColor, ...getMaskStyle(ASSET_HOCKEY_BACK_PANTS), ...getLayerBlendStyle(pantsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_HOCKEY_BACK_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_HOCKEY_BACK_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Martial Arts Back Elevation
+    if (isMartialArts) {
+      const jacketColor = state.partColors.jacket || "#F8FAFC";
+      const sleevesColor = state.partColors.sleeves || "#F8FAFC";
+      const beltColor = state.partColors.belt || "#0B0B0B";
+      const pantsColor = state.partColors.pants || "#F8FAFC";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_MARTIAL_BACK_BASE} alt="Martial Arts Base Back" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: pantsColor, ...getMaskStyle(ASSET_MARTIAL_BACK_PANTS), ...getLayerBlendStyle(pantsColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_MARTIAL_BACK_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jacketColor, ...getMaskStyle(ASSET_MARTIAL_BACK_JACKET), ...getLayerBlendStyle(jacketColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: beltColor, ...getMaskStyle(ASSET_MARTIAL_BACK_BELT), ...getLayerBlendStyle(beltColor, 0.95) }} />
           </div>
         </div>
       );

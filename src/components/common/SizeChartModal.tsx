@@ -6,7 +6,7 @@ import { X, Ruler, Printer } from "lucide-react";
 export interface SizeChartModalProps {
   isOpen: boolean;
   onClose: () => void;
-  activeModel: "hoodie" | "varsity" | "equestrian" | "basketball";
+  activeModel: "hoodie" | "varsity" | "equestrian" | "basketball" | "baseball" | "icehockey" | "martialarts";
   templates?: any[];
 }
 
@@ -40,6 +40,36 @@ const FALLBACK_POM: Record<string, { title: string; grading: Record<string, Reco
       M: { jersey_chest: 55, jersey_length: 76, shorts_waist: 41, shorts_inseam: 22 },
       L: { jersey_chest: 58, jersey_length: 78, shorts_waist: 44, shorts_inseam: 23 },
       XL: { jersey_chest: 61, jersey_length: 80, shorts_waist: 47, shorts_inseam: 24 },
+    },
+  },
+  baseball: {
+    title: "Custom Pro Baseball Uniform Set (Jersey & Pants)",
+    grading: {
+      S: { chest_width: 53, jersey_length: 75, pants_waist: 38, pants_inseam: 72 },
+      M: { chest_width: 56, jersey_length: 77, pants_waist: 41, pants_inseam: 74 },
+      L: { chest_width: 59, jersey_length: 79, pants_waist: 44, pants_inseam: 76 },
+      XL: { chest_width: 62, jersey_length: 81, pants_waist: 47, pants_inseam: 78 },
+      "2XL": { chest_width: 65, jersey_length: 83, pants_waist: 50, pants_inseam: 80 },
+    },
+  },
+  icehockey: {
+    title: "Pro Ice Hockey Uniform Set (Jersey, Breezers & Socks)",
+    grading: {
+      S: { chest_width: 62, jersey_length: 79, sleeve_length: 77, pants_waist: 40 },
+      M: { chest_width: 65, jersey_length: 81, sleeve_length: 79, pants_waist: 43 },
+      L: { chest_width: 68, jersey_length: 83, sleeve_length: 81, pants_waist: 46 },
+      XL: { chest_width: 71, jersey_length: 85, sleeve_length: 83, pants_waist: 49 },
+      "2XL": { chest_width: 74, jersey_length: 87, sleeve_length: 85, pants_waist: 52 },
+    },
+  },
+  martialarts: {
+    title: "Authentic Martial Arts BJJ / Karate Gi Uniform Set",
+    grading: {
+      A1: { chest_width: 58, jacket_length: 74, sleeve_wingspan: 156, pants_length: 93 },
+      A2: { chest_width: 61, jacket_length: 77, sleeve_wingspan: 162, pants_length: 97 },
+      A3: { chest_width: 64, jacket_length: 80, sleeve_wingspan: 168, pants_length: 101 },
+      A4: { chest_width: 67, jacket_length: 83, sleeve_wingspan: 174, pants_length: 105 },
+      A5: { chest_width: 70, jacket_length: 86, sleeve_wingspan: 180, pants_length: 109 },
     },
   },
   equestrian: {

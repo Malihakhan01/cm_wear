@@ -283,6 +283,41 @@ export const CUSTOMIZER_PRODUCTS: ConfigurableProductDef[] = [
     decorations: ["Laser Tackle Twill", "Italian Sublimation", "High-Density Silicone Crest"],
   },
 
+  // 08B. CUSTOM BASEBALL UNIFORM SET (Baseball)
+  {
+    id: "custom-baseball-uniform",
+    slug: "custom-baseball-uniform",
+    name: "Custom Pro-Cut Sublimated Baseball Uniform Set",
+    category: "sportswear",
+    description: "Pro-cut baseball uniform kit featuring full button-down jersey with contrast piping and heavy-duty athletic baseball pants with belt loops.",
+    basePrice: 75,
+    wholesaleBasePrice: 22.0,
+    moq: 30,
+    availableViews: ["front", "back"],
+    parts: [
+      { id: "jersey", label: "Pro Jersey Torso", defaultColor: "#FFFFFF", mask: "/baseball-uniform/front_jersey.png" },
+      { id: "sleeves", label: "Raglan Sleeves", defaultColor: "#FFFFFF", mask: "/baseball-uniform/front_sleeves.png" },
+      { id: "trim", label: "Collar & Placket Piping", defaultColor: "#0B0B0B", mask: "/baseball-uniform/front_trim.png" },
+      { id: "pants", label: "Baseball Pants", defaultColor: "#FFFFFF", mask: "/baseball-uniform/front_pants.png" },
+      { id: "belt", label: "Pro Belt & Loops", defaultColor: "#0B0B0B", mask: "/baseball-uniform/front_belt.png" },
+    ],
+    printAreas: [
+      { view: "front", name: "Team Wordmark Across Chest", x: 50, y: 34, width: 260, height: 90 },
+      { view: "front", name: "Small Front Left Number", x: 35, y: 52, width: 90, height: 90 },
+      { view: "back", name: "Player Surname Arch", x: 50, y: 25, width: 260, height: 65 },
+      { view: "back", name: "Giant Back Player Number", x: 50, y: 48, width: 220, height: 220 },
+      { view: "front", name: "Left Sleeve Patch", x: 26, y: 35, width: 75, height: 75 },
+    ],
+    availableFabrics: [
+      { id: "warp-knit-220", name: "220 GSM Pro-Weight Warp Knit Poly", gsm: 220, composition: "100% Stretch Filament Poly", description: "Heavyweight authentic MLB-style drape and durability" },
+      { id: "pin-dot-mesh-200", name: "200 GSM Breathable Pin-Dot Air Mesh", gsm: 200, composition: "100% Moisture-Wicking Poly", description: "Ultra-cool summer league tournament airflow" },
+      { id: "double-knit-250", name: "250 GSM Heavy Double-Knit Pants Fabric", gsm: 250, composition: "100% Polyester Double-Knit", description: "Reinforced sliding-abrasion resistant fabric" },
+    ],
+    availableColors: CM_PALETTE,
+    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL", "Youth S-XL"],
+    decorations: ["Laser Cut Tackle Twill", "Direct Embroidery", "Sublimation Printing"],
+  },
+
   // 09. CUSTOM SKI JACKET (Ski Wear)
   {
     id: "custom-ski-jacket",
@@ -354,5 +389,66 @@ export const CUSTOMIZER_PRODUCTS: ConfigurableProductDef[] = [
     availableColors: CM_PALETTE,
     sizes: ["44", "46", "48", "50", "52", "54", "56", "58", "Youth 120-150"],
     decorations: ["Direct High-Density Embroidery", "Sublimated Race Panels", "Silicone Sponsor Patches"],
+  },
+
+  // 11. CUSTOM PRO ICE HOCKEY UNIFORM SET
+  {
+    id: "custom-ice-hockey-uniform",
+    slug: "custom-ice-hockey-uniform",
+    name: "Pro-Series Ice Hockey Uniform Set",
+    category: "sports-teamwear",
+    description: "Authentic professional ice hockey uniform set including heavy-duty pro mesh jersey with reinforced elbows, padded nylon breezers (pants), and matching performance socks.",
+    basePrice: 195,
+    wholesaleBasePrice: 58.0,
+    moq: 30,
+    availableViews: ["front", "back"],
+    parts: [
+      { id: "jersey", label: "Jersey Torso", defaultColor: "#DC2626" },
+      { id: "sleeves", label: "Sleeves & Shoulder Yoke", defaultColor: "#0A0A0A" },
+      { id: "pants", label: "Hockey Pants (Breezers)", defaultColor: "#0A0A0A" },
+      { id: "socks", label: "Hockey Match Socks", defaultColor: "#DC2626" },
+    ],
+    printAreas: [
+      { view: "front", name: "Chest Crest / Team Logo", x: 50, y: 28, width: 220, height: 180 },
+      { view: "back", name: "Rear Player Name & Number", x: 50, y: 27, width: 260, height: 220 },
+    ],
+    availableFabrics: [
+      { id: "pro-airknit-240", name: "240 GSM Pro Air-Knit Poly Mesh", gsm: 240, composition: "100% Heavy-Duty Filament Polyester", description: "Official NHL-grade snag-resistant knit with reinforced dual-layer elbows" },
+      { id: "glide-mesh-200", name: "200 GSM Ventilated Glide-Mesh", gsm: 200, composition: "92% Poly / 8% Spandex", description: "Lightweight moisture-wicking tournament weave" },
+    ],
+    availableColors: CM_PALETTE,
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL", "Goalie Cut"],
+    decorations: ["Laser-Cut Tackle Twill", "Sublimated Pro Panels", "High-Density Chainstitch Embroidery"],
+  },
+
+  // 12. CUSTOM MARTIAL ARTS UNIFORM (BJJ / KARATE / TAEKWONDO GI)
+  {
+    id: "custom-martial-arts-gi",
+    slug: "custom-martial-arts-gi",
+    name: "Authentic Master Weave Martial Arts Gi Set",
+    category: "martial-arts-boxing",
+    description: "Premium competition martial arts uniform set featuring 450 GSM pearl-weave cotton jacket with reinforced collar, woven rank belt, and ripstop drawstring trousers.",
+    basePrice: 165,
+    wholesaleBasePrice: 48.0,
+    moq: 30,
+    availableViews: ["front", "back"],
+    parts: [
+      { id: "jacket", label: "Kimono Jacket Body & Collar", defaultColor: "#F8FAFC" },
+      { id: "sleeves", label: "Kimono Sleeves", defaultColor: "#F8FAFC" },
+      { id: "belt", label: "Rank Belt (Obi)", defaultColor: "#0B0B0B" },
+      { id: "pants", label: "Drawstring Trousers (Zubon)", defaultColor: "#F8FAFC" },
+    ],
+    printAreas: [
+      { view: "front", name: "Left Chest Academy Patch", x: 38, y: 26, width: 90, height: 90 },
+      { view: "back", name: "Back Giant Club Emblem", x: 50, y: 28, width: 240, height: 240 },
+    ],
+    availableFabrics: [
+      { id: "pearl-weave-450", name: "450 GSM Preshrunk Pearl Weave Cotton", gsm: 450, composition: "100% Combed Organic Cotton", description: "IBJJF tournament compliant grappling jacket with EVA foam reinforced lapel" },
+      { id: "gold-weave-550", name: "550 GSM Heavy Gold Weave Cotton", gsm: 550, composition: "100% Traditional Gold Weave Cotton", description: "Indestructible master-level judo and jiu-jitsu heavy armor" },
+      { id: "ripstop-cotton-280", name: "280 GSM Military Grade Ripstop", gsm: 280, composition: "65% Cotton / 35% Polyester Ripstop", description: "Tear-resistant lightweight trousers with triple reinforced knee pads" },
+    ],
+    availableColors: CM_PALETTE,
+    sizes: ["A0", "A1", "A2", "A2L", "A3", "A4", "A5", "F1", "F2", "F3", "M0-M4"],
+    decorations: ["Direct Woven Embroidery", "High-Definition Twill Patches", "Reinforced Seam Taping"],
   },
 ];

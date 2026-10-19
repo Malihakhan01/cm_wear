@@ -618,4 +618,196 @@ export const BASKETBALL_COLOR_PRESETS: HeritageColorPreset[] = [
   },
 ];
 
+export const BASEBALL_COLOR_PRESETS: HeritageColorPreset[] = [
+  {
+    name: "Classic Pinstripe White & Navy",
+    tag: "White Jersey • White Sleeves • Navy Piping • White Pants • Navy Belt",
+    accent: "#1E3A8A",
+    colors: {
+      jersey: "#FFFFFF",
+      sleeves: "#FFFFFF",
+      trim: "#1E3A8A",
+      pants: "#FFFFFF",
+      belt: "#1E3A8A",
+    },
+  },
+  {
+    name: "Vintage Cream & Maroon",
+    tag: "Cream Jersey • Cream Sleeves • Maroon Piping • Cream Pants • Maroon Belt",
+    accent: "#7F1D1D",
+    colors: {
+      jersey: "#F5F5DC",
+      sleeves: "#F5F5DC",
+      trim: "#7F1D1D",
+      pants: "#F5F5DC",
+      belt: "#7F1D1D",
+    },
+  },
+  {
+    name: "Midnight Pro & Crimson",
+    tag: "Black Jersey • Black Sleeves • Red Piping • Black Pants • Red Belt",
+    accent: "#D61C24",
+    colors: {
+      jersey: "#0B0B0B",
+      sleeves: "#0B0B0B",
+      trim: "#D61C24",
+      pants: "#0B0B0B",
+      belt: "#D61C24",
+    },
+  },
+  {
+    name: "Royal Blue & Athletic Gold",
+    tag: "Royal Jersey • Royal Sleeves • Gold Piping • White Pants • Royal Belt",
+    accent: "#1D4ED8",
+    colors: {
+      jersey: "#1D4ED8",
+      sleeves: "#1D4ED8",
+      trim: "#F59E0B",
+      pants: "#FFFFFF",
+      belt: "#1D4ED8",
+    },
+  },
+  {
+    name: "Forest Green & Gold",
+    tag: "Forest Jersey • Forest Sleeves • Gold Piping • White Pants • Forest Belt",
+    accent: "#14532D",
+    colors: {
+      jersey: "#14532D",
+      sleeves: "#14532D",
+      trim: "#EAB308",
+      pants: "#FFFFFF",
+      belt: "#14532D",
+    },
+  },
+  {
+    name: "Stealth Charcoal & Red",
+    tag: "Charcoal Jersey • Dark Sleeves • Crimson Piping • Gray Pants • Dark Belt",
+    accent: "#DC2626",
+    colors: {
+      jersey: "#374151",
+      sleeves: "#1F2937",
+      trim: "#DC2626",
+      pants: "#E5E7EB",
+      belt: "#1F2937",
+    },
+  },
+];
+
+export const ICE_HOCKEY_COLOR_PRESETS: HeritageColorPreset[] = [
+  {
+    name: "Chicago Red & Obsidian",
+    tag: "Red Jersey • Black Sleeves • Black Pants • Red Socks",
+    accent: "#DC2626",
+    colors: {
+      jersey: "#DC2626",
+      sleeves: "#0A0A0A",
+      pants: "#0A0A0A",
+      socks: "#DC2626",
+    },
+  },
+  {
+    name: "Toronto Maple Royal",
+    tag: "Royal Jersey • White Sleeves • Royal Pants • Royal Socks",
+    accent: "#1D4ED8",
+    colors: {
+      jersey: "#1D4ED8",
+      sleeves: "#FFFFFF",
+      pants: "#1D4ED8",
+      socks: "#1D4ED8",
+    },
+  },
+  {
+    name: "Boston Gold & Black",
+    tag: "Athletic Gold Jersey • Black Sleeves • Black Pants • Gold Socks",
+    accent: "#EAB308",
+    colors: {
+      jersey: "#EAB308",
+      sleeves: "#0A0A0A",
+      pants: "#0A0A0A",
+      socks: "#EAB308",
+    },
+  },
+  {
+    name: "Edmonton Navy & Tangerine",
+    tag: "Deep Navy Jersey • Orange Sleeves • Navy Pants • Navy Socks",
+    accent: "#EA580C",
+    colors: {
+      jersey: "#0F172A",
+      sleeves: "#EA580C",
+      pants: "#0F172A",
+      socks: "#0F172A",
+    },
+  },
+  {
+    name: "Stealth Matte Blackout",
+    tag: "Matte Black Jersey • Charcoal Sleeves • Black Pants • Black Socks",
+    accent: "#27272A",
+    colors: {
+      jersey: "#121212",
+      sleeves: "#27272A",
+      pants: "#121212",
+      socks: "#121212",
+    },
+  },
+];
+
+export const MARTIAL_ARTS_COLOR_PRESETS: HeritageColorPreset[] = [
+  {
+    name: "Traditional White & Black Belt",
+    tag: "White Kimono • White Sleeves • Black Belt • White Pants",
+    accent: "#0A0A0A",
+    colors: {
+      jacket: "#F8FAFC",
+      sleeves: "#F8FAFC",
+      belt: "#0A0A0A",
+      pants: "#F8FAFC",
+    },
+  },
+  {
+    name: "Competition Royal & Black Belt",
+    tag: "Royal Blue Gi • Royal Sleeves • Black Belt • Royal Pants",
+    accent: "#1E3A8A",
+    colors: {
+      jacket: "#1E3A8A",
+      sleeves: "#1E3A8A",
+      belt: "#0A0A0A",
+      pants: "#1E3A8A",
+    },
+  },
+  {
+    name: "Stealth Blackout & Red Belt",
+    tag: "Triple Black Gi • Black Sleeves • Master Red Belt • Black Pants",
+    accent: "#DC2626",
+    colors: {
+      jacket: "#0B0B0B",
+      sleeves: "#0B0B0B",
+      belt: "#DC2626",
+      pants: "#0B0B0B",
+    },
+  },
+  {
+    name: "Judo Unbleached & Brown Belt",
+    tag: "Natural Ecru Canvas • Ecru Sleeves • Brown Belt • Ecru Pants",
+    accent: "#78350F",
+    colors: {
+      jacket: "#EAE3D2",
+      sleeves: "#EAE3D2",
+      belt: "#78350F",
+      pants: "#EAE3D2",
+    },
+  },
+  {
+    name: "Cadet Navy & Purple Belt",
+    tag: "Navy Gi • Navy Sleeves • Purple Rank Belt • Navy Pants",
+    accent: "#7C3AED",
+    colors: {
+      jacket: "#1E293B",
+      sleeves: "#1E293B",
+      belt: "#7C3AED",
+      pants: "#1E293B",
+    },
+  },
+];
+
+
 

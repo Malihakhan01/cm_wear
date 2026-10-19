@@ -10,6 +10,15 @@ export function generateStaticParams() {
     "custom-hoodie",
     "custom-riding-jacket",
     "custom-basketball-jersey",
+    "custom-baseball-uniform",
+    "custom-ice-hockey-uniform",
+    "custom-martial-arts-gi",
+    "baseball-uniform",
+    "baseball",
+    "ice-hockey-uniform",
+    "martial-arts-uniform",
+    "martial-arts-gi",
+    "martial-arts",
     
     // Core garment aliases
     "varsity-jacket",

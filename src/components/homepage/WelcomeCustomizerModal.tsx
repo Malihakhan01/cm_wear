@@ -26,7 +26,7 @@ export const WelcomeCustomizerModal: React.FC = () => {
   const [companyName, setCompanyName] = useState("");
   const [phone, setPhone] = useState("");
   const [inquiryNotes, setInquiryNotes] = useState("");
-  const [selectedGarment, setSelectedGarment] = useState<"varsity" | "hoodie" | "basketball">("varsity");
+  const [selectedGarment, setSelectedGarment] = useState<"varsity" | "hoodie" | "basketball" | "baseball">("varsity");
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittingAction, setSubmittingAction] = useState<"customize" | "inquiry" | null>(null);
@@ -72,6 +72,16 @@ export const WelcomeCustomizerModal: React.FC = () => {
       image: "/basketball/front (3) (1).png",
       tag: "Atelier Model #03",
       slug: "custom-basketball-jersey",
+    },
+    {
+      id: "baseball",
+      name: "Pro-Stitch Full-Button Baseball Uniform",
+      spec: "240 GSM Poly Warp-Knit & Double-Knit Pants",
+      videoUrl: "/images/varsity_3d_rotating.mp4",
+      fallbackVideoUrl: "/images/popup_3d_rotation.mp4/Varsity_jacket_rotating_on_platform_20261013020156.mp4",
+      image: "/baseball-uniform/1.jpeg",
+      tag: "Atelier Model #04",
+      slug: "custom-baseball-uniform",
     },
   ];
 

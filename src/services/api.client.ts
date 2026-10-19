@@ -19,7 +19,7 @@ interface FetchOptions extends RequestInit {
 
 export const apiClient = {
   async get<T>(endpoint: string, options: FetchOptions = {}): Promise<T | null> {
-    const { timeoutMs = 8000, ...customConfig } = options;
+    const { timeoutMs = 15000, ...customConfig } = options;
     const url = `${getApiBaseUrl()}/${endpoint.replace(/^\//, "")}`;
 
     const controller = new AbortController();
@@ -43,8 +43,11 @@ export const apiClient = {
       }
 
       return (await response.json()) as T;
-    } catch (err) {
+    } catch (err: unknown) {
       clearTimeout(timeout);
+      if (err instanceof Error && err.name === "AbortError") {
+        return null;
+      }
       console.warn(`[apiClient GET] Request to ${url} failed or offline:`, err);
       return null;
     }
