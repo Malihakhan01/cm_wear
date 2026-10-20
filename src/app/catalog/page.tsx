@@ -13,6 +13,176 @@ import { ProductCard } from "@/components/catalog/ProductCard";
 import { useStoreModeStore } from "@/stores/useStoreModeStore";
 import { Search, SlidersHorizontal, ArrowRight, Box, ChevronDown } from "lucide-react";
 
+function findParentCategorySlug(slugOrName: string): string {
+  const norm = (slugOrName || "").toLowerCase().replace(/[-_\s]/g, "");
+
+  // 1. Gloves
+  if (norm.includes("glove")) {
+    return "gloves";
+  }
+  // 2. Martial Arts & Combat Wear
+  if (
+    norm.includes("martial") ||
+    norm.includes("combat") ||
+    norm.includes("bjj") ||
+    norm.includes("grappling") ||
+    norm.includes("mma") ||
+    norm.includes("boxing") ||
+    norm.includes("karate") ||
+    norm.includes("judo") ||
+    norm.includes("taekwondo") ||
+    norm.includes("wrestling") ||
+    norm.includes("aikido") ||
+    norm.includes("kungfu") ||
+    norm.includes("championshipbelt")
+  ) {
+    return "martial-arts-combat-wear";
+  }
+  // 3. Workwear & Medical Wear
+  if (
+    norm.includes("medical") ||
+    norm.includes("scrub") ||
+    norm.includes("workwear") ||
+    norm.includes("safety") ||
+    norm.includes("reflective") ||
+    norm.includes("hivis") ||
+    norm.includes("highvisibility") ||
+    norm.includes("flame") ||
+    norm.includes("industrial")
+  ) {
+    return "workwear-medical-wear";
+  }
+  // 4. Jackets & Outerwear
+  if (
+    norm.includes("jacket") ||
+    norm.includes("outerwear") ||
+    norm.includes("varsity") ||
+    norm.includes("leather") ||
+    norm.includes("softshell") ||
+    norm.includes("windbreaker") ||
+    norm.includes("rainwear") ||
+    norm.includes("winterwear") ||
+    norm.includes("equestrian") ||
+    norm.includes("riding")
+  ) {
+    return "jackets-outerwear";
+  }
+  // 5. Activewear & Fitness
+  if (
+    norm.includes("fitness") ||
+    norm.includes("activewear") ||
+    norm.includes("gym") ||
+    norm.includes("compression") ||
+    norm.includes("running") ||
+    norm.includes("cycling") ||
+    norm.includes("athletic") ||
+    norm.includes("legging") ||
+    norm.includes("sportsbra")
+  ) {
+    return "activewear-fitness";
+  }
+  // 6. Casual & Lifestyle Wear
+  if (
+    norm.includes("casual") ||
+    norm.includes("streetwear") ||
+    norm.includes("lifestyle") ||
+    norm.includes("hoodie") ||
+    norm.includes("sweatshirt") ||
+    norm.includes("tshirt") ||
+    norm.includes("tee") ||
+    norm.includes("polo") ||
+    norm.includes("tracksuit") ||
+    norm.includes("sweatpant") ||
+    norm.includes("cargopant") ||
+    norm.includes("pant") ||
+    norm.includes("short") ||
+    norm.includes("bavarian") ||
+    norm.includes("trachten")
+  ) {
+    return "casual-lifestyle-wear";
+  }
+  // 7. Kids & Youth Wear
+  if (
+    norm.includes("kid") ||
+    norm.includes("youth") ||
+    norm.includes("junior") ||
+    norm.includes("child")
+  ) {
+    return "kids-youth-wear";
+  }
+  // 8. Sports Accessories
+  if (
+    norm.includes("accessori") ||
+    norm.includes("sock") ||
+    norm.includes("bib") ||
+    norm.includes("cap") ||
+    norm.includes("headband") ||
+    norm.includes("wristband") ||
+    norm.includes("bag") ||
+    norm.includes("belt")
+  ) {
+    return "sports-accessories";
+  }
+  // Default to Team Sports Wear (soccer, basketball, hockey, baseball, rugby, cricket, archery, rowing, sailing, shooting, skiing, squash, etc.)
+  return "team-sports-wear";
+}
+
+function isProductInParentCategory(p: Product, parentCat: Category): boolean {
+  const normActive = parentCat.slug.toLowerCase().replace(/[-_\s]/g, "");
+  const prodCatNorm = (p.category || "").toLowerCase().replace(/[-_\s]/g, "");
+  const prodSubNorm = (p.subcategory || "").toLowerCase().replace(/[-_\s]/g, "");
+
+  // Direct match
+  if (prodCatNorm === normActive || p.category === parentCat.slug || p.category === parentCat.id) {
+    return true;
+  }
+
+  // Mapped parent category check
+  if (findParentCategorySlug(p.category || "") === parentCat.slug) {
+    return true;
+  }
+
+  // Check subcategories list
+  if (parentCat.subcategories && parentCat.subcategories.length > 0) {
+    const hasSub = parentCat.subcategories.some((sub) => {
+      const sSlug = (sub.slug || "").toLowerCase().replace(/[-_\s]/g, "");
+      const sName = (sub.name || "").toLowerCase().replace(/[-_\s]/g, "");
+      return (
+        prodCatNorm === sSlug ||
+        prodCatNorm === sName ||
+        prodSubNorm === sSlug ||
+        prodSubNorm === sName ||
+        (sSlug.length > 3 && prodCatNorm.includes(sSlug)) ||
+        (sName.length > 3 && prodCatNorm.includes(sName)) ||
+        (sSlug.length > 3 && prodSubNorm.includes(sSlug)) ||
+        (sName.length > 3 && prodSubNorm.includes(sName))
+      );
+    });
+    if (hasSub) return true;
+  }
+
+  // Check rawCategories
+  if (p.rawCategories && p.rawCategories.length > 0) {
+    const rawMatch = p.rawCategories.some((rc: any) => {
+      const rcSlug = (rc.slug || "").toLowerCase().replace(/[-_\s]/g, "");
+      const rcName = (rc.name || "").toLowerCase().replace(/[-_\s]/g, "");
+      if (rcSlug === normActive || rcName === normActive) return true;
+      if (findParentCategorySlug(rc.slug || rc.name || "") === parentCat.slug) return true;
+      if (parentCat.subcategories && parentCat.subcategories.length > 0) {
+        return parentCat.subcategories.some((sub) => {
+          const sSlug = (sub.slug || "").toLowerCase().replace(/[-_\s]/g, "");
+          const sName = (sub.name || "").toLowerCase().replace(/[-_\s]/g, "");
+          return rcSlug === sSlug || rcName === sName;
+        });
+      }
+      return false;
+    });
+    if (rawMatch) return true;
+  }
+
+  return false;
+}
+
 function CatalogContent() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "all";
@@ -49,48 +219,60 @@ function CatalogContent() {
 
         const mergedMap = new Map<string, Category>();
 
-        // 1. First populate from the active Header Mega Menu configured in Admin
-        if (megaMenu && megaMenu.length > 0) {
-          megaMenu.forEach((m, idx) => {
-            const numStr = m.number || String(idx + 1).padStart(2, "0");
-            const matchingStatic = CATEGORIES_DATA.find((c) => c.slug === m.slug || c.id === m.id);
-            const subs = (m.subcategories || []).map((subName) => ({
-              id: subName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-              slug: subName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-              name: subName,
-            }));
+        // 1. Populate ONLY with the main parent categories (from megaMenu or static CATEGORIES_DATA)
+        const baseParentCats =
+          megaMenu && megaMenu.length > 0
+            ? megaMenu.map((m, idx) => {
+                const numStr = m.number || String(idx + 1).padStart(2, "0");
+                const matchingStatic = CATEGORIES_DATA.find((c) => c.slug === m.slug || c.id === m.id);
+                const subs = (m.subcategories || []).map((subName) => ({
+                  id: subName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+                  slug: subName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+                  name: subName,
+                }));
 
-            mergedMap.set(m.slug, {
-              id: m.slug as MainCategoryId,
-              slug: m.slug,
-              name: m.name,
-              number: numStr,
-              shortDescription: matchingStatic?.shortDescription || m.tagline || `Custom manufacturing and private label production for ${m.name}.`,
-              description: matchingStatic?.description || m.tagline || `Export-grade apparel production for ${m.name} with comprehensive size grading and custom finishes.`,
-              heroImage: m.image || matchingStatic?.heroImage || "/placeholder.jpg",
-              subcategories: subs,
-              technicalHighlights: matchingStatic?.technicalHighlights || [
-                "Industrial High-Density Stitching",
-                "Custom Fabric Selection & Sizing Specs",
-                "OEM / ODM Private Label Branding",
-              ],
-              capabilities: matchingStatic?.capabilities || [
-                "Custom Embroidery & Embellishments",
-                "Bar-tack Reinforced Construction",
-                "Polybag Packaging & Hangtags",
-              ],
-            });
+                return {
+                  id: (m.slug as MainCategoryId) || (matchingStatic?.id as MainCategoryId),
+                  slug: m.slug,
+                  name: m.name,
+                  number: numStr,
+                  shortDescription:
+                    matchingStatic?.shortDescription ||
+                    m.tagline ||
+                    `Custom manufacturing and private label production for ${m.name}.`,
+                  description:
+                    matchingStatic?.description ||
+                    m.tagline ||
+                    `Export-grade apparel production for ${m.name} with comprehensive size grading and custom finishes.`,
+                  heroImage: m.image || matchingStatic?.heroImage || "/placeholder.jpg",
+                  subcategories: subs,
+                  technicalHighlights: matchingStatic?.technicalHighlights || [
+                    "Industrial High-Density Stitching",
+                    "Custom Fabric Selection & Sizing Specs",
+                    "OEM / ODM Private Label Branding",
+                  ],
+                  capabilities: matchingStatic?.capabilities || [
+                    "Custom Embroidery & Embellishments",
+                    "Bar-tack Reinforced Construction",
+                    "Polybag Packaging & Hangtags",
+                  ],
+                  faqs: matchingStatic?.faqs || [],
+                };
+              })
+            : CATEGORIES_DATA;
+
+        baseParentCats.forEach((c) => {
+          mergedMap.set(c.slug, {
+            ...c,
+            subcategories: [...(c.subcategories || [])],
           });
-        } else {
-          CATEGORIES_DATA.forEach((c) => mergedMap.set(c.slug, c));
-        }
+        });
 
-        // 2. Also ensure any categories from live database categories exist
+        // 2. Attach live subcategories from liveCats into their respective parent categories (DO NOT add as root tabs)
         if (liveCats && liveCats.length > 0) {
           liveCats.forEach((c) => {
-            if (!mergedMap.has(c.slug)) {
-              mergedMap.set(c.slug, c);
-            } else {
+            if (mergedMap.has(c.slug)) {
+              // It is a parent category: merge its subcategories
               const existing = mergedMap.get(c.slug)!;
               if (c.subcategories && c.subcategories.length > 0) {
                 const subMap = new Map<string, { id: string; slug: string; name: string }>();
@@ -98,53 +280,50 @@ function CatalogContent() {
                 c.subcategories.forEach((s) => subMap.set(s.slug, s));
                 existing.subcategories = Array.from(subMap.values());
               }
+            } else {
+              // It is a child category: nest inside its parent category, NEVER add as a top-level tab
+              const parentSlug = findParentCategorySlug(c.slug || c.name);
+              const parent = mergedMap.get(parentSlug);
+              if (parent) {
+                const exists = parent.subcategories.some(
+                  (s) => s.slug === c.slug || s.name.toLowerCase() === c.name.toLowerCase()
+                );
+                if (!exists) {
+                  parent.subcategories.push({
+                    id: String(c.id || c.slug),
+                    slug: c.slug,
+                    name: c.name,
+                    description: c.description,
+                  });
+                }
+              }
             }
           });
         }
 
-        // 3. Ensure any categories present on imported products exist
+        // 3. Attach imported product categories into parent subcategories (NEVER as root tabs)
         if (prods && prods.length > 0) {
           prods.forEach((p) => {
             if (p.category && !mergedMap.has(p.category)) {
-              const numStr = String(mergedMap.size + 1).padStart(2, "0");
-              const catName = p.category
-                .split("-")
-                .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                .join(" ");
-
-              const distinctSubs = Array.from(
-                new Set(
-                  prods
-                    .filter((item) => item.category === p.category)
-                    .map((item) => item.subcategory)
-                    .filter(Boolean)
-                )
-              ).map((subName) => ({
-                id: subName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-                slug: subName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-                name: subName,
-              }));
-
-              mergedMap.set(p.category, {
-                id: p.category as MainCategoryId,
-                slug: p.category,
-                name: catName,
-                number: numStr,
-                shortDescription: `Custom manufacturing and private label production for ${catName}.`,
-                description: `Export-grade apparel production for ${catName} with comprehensive size grading and custom finishes.`,
-                heroImage: p.images[0] || "/placeholder.jpg",
-                subcategories: distinctSubs,
-                technicalHighlights: [
-                  "Industrial High-Density Stitching",
-                  "Custom Fabric Selection & Sizing Specs",
-                  "OEM / ODM Private Label Branding",
-                ],
-                capabilities: [
-                  "Custom Embroidery & Embellishments",
-                  "Bar-tack Reinforced Construction",
-                  "Polybag Packaging & Hangtags",
-                ],
-              });
+              const parentSlug = findParentCategorySlug(p.category);
+              const parent = mergedMap.get(parentSlug);
+              if (parent) {
+                const subSlug = p.category.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+                const subName = p.category
+                  .split("-")
+                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                  .join(" ");
+                const exists = parent.subcategories.some(
+                  (s) => s.slug === subSlug || s.name.toLowerCase() === subName.toLowerCase()
+                );
+                if (!exists) {
+                  parent.subcategories.push({
+                    id: subSlug,
+                    slug: subSlug,
+                    name: subName,
+                  });
+                }
+              }
             }
           });
         }
@@ -166,10 +345,21 @@ function CatalogContent() {
 
   useEffect(() => {
     const cat = searchParams.get("category");
-    if (cat) setActiveCategory(cat);
     const sub = searchParams.get("subcategory");
-    if (sub) setActiveSubcategory(sub);
-  }, [searchParams]);
+    if (cat) {
+      const isParent = categories.some((c) => c.slug === cat || c.id === cat);
+      if (isParent) {
+        setActiveCategory(cat);
+        if (sub) setActiveSubcategory(sub);
+      } else {
+        const parentSlug = findParentCategorySlug(cat);
+        setActiveCategory(parentSlug);
+        setActiveSubcategory(cat);
+      }
+    } else if (sub) {
+      setActiveSubcategory(sub);
+    }
+  }, [searchParams, categories]);
 
   useEffect(() => {
     setVisibleCount(8);
@@ -254,31 +444,39 @@ function CatalogContent() {
   };
 
   const getSubcategoryCount = (category: Category, subName: string): number => {
-    const targetSub = subName.toLowerCase().replace(/[-_]/g, " ").trim();
-    const catNorm = category.slug.toLowerCase().replace(/[-_\s]/g, "");
+    const targetSub = subName.toLowerCase().replace(/[-_\s]/g, "");
     return allProducts.filter((p) => {
-      const prodCatNorm = (p.category || "").toLowerCase().replace(/[-_\s]/g, "");
-      const catMatch =
-        prodCatNorm === catNorm ||
-        (p.rawCategories &&
-          p.rawCategories.some((c: any) => c.slug.toLowerCase().replace(/[-_\s]/g, "") === catNorm));
-      if (!catMatch) return false;
-      if (!p.subcategory) return false;
-      const pSub = p.subcategory.toLowerCase().replace(/[-_]/g, " ").trim();
-      return pSub === targetSub || pSub.includes(targetSub) || targetSub.includes(pSub);
+      if (!isProductInParentCategory(p, category)) return false;
+      const pSub = (p.subcategory || "").toLowerCase().replace(/[-_\s]/g, "");
+      const pCat = (p.category || "").toLowerCase().replace(/[-_\s]/g, "");
+      if (pSub === targetSub || pCat === targetSub || pSub.includes(targetSub) || targetSub.includes(pSub)) return true;
+      if (
+        p.rawCategories &&
+        p.rawCategories.some((rc: any) => {
+          const rcSlug = (rc.slug || "").toLowerCase().replace(/[-_\s]/g, "");
+          const rcName = (rc.name || "").toLowerCase().replace(/[-_\s]/g, "");
+          return rcSlug === targetSub || rcName === targetSub;
+        })
+      ) {
+        return true;
+      }
+      return false;
     }).length;
   };
 
-function normalizeCategoryTarget(slugOrName?: string): string {
-  const norm = (slugOrName || "").toLowerCase().replace(/[-_\s]/g, "");
-  if (norm.includes("teamsport") || norm === "sportswear") return "sportswear";
-  if (norm.includes("martial") || norm.includes("combat")) return "martialarts";
-  if (norm.includes("fitness") || norm.includes("activewear")) return "fitnesswear";
-  if (norm.includes("casual") || norm.includes("lifestyle") || norm.includes("street")) return "casualwear";
-  if (norm.includes("safety") || norm.includes("workwear") || norm.includes("medical")) return "safetywear";
-  if (norm.includes("glove")) return "gloves";
-  return norm;
-}
+  function normalizeCategoryTarget(slugOrName?: string): string {
+    const norm = (slugOrName || "").toLowerCase().replace(/[-_\s]/g, "");
+    if (norm.includes("teamsport") || norm === "sportswear") return "team-sports-wear";
+    if (norm.includes("martial") || norm.includes("combat")) return "martial-arts-combat-wear";
+    if (norm.includes("fitness") || norm.includes("activewear")) return "activewear-fitness";
+    if (norm.includes("casual") || norm.includes("lifestyle") || norm.includes("street")) return "casual-lifestyle-wear";
+    if (norm.includes("jacket") || norm.includes("outerwear") || norm.includes("varsity")) return "jackets-outerwear";
+    if (norm.includes("kid") || norm.includes("youth")) return "kids-youth-wear";
+    if (norm.includes("safety") || norm.includes("workwear") || norm.includes("medical")) return "workwear-medical-wear";
+    if (norm.includes("accessori")) return "sports-accessories";
+    if (norm.includes("glove")) return "gloves";
+    return norm;
+  }
 
   const currentCategoryData = categories.find(
     (c) =>
@@ -288,43 +486,64 @@ function normalizeCategoryTarget(slugOrName?: string): string {
       normalizeCategoryTarget(c.slug) === normalizeCategoryTarget(activeCategory)
   );
 
-  const targetCategoryKey = activeCategory !== "all" ? normalizeCategoryTarget(activeCategory) : "all";
-
   const filteredProducts = allProducts
     .filter((p) => {
       if (activeCategory !== "all") {
-        const normActive = activeCategory.toLowerCase().replace(/[-_\s]/g, "");
-        const prodCatNorm = (p.category || "").toLowerCase().replace(/[-_\s]/g, "");
-        const prodCatKey = normalizeCategoryTarget(p.category);
+        const selectedParent = categories.find(
+          (c) =>
+            c.id === activeCategory ||
+            c.slug === activeCategory ||
+            normalizeCategoryTarget(c.slug) === normalizeCategoryTarget(activeCategory)
+        );
 
-        const hasCatMatch =
-          prodCatKey === targetCategoryKey ||
-          prodCatNorm === normActive ||
-          (p.rawCategories &&
-            p.rawCategories.some(
-              (c: any) =>
-                normalizeCategoryTarget(c.slug) === targetCategoryKey ||
-                normalizeCategoryTarget(c.name) === targetCategoryKey ||
-                c.slug.toLowerCase().replace(/[-_\s]/g, "") === normActive ||
-                c.name.toLowerCase().replace(/[-_\s]/g, "") === normActive
-            ));
-        if (!hasCatMatch) return false;
+        if (selectedParent) {
+          if (!isProductInParentCategory(p, selectedParent)) return false;
+        } else {
+          // In case activeCategory is a direct subcategory slug
+          const normActive = activeCategory.toLowerCase().replace(/[-_\s]/g, "");
+          const prodCatNorm = (p.category || "").toLowerCase().replace(/[-_\s]/g, "");
+          const prodSubNorm = (p.subcategory || "").toLowerCase().replace(/[-_\s]/g, "");
+          const hasDirectMatch =
+            prodCatNorm === normActive ||
+            prodSubNorm === normActive ||
+            (p.rawCategories &&
+              p.rawCategories.some((c: any) => {
+                const cSlug = (c.slug || "").toLowerCase().replace(/[-_\s]/g, "");
+                const cName = (c.name || "").toLowerCase().replace(/[-_\s]/g, "");
+                return cSlug === normActive || cName === normActive;
+              }));
+          if (!hasDirectMatch) return false;
+        }
       }
+
       if (activeSubcategory !== "all") {
         const normActiveSub = activeSubcategory.toLowerCase().replace(/[-_\s]/g, "");
         const pSubNorm = (p.subcategory || "").toLowerCase().replace(/[-_\s]/g, "");
+        const pCatNorm = (p.category || "").toLowerCase().replace(/[-_\s]/g, "");
+
         const hasSubMatch =
           pSubNorm === normActiveSub ||
           pSubNorm.includes(normActiveSub) ||
           normActiveSub.includes(pSubNorm) ||
+          pCatNorm === normActiveSub ||
+          pCatNorm.includes(normActiveSub) ||
           (p.rawCategories &&
-            p.rawCategories.some(
-              (c: any) =>
-                c.name.toLowerCase().replace(/[-_\s]/g, "") === normActiveSub ||
-                c.slug.toLowerCase().replace(/[-_\s]/g, "") === normActiveSub
-            ));
+            p.rawCategories.some((c: any) => {
+              const cSlug = (c.slug || "").toLowerCase().replace(/[-_\s]/g, "");
+              const cName = (c.name || "").toLowerCase().replace(/[-_\s]/g, "");
+              return (
+                cSlug === normActiveSub ||
+                cName === normActiveSub ||
+                cSlug.includes(normActiveSub) ||
+                normActiveSub.includes(cSlug) ||
+                cName.includes(normActiveSub) ||
+                normActiveSub.includes(cName)
+              );
+            }));
+
         if (!hasSubMatch) return false;
       }
+
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
         const matchName = p.name.toLowerCase().includes(q);
@@ -332,6 +551,7 @@ function normalizeCategoryTarget(slugOrName?: string): string {
         const matchDesc = p.description.toLowerCase().includes(q);
         if (!matchName && !matchSku && !matchDesc) return false;
       }
+
       return true;
     })
     .sort((a, b) => {
