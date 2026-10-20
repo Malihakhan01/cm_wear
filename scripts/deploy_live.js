@@ -90,7 +90,8 @@ async function runDeploy() {
       `php artisan package:discover`,
       `php artisan config:clear`,
       `php artisan route:clear`,
-      `php artisan view:clear`
+      `php artisan view:clear`,
+      `grep -n "Default:" resources/views/admin/auth/login.blade.php || echo "Verified: Default credentials hint successfully removed from live view!"`
     ].join(' && '));
   }
 

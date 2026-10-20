@@ -35,9 +35,11 @@
             <input type="email" 
                    name="email" 
                    id="email" 
-                   value="{{ old('email', 'admin@cmsportswear.com') }}" 
+                   value="{{ old('email') }}" 
+                   placeholder="Enter your email"
                    required 
                    autofocus
+                   autocomplete="email"
                    class="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
         </div>
 
@@ -48,8 +50,9 @@
             <input type="password" 
                    name="password" 
                    id="password" 
-                   value="password"
                    required 
+                   autocomplete="current-password"
+                   placeholder="••••••••"
                    class="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
         </div>
 
@@ -58,7 +61,6 @@
                 <input type="checkbox" name="remember" class="rounded border-slate-700 bg-slate-950 text-blue-600 focus:ring-0">
                 <span class="text-xs font-medium text-slate-400">Remember session</span>
             </label>
-            <span class="text-xs text-slate-500">Default: admin@cmsportswear.com / password</span>
         </div>
 
         <button type="submit" 
