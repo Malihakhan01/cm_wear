@@ -153,7 +153,9 @@ async function runDeploy() {
     `echo "=== CHECKING HOMEPAGE TITLE ==="`,
     `grep -o "<title[^>]*>[^<]*</title>" ${REMOTE_BASE}/public_html/index.html || true`,
     `echo "=== CHECKING CATALOGS PAGE TITLE ==="`,
-    `grep -o "<title[^>]*>[^<]*</title>" ${REMOTE_BASE}/public_html/catalogs/index.html || true`
+    `grep -o "<title[^>]*>[^<]*</title>" ${REMOTE_BASE}/public_html/catalogs/index.html || true`,
+    `echo "=== CHECKING CUSTOMIZER DIRECTORIES ==="`,
+    `ls -ld ${REMOTE_BASE}/public_html/customize/custom-american-football-uniform ${REMOTE_BASE}/public_html/customize/custom-soccer-uniform ${REMOTE_BASE}/public_html/american-football-uniform || true`
   ].join(' && '));
 
   console.log('\n==========================================');
