@@ -451,4 +451,179 @@ export const CUSTOMIZER_PRODUCTS: ConfigurableProductDef[] = [
     sizes: ["A0", "A1", "A2", "A2L", "A3", "A4", "A5", "F1", "F2", "F3", "M0-M4"],
     decorations: ["Direct Woven Embroidery", "High-Definition Twill Patches", "Reinforced Seam Taping"],
   },
+
+  // 13. CUSTOM PRO AMERICAN FOOTBALL UNIFORM
+  {
+    id: "custom-american-football-uniform",
+    slug: "custom-american-football-uniform",
+    name: "Pro-Series American Football Uniform Set",
+    category: "sports-teamwear",
+    description: "Pro-caliber compression uniform set featuring heavyweight 4-way stretch dazzle/mesh jersey with reinforced shoulder pad caps, and molded pad breezers.",
+    basePrice: 175,
+    wholesaleBasePrice: 52.0,
+    moq: 30,
+    availableViews: ["front", "back"],
+    parts: [
+      { id: "jersey", label: "Jersey Torso", defaultColor: "#1E3A8A" },
+      { id: "sleeves", label: "Sleeves & Shoulder Yoke", defaultColor: "#FFFFFF" },
+      { id: "pants", label: "Football Pants / Breezers", defaultColor: "#1E3A8A" },
+    ],
+    printAreas: [
+      { view: "front", name: "Front Team Name & Number", x: 50, y: 30, width: 220, height: 180 },
+      { view: "back", name: "Back Player Number", x: 50, y: 30, width: 260, height: 220 },
+    ],
+    availableFabrics: [
+      { id: "dazzle-pro-280", name: "280 GSM Heavy Pro Dazzle & Spandex", gsm: 280, composition: "88% Poly / 12% Spandex Heavy Weave", description: "Pro-cut tear-resistant compression jersey with pad fit" },
+      { id: "perforated-mesh-240", name: "240 GSM Perforated Shoulder Mesh", gsm: 240, composition: "100% Breathable Filament Poly", description: "Vented heat-dispersion yoke panels" },
+    ],
+    availableColors: CM_PALETTE,
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL", "4XL"],
+    decorations: ["Laser Tackle Twill", "Sublimated Numbers", "High-Density Screen Printing"],
+  },
+
+  // 14. CUSTOM PRO SOCCER UNIFORM
+  {
+    id: "custom-soccer-uniform",
+    slug: "custom-soccer-uniform",
+    name: "Pro Athletic Match Soccer Kit",
+    category: "sports-teamwear",
+    description: "Elite match-day football kit crafted from lightweight micro-interlock moisture-wicking polyester with raglan cut sleeves and elastic waistband shorts.",
+    basePrice: 110,
+    wholesaleBasePrice: 28.0,
+    moq: 30,
+    availableViews: ["front", "back"],
+    parts: [
+      { id: "jersey", label: "Jersey Torso", defaultColor: "#0284C7" },
+      { id: "sleeves", label: "Raglan Sleeves", defaultColor: "#0284C7" },
+      { id: "shorts", label: "Match Shorts", defaultColor: "#0F172A" },
+    ],
+    printAreas: [
+      { view: "front", name: "Chest Club Crest / Sponsor", x: 50, y: 32, width: 220, height: 140 },
+      { view: "back", name: "Player Name & Number", x: 50, y: 30, width: 240, height: 220 },
+    ],
+    availableFabrics: [
+      { id: "micro-interlock-160", name: "160 GSM Featherlight Micro-Interlock", gsm: 160, composition: "100% Recycled Polyester", description: "Ultra-breathable rapid dry tournament knit" },
+      { id: "jacquard-mesh-180", name: "180 GSM Jacquard Breathable Mesh", gsm: 180, composition: "94% Poly / 6% Elastane", description: "Engineered airflow ventilation weave" },
+    ],
+    availableColors: CM_PALETTE,
+    sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+    decorations: ["Silicone Heat Transfer", "Sublimation", "Woven Crest Patch"],
+  },
+
+  // 15. CUSTOM RUGBY UNIFORM
+  {
+    id: "custom-rugby-uniform",
+    slug: "custom-rugby-uniform",
+    name: "Championship Pro-Fit Rugby Uniform Set",
+    category: "sports-teamwear",
+    description: "Indestructible rugby tournament set featuring heavy tensile stretch jersey with placket collar, rip-stop heavy-duty shorts, and turnover ribbed match socks.",
+    basePrice: 145,
+    wholesaleBasePrice: 42.0,
+    moq: 30,
+    availableViews: ["front", "back"],
+    parts: [
+      { id: "jersey", label: "Jersey Torso", defaultColor: "#15803D" },
+      { id: "sleeves", label: "Reinforced Sleeves", defaultColor: "#FFFFFF" },
+      { id: "shorts", label: "Heavy-Duty Shorts", defaultColor: "#15803D" },
+      { id: "socks", label: "Turnover Match Socks", defaultColor: "#15803D" },
+    ],
+    printAreas: [
+      { view: "front", name: "Chest Club Crest", x: 50, y: 30, width: 200, height: 120 },
+      { view: "back", name: "Rear Position Number", x: 50, y: 28, width: 240, height: 200 },
+    ],
+    availableFabrics: [
+      { id: "rugby-poly-280", name: "280 GSM High-Tensile Rugby Interlock", gsm: 280, composition: "92% Poly / 8% Elastane Grip Stretch", description: "Anti-grab slide fabric with reinforced flatlocked seams" },
+      { id: "cotton-twill-240", name: "240 GSM Heavy Cotton Rugby Twill Shorts", gsm: 240, composition: "100% Combed Cotton Drill", description: "Rugged drill weave with elasticated tunnel waistband" },
+    ],
+    availableColors: CM_PALETTE,
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL", "4XL"],
+    decorations: ["Sublimated Direct Panels", "Direct Heavy Embroidery", "Screen Print"],
+  },
+
+  // 16. CUSTOM CRICKET UNIFORM
+  {
+    id: "custom-cricket-uniform",
+    slug: "custom-cricket-uniform",
+    name: "Tournament Performance Cricket Whites & Kit",
+    category: "sports-teamwear",
+    description: "Traditional cricket tournament set featuring polo placket jersey with breathable mesh side inserts and tailored moisture-wicking trousers.",
+    basePrice: 125,
+    wholesaleBasePrice: 34.0,
+    moq: 30,
+    availableViews: ["front", "back"],
+    parts: [
+      { id: "jersey", label: "Shirt Torso & Collar", defaultColor: "#FFFFFF" },
+      { id: "sleeves", label: "Shirt Sleeves", defaultColor: "#FFFFFF" },
+      { id: "pants", label: "Cricket Trousers", defaultColor: "#FFFFFF" },
+    ],
+    printAreas: [
+      { view: "front", name: "Chest Club Crest & Sponsor", x: 50, y: 30, width: 200, height: 140 },
+      { view: "back", name: "Player Name & Number", x: 50, y: 30, width: 220, height: 200 },
+    ],
+    availableFabrics: [
+      { id: "cricket-pique-220", name: "220 GSM Technical Cricket Piqué", gsm: 220, composition: "100% Wicking Micro-Polyester", description: "UV 50+ sun protection with stay-cool cellular airflow" },
+      { id: "stretch-twill-200", name: "200 GSM 4-Way Stretch Cricket Trousers", gsm: 200, composition: "95% Poly / 5% Spandex", description: "Deep slant pockets and elastic drawstring waist" },
+    ],
+    availableColors: CM_PALETTE,
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
+    decorations: ["High-Definition Woven Crest", "Direct Embroidery", "Sublimated Accents"],
+  },
+
+  // 17. CUSTOM WOMEN'S GOLF UNIFORM
+  {
+    id: "custom-women-golf-uniform",
+    slug: "custom-women-golf-uniform",
+    name: "Tour-Elite Women's Golf Polo & Skort Ensemble",
+    category: "sports-teamwear",
+    description: "Championship tournament ladies golf set featuring tailored collar polo with raglan sleeves and knife-pleated performance skort with inner compression shorts.",
+    basePrice: 155,
+    wholesaleBasePrice: 44.0,
+    moq: 30,
+    availableViews: ["front", "back"],
+    parts: [
+      { id: "jersey", label: "Polo Shirt Torso", defaultColor: "#FFFFFF" },
+      { id: "sleeves", label: "Polo Sleeves", defaultColor: "#FFFFFF" },
+      { id: "skort", label: "Knife-Pleated Skort", defaultColor: "#1E3A8A" },
+    ],
+    printAreas: [
+      { view: "front", name: "Chest Country Club Crest", x: 50, y: 30, width: 180, height: 100 },
+      { view: "back", name: "Rear Collar Monogram", x: 50, y: 22, width: 140, height: 60 },
+    ],
+    availableFabrics: [
+      { id: "lux-pique-200", name: "200 GSM Silk-Touch Poly Piqué", gsm: 200, composition: "92% Micro-Poly / 8% Spandex", description: "Silky handfeel, anti-odor, UPF 50+ UV shielding" },
+      { id: "pleat-stretch-220", name: "220 GSM Pleated Tour Stretch Weave", gsm: 220, composition: "88% Poly / 12% Elastane", description: "Permanent knife-edge pleats with compression under-shorts" },
+    ],
+    availableColors: CM_PALETTE,
+    sizes: ["XS", "S", "M", "L", "XL", "2XL"],
+    decorations: ["Fine-Stitch Monogram Embroidery", "Silicone Gel Badges", "Laser Cut Accents"],
+  },
+
+  // 18. CUSTOM WOMEN'S VOLLEYBALL UNIFORM
+  {
+    id: "custom-women-volleyball-uniform",
+    slug: "custom-women-volleyball-uniform",
+    name: "Pro High-Energy Women's Volleyball Set",
+    category: "sports-teamwear",
+    description: "High-mobility competition volleyball kit featuring ergonomic V-neck jersey with laser-perforated shoulder panels and low-rise compression spandex shorts.",
+    basePrice: 120,
+    wholesaleBasePrice: 32.0,
+    moq: 30,
+    availableViews: ["front", "back"],
+    parts: [
+      { id: "jersey", label: "Jersey Torso", defaultColor: "#D97706" },
+      { id: "sleeves", label: "Cap Sleeves", defaultColor: "#FFFFFF" },
+      { id: "shorts", label: "Spandex Athletic Shorts", defaultColor: "#18181B" },
+    ],
+    printAreas: [
+      { view: "front", name: "Front Team Name & Number", x: 50, y: 30, width: 200, height: 160 },
+      { view: "back", name: "Rear Player Number", x: 50, y: 28, width: 220, height: 200 },
+    ],
+    availableFabrics: [
+      { id: "spandex-comp-220", name: "220 GSM High-Tension Lycra Spandex", gsm: 220, composition: "85% Poly / 15% Spandex", description: "Maximum recovery 4-way compression stretch" },
+      { id: "laser-mesh-170", name: "170 GSM Laser-Perforated Air-Knit", gsm: 170, composition: "100% Recycled Poly", description: "Zero-drag ventilation under extreme movement" },
+    ],
+    availableColors: CM_PALETTE,
+    sizes: ["XS", "S", "M", "L", "XL", "2XL"],
+    decorations: ["Sublimation All-Over", "Silicone Heat Transfer", "Tackle Twill"],
+  },
 ];

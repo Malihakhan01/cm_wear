@@ -38,14 +38,35 @@ import { BasketballCustomizerViewer } from "@/components/common/BasketballCustom
 import { BaseballCustomizerViewer } from "@/components/common/BaseballCustomizerViewer";
 import { IceHockeyCustomizerViewer } from "@/components/common/IceHockeyCustomizerViewer";
 import { MartialArtsCustomizerViewer } from "@/components/common/MartialArtsCustomizerViewer";
+import { AmericanFootballCustomizerViewer } from "@/components/common/AmericanFootballCustomizerViewer";
+import { SoccerCustomizerViewer } from "@/components/common/SoccerCustomizerViewer";
+import { RugbyCustomizerViewer } from "@/components/common/RugbyCustomizerViewer";
+import { CricketCustomizerViewer } from "@/components/common/CricketCustomizerViewer";
+import { WomenGolfCustomizerViewer } from "@/components/common/WomenGolfCustomizerViewer";
+import { WomenVolleyballCustomizerViewer } from "@/components/common/WomenVolleyballCustomizerViewer";
 import { TechPackModal } from "@/components/common/TechPackModal";
 import { SizeChartModal } from "@/components/common/SizeChartModal";
 import { SaveDesignModal } from "@/components/common/SaveDesignModal";
 import { PRODUCTS_DATA } from "@/services/products.service";
 import { Product } from "@/types";
 
-export function getStudioGarmentProduct(model: "hoodie" | "varsity" | "equestrian" | "basketball" | "baseball" | "icehockey" | "martialarts"): Product {
-  const configs: Record<"hoodie" | "varsity" | "equestrian" | "basketball" | "baseball" | "icehockey" | "martialarts", Product> = {
+export type StudioGarmentModel =
+  | "hoodie"
+  | "varsity"
+  | "equestrian"
+  | "basketball"
+  | "baseball"
+  | "icehockey"
+  | "martialarts"
+  | "americanfootball"
+  | "soccer"
+  | "rugby"
+  | "cricket"
+  | "womengolf"
+  | "womenvolleyball";
+
+export function getStudioGarmentProduct(model: StudioGarmentModel): Product {
+  const configs: Record<StudioGarmentModel, Product> = {
     hoodie: {
       id: "studio-hoodie",
       slug: "heavyweight-french-terry-hoodie",
@@ -300,6 +321,222 @@ export function getStudioGarmentProduct(model: "hoodie" | "varsity" | "equestria
         { label: "Origin", value: "Sialkot Export Manufacturing Facility" },
       ],
     },
+    americanfootball: {
+      id: "studio-americanfootball",
+      slug: "custom-american-football-uniform",
+      name: "Pro-Series American Football Uniform Set",
+      sku: "TI-AF-280",
+      category: "sports-teamwear",
+      subcategory: "American Football Uniforms",
+      shortDescription: "Pro-caliber 280 GSM dazzle jersey and compression pad breezers.",
+      description: "Engineered pro-caliber football uniform set featuring heavy 4-way stretch dazzle/mesh jersey with pad fit and compression breezers.",
+      images: ["/american-football-uniform/front_base.png"],
+      retailPrice: 175,
+      wholesalePrice: 52,
+      wholesaleTiers: [
+        { minQty: 25, maxQty: 74, unitPrice: 58.0 },
+        { minQty: 75, maxQty: 199, unitPrice: 52.0 },
+        { minQty: 200, unitPrice: 45.0 },
+      ],
+      MOQ: 25,
+      sizes: ["S", "M", "L", "XL", "2XL", "3XL", "4XL"],
+      colors: [{ id: "c-navy", name: "Pro Navy & White", hex: "#1E3A8A" }],
+      fabric: "280 GSM Heavy Pro Dazzle & Spandex",
+      material: "88% Poly / 12% Spandex Heavy Weave",
+      GSM: 280,
+      fit: "Pro Compression Silhouette",
+      technicalFeatures: ["Tear-Resistant Dazzle", "Perforated Mesh Yoke", "Pad Fit", "Integrated Breezer Pockets"],
+      customizable: true,
+      sampleAvailable: true,
+      leadTime: "14–20 Days",
+      decorationMethods: ["Laser Tackle Twill", "Sublimated Numbers", "High-Density Screen Printing"],
+      featured: true,
+      specifications: [
+        { label: "Jersey Fabric", value: "280 GSM Pro Dazzle & Spandex" },
+        { label: "Pants Construction", value: "300 GSM Heavy Compression Spandex" },
+        { label: "Origin", value: "Sialkot Export Manufacturing Facility" },
+      ],
+    },
+    soccer: {
+      id: "studio-soccer",
+      slug: "custom-soccer-uniform",
+      name: "Pro Athletic Match Soccer Kit",
+      sku: "TI-SC-160",
+      category: "sports-teamwear",
+      subcategory: "Soccer Uniforms",
+      shortDescription: "Elite 160 GSM micro-interlock match jersey and shorts.",
+      description: "Engineered athletic soccer uniform kit featuring moisture-wicking micro-interlock knit, raglan sleeves, and elastic waistband shorts.",
+      images: ["/socceruniform/front_base.png"],
+      retailPrice: 110,
+      wholesalePrice: 28,
+      wholesaleTiers: [
+        { minQty: 25, maxQty: 74, unitPrice: 32.0 },
+        { minQty: 75, maxQty: 199, unitPrice: 28.0 },
+        { minQty: 200, unitPrice: 22.0 },
+      ],
+      MOQ: 25,
+      sizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+      colors: [{ id: "c-royal", name: "Sky Royal & Navy", hex: "#0284C7" }],
+      fabric: "160 GSM Featherlight Micro-Interlock",
+      material: "100% Recycled Poly Micro-Interlock",
+      GSM: 160,
+      fit: "Athletic Match Fit",
+      technicalFeatures: ["Moisture Transport", "Anti-Odor Microbial Shield", "Raglan Ergonomics", "Elastic Waistband"],
+      customizable: true,
+      sampleAvailable: true,
+      leadTime: "12–16 Days",
+      decorationMethods: ["Sublimation", "Silicone Heat Transfer", "Woven Crest Patch"],
+      featured: true,
+      specifications: [
+        { label: "Jersey Fabric", value: "160 GSM Recycled Micro-Interlock" },
+        { label: "Shorts Construction", value: "170 GSM Mechanical Stretch Poly" },
+        { label: "Origin", value: "Sialkot Export Manufacturing Facility" },
+      ],
+    },
+    rugby: {
+      id: "studio-rugby",
+      slug: "custom-rugby-uniform",
+      name: "Championship Pro-Fit Rugby Uniform Set",
+      sku: "TI-RG-280",
+      category: "sports-teamwear",
+      subcategory: "Rugby Uniforms",
+      shortDescription: "280 GSM high-tensile stretch jersey, drill shorts, and match socks.",
+      description: "Engineered high-tensile rugby match uniform set featuring anti-grab slide interlock, placket collar, heavy drill shorts, and turnover ribbed match socks.",
+      images: ["/rugby-uniform/front_base.png"],
+      retailPrice: 145,
+      wholesalePrice: 42,
+      wholesaleTiers: [
+        { minQty: 25, maxQty: 74, unitPrice: 48.0 },
+        { minQty: 75, maxQty: 199, unitPrice: 42.0 },
+        { minQty: 200, unitPrice: 36.0 },
+      ],
+      MOQ: 25,
+      sizes: ["S", "M", "L", "XL", "2XL", "3XL", "4XL"],
+      colors: [{ id: "c-green", name: "Springbok Green & White", hex: "#15803D" }],
+      fabric: "280 GSM High-Tensile Rugby Interlock",
+      material: "92% Poly / 8% Elastane Grip Stretch",
+      GSM: 280,
+      fit: "Pro-Fit Rugby Cut",
+      technicalFeatures: ["Anti-Grab Slide Weave", "Flatlocked Heavy Seams", "Cotton Drill Shorts", "Shin Socks Included"],
+      customizable: true,
+      sampleAvailable: true,
+      leadTime: "14–18 Days",
+      decorationMethods: ["Sublimation", "Direct Heavy Embroidery", "Screen Print"],
+      featured: true,
+      specifications: [
+        { label: "Jersey Fabric", value: "280 GSM Anti-Grab Interlock" },
+        { label: "Shorts Construction", value: "240 GSM Heavy Cotton Drill" },
+        { label: "Origin", value: "Sialkot Export Manufacturing Facility" },
+      ],
+    },
+    cricket: {
+      id: "studio-cricket",
+      slug: "custom-cricket-uniform",
+      name: "Tournament Performance Cricket Whites & Kit",
+      sku: "TI-CK-220",
+      category: "sports-teamwear",
+      subcategory: "Cricket Uniforms",
+      shortDescription: "220 GSM technical piqué polo shirt and 4-way stretch trousers.",
+      description: "Traditional tournament cricket uniform set featuring breathable piqué knit shirt with polo placket and tailored stretch trousers with slant pockets.",
+      images: ["/cricket uniform/front_base.png"],
+      retailPrice: 125,
+      wholesalePrice: 34,
+      wholesaleTiers: [
+        { minQty: 25, maxQty: 74, unitPrice: 39.0 },
+        { minQty: 75, maxQty: 199, unitPrice: 34.0 },
+        { minQty: 200, unitPrice: 28.0 },
+      ],
+      MOQ: 25,
+      sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
+      colors: [{ id: "c-white", name: "Tournament Whites", hex: "#FFFFFF" }],
+      fabric: "220 GSM Technical Cricket Piqué",
+      material: "100% Wicking Micro-Polyester",
+      GSM: 220,
+      fit: "Athletic Cricket Silhouette",
+      technicalFeatures: ["UPF 50+ Sun Protection", "Cellular Airflow Mesh", "Slant Pockets", "Tunnel Drawstring"],
+      customizable: true,
+      sampleAvailable: true,
+      leadTime: "12–16 Days",
+      decorationMethods: ["Woven Crest Patch", "Direct Embroidery", "Sublimation"],
+      featured: true,
+      specifications: [
+        { label: "Shirt Fabric", value: "220 GSM Technical Piqué" },
+        { label: "Trousers Construction", value: "200 GSM 4-Way Stretch Poly" },
+        { label: "Origin", value: "Sialkot Export Manufacturing Facility" },
+      ],
+    },
+    womengolf: {
+      id: "studio-womengolf",
+      slug: "custom-women-golf-uniform",
+      name: "Tour-Elite Women's Golf Polo & Skort Ensemble",
+      sku: "TI-WG-200",
+      category: "sports-teamwear",
+      subcategory: "Golf Apparel",
+      shortDescription: "200 GSM silk-touch polo shirt and knife-pleated tour skort.",
+      description: "Championship ladies golf ensemble featuring tailored polo collar shirt with contrast raglan sleeves and permanent knife-pleated performance skort with inner compression shorts.",
+      images: ["/women-golf-uniform/front_base.png"],
+      retailPrice: 155,
+      wholesalePrice: 44,
+      wholesaleTiers: [
+        { minQty: 25, maxQty: 74, unitPrice: 50.0 },
+        { minQty: 75, maxQty: 199, unitPrice: 44.0 },
+        { minQty: 200, unitPrice: 38.0 },
+      ],
+      MOQ: 25,
+      sizes: ["XS", "S", "M", "L", "XL", "2XL"],
+      colors: [{ id: "c-golf", name: "Classic White & Navy", hex: "#FFFFFF" }],
+      fabric: "200 GSM Silk-Touch Poly Piqué & 220 GSM Tour Skort",
+      material: "92% Micro-Poly / 8% Spandex",
+      GSM: 200,
+      fit: "Tailored Tour Silhouette",
+      technicalFeatures: ["Permanent Knife Pleats", "Inner Compression Shorts", "UPF 50+ UV Shielding", "Anti-Odor"],
+      customizable: true,
+      sampleAvailable: true,
+      leadTime: "14–18 Days",
+      decorationMethods: ["Fine Monogram Embroidery", "Silicone Gel Badges", "Laser Cut Accents"],
+      featured: true,
+      specifications: [
+        { label: "Polo Fabric", value: "200 GSM Silk-Touch Poly Piqué" },
+        { label: "Skort Construction", value: "220 GSM Permanent Pleated Stretch" },
+        { label: "Origin", value: "Sialkot Export Manufacturing Facility" },
+      ],
+    },
+    womenvolleyball: {
+      id: "studio-womenvolleyball",
+      slug: "custom-women-volleyball-uniform",
+      name: "Pro High-Energy Women's Volleyball Set",
+      sku: "TI-WV-220",
+      category: "sports-teamwear",
+      subcategory: "Volleyball Uniforms",
+      shortDescription: "220 GSM compression V-neck jersey and spandex booty shorts.",
+      description: "High-mobility ladies volleyball kit featuring ergonomic V-neck contour jersey with laser-perforated airflow panels and low-rise compression spandex shorts.",
+      images: ["/women-volleyball-uniform/front_base.png"],
+      retailPrice: 120,
+      wholesalePrice: 32,
+      wholesaleTiers: [
+        { minQty: 25, maxQty: 74, unitPrice: 37.0 },
+        { minQty: 75, maxQty: 199, unitPrice: 32.0 },
+        { minQty: 200, unitPrice: 26.0 },
+      ],
+      MOQ: 25,
+      sizes: ["XS", "S", "M", "L", "XL", "2XL"],
+      colors: [{ id: "c-amber", name: "Amber Gold & Noir", hex: "#D97706" }],
+      fabric: "220 GSM High-Tension Lycra Spandex & Laser Mesh",
+      material: "85% Poly / 15% Spandex",
+      GSM: 220,
+      fit: "High-Mobility Pro Compression",
+      technicalFeatures: ["Laser Perforated Airflow", "4-Way Recovery Stretch", "Contour V-Neck", "Compression Booty Shorts"],
+      customizable: true,
+      sampleAvailable: true,
+      leadTime: "12–16 Days",
+      decorationMethods: ["Sublimation All-Over", "Silicone Heat Transfer", "Tackle Twill"],
+      featured: true,
+      specifications: [
+        { label: "Jersey Fabric", value: "220 GSM Tension Spandex & Laser Mesh" },
+        { label: "Shorts Construction", value: "240 GSM Heavy Compression Lycra" },
+        { label: "Origin", value: "Sialkot Export Manufacturing Facility" },
+      ],
+    },
   };
 
   return configs[model] || configs.hoodie;
@@ -388,6 +625,49 @@ const INITIAL_MARTIAL_COLORS: Record<string, string> = {
   pants: "#F8FAFC",
 };
 
+// Default American Football Colorway: Navy & White
+const INITIAL_FOOTBALL_COLORS: Record<string, string> = {
+  jersey: "#1E3A8A",
+  sleeves: "#FFFFFF",
+  pants: "#1E3A8A",
+};
+
+// Default Soccer Colorway: Sky Royal & Navy
+const INITIAL_SOCCER_COLORS: Record<string, string> = {
+  jersey: "#0284C7",
+  sleeves: "#0284C7",
+  shorts: "#0F172A",
+};
+
+// Default Rugby Colorway: Springbok Green & White
+const INITIAL_RUGBY_COLORS: Record<string, string> = {
+  jersey: "#15803D",
+  sleeves: "#FFFFFF",
+  shorts: "#15803D",
+  socks: "#15803D",
+};
+
+// Default Cricket Colorway: Tournament Whites
+const INITIAL_CRICKET_COLORS: Record<string, string> = {
+  jersey: "#FFFFFF",
+  sleeves: "#FFFFFF",
+  pants: "#FFFFFF",
+};
+
+// Default Women Golf Colorway: White & Navy
+const INITIAL_GOLF_COLORS: Record<string, string> = {
+  jersey: "#FFFFFF",
+  sleeves: "#FFFFFF",
+  skort: "#1E3A8A",
+};
+
+// Default Women Volleyball Colorway: Amber Gold & Noir
+const INITIAL_VOLLEYBALL_COLORS: Record<string, string> = {
+  jersey: "#D97706",
+  sleeves: "#FFFFFF",
+  shorts: "#18181B",
+};
+
 const isLightColor = (hex: string): boolean => {
   if (!hex || typeof hex !== "string") return false;
   const cleanHex = hex.replace("#", "");
@@ -405,7 +685,7 @@ const isLightColor = (hex: string): boolean => {
 export interface CustomizerStudioEngineProps {
   mode?: "homepage" | "studio";
   initialSlug?: string;
-  onModelChange?: (model: "hoodie" | "varsity" | "equestrian" | "basketball" | "baseball" | "icehockey" | "martialarts") => void;
+  onModelChange?: (model: StudioGarmentModel) => void;
 }
 
 export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
@@ -490,8 +770,14 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
   };
 
   // Helper to determine model from slug
-  const getModelFromSlug = (s: string): "hoodie" | "varsity" | "equestrian" | "basketball" | "baseball" | "icehockey" | "martialarts" => {
+  const getModelFromSlug = (s: string): StudioGarmentModel => {
     const lower = (s || "").toLowerCase();
+    if (lower.includes("football") || lower.includes("american-football")) return "americanfootball";
+    if (lower.includes("soccer")) return "soccer";
+    if (lower.includes("rugby")) return "rugby";
+    if (lower.includes("cricket")) return "cricket";
+    if (lower.includes("golf") || lower.includes("skort")) return "womengolf";
+    if (lower.includes("volleyball")) return "womenvolleyball";
     if (lower.includes("martial") || lower.includes("gi")) return "martialarts";
     if (lower.includes("hockey")) return "icehockey";
     if (lower.includes("baseball")) return "baseball";
@@ -501,8 +787,8 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
     return "varsity";
   };
 
-  // Studio model switcher: hoodie vs varsity vs equestrian vs basketball vs baseball vs icehockey vs martialarts
-  const [activeStudioModel, setActiveStudioModel] = useState<"hoodie" | "varsity" | "equestrian" | "basketball" | "baseball" | "icehockey" | "martialarts">(() => {
+  // Studio model switcher: hoodie vs varsity vs equestrian vs basketball vs baseball vs icehockey vs martialarts vs 6 new models
+  const [activeStudioModel, setActiveStudioModel] = useState<StudioGarmentModel>(() => {
     const m = initialSlug ? getModelFromSlug(initialSlug) : "varsity";
     return m === "equestrian" ? "varsity" : m;
   });
@@ -531,6 +817,24 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
     } else if (safeModel === "martialarts") {
       setActivePart("jacket");
       setSelectedGsm(450);
+    } else if (safeModel === "americanfootball") {
+      setActivePart("jersey");
+      setSelectedGsm(280);
+    } else if (safeModel === "soccer") {
+      setActivePart("jersey");
+      setSelectedGsm(160);
+    } else if (safeModel === "rugby") {
+      setActivePart("jersey");
+      setSelectedGsm(280);
+    } else if (safeModel === "cricket") {
+      setActivePart("jersey");
+      setSelectedGsm(220);
+    } else if (safeModel === "womengolf") {
+      setActivePart("jersey");
+      setSelectedGsm(200);
+    } else if (safeModel === "womenvolleyball") {
+      setActivePart("jersey");
+      setSelectedGsm(220);
     }
   }, [initialSlug]);
 
@@ -600,6 +904,54 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
         { tier: "500+ pcs", price: "$40.00", save: "Save 31%", rawPrice: 40.0, minQty: 500, maxQty: Infinity },
       ];
     }
+    if (activeStudioModel === "americanfootball") {
+      return [
+        { tier: "50 - 99 pcs", price: "$52.00", save: "Standard MOQ", rawPrice: 52.0, minQty: 50, maxQty: 99 },
+        { tier: "100 - 249 pcs", price: "$46.00", save: "Save 11%", rawPrice: 46.0, minQty: 100, maxQty: 249 },
+        { tier: "250 - 499 pcs", price: "$40.00", save: "Save 23%", rawPrice: 40.0, minQty: 250, maxQty: 499 },
+        { tier: "500+ pcs", price: "$35.00", save: "Save 33%", rawPrice: 35.0, minQty: 500, maxQty: Infinity },
+      ];
+    }
+    if (activeStudioModel === "soccer") {
+      return [
+        { tier: "50 - 99 pcs", price: "$28.00", save: "Standard MOQ", rawPrice: 28.0, minQty: 50, maxQty: 99 },
+        { tier: "100 - 249 pcs", price: "$24.00", save: "Save 14%", rawPrice: 24.0, minQty: 100, maxQty: 249 },
+        { tier: "250 - 499 pcs", price: "$20.00", save: "Save 28%", rawPrice: 20.0, minQty: 250, maxQty: 499 },
+        { tier: "500+ pcs", price: "$16.50", save: "Save 41%", rawPrice: 16.5, minQty: 500, maxQty: Infinity },
+      ];
+    }
+    if (activeStudioModel === "rugby") {
+      return [
+        { tier: "50 - 99 pcs", price: "$42.00", save: "Standard MOQ", rawPrice: 42.0, minQty: 50, maxQty: 99 },
+        { tier: "100 - 249 pcs", price: "$37.00", save: "Save 12%", rawPrice: 37.0, minQty: 100, maxQty: 249 },
+        { tier: "250 - 499 pcs", price: "$32.00", save: "Save 24%", rawPrice: 32.0, minQty: 250, maxQty: 499 },
+        { tier: "500+ pcs", price: "$27.00", save: "Save 36%", rawPrice: 27.0, minQty: 500, maxQty: Infinity },
+      ];
+    }
+    if (activeStudioModel === "cricket") {
+      return [
+        { tier: "50 - 99 pcs", price: "$34.00", save: "Standard MOQ", rawPrice: 34.0, minQty: 50, maxQty: 99 },
+        { tier: "100 - 249 pcs", price: "$30.00", save: "Save 12%", rawPrice: 30.0, minQty: 100, maxQty: 249 },
+        { tier: "250 - 499 pcs", price: "$26.00", save: "Save 23%", rawPrice: 26.0, minQty: 250, maxQty: 499 },
+        { tier: "500+ pcs", price: "$22.00", save: "Save 35%", rawPrice: 22.0, minQty: 500, maxQty: Infinity },
+      ];
+    }
+    if (activeStudioModel === "womengolf") {
+      return [
+        { tier: "50 - 99 pcs", price: "$44.00", save: "Standard MOQ", rawPrice: 44.0, minQty: 50, maxQty: 99 },
+        { tier: "100 - 249 pcs", price: "$39.00", save: "Save 11%", rawPrice: 39.0, minQty: 100, maxQty: 249 },
+        { tier: "250 - 499 pcs", price: "$34.00", save: "Save 23%", rawPrice: 34.0, minQty: 250, maxQty: 499 },
+        { tier: "500+ pcs", price: "$29.00", save: "Save 34%", rawPrice: 29.0, minQty: 500, maxQty: Infinity },
+      ];
+    }
+    if (activeStudioModel === "womenvolleyball") {
+      return [
+        { tier: "50 - 99 pcs", price: "$32.00", save: "Standard MOQ", rawPrice: 32.0, minQty: 50, maxQty: 99 },
+        { tier: "100 - 249 pcs", price: "$28.00", save: "Save 12%", rawPrice: 28.0, minQty: 100, maxQty: 249 },
+        { tier: "250 - 499 pcs", price: "$24.00", save: "Save 25%", rawPrice: 24.0, minQty: 250, maxQty: 499 },
+        { tier: "500+ pcs", price: "$20.00", save: "Save 37%", rawPrice: 20.0, minQty: 500, maxQty: Infinity },
+      ];
+    }
     return [
       { tier: "50 - 99 pcs", price: "$24.50", save: "Standard MOQ", rawPrice: 24.5, minQty: 50, maxQty: 99 },
       { tier: "100 - 249 pcs", price: "$21.80", save: "Save 11%", rawPrice: 21.8, minQty: 100, maxQty: 249 },
@@ -642,9 +994,21 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                 ? (PRODUCTS_DATA.find((p) => p.slug.includes("baseball") || p.subcategory?.includes("baseball")) || getStudioGarmentProduct("baseball"))
                 : activeStudioModel === "equestrian"
                   ? (PRODUCTS_DATA.find((p) => p.slug.includes("riding") || p.subcategory.includes("riding") || p.subcategory.includes("equestrian")) || getStudioGarmentProduct("equestrian"))
-                  : (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || getStudioGarmentProduct("hoodie"));
+                  : activeStudioModel === "americanfootball"
+                    ? (PRODUCTS_DATA.find((p) => p.slug.includes("football") || p.subcategory?.includes("Football")) || getStudioGarmentProduct("americanfootball"))
+                    : activeStudioModel === "soccer"
+                      ? (PRODUCTS_DATA.find((p) => p.slug.includes("soccer") || p.subcategory?.includes("Soccer")) || getStudioGarmentProduct("soccer"))
+                      : activeStudioModel === "rugby"
+                        ? (PRODUCTS_DATA.find((p) => p.slug.includes("rugby") || p.subcategory?.includes("Rugby")) || getStudioGarmentProduct("rugby"))
+                        : activeStudioModel === "cricket"
+                          ? (PRODUCTS_DATA.find((p) => p.slug.includes("cricket") || p.subcategory?.includes("Cricket")) || getStudioGarmentProduct("cricket"))
+                          : activeStudioModel === "womengolf"
+                            ? (PRODUCTS_DATA.find((p) => p.slug.includes("golf") || p.subcategory?.includes("Golf")) || getStudioGarmentProduct("womengolf"))
+                            : activeStudioModel === "womenvolleyball"
+                              ? (PRODUCTS_DATA.find((p) => p.slug.includes("volleyball") || p.subcategory?.includes("Volleyball")) || getStudioGarmentProduct("womenvolleyball"))
+                              : (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || getStudioGarmentProduct("hoodie"));
 
-    const activeColors =
+    const activeColors: Record<string, string> =
       activeStudioModel === "varsity"
         ? partColors
         : activeStudioModel === "icehockey"
@@ -657,7 +1021,19 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                 ? baseballPartColors
                 : activeStudioModel === "equestrian"
                   ? equestrianPartColors
-                  : hoodiePartColors;
+                  : activeStudioModel === "americanfootball"
+                    ? footballPartColors
+                    : activeStudioModel === "soccer"
+                      ? soccerPartColors
+                      : activeStudioModel === "rugby"
+                        ? rugbyPartColors
+                        : activeStudioModel === "cricket"
+                          ? cricketPartColors
+                          : activeStudioModel === "womengolf"
+                            ? womenGolfPartColors
+                            : activeStudioModel === "womenvolleyball"
+                              ? womenVolleyballPartColors
+                              : hoodiePartColors;
 
     const homePreviewFront =
       activeStudioModel === "varsity"
@@ -672,6 +1048,18 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
         ? "/baseball-uniform/front_base.png"
         : activeStudioModel === "equestrian"
         ? "/equastarian/front (2) (1).png"
+        : activeStudioModel === "americanfootball"
+        ? "/american-football-uniform/front_base.png"
+        : activeStudioModel === "soccer"
+        ? "/socceruniform/front_base.png"
+        : activeStudioModel === "rugby"
+        ? "/rugby-uniform/front_base.png"
+        : activeStudioModel === "cricket"
+        ? "/cricket uniform/front_base.png"
+        : activeStudioModel === "womengolf"
+        ? "/women-golf-uniform/front_base.png"
+        : activeStudioModel === "womenvolleyball"
+        ? "/women-volleyball-uniform/front_base.png"
         : "/hoodie/hoodie_front.png";
 
     const homePreviewBack =
@@ -687,6 +1075,18 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
         ? "/baseball-uniform/back_base.png"
         : activeStudioModel === "equestrian"
         ? "/equastarian/back (2) (1).png"
+        : activeStudioModel === "americanfootball"
+        ? "/american-football-uniform/back_base.png"
+        : activeStudioModel === "soccer"
+        ? "/socceruniform/back_base.png"
+        : activeStudioModel === "rugby"
+        ? "/rugby-uniform/back_base.png"
+        : activeStudioModel === "cricket"
+        ? "/cricket uniform/back_base.png"
+        : activeStudioModel === "womengolf"
+        ? "/women-golf-uniform/back_base.png"
+        : activeStudioModel === "womenvolleyball"
+        ? "/women-volleyball-uniform/back_base.png"
         : "/hoodie/back_body.png";
 
     const activeLogoConfig = customLogo?.enabled && customLogo.url
@@ -802,22 +1202,46 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                 ? (PRODUCTS_DATA.find((p) => p.slug.includes("baseball") || p.subcategory?.includes("baseball")) || getStudioGarmentProduct("baseball"))
                 : activeStudioModel === "equestrian"
                   ? (PRODUCTS_DATA.find((p) => p.slug.includes("riding") || p.subcategory.includes("riding") || p.subcategory.includes("equestrian")) || getStudioGarmentProduct("equestrian"))
-                  : (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || getStudioGarmentProduct("hoodie"));
+                  : activeStudioModel === "americanfootball"
+                    ? (PRODUCTS_DATA.find((p) => p.slug.includes("football") || p.subcategory?.includes("Football")) || getStudioGarmentProduct("americanfootball"))
+                    : activeStudioModel === "soccer"
+                      ? (PRODUCTS_DATA.find((p) => p.slug.includes("soccer") || p.subcategory?.includes("Soccer")) || getStudioGarmentProduct("soccer"))
+                      : activeStudioModel === "rugby"
+                        ? (PRODUCTS_DATA.find((p) => p.slug.includes("rugby") || p.subcategory?.includes("Rugby")) || getStudioGarmentProduct("rugby"))
+                        : activeStudioModel === "cricket"
+                          ? (PRODUCTS_DATA.find((p) => p.slug.includes("cricket") || p.subcategory?.includes("Cricket")) || getStudioGarmentProduct("cricket"))
+                          : activeStudioModel === "womengolf"
+                            ? (PRODUCTS_DATA.find((p) => p.slug.includes("golf") || p.subcategory?.includes("Golf")) || getStudioGarmentProduct("womengolf"))
+                            : activeStudioModel === "womenvolleyball"
+                              ? (PRODUCTS_DATA.find((p) => p.slug.includes("volleyball") || p.subcategory?.includes("Volleyball")) || getStudioGarmentProduct("womenvolleyball"))
+                              : (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || getStudioGarmentProduct("hoodie"));
 
     const activeColors: Record<string, string> =
-      activeStudioModel === "hoodie"
-        ? hoodiePartColors
-        : activeStudioModel === "equestrian"
-          ? equestrianPartColors
-          : activeStudioModel === "icehockey"
-            ? hockeyPartColors
-            : activeStudioModel === "martialarts"
-              ? martialPartColors
-              : activeStudioModel === "basketball"
-                ? basketballPartColors
-                : activeStudioModel === "baseball"
-                  ? baseballPartColors
-                  : partColors;
+      activeStudioModel === "varsity"
+        ? partColors
+        : activeStudioModel === "icehockey"
+          ? hockeyPartColors
+          : activeStudioModel === "martialarts"
+            ? martialPartColors
+            : activeStudioModel === "basketball"
+              ? basketballPartColors
+              : activeStudioModel === "baseball"
+                ? baseballPartColors
+                : activeStudioModel === "equestrian"
+                  ? equestrianPartColors
+                  : activeStudioModel === "americanfootball"
+                    ? footballPartColors
+                    : activeStudioModel === "soccer"
+                      ? soccerPartColors
+                      : activeStudioModel === "rugby"
+                        ? rugbyPartColors
+                        : activeStudioModel === "cricket"
+                          ? cricketPartColors
+                          : activeStudioModel === "womengolf"
+                            ? womenGolfPartColors
+                            : activeStudioModel === "womenvolleyball"
+                              ? womenVolleyballPartColors
+                              : hoodiePartColors;
 
     const homePreviewFront =
       activeStudioModel === "varsity"
@@ -832,6 +1256,18 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
         ? "/baseball-uniform/front_base.png"
         : activeStudioModel === "equestrian"
         ? "/equastarian/front (2) (1).png"
+        : activeStudioModel === "americanfootball"
+        ? "/american-football-uniform/front_base.png"
+        : activeStudioModel === "soccer"
+        ? "/socceruniform/front_base.png"
+        : activeStudioModel === "rugby"
+        ? "/rugby-uniform/front_base.png"
+        : activeStudioModel === "cricket"
+        ? "/cricket uniform/front_base.png"
+        : activeStudioModel === "womengolf"
+        ? "/women-golf-uniform/front_base.png"
+        : activeStudioModel === "womenvolleyball"
+        ? "/women-volleyball-uniform/front_base.png"
         : "/hoodie/hoodie_front.png";
 
     const homePreviewBack =
@@ -846,7 +1282,19 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
         : activeStudioModel === "baseball"
         ? "/baseball-uniform/back_base.png"
         : activeStudioModel === "equestrian"
-        ? "/equastarian/front (2) (1).png"
+        ? "/equastarian/back (2) (1).png"
+        : activeStudioModel === "americanfootball"
+        ? "/american-football-uniform/back_base.png"
+        : activeStudioModel === "soccer"
+        ? "/socceruniform/back_base.png"
+        : activeStudioModel === "rugby"
+        ? "/rugby-uniform/back_base.png"
+        : activeStudioModel === "cricket"
+        ? "/cricket uniform/back_base.png"
+        : activeStudioModel === "womengolf"
+        ? "/women-golf-uniform/back_base.png"
+        : activeStudioModel === "womenvolleyball"
+        ? "/women-volleyball-uniform/back_base.png"
         : "/hoodie/back_body.png";
 
     const localDesignId = `des_${Date.now()}`;
@@ -998,7 +1446,19 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
   const [hockeyPartColors, setHockeyPartColors] = useState<Record<string, string>>(INITIAL_HOCKEY_COLORS);
   // Martial Arts-specific part colors
   const [martialPartColors, setMartialPartColors] = useState<Record<string, string>>(INITIAL_MARTIAL_COLORS);
-  // Selected Heritage Colorway Preset tracked per studio model (for Hoodie, Varsity, Equestrian, Basketball, Baseball, Ice Hockey, Martial Arts)
+  // American Football-specific part colors
+  const [footballPartColors, setFootballPartColors] = useState<Record<string, string>>(INITIAL_FOOTBALL_COLORS);
+  // Soccer-specific part colors
+  const [soccerPartColors, setSoccerPartColors] = useState<Record<string, string>>(INITIAL_SOCCER_COLORS);
+  // Rugby-specific part colors
+  const [rugbyPartColors, setRugbyPartColors] = useState<Record<string, string>>(INITIAL_RUGBY_COLORS);
+  // Cricket-specific part colors
+  const [cricketPartColors, setCricketPartColors] = useState<Record<string, string>>(INITIAL_CRICKET_COLORS);
+  // Women Golf-specific part colors
+  const [womenGolfPartColors, setWomenGolfPartColors] = useState<Record<string, string>>(INITIAL_GOLF_COLORS);
+  // Women Volleyball-specific part colors
+  const [womenVolleyballPartColors, setWomenVolleyballPartColors] = useState<Record<string, string>>(INITIAL_VOLLEYBALL_COLORS);
+  // Selected Heritage Colorway Preset tracked per studio model
   const [selectedPresetByModel, setSelectedPresetByModel] = useState<Record<string, string | null>>({
     hoodie: "Burgundy & Bone",
     varsity: "Ivy League",
@@ -1007,6 +1467,12 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
     baseball: "Classic Pinstripe White & Navy",
     icehockey: "Chicago Red & Obsidian",
     martialarts: "Traditional White & Black Belt",
+    americanfootball: "Navy & White",
+    soccer: "Sky Royal & Navy",
+    rugby: "Springbok Green & White",
+    cricket: "Tournament Whites",
+    womengolf: "White & Navy",
+    womenvolleyball: "Amber Gold & Noir",
   });
   const [activeWash, setActiveWash] = useState("Clean Raw Mill Finish");
   const [distressLevel, setDistressLevel] = useState<"clean" | "subtle" | "heavy">("clean");
@@ -1103,6 +1569,31 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
     y: 34,
   });
 
+  // American Football Letters
+  const [footballLetters, setFootballLetters] = useState<CustomLettersState>({
+    enabled: false, text: "", fontId: "varsity-block", color: "#FFFFFF", borderColor: "#1E3A8A", craftStyle: "chenille", x: 50, y: 28,
+  });
+  // Soccer Letters
+  const [soccerLetters, setSoccerLetters] = useState<CustomLettersState>({
+    enabled: false, text: "", fontId: "varsity-block", color: "#FFFFFF", borderColor: "#0284C7", craftStyle: "chenille", x: 50, y: 30,
+  });
+  // Rugby Letters
+  const [rugbyLetters, setRugbyLetters] = useState<CustomLettersState>({
+    enabled: false, text: "", fontId: "varsity-slab", color: "#FFFFFF", borderColor: "#15803D", craftStyle: "chenille", x: 50, y: 28,
+  });
+  // Cricket Letters
+  const [cricketLetters, setCricketLetters] = useState<CustomLettersState>({
+    enabled: false, text: "", fontId: "varsity-serif", color: "#1E3A8A", borderColor: "#FFFFFF", craftStyle: "chenille", x: 38, y: 26,
+  });
+  // Women Golf Letters
+  const [womenGolfLetters, setWomenGolfLetters] = useState<CustomLettersState>({
+    enabled: false, text: "", fontId: "varsity-serif", color: "#1E3A8A", borderColor: "#FFFFFF", craftStyle: "chenille", x: 38, y: 26,
+  });
+  // Women Volleyball Letters
+  const [womenVolleyballLetters, setWomenVolleyballLetters] = useState<CustomLettersState>({
+    enabled: false, text: "", fontId: "varsity-block", color: "#FFFFFF", borderColor: "#D97706", craftStyle: "chenille", x: 50, y: 28,
+  });
+
   // Varsity Custom PNG Logo State (Draggable & Resizable) - disabled by default
   const [varsityLogo, setVarsityLogo] = useState<CustomLogoState>({
     enabled: false,
@@ -1187,6 +1678,31 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
     flippedH: false,
   });
 
+  // American Football Logo
+  const [footballLogo, setFootballLogo] = useState<CustomLogoState>({
+    enabled: false, url: null, name: "Team Crest", x: 50, y: 22, scale: 0.85, rotation: 0, flippedH: false,
+  });
+  // Soccer Logo
+  const [soccerLogo, setSoccerLogo] = useState<CustomLogoState>({
+    enabled: false, url: null, name: "Club Crest", x: 34, y: 24, scale: 0.85, rotation: 0, flippedH: false,
+  });
+  // Rugby Logo
+  const [rugbyLogo, setRugbyLogo] = useState<CustomLogoState>({
+    enabled: false, url: null, name: "Union Badge", x: 34, y: 24, scale: 0.85, rotation: 0, flippedH: false,
+  });
+  // Cricket Logo
+  const [cricketLogo, setCricketLogo] = useState<CustomLogoState>({
+    enabled: false, url: null, name: "Club Emblem", x: 34, y: 24, scale: 0.85, rotation: 0, flippedH: false,
+  });
+  // Women Golf Logo
+  const [womenGolfLogo, setWomenGolfLogo] = useState<CustomLogoState>({
+    enabled: false, url: null, name: "Tour Emblem", x: 34, y: 24, scale: 0.85, rotation: 0, flippedH: false,
+  });
+  // Women Volleyball Logo
+  const [womenVolleyballLogo, setWomenVolleyballLogo] = useState<CustomLogoState>({
+    enabled: false, url: null, name: "Team Logo", x: 50, y: 22, scale: 0.85, rotation: 0, flippedH: false,
+  });
+
   // Active Letters & Logo bound to the current active studio model
   const customLetters =
     activeStudioModel === "hoodie"
@@ -1201,7 +1717,19 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
               ? hockeyLetters
               : activeStudioModel === "martialarts"
                 ? martialLetters
-                : varsityLetters;
+                : activeStudioModel === "americanfootball"
+                  ? footballLetters
+                  : activeStudioModel === "soccer"
+                    ? soccerLetters
+                    : activeStudioModel === "rugby"
+                      ? rugbyLetters
+                      : activeStudioModel === "cricket"
+                        ? cricketLetters
+                        : activeStudioModel === "womengolf"
+                          ? womenGolfLetters
+                          : activeStudioModel === "womenvolleyball"
+                            ? womenVolleyballLetters
+                            : varsityLetters;
 
   const customLogo =
     activeStudioModel === "hoodie"
@@ -1216,7 +1744,19 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
               ? hockeyLogo
               : activeStudioModel === "martialarts"
                 ? martialLogo
-                : varsityLogo;
+                : activeStudioModel === "americanfootball"
+                  ? footballLogo
+                  : activeStudioModel === "soccer"
+                    ? soccerLogo
+                    : activeStudioModel === "rugby"
+                      ? rugbyLogo
+                      : activeStudioModel === "cricket"
+                        ? cricketLogo
+                        : activeStudioModel === "womengolf"
+                          ? womenGolfLogo
+                          : activeStudioModel === "womenvolleyball"
+                            ? womenVolleyballLogo
+                            : varsityLogo;
 
   const setCustomLetters = useCallback(
     (action: React.SetStateAction<CustomLettersState>) => {
@@ -1232,6 +1772,18 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
         setHockeyLetters(action);
       } else if (activeStudioModel === "martialarts") {
         setMartialLetters(action);
+      } else if (activeStudioModel === "americanfootball") {
+        setFootballLetters(action);
+      } else if (activeStudioModel === "soccer") {
+        setSoccerLetters(action);
+      } else if (activeStudioModel === "rugby") {
+        setRugbyLetters(action);
+      } else if (activeStudioModel === "cricket") {
+        setCricketLetters(action);
+      } else if (activeStudioModel === "womengolf") {
+        setWomenGolfLetters(action);
+      } else if (activeStudioModel === "womenvolleyball") {
+        setWomenVolleyballLetters(action);
       } else {
         setVarsityLetters(action);
       }
@@ -1253,6 +1805,18 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
         setHockeyLogo(action);
       } else if (activeStudioModel === "martialarts") {
         setMartialLogo(action);
+      } else if (activeStudioModel === "americanfootball") {
+        setFootballLogo(action);
+      } else if (activeStudioModel === "soccer") {
+        setSoccerLogo(action);
+      } else if (activeStudioModel === "rugby") {
+        setRugbyLogo(action);
+      } else if (activeStudioModel === "cricket") {
+        setCricketLogo(action);
+      } else if (activeStudioModel === "womengolf") {
+        setWomenGolfLogo(action);
+      } else if (activeStudioModel === "womenvolleyball") {
+        setWomenVolleyballLogo(action);
       } else {
         setVarsityLogo(action);
       }
@@ -1274,6 +1838,18 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
         setHockeyLetters((prev) => ({ ...prev, ...updates }));
       } else if (activeStudioModel === "martialarts") {
         setMartialLetters((prev) => ({ ...prev, ...updates }));
+      } else if (activeStudioModel === "americanfootball") {
+        setFootballLetters((prev) => ({ ...prev, ...updates }));
+      } else if (activeStudioModel === "soccer") {
+        setSoccerLetters((prev) => ({ ...prev, ...updates }));
+      } else if (activeStudioModel === "rugby") {
+        setRugbyLetters((prev) => ({ ...prev, ...updates }));
+      } else if (activeStudioModel === "cricket") {
+        setCricketLetters((prev) => ({ ...prev, ...updates }));
+      } else if (activeStudioModel === "womengolf") {
+        setWomenGolfLetters((prev) => ({ ...prev, ...updates }));
+      } else if (activeStudioModel === "womenvolleyball") {
+        setWomenVolleyballLetters((prev) => ({ ...prev, ...updates }));
       } else {
         setVarsityLetters((prev) => ({ ...prev, ...updates }));
       }
@@ -1341,6 +1917,43 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
     { id: "pants", label: "Trousers (Zubon)", desc: "Ripstop Drawstring Pants" },
   ];
 
+  const footballParts = [
+    { id: "jersey", label: "Jersey Torso", desc: "Heavy 280 GSM Dazzle Body" },
+    { id: "sleeves", label: "Sleeves & Yoke", desc: "Reinforced Arm Sleeves" },
+    { id: "pants", label: "Compression Pants", desc: "Integrated Pad Breezers" },
+  ];
+
+  const soccerParts = [
+    { id: "jersey", label: "Match Jersey", desc: "160 GSM Micro-Interlock Torso" },
+    { id: "sleeves", label: "Raglan Sleeves", desc: "Breathable Shoulder Sleeves" },
+    { id: "shorts", label: "Athletic Shorts", desc: "Match Elastic Shorts" },
+  ];
+
+  const rugbyParts = [
+    { id: "jersey", label: "Match Jersey", desc: "280 GSM High-Tensile Body" },
+    { id: "sleeves", label: "Placket Sleeves", desc: "Anti-Grab Grip Sleeves" },
+    { id: "shorts", label: "Rugby Shorts", desc: "Reinforced Drill Shorts" },
+    { id: "socks", label: "Shin Socks", desc: "Ribbed Match Turnover Socks" },
+  ];
+
+  const cricketParts = [
+    { id: "jersey", label: "Cricket Shirt", desc: "220 GSM Piqué Polo Body" },
+    { id: "sleeves", label: "Polo Sleeves", desc: "Contrast Trim Sleeves" },
+    { id: "pants", label: "Match Trousers", desc: "4-Way Stretch Pants" },
+  ];
+
+  const golfParts = [
+    { id: "jersey", label: "Polo Shirt", desc: "200 GSM Silk-Touch Poly Piqué" },
+    { id: "sleeves", label: "Short Sleeves", desc: "Raglan Contrast Sleeves" },
+    { id: "skort", label: "Pleated Skort", desc: "Knife-Pleated Tour Skort" },
+  ];
+
+  const volleyballParts = [
+    { id: "jersey", label: "V-Neck Jersey", desc: "220 GSM Tension Spandex Body" },
+    { id: "sleeves", label: "Capped Sleeves", desc: "Laser Mesh Sleeves" },
+    { id: "shorts", label: "Booty Shorts", desc: "Low-Rise Compression Spandex" },
+  ];
+
   const parts =
     activeStudioModel === "hoodie"
       ? hoodieParts
@@ -1354,7 +1967,37 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
               ? hockeyParts
               : activeStudioModel === "martialarts"
                 ? martialParts
-                : varsityParts;
+                : activeStudioModel === "americanfootball"
+                  ? footballParts
+                  : activeStudioModel === "soccer"
+                    ? soccerParts
+                    : activeStudioModel === "rugby"
+                      ? rugbyParts
+                      : activeStudioModel === "cricket"
+                        ? cricketParts
+                        : activeStudioModel === "womengolf"
+                          ? golfParts
+                          : activeStudioModel === "womenvolleyball"
+                            ? volleyballParts
+                            : varsityParts;
+
+  const getActiveModelPartColor = (partKey: string): string => {
+    switch (activeStudioModel) {
+      case "hoodie": return hoodiePartColors[partKey] || "#60121D";
+      case "equestrian": return equestrianPartColors[partKey] || "#111B2C";
+      case "basketball": return basketballPartColors[partKey] || "#CA8A04";
+      case "baseball": return baseballPartColors[partKey] || "#FFFFFF";
+      case "icehockey": return hockeyPartColors[partKey] || "#DC2626";
+      case "martialarts": return martialPartColors[partKey] || "#F8FAFC";
+      case "americanfootball": return footballPartColors[partKey] || "#1E3A8A";
+      case "soccer": return soccerPartColors[partKey] || "#0284C7";
+      case "rugby": return rugbyPartColors[partKey] || "#15803D";
+      case "cricket": return cricketPartColors[partKey] || "#FFFFFF";
+      case "womengolf": return womenGolfPartColors[partKey] || "#FFFFFF";
+      case "womenvolleyball": return womenVolleyballPartColors[partKey] || "#D97706";
+      default: return (partColors as any)[partKey] || "#0B0B0B";
+    }
+  };
 
   const handleColorSelect = (hex: string) => {
     setSelectedPresetByModel((prev) => ({ ...prev, [activeStudioModel]: null }));
@@ -1372,6 +2015,18 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
       setHockeyPartColors((prev) => ({ ...prev, [activePart]: hex }));
     } else if (activeStudioModel === "martialarts") {
       setMartialPartColors((prev) => ({ ...prev, [activePart]: hex }));
+    } else if (activeStudioModel === "americanfootball") {
+      setFootballPartColors((prev) => ({ ...prev, [activePart]: hex }));
+    } else if (activeStudioModel === "soccer") {
+      setSoccerPartColors((prev) => ({ ...prev, [activePart]: hex }));
+    } else if (activeStudioModel === "rugby") {
+      setRugbyPartColors((prev) => ({ ...prev, [activePart]: hex }));
+    } else if (activeStudioModel === "cricket") {
+      setCricketPartColors((prev) => ({ ...prev, [activePart]: hex }));
+    } else if (activeStudioModel === "womengolf") {
+      setWomenGolfPartColors((prev) => ({ ...prev, [activePart]: hex }));
+    } else if (activeStudioModel === "womenvolleyball") {
+      setWomenVolleyballPartColors((prev) => ({ ...prev, [activePart]: hex }));
     } else {
       setPartColors((prev: any) => ({ ...prev, [activePart]: hex }));
     }
@@ -1404,6 +2059,30 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
       setMartialPartColors({
         jacket: hex, sleeves: hex, belt: hex, pants: hex,
       });
+    } else if (activeStudioModel === "americanfootball") {
+      setFootballPartColors({
+        jersey: hex, sleeves: hex, pants: hex,
+      });
+    } else if (activeStudioModel === "soccer") {
+      setSoccerPartColors({
+        jersey: hex, sleeves: hex, shorts: hex,
+      });
+    } else if (activeStudioModel === "rugby") {
+      setRugbyPartColors({
+        jersey: hex, sleeves: hex, shorts: hex, socks: hex,
+      });
+    } else if (activeStudioModel === "cricket") {
+      setCricketPartColors({
+        jersey: hex, sleeves: hex, pants: hex,
+      });
+    } else if (activeStudioModel === "womengolf") {
+      setWomenGolfPartColors({
+        jersey: hex, sleeves: hex, skort: hex,
+      });
+    } else if (activeStudioModel === "womenvolleyball") {
+      setWomenVolleyballPartColors({
+        jersey: hex, sleeves: hex, shorts: hex,
+      });
     } else {
       setPartColors({
         body: hex, sleeves: hex, pockets: hex, collar: hex,
@@ -1430,6 +2109,18 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
       setHockeyPartColors(colors);
     } else if (activeStudioModel === "martialarts") {
       setMartialPartColors(colors);
+    } else if (activeStudioModel === "americanfootball") {
+      setFootballPartColors(colors);
+    } else if (activeStudioModel === "soccer") {
+      setSoccerPartColors(colors);
+    } else if (activeStudioModel === "rugby") {
+      setRugbyPartColors(colors);
+    } else if (activeStudioModel === "cricket") {
+      setCricketPartColors(colors);
+    } else if (activeStudioModel === "womengolf") {
+      setWomenGolfPartColors(colors);
+    } else if (activeStudioModel === "womenvolleyball") {
+      setWomenVolleyballPartColors(colors);
     } else {
       setPartColors(colors);
     }
@@ -1484,6 +2175,49 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
         (martialPartColors.sleeves || "").toLowerCase() === (presetColors.sleeves || "").toLowerCase() &&
         (martialPartColors.belt || "").toLowerCase() === (presetColors.belt || "").toLowerCase() &&
         (martialPartColors.pants || "").toLowerCase() === (presetColors.pants || "").toLowerCase()
+      );
+    }
+    if (activeStudioModel === "americanfootball") {
+      return (
+        (footballPartColors.jersey || "").toLowerCase() === (presetColors.jersey || "").toLowerCase() &&
+        (footballPartColors.sleeves || "").toLowerCase() === (presetColors.sleeves || "").toLowerCase() &&
+        (footballPartColors.pants || "").toLowerCase() === (presetColors.pants || "").toLowerCase()
+      );
+    }
+    if (activeStudioModel === "soccer") {
+      return (
+        (soccerPartColors.jersey || "").toLowerCase() === (presetColors.jersey || "").toLowerCase() &&
+        (soccerPartColors.sleeves || "").toLowerCase() === (presetColors.sleeves || "").toLowerCase() &&
+        (soccerPartColors.shorts || "").toLowerCase() === (presetColors.shorts || "").toLowerCase()
+      );
+    }
+    if (activeStudioModel === "rugby") {
+      return (
+        (rugbyPartColors.jersey || "").toLowerCase() === (presetColors.jersey || "").toLowerCase() &&
+        (rugbyPartColors.sleeves || "").toLowerCase() === (presetColors.sleeves || "").toLowerCase() &&
+        (rugbyPartColors.shorts || "").toLowerCase() === (presetColors.shorts || "").toLowerCase() &&
+        (rugbyPartColors.socks || "").toLowerCase() === (presetColors.socks || "").toLowerCase()
+      );
+    }
+    if (activeStudioModel === "cricket") {
+      return (
+        (cricketPartColors.jersey || "").toLowerCase() === (presetColors.jersey || "").toLowerCase() &&
+        (cricketPartColors.sleeves || "").toLowerCase() === (presetColors.sleeves || "").toLowerCase() &&
+        (cricketPartColors.pants || "").toLowerCase() === (presetColors.pants || "").toLowerCase()
+      );
+    }
+    if (activeStudioModel === "womengolf") {
+      return (
+        (womenGolfPartColors.jersey || "").toLowerCase() === (presetColors.jersey || "").toLowerCase() &&
+        (womenGolfPartColors.sleeves || "").toLowerCase() === (presetColors.sleeves || "").toLowerCase() &&
+        (womenGolfPartColors.skort || "").toLowerCase() === (presetColors.skort || "").toLowerCase()
+      );
+    }
+    if (activeStudioModel === "womenvolleyball") {
+      return (
+        (womenVolleyballPartColors.jersey || "").toLowerCase() === (presetColors.jersey || "").toLowerCase() &&
+        (womenVolleyballPartColors.sleeves || "").toLowerCase() === (presetColors.sleeves || "").toLowerCase() &&
+        (womenVolleyballPartColors.shorts || "").toLowerCase() === (presetColors.shorts || "").toLowerCase()
       );
     }
     // Varsity
@@ -1560,6 +2294,12 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
     setBaseballPartColors(INITIAL_BASEBALL_COLORS);
     setHockeyPartColors(INITIAL_HOCKEY_COLORS);
     setMartialPartColors(INITIAL_MARTIAL_COLORS);
+    setFootballPartColors(INITIAL_FOOTBALL_COLORS);
+    setSoccerPartColors(INITIAL_SOCCER_COLORS);
+    setRugbyPartColors(INITIAL_RUGBY_COLORS);
+    setCricketPartColors(INITIAL_CRICKET_COLORS);
+    setWomenGolfPartColors(INITIAL_GOLF_COLORS);
+    setWomenVolleyballPartColors(INITIAL_VOLLEYBALL_COLORS);
     setSelectedPresetByModel({
       hoodie: "Burgundy & Bone",
       varsity: "Ivy League",
@@ -1568,6 +2308,12 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
       baseball: "Classic Pinstripe White & Navy",
       icehockey: "Chicago Red & Obsidian",
       martialarts: "Traditional White & Black Belt",
+      americanfootball: "Navy & White",
+      soccer: "Sky Royal & Navy",
+      rugby: "Springbok Green & White",
+      cricket: "Tournament Whites",
+      womengolf: "White & Navy",
+      womenvolleyball: "Amber Gold & Noir",
     });
     setSleeveStyle("striped");
     setPocketStyle("striped");
@@ -1645,6 +2391,66 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
       x: 38,
       y: 34,
     });
+    setFootballLetters({
+      enabled: false,
+      text: "",
+      fontId: "varsity-block",
+      color: "#FFFFFF",
+      borderColor: "#1E3A8A",
+      craftStyle: "chenille",
+      x: 50,
+      y: 28,
+    });
+    setSoccerLetters({
+      enabled: false,
+      text: "",
+      fontId: "varsity-block",
+      color: "#FFFFFF",
+      borderColor: "#0284C7",
+      craftStyle: "chenille",
+      x: 50,
+      y: 30,
+    });
+    setRugbyLetters({
+      enabled: false,
+      text: "",
+      fontId: "varsity-slab",
+      color: "#FFFFFF",
+      borderColor: "#15803D",
+      craftStyle: "chenille",
+      x: 50,
+      y: 28,
+    });
+    setCricketLetters({
+      enabled: false,
+      text: "",
+      fontId: "varsity-serif",
+      color: "#1E3A8A",
+      borderColor: "#FFFFFF",
+      craftStyle: "chenille",
+      x: 38,
+      y: 26,
+    });
+    setWomenGolfLetters({
+      enabled: false,
+      text: "",
+      fontId: "varsity-serif",
+      color: "#1E3A8A",
+      borderColor: "#FFFFFF",
+      craftStyle: "chenille",
+      x: 38,
+      y: 26,
+    });
+    setWomenVolleyballLetters({
+      enabled: false,
+      text: "",
+      fontId: "varsity-block",
+      color: "#FFFFFF",
+      borderColor: "#D97706",
+      craftStyle: "chenille",
+      x: 50,
+      y: 28,
+    });
     setVarsityLogo({
       enabled: false,
       url: null,
@@ -1715,6 +2521,66 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
       rotation: 0,
       flippedH: false,
     });
+    setFootballLogo({
+      enabled: false,
+      url: null,
+      name: "Team Crest",
+      x: 50,
+      y: 22,
+      scale: 0.85,
+      rotation: 0,
+      flippedH: false,
+    });
+    setSoccerLogo({
+      enabled: false,
+      url: null,
+      name: "Club Crest",
+      x: 34,
+      y: 24,
+      scale: 0.85,
+      rotation: 0,
+      flippedH: false,
+    });
+    setRugbyLogo({
+      enabled: false,
+      url: null,
+      name: "Union Badge",
+      x: 34,
+      y: 24,
+      scale: 0.85,
+      rotation: 0,
+      flippedH: false,
+    });
+    setCricketLogo({
+      enabled: false,
+      url: null,
+      name: "Club Emblem",
+      x: 34,
+      y: 24,
+      scale: 0.85,
+      rotation: 0,
+      flippedH: false,
+    });
+    setWomenGolfLogo({
+      enabled: false,
+      url: null,
+      name: "Tour Emblem",
+      x: 34,
+      y: 24,
+      scale: 0.85,
+      rotation: 0,
+      flippedH: false,
+    });
+    setWomenVolleyballLogo({
+      enabled: false,
+      url: null,
+      name: "Team Logo",
+      x: 50,
+      y: 22,
+      scale: 0.85,
+      rotation: 0,
+      flippedH: false,
+    });
   };
 
   const activeFontObj =
@@ -1734,13 +2600,15 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
             }`}
           >
             {/* Top Toolbar */}
-            <div className="w-full flex flex-wrap items-center justify-between gap-2 text-xs mb-4">
-              <div className="flex flex-wrap items-center gap-1.5">
+            <div className="w-full flex flex-col gap-2.5 mb-3">
+              {/* Row 1: Front/Back View Toggle + GSM Spec & Studio Controls */}
+              <div className="w-full flex items-center justify-between gap-2 text-xs">
                 {/* Front / Back view toggle */}
                 <div className="flex items-center gap-1 bg-white p-1 rounded-[2px] border border-[#E6E6E2] shadow-xs shrink-0">
                   <button
+                    type="button"
                     onClick={() => setActiveView("front")}
-                    className={`px-2.5 sm:px-3 py-1 font-semibold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer ${activeView === "front"
+                    className={`px-3 py-1 font-semibold uppercase text-[10px] rounded-[2px] transition-colors cursor-pointer ${activeView === "front"
                         ? "bg-[#0B0B0B] text-white"
                         : "text-neutral-600 hover:text-black"
                       }`}
@@ -1748,8 +2616,9 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                     Front
                   </button>
                   <button
+                    type="button"
                     onClick={() => setActiveView("back")}
-                    className={`px-2.5 sm:px-3 py-1 font-semibold uppercase text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer ${activeView === "back"
+                    className={`px-3 py-1 font-semibold uppercase text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer ${activeView === "back"
                         ? "bg-[#0B0B0B] text-white"
                         : "text-neutral-600 hover:text-black"
                       }`}
@@ -1759,172 +2628,280 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                   </button>
                 </div>
 
-                {/* Studio Model Switcher: Hoodie vs Varsity vs Basketball vs Baseball vs Ice Hockey vs Martial Arts */}
-                <div className="flex items-center gap-0.5 bg-[#F5F5F3] border border-[#E6E6E2] p-0.5 rounded-[2px] overflow-x-auto no-scrollbar">
+                {/* Right: GSM info & Studio Canvas Background Color Selector + Reset */}
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-[11px] text-neutral-500 font-mono hidden sm:inline">
+                    {activeStudioModel === "martialarts"
+                      ? "450 GSM Pearl Weave Cotton & Ripstop"
+                      : activeStudioModel === "icehockey"
+                      ? "240 GSM Pro Air-Knit Poly Mesh"
+                      : activeStudioModel === "baseball"
+                      ? "240 GSM Poly Warp-Knit & Double-Knit"
+                      : activeStudioModel === "basketball"
+                      ? "200 GSM Diamond Air-Mesh"
+                      : activeStudioModel === "americanfootball"
+                      ? "280 GSM Pro Dazzle & Spandex"
+                      : activeStudioModel === "soccer"
+                      ? "160 GSM Featherlight Micro-Interlock"
+                      : activeStudioModel === "rugby"
+                      ? "280 GSM High-Tensile Anti-Grab Weave"
+                      : activeStudioModel === "cricket"
+                      ? "220 GSM Technical Cricket Piqué"
+                      : activeStudioModel === "womengolf"
+                      ? "200 GSM Silk-Touch Poly Piqué & Skort"
+                      : activeStudioModel === "womenvolleyball"
+                      ? "220 GSM High-Tension Lycra Spandex"
+                      : activeStudioModel === "equestrian"
+                        ? "320 GSM Italian Softshell"
+                        : activeStudioModel === "varsity"
+                          ? "500 GSM Melton & Leather"
+                          : "380 GSM French Terry"}
+                  </span>
+
+                  {/* Studio Canvas Background Color Selector */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setIsBgPickerOpen(!isBgPickerOpen)}
+                      className="p-1.5 text-neutral-700 hover:text-black bg-white border border-[#E6E6E2] hover:border-black rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
+                      title="Change Studio Background Color"
+                    >
+                      <span
+                        className="w-3 h-3 rounded-full border border-black/20 shrink-0"
+                        style={{ backgroundColor: canvasBgColor }}
+                      />
+                      <Palette className="w-3 h-3 text-neutral-500" />
+                    </button>
+
+                    {isBgPickerOpen && (
+                      <div
+                        className="absolute right-0 top-full mt-1.5 z-50 bg-[#0E0E0E] text-white border border-white/20 rounded-[4px] p-2.5 shadow-xl w-52 space-y-2 animate-in fade-in zoom-in-95 duration-150"
+                      >
+                        <div className="flex items-center justify-between pb-1 border-b border-white/10">
+                          <span className="text-[10px] font-mono font-bold tracking-wider text-neutral-300 uppercase">
+                            Studio Backdrop
+                          </span>
+                          <button
+                            onClick={() => setIsBgPickerOpen(false)}
+                            className="text-neutral-400 hover:text-white text-xs leading-none"
+                          >
+                            &times;
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-1.5">
+                          {[
+                            { label: "Light", hex: "#FAFAF8" },
+                            { label: "Dark", hex: "#0E0F12" },
+                            { label: "Charcoal", hex: "#1A1D24" },
+                            { label: "Slate", hex: "#1E293B" },
+                            { label: "Sand", hex: "#ECEAE4" },
+                            { label: "Black", hex: "#050505" },
+                          ].map((preset) => (
+                            <button
+                              key={preset.hex}
+                              type="button"
+                              onClick={() => {
+                                setCanvasBgColor(preset.hex);
+                                setIsBgPickerOpen(false);
+                              }}
+                              className={`flex items-center gap-1 p-1 rounded-[2px] border text-[9px] font-mono transition-colors cursor-pointer ${
+                                canvasBgColor.toLowerCase() === preset.hex.toLowerCase()
+                                  ? "border-[#D61C24] bg-white/10 text-white font-bold"
+                                  : "border-white/10 hover:border-white/30 text-neutral-300"
+                              }`}
+                            >
+                              <span
+                                className="w-2.5 h-2.5 rounded-full border border-white/30 shrink-0"
+                                style={{ backgroundColor: preset.hex }}
+                              />
+                              <span className="truncate">{preset.label}</span>
+                            </button>
+                          ))}
+                        </div>
+
+                        <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[10px] font-mono">
+                          <span className="text-neutral-400">Custom:</span>
+                          <div className="flex items-center gap-1.5">
+                            <input
+                              type="color"
+                              value={canvasBgColor}
+                              onChange={(e) => setCanvasBgColor(e.target.value)}
+                              className="w-4 h-4 rounded cursor-pointer border-0 p-0 bg-transparent"
+                            />
+                            <span className="text-neutral-200 uppercase text-[9px]">{canvasBgColor}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
                   <button
-                    onClick={() => { setActiveStudioModel("hoodie"); setActivePart("body"); setControlTab("colors"); setSelectedGsm(450); onModelChange?.("hoodie"); }}
-                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "hoodie"
-                        ? "bg-[#0B0B0B] text-white shadow-xs"
-                        : "text-neutral-600 hover:text-black"
-                      }`}
-                    title="Hoodie Studio"
+                    onClick={handleReset}
+                    className="p-1.5 text-neutral-500 hover:text-black bg-white border border-[#E6E6E2] rounded-[2px] transition-colors cursor-pointer"
+                    title="Reset to Default"
                   >
-                    <span>Hoodie</span>
-                  </button>
-                  <button
-                    onClick={() => { setActiveStudioModel("varsity"); setActivePart("body"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(500); onModelChange?.("varsity"); }}
-                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "varsity"
-                        ? "bg-[#0B0B0B] text-white shadow-xs"
-                        : "text-neutral-600 hover:text-black"
-                      }`}
-                    title="Varsity Studio"
-                  >
-                    <span>Varsity</span>
-                  </button>
-                  <button
-                    onClick={() => { setActiveStudioModel("basketball"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(200); onModelChange?.("basketball"); }}
-                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "basketball"
-                        ? "bg-[#0B0B0B] text-white shadow-xs"
-                        : "text-neutral-600 hover:text-black"
-                      }`}
-                    title="Basketball Studio"
-                  >
-                    <span>Basketball</span>
-                  </button>
-                  <button
-                    onClick={() => { setActiveStudioModel("baseball"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(240); onModelChange?.("baseball"); }}
-                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "baseball"
-                        ? "bg-[#0B0B0B] text-white shadow-xs"
-                        : "text-neutral-600 hover:text-black"
-                      }`}
-                    title="Baseball Studio"
-                  >
-                    <span>Baseball</span>
-                  </button>
-                  <button
-                    onClick={() => { setActiveStudioModel("icehockey"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(240); onModelChange?.("icehockey"); }}
-                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "icehockey"
-                        ? "bg-[#0B0B0B] text-white shadow-xs"
-                        : "text-neutral-600 hover:text-black"
-                      }`}
-                    title="Ice Hockey Studio"
-                  >
-                    <span>Ice Hockey</span>
-                  </button>
-                  <button
-                    onClick={() => { setActiveStudioModel("martialarts"); setActivePart("jacket"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(450); onModelChange?.("martialarts"); }}
-                    className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "martialarts"
-                        ? "bg-[#0B0B0B] text-white shadow-xs"
-                        : "text-neutral-600 hover:text-black"
-                      }`}
-                    title="Martial Arts Studio"
-                  >
-                    <span>Martial Arts</span>
+                    <RotateCcw className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
-                <span className="text-[11px] text-neutral-500 font-mono hidden sm:inline">
-                  {activeStudioModel === "martialarts"
-                    ? "450 GSM Pearl Weave Cotton & Ripstop"
-                    : activeStudioModel === "icehockey"
-                    ? "240 GSM Pro Air-Knit Poly Mesh"
-                    : activeStudioModel === "baseball"
-                    ? "240 GSM Poly Warp-Knit & Double-Knit"
-                    : activeStudioModel === "basketball"
-                    ? "200 GSM Diamond Air-Mesh"
-                    : activeStudioModel === "equestrian"
-                      ? "320 GSM Italian Softshell"
-                      : activeStudioModel === "varsity"
-                        ? "500 GSM Melton & Leather"
-                        : "380 GSM French Terry"}
-                </span>
-
-                {/* Studio Canvas Background Color Selector */}
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setIsBgPickerOpen(!isBgPickerOpen)}
-                    className="p-1.5 text-neutral-700 hover:text-black bg-white border border-[#E6E6E2] hover:border-black rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
-                    title="Change Studio Background Color"
-                  >
-                    <span
-                      className="w-3 h-3 rounded-full border border-black/20 shrink-0"
-                      style={{ backgroundColor: canvasBgColor }}
-                    />
-                    <Palette className="w-3 h-3 text-neutral-500" />
-                  </button>
-
-                  {isBgPickerOpen && (
-                    <div
-                      className="absolute right-0 top-full mt-1.5 z-50 bg-[#0E0E0E] text-white border border-white/20 rounded-[4px] p-2.5 shadow-xl w-52 space-y-2 animate-in fade-in zoom-in-95 duration-150"
-                    >
-                      <div className="flex items-center justify-between pb-1 border-b border-white/10">
-                        <span className="text-[10px] font-mono font-bold tracking-wider text-neutral-300 uppercase">
-                          Studio Backdrop
-                        </span>
-                        <button
-                          onClick={() => setIsBgPickerOpen(false)}
-                          className="text-neutral-400 hover:text-white text-xs leading-none"
-                        >
-                          &times;
-                        </button>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-1.5">
-                        {[
-                          { label: "Light", hex: "#FAFAF8" },
-                          { label: "Dark", hex: "#0E0F12" },
-                          { label: "Charcoal", hex: "#1A1D24" },
-                          { label: "Slate", hex: "#1E293B" },
-                          { label: "Sand", hex: "#ECEAE4" },
-                          { label: "Black", hex: "#050505" },
-                        ].map((preset) => (
-                          <button
-                            key={preset.hex}
-                            type="button"
-                            onClick={() => {
-                              setCanvasBgColor(preset.hex);
-                              setIsBgPickerOpen(false);
-                            }}
-                            className={`flex items-center gap-1 p-1 rounded-[2px] border text-[9px] font-mono transition-colors cursor-pointer ${
-                              canvasBgColor.toLowerCase() === preset.hex.toLowerCase()
-                                ? "border-[#D61C24] bg-white/10 text-white font-bold"
-                                : "border-white/10 hover:border-white/30 text-neutral-300"
-                            }`}
-                          >
-                            <span
-                              className="w-2.5 h-2.5 rounded-full border border-white/30 shrink-0"
-                              style={{ backgroundColor: preset.hex }}
-                            />
-                            <span className="truncate">{preset.label}</span>
-                          </button>
-                        ))}
-                      </div>
-
-                      <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[10px] font-mono">
-                        <span className="text-neutral-400">Custom:</span>
-                        <div className="flex items-center gap-1.5">
-                          <input
-                            type="color"
-                            value={canvasBgColor}
-                            onChange={(e) => setCanvasBgColor(e.target.value)}
-                            className="w-4 h-4 rounded cursor-pointer border-0 p-0 bg-transparent"
-                          />
-                          <span className="text-neutral-200 uppercase text-[9px]">{canvasBgColor}</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
+              {/* Row 2: Studio Garment Model Selector - Fully wrapped with zero clipping */}
+              <div className="w-full flex flex-wrap items-center gap-1 bg-[#F5F5F3] border border-[#E6E6E2] p-1 rounded-[2px]">
+                {/* 1. Hoodie */}
                 <button
-                  onClick={handleReset}
-                  className="p-1.5 text-neutral-500 hover:text-black bg-white border border-[#E6E6E2] rounded-[2px] transition-colors cursor-pointer"
-                  title="Reset to Default"
+                  type="button"
+                  onClick={() => { setActiveStudioModel("hoodie"); setActivePart("body"); setControlTab("colors"); setSelectedGsm(450); onModelChange?.("hoodie"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "hoodie"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="Hoodie Studio"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Hoodie</span>
+                </button>
+
+                {/* 2. Varsity */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveStudioModel("varsity"); setActivePart("body"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(500); onModelChange?.("varsity"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "varsity"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="Varsity Studio"
+                >
+                  <span>Varsity</span>
+                </button>
+
+                {/* 3. Basketball */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveStudioModel("basketball"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(200); onModelChange?.("basketball"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "basketball"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="Basketball Studio"
+                >
+                  <span>Basketball</span>
+                </button>
+
+                {/* 4. Soccer (Moved right after Basketball) */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveStudioModel("soccer"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(160); onModelChange?.("soccer"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "soccer"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="Soccer Studio"
+                >
+                  <span>Soccer</span>
+                </button>
+
+                {/* 5. Baseball */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveStudioModel("baseball"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(240); onModelChange?.("baseball"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "baseball"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="Baseball Studio"
+                >
+                  <span>Baseball</span>
+                </button>
+
+                {/* 6. Ice Hockey */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveStudioModel("icehockey"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(240); onModelChange?.("icehockey"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "icehockey"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="Ice Hockey Studio"
+                >
+                  <span>Ice Hockey</span>
+                </button>
+
+                {/* 7. Martial Arts */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveStudioModel("martialarts"); setActivePart("jacket"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(450); onModelChange?.("martialarts"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "martialarts"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="Martial Arts Studio"
+                >
+                  <span>Martial Arts</span>
+                </button>
+
+                {/* 8. Football */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveStudioModel("americanfootball"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(280); onModelChange?.("americanfootball"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "americanfootball"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="American Football Studio"
+                >
+                  <span>Football</span>
+                </button>
+
+                {/* 9. Rugby */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveStudioModel("rugby"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(280); onModelChange?.("rugby"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "rugby"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="Rugby Studio"
+                >
+                  <span>Rugby</span>
+                </button>
+
+                {/* 10. Cricket */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveStudioModel("cricket"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(220); onModelChange?.("cricket"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "cricket"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="Cricket Studio"
+                >
+                  <span>Cricket</span>
+                </button>
+
+                {/* 11. Women Golf */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveStudioModel("womengolf"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(200); onModelChange?.("womengolf"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "womengolf"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="Women's Golf Studio"
+                >
+                  <span>Women Golf</span>
+                </button>
+
+                {/* 12. Volleyball */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveStudioModel("womenvolleyball"); setActivePart("jersey"); setControlTab("colors"); setActiveView("front"); setSelectedGsm(220); onModelChange?.("womenvolleyball"); }}
+                  className={`px-2 sm:px-2.5 py-1 font-bold uppercase text-[9.5px] sm:text-[10px] rounded-[2px] transition-colors flex items-center gap-1 cursor-pointer shrink-0 ${activeStudioModel === "womenvolleyball"
+                      ? "bg-[#0B0B0B] text-white shadow-xs"
+                      : "text-neutral-600 hover:text-black hover:bg-neutral-200/60"
+                    }`}
+                  title="Women's Volleyball Studio"
+                >
+                  <span>Volleyball</span>
                 </button>
               </div>
             </div>
@@ -2061,6 +3038,138 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                   customLogo={martialLogo}
                   onUpdateLogo={(updates) => setMartialLogo((prev) => ({ ...prev, ...updates }))}
                   onRemoveLogo={() => setMartialLogo((prev) => ({ ...prev, enabled: false, url: null }))}
+                  className="w-full"
+                />
+              ) : activeStudioModel === "americanfootball" ? (
+                <AmericanFootballCustomizerViewer
+                  partColors={footballPartColors}
+                  activeGarmentPart={activePart}
+                  onSelectPart={(p) => {
+                    setActivePart(p);
+                    if (p === "letters") setControlTab("letters");
+                    else if (p === "logo") setControlTab("logo");
+                    else setControlTab("colors");
+                    setIsMobileOptionsOpen(true);
+                  }}
+                  onColorChange={(hex) =>
+                    setFootballPartColors((prev) => ({ ...prev, [activePart]: hex }))
+                  }
+                  view={activeView}
+                  customLetters={footballLetters}
+                  onUpdateLetters={(updates) => setFootballLetters((prev) => ({ ...prev, ...updates }))}
+                  customLogo={footballLogo}
+                  onUpdateLogo={(updates) => setFootballLogo((prev) => ({ ...prev, ...updates }))}
+                  onRemoveLogo={() => setFootballLogo((prev) => ({ ...prev, enabled: false, url: null }))}
+                  className="w-full"
+                />
+              ) : activeStudioModel === "soccer" ? (
+                <SoccerCustomizerViewer
+                  partColors={soccerPartColors}
+                  activeGarmentPart={activePart}
+                  onSelectPart={(p) => {
+                    setActivePart(p);
+                    if (p === "letters") setControlTab("letters");
+                    else if (p === "logo") setControlTab("logo");
+                    else setControlTab("colors");
+                    setIsMobileOptionsOpen(true);
+                  }}
+                  onColorChange={(hex) =>
+                    setSoccerPartColors((prev) => ({ ...prev, [activePart]: hex }))
+                  }
+                  view={activeView}
+                  customLetters={soccerLetters}
+                  onUpdateLetters={(updates) => setSoccerLetters((prev) => ({ ...prev, ...updates }))}
+                  customLogo={soccerLogo}
+                  onUpdateLogo={(updates) => setSoccerLogo((prev) => ({ ...prev, ...updates }))}
+                  onRemoveLogo={() => setSoccerLogo((prev) => ({ ...prev, enabled: false, url: null }))}
+                  className="w-full"
+                />
+              ) : activeStudioModel === "rugby" ? (
+                <RugbyCustomizerViewer
+                  partColors={rugbyPartColors}
+                  activeGarmentPart={activePart}
+                  onSelectPart={(p) => {
+                    setActivePart(p);
+                    if (p === "letters") setControlTab("letters");
+                    else if (p === "logo") setControlTab("logo");
+                    else setControlTab("colors");
+                    setIsMobileOptionsOpen(true);
+                  }}
+                  onColorChange={(hex) =>
+                    setRugbyPartColors((prev) => ({ ...prev, [activePart]: hex }))
+                  }
+                  view={activeView}
+                  customLetters={rugbyLetters}
+                  onUpdateLetters={(updates) => setRugbyLetters((prev) => ({ ...prev, ...updates }))}
+                  customLogo={rugbyLogo}
+                  onUpdateLogo={(updates) => setRugbyLogo((prev) => ({ ...prev, ...updates }))}
+                  onRemoveLogo={() => setRugbyLogo((prev) => ({ ...prev, enabled: false, url: null }))}
+                  className="w-full"
+                />
+              ) : activeStudioModel === "cricket" ? (
+                <CricketCustomizerViewer
+                  partColors={cricketPartColors}
+                  activeGarmentPart={activePart}
+                  onSelectPart={(p) => {
+                    setActivePart(p);
+                    if (p === "letters") setControlTab("letters");
+                    else if (p === "logo") setControlTab("logo");
+                    else setControlTab("colors");
+                    setIsMobileOptionsOpen(true);
+                  }}
+                  onColorChange={(hex) =>
+                    setCricketPartColors((prev) => ({ ...prev, [activePart]: hex }))
+                  }
+                  view={activeView}
+                  customLetters={cricketLetters}
+                  onUpdateLetters={(updates) => setCricketLetters((prev) => ({ ...prev, ...updates }))}
+                  customLogo={cricketLogo}
+                  onUpdateLogo={(updates) => setCricketLogo((prev) => ({ ...prev, ...updates }))}
+                  onRemoveLogo={() => setCricketLogo((prev) => ({ ...prev, enabled: false, url: null }))}
+                  className="w-full"
+                />
+              ) : activeStudioModel === "womengolf" ? (
+                <WomenGolfCustomizerViewer
+                  partColors={womenGolfPartColors}
+                  activeGarmentPart={activePart}
+                  onSelectPart={(p) => {
+                    setActivePart(p);
+                    if (p === "letters") setControlTab("letters");
+                    else if (p === "logo") setControlTab("logo");
+                    else setControlTab("colors");
+                    setIsMobileOptionsOpen(true);
+                  }}
+                  onColorChange={(hex) =>
+                    setWomenGolfPartColors((prev) => ({ ...prev, [activePart]: hex }))
+                  }
+                  view={activeView}
+                  customLetters={womenGolfLetters}
+                  onUpdateLetters={(updates) => setWomenGolfLetters((prev) => ({ ...prev, ...updates }))}
+                  customLogo={womenGolfLogo}
+                  onUpdateLogo={(updates) => setWomenGolfLogo((prev) => ({ ...prev, ...updates }))}
+                  onRemoveLogo={() => setWomenGolfLogo((prev) => ({ ...prev, enabled: false, url: null }))}
+                  className="w-full"
+                />
+              ) : activeStudioModel === "womenvolleyball" ? (
+                <WomenVolleyballCustomizerViewer
+                  partColors={womenVolleyballPartColors}
+                  activeGarmentPart={activePart}
+                  onSelectPart={(p) => {
+                    setActivePart(p);
+                    if (p === "letters") setControlTab("letters");
+                    else if (p === "logo") setControlTab("logo");
+                    else setControlTab("colors");
+                    setIsMobileOptionsOpen(true);
+                  }}
+                  onColorChange={(hex) =>
+                    setWomenVolleyballPartColors((prev) => ({ ...prev, [activePart]: hex }))
+                  }
+                  view={activeView}
+                  customLetters={womenVolleyballLetters}
+                  onUpdateLetters={(updates) => setWomenVolleyballLetters((prev) => ({ ...prev, ...updates }))}
+                  customLogo={womenVolleyballLogo}
+                  onUpdateLogo={(updates) => setWomenVolleyballLogo((prev) => ({ ...prev, ...updates }))}
+                  onRemoveLogo={() => setWomenVolleyballLogo((prev) => ({ ...prev, enabled: false, url: null }))}
                   className="w-full"
                 />
               ) : (
@@ -2958,19 +4067,7 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                         Component Colorway:
                       </label>
                       <span className="text-[11px] font-mono font-medium text-black">
-                        {activeStudioModel === "hoodie"
-                          ? (hoodiePartColors[activePart] || "#222224")
-                          : activeStudioModel === "equestrian"
-                            ? (equestrianPartColors[activePart] || "#111B2C")
-                            : activeStudioModel === "basketball"
-                              ? (basketballPartColors[activePart] || "#CA8A04")
-                              : activeStudioModel === "baseball"
-                                ? (baseballPartColors[activePart] || "#FFFFFF")
-                                : activeStudioModel === "icehockey"
-                                  ? (hockeyPartColors[activePart] || "#DC2626")
-                                  : activeStudioModel === "martialarts"
-                                    ? (martialPartColors[activePart] || "#F8FAFC")
-                                    : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")}
+                        {getActiveModelPartColor(activePart)}
                       </span>
                     </div>
                     <div className="grid grid-cols-7 sm:grid-cols-9 gap-1.5 p-3 bg-[#FAFAF8] border border-[#E6E6E2] rounded-[2px]">
@@ -2979,19 +4076,9 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                         : PRESET_SWATCHES
                       ).map((swatch: any) => {
                         const currentColor = (
-                          activeStudioModel === "hoodie"
-                            ? hoodiePartColors[activePart]
-                            : activeStudioModel === "equestrian"
-                              ? equestrianPartColors[activePart]
-                              : activeStudioModel === "basketball"
-                                ? basketballPartColors[activePart]
-                                : activeStudioModel === "baseball"
-                                  ? baseballPartColors[activePart]
-                                  : activeStudioModel === "icehockey"
-                                    ? hockeyPartColors[activePart]
-                                    : activeStudioModel === "martialarts"
-                                      ? martialPartColors[activePart]
-                                      : partColors[activePart as keyof VarsityPartsState]
+                          activePart === "letters"
+                            ? customLetters.color
+                            : getActiveModelPartColor(activePart)
                         )?.toLowerCase() || "";
                         const isSelected = currentColor === swatch.hex.toLowerCase();
                         const isLight = isLightColor(swatch.hex);
@@ -3022,21 +4109,7 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                     <div className="flex items-center justify-between mt-2 text-[11px]">
                       <button
                         onClick={() =>
-                          handleApplyToAll(
-                            activeStudioModel === "hoodie"
-                              ? (hoodiePartColors[activePart] || "#222224")
-                              : activeStudioModel === "equestrian"
-                                ? (equestrianPartColors[activePart] || "#111B2C")
-                                : activeStudioModel === "basketball"
-                                  ? (basketballPartColors[activePart] || "#CA8A04")
-                                  : activeStudioModel === "baseball"
-                                    ? (baseballPartColors[activePart] || "#FFFFFF")
-                                    : activeStudioModel === "icehockey"
-                                      ? (hockeyPartColors[activePart] || "#DC2626")
-                                      : activeStudioModel === "martialarts"
-                                        ? (martialPartColors[activePart] || "#F8FAFC")
-                                        : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")
-                          )
+                          handleApplyToAll(getActiveModelPartColor(activePart))
                         }
                         className="text-[#D10115] hover:underline font-semibold cursor-pointer"
                       >
@@ -3055,42 +4128,14 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                       <div className="flex gap-2">
                         <input
                           type="color"
-                          value={
-                            activeStudioModel === "hoodie"
-                              ? (hoodiePartColors[activePart] || "#222224")
-                              : activeStudioModel === "equestrian"
-                                ? (equestrianPartColors[activePart] || "#111B2C")
-                                : activeStudioModel === "basketball"
-                                  ? (basketballPartColors[activePart] || "#CA8A04")
-                                  : activeStudioModel === "baseball"
-                                    ? (baseballPartColors[activePart] || "#FFFFFF")
-                                    : activeStudioModel === "icehockey"
-                                      ? (hockeyPartColors[activePart] || "#DC2626")
-                                      : activeStudioModel === "martialarts"
-                                        ? (martialPartColors[activePart] || "#F8FAFC")
-                                        : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")
-                          }
+                          value={getActiveModelPartColor(activePart)}
                           onChange={(e) => handleColorSelect(e.target.value)}
                           className="w-9 h-9 p-0.5 rounded-[2px] border border-[#E6E6E2] cursor-pointer shrink-0"
                           title="Pick custom swatch color"
                         />
                         <input
                           type="text"
-                          value={
-                            activeStudioModel === "hoodie"
-                              ? (hoodiePartColors[activePart] || "#222224")
-                              : activeStudioModel === "equestrian"
-                                ? (equestrianPartColors[activePart] || "#111B2C")
-                                : activeStudioModel === "basketball"
-                                  ? (basketballPartColors[activePart] || "#CA8A04")
-                                  : activeStudioModel === "baseball"
-                                    ? (baseballPartColors[activePart] || "#FFFFFF")
-                                    : activeStudioModel === "icehockey"
-                                      ? (hockeyPartColors[activePart] || "#DC2626")
-                                      : activeStudioModel === "martialarts"
-                                        ? (martialPartColors[activePart] || "#F8FAFC")
-                                        : (partColors[activePart as keyof VarsityPartsState] || "#0B0B0B")
-                          }
+                          value={getActiveModelPartColor(activePart)}
                           onChange={(e) => handleColorSelect(e.target.value)}
                           className="w-full px-3 py-1 text-xs font-mono border border-[#E6E6E2] rounded-[2px]"
                           placeholder="#HEX or Pantone code"
@@ -4047,7 +5092,19 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                                 ? "/customize/custom-ice-hockey-uniform"
                                 : activeStudioModel === "martialarts"
                                   ? "/customize/custom-martial-arts-gi"
-                                  : "/customize/custom-varsity-jacket"
+                                  : activeStudioModel === "americanfootball"
+                                    ? "/customize/custom-american-football-uniform"
+                                    : activeStudioModel === "soccer"
+                                      ? "/customize/custom-soccer-uniform"
+                                      : activeStudioModel === "rugby"
+                                        ? "/customize/custom-rugby-uniform"
+                                        : activeStudioModel === "cricket"
+                                          ? "/customize/custom-cricket-uniform"
+                                          : activeStudioModel === "womengolf"
+                                            ? "/customize/custom-women-golf-uniform"
+                                            : activeStudioModel === "womenvolleyball"
+                                              ? "/customize/custom-women-volleyball-uniform"
+                                              : "/customize/custom-varsity-jacket"
                     }
                     className="w-full btn-primary py-3.5 text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer uppercase font-mono font-bold tracking-wider"
                   >
@@ -4127,7 +5184,19 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                             ? "CUSTOM PRO ICE HOCKEY UNIFORM SET"
                             : activeStudioModel === "martialarts"
                               ? "CUSTOM JIU-JITSU & MARTIAL ARTS GI"
-                              : "CUSTOM EQUESTRIAN PERFORMANCE JACKET"}
+                              : activeStudioModel === "americanfootball"
+                                ? "CUSTOM PRO AMERICAN FOOTBALL UNIFORM"
+                                : activeStudioModel === "soccer"
+                                  ? "CUSTOM PRO SOCCER UNIFORM SET"
+                                  : activeStudioModel === "rugby"
+                                    ? "CUSTOM PRO RUGBY UNIFORM SET"
+                                    : activeStudioModel === "cricket"
+                                      ? "CUSTOM PRO CRICKET UNIFORM SET"
+                                      : activeStudioModel === "womengolf"
+                                        ? "CUSTOM WOMEN'S GOLF & SKORT SET"
+                                        : activeStudioModel === "womenvolleyball"
+                                          ? "CUSTOM WOMEN'S VOLLEYBALL UNIFORM"
+                                          : "CUSTOM EQUESTRIAN PERFORMANCE JACKET"}
                 </h1>
               </div>
               <span className="hidden md:inline-block text-[10px] font-mono bg-[#FAFAF8] border border-[#DADBD2] px-2 py-0.5 rounded-[2px] font-semibold text-neutral-600 shrink-0">
@@ -4187,9 +5256,21 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                     ? (PRODUCTS_DATA.find((p) => p.slug.includes("ice-hockey") || p.subcategory.includes("hockey")) || getStudioGarmentProduct("icehockey"))
                     : activeStudioModel === "martialarts"
                       ? (PRODUCTS_DATA.find((p) => p.slug.includes("martial-arts") || p.subcategory.includes("martial")) || getStudioGarmentProduct("martialarts"))
-                      : activeStudioModel === "equestrian"
-                        ? (PRODUCTS_DATA.find((p) => p.slug.includes("riding") || p.subcategory.includes("riding") || p.subcategory.includes("equestrian")) || getStudioGarmentProduct("equestrian"))
-                        : (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || getStudioGarmentProduct("hoodie"))
+                      : activeStudioModel === "americanfootball"
+                        ? (PRODUCTS_DATA.find((p) => p.slug.includes("american-football") || p.subcategory.includes("football")) || getStudioGarmentProduct("americanfootball"))
+                        : activeStudioModel === "soccer"
+                          ? (PRODUCTS_DATA.find((p) => p.slug.includes("soccer") || p.subcategory.includes("soccer")) || getStudioGarmentProduct("soccer"))
+                          : activeStudioModel === "rugby"
+                            ? (PRODUCTS_DATA.find((p) => p.slug.includes("rugby") || p.subcategory.includes("rugby")) || getStudioGarmentProduct("rugby"))
+                            : activeStudioModel === "cricket"
+                              ? (PRODUCTS_DATA.find((p) => p.slug.includes("cricket") || p.subcategory.includes("cricket")) || getStudioGarmentProduct("cricket"))
+                              : activeStudioModel === "womengolf"
+                                ? (PRODUCTS_DATA.find((p) => p.slug.includes("golf") || p.subcategory.includes("golf")) || getStudioGarmentProduct("womengolf"))
+                                : activeStudioModel === "womenvolleyball"
+                                  ? (PRODUCTS_DATA.find((p) => p.slug.includes("volleyball") || p.subcategory.includes("volleyball")) || getStudioGarmentProduct("womenvolleyball"))
+                                  : activeStudioModel === "equestrian"
+                                    ? (PRODUCTS_DATA.find((p) => p.slug.includes("riding") || p.subcategory.includes("riding") || p.subcategory.includes("equestrian")) || getStudioGarmentProduct("equestrian"))
+                                    : (PRODUCTS_DATA.find((p) => p.slug.includes("hoodie")) || getStudioGarmentProduct("hoodie"))
           }
           state={{
             productId:
@@ -4203,9 +5284,21 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                       ? "custom-ice-hockey-uniform"
                       : activeStudioModel === "martialarts"
                         ? "custom-martial-arts-gi"
-                        : activeStudioModel === "equestrian"
-                          ? "custom-riding-jacket"
-                          : "heavyweight-hoodie",
+                        : activeStudioModel === "americanfootball"
+                          ? "custom-american-football-uniform"
+                          : activeStudioModel === "soccer"
+                            ? "custom-soccer-uniform"
+                            : activeStudioModel === "rugby"
+                              ? "custom-rugby-uniform"
+                              : activeStudioModel === "cricket"
+                                ? "custom-cricket-uniform"
+                                : activeStudioModel === "womengolf"
+                                  ? "custom-women-golf-uniform"
+                                  : activeStudioModel === "womenvolleyball"
+                                    ? "custom-women-volleyball-uniform"
+                                    : activeStudioModel === "equestrian"
+                                      ? "custom-riding-jacket"
+                                      : "heavyweight-hoodie",
             view: activeView,
             activeGarmentPart: activePart,
             partColors:
@@ -4219,9 +5312,21 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                       ? hockeyPartColors
                       : activeStudioModel === "martialarts"
                         ? martialPartColors
-                        : activeStudioModel === "equestrian"
-                          ? equestrianPartColors
-                          : hoodiePartColors,
+                        : activeStudioModel === "americanfootball"
+                          ? footballPartColors
+                          : activeStudioModel === "soccer"
+                            ? soccerPartColors
+                            : activeStudioModel === "rugby"
+                              ? rugbyPartColors
+                              : activeStudioModel === "cricket"
+                                ? cricketPartColors
+                                : activeStudioModel === "womengolf"
+                                  ? womenGolfPartColors
+                                  : activeStudioModel === "womenvolleyball"
+                                    ? womenVolleyballPartColors
+                                    : activeStudioModel === "equestrian"
+                                      ? equestrianPartColors
+                                      : hoodiePartColors,
             fabricId:
               activeStudioModel === "varsity"
                 ? "500-gsm-melton"
@@ -4233,9 +5338,21 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                       ? "240-gsm-air-knit"
                       : activeStudioModel === "martialarts"
                         ? "450-gsm-pearl-weave"
-                        : activeStudioModel === "equestrian"
-                          ? "320-gsm-italian-softshell"
-                          : "450-gsm-loopback",
+                        : activeStudioModel === "americanfootball"
+                          ? "280-gsm-spandex-mesh"
+                          : activeStudioModel === "soccer"
+                            ? "160-gsm-interlock-poly"
+                            : activeStudioModel === "rugby"
+                              ? "280-gsm-heavy-poly"
+                              : activeStudioModel === "cricket"
+                                ? "220-gsm-micro-poly"
+                                : activeStudioModel === "womengolf"
+                                  ? "200-gsm-pique-stretch"
+                                  : activeStudioModel === "womenvolleyball"
+                                    ? "220-gsm-spandex-jersey"
+                                    : activeStudioModel === "equestrian"
+                                      ? "320-gsm-italian-softshell"
+                                      : "450-gsm-loopback",
             gsm: selectedGsm,
             washId: activeWash,
             decorationMethodId:
@@ -4256,7 +5373,19 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                   ? "Boxy Vintage Drop-Shoulder"
                   : activeStudioModel === "equestrian"
                     ? "Sartorial Show-Ring Tailored Arc"
-                    : "Oversized Drop-Shoulder",
+                    : activeStudioModel === "americanfootball"
+                      ? "Pro Heavy Duty Compression Fit"
+                      : activeStudioModel === "soccer"
+                        ? "Athletic Breathable Slim Fit"
+                        : activeStudioModel === "rugby"
+                          ? "Reinforced Ergonomic Pro Match Fit"
+                          : activeStudioModel === "cricket"
+                            ? "Classic Tournament Relaxed Fit"
+                            : activeStudioModel === "womengolf"
+                              ? "Tailored Performance Cut"
+                              : activeStudioModel === "womenvolleyball"
+                                ? "Pro Athletic Spandex Fit"
+                                : "Oversized Drop-Shoulder",
               lining: selectedLining,
             },
             artworkLayers:
@@ -4336,9 +5465,21 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                   ? "Pro Custom Ice Hockey Uniform Set"
                   : activeStudioModel === "martialarts"
                     ? "Custom Pearl Weave Martial Arts BJJ Gi"
-                    : activeStudioModel === "equestrian"
-                      ? "Italian Softshell Performance Riding Jacket"
-                      : "Heavyweight Streetwear French Terry Hoodie"
+                    : activeStudioModel === "americanfootball"
+                      ? "Pro Heavy Duty American Football Uniform"
+                      : activeStudioModel === "soccer"
+                        ? "Pro Interlock Match Soccer Uniform"
+                        : activeStudioModel === "rugby"
+                          ? "Pro Heavy Poly Reinforced Rugby Uniform"
+                          : activeStudioModel === "cricket"
+                            ? "Pro Micro Poly Match Cricket Uniform"
+                            : activeStudioModel === "womengolf"
+                              ? "Women's Performance Golf & Skort Set"
+                              : activeStudioModel === "womenvolleyball"
+                                ? "Women's Spandex Pro Volleyball Uniform"
+                                : activeStudioModel === "equestrian"
+                                  ? "Italian Softshell Performance Riding Jacket"
+                                  : "Heavyweight Streetwear French Terry Hoodie"
         }
         previewImage={
           activeStudioModel === "varsity"
@@ -4351,9 +5492,21 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                   ? "/icehockey-uniform/front_base.png"
                   : activeStudioModel === "martialarts"
                     ? "/martial-arts/front_base.png"
-                    : activeStudioModel === "equestrian"
-                      ? "/equastarian/front (2) (1).png"
-                      : "/hoodie/hoodie_front.png"
+                    : activeStudioModel === "americanfootball"
+                      ? "/american-football-uniform/front_base.png"
+                      : activeStudioModel === "soccer"
+                        ? "/socceruniform/front_base.png"
+                        : activeStudioModel === "rugby"
+                          ? "/rugby-uniform/front_base.png"
+                          : activeStudioModel === "cricket"
+                            ? "/cricket uniform/front_base.png"
+                            : activeStudioModel === "womengolf"
+                              ? "/women-golf-uniform/front_base.png"
+                              : activeStudioModel === "womenvolleyball"
+                                ? "/women-volleyball-uniform/front_base.png"
+                                : activeStudioModel === "equestrian"
+                                  ? "/equastarian/front (2) (1).png"
+                                  : "/hoodie/hoodie_front.png"
         }
         activeWash={activeWash}
         gsm={selectedGsm}

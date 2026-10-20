@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Sparkles, Layers, Eye, Move, Box, Maximize2 } from "lucide-react";
+import { Sparkles, Layers, Move, Box, Maximize2 } from "lucide-react";
 import {
   CustomLettersState,
   CustomLogoState,
@@ -673,34 +673,6 @@ export const BaseballCustomizerViewer: React.FC<BaseballCustomizerViewerProps> =
           </div>
         </div>
       )}
-
-      {/* View Switcher Capsule (Front / Back) */}
-      <div className="absolute top-2 left-2 z-40 flex items-center gap-1 bg-white/95 backdrop-blur-md border border-[#E6E6E2] p-0.5 rounded-[2px] shadow-xs">
-        <button
-          type="button"
-          onClick={() => setDisplayMode("front")}
-          className={`px-2 py-0.5 text-[10px] font-mono font-bold uppercase rounded-[2px] transition-colors flex items-center gap-1 ${
-            displayMode === "front"
-              ? "bg-[#0B0B0B] text-white shadow-xs"
-              : "text-neutral-600 hover:text-black"
-          }`}
-        >
-          <Eye className="w-2.5 h-2.5" />
-          <span>Front</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => setDisplayMode("back")}
-          className={`px-2 py-0.5 text-[10px] font-mono font-bold uppercase rounded-[2px] transition-colors flex items-center gap-1 ${
-            displayMode === "back"
-              ? "bg-[#0B0B0B] text-white shadow-xs"
-              : "text-neutral-600 hover:text-black"
-          }`}
-        >
-          <Eye className="w-2.5 h-2.5" />
-          <span>Back</span>
-        </button>
-      </div>
 
       {/* Children slots */}
       {children}

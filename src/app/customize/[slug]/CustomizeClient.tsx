@@ -9,7 +9,22 @@ export default function CustomizeClient() {
   const router = useRouter();
   const slug = (params?.slug as string) || "";
 
-  const handleModelChange = (model: "hoodie" | "varsity" | "equestrian" | "basketball" | "baseball" | "icehockey" | "martialarts") => {
+  const handleModelChange = (
+    model:
+      | "hoodie"
+      | "varsity"
+      | "equestrian"
+      | "basketball"
+      | "baseball"
+      | "icehockey"
+      | "martialarts"
+      | "americanfootball"
+      | "soccer"
+      | "rugby"
+      | "cricket"
+      | "womengolf"
+      | "womenvolleyball"
+  ) => {
     const slugMap: Record<string, string> = {
       varsity: "custom-varsity-jacket",
       hoodie: "custom-hoodie",
@@ -18,6 +33,12 @@ export default function CustomizeClient() {
       icehockey: "custom-ice-hockey-uniform",
       martialarts: "custom-martial-arts-gi",
       equestrian: "custom-riding-jacket",
+      americanfootball: "custom-american-football-uniform",
+      soccer: "custom-soccer-uniform",
+      rugby: "custom-rugby-uniform",
+      cricket: "custom-cricket-uniform",
+      womengolf: "custom-women-golf-uniform",
+      womenvolleyball: "custom-women-volleyball-uniform",
     };
     const newSlug = slugMap[model] || "custom-varsity-jacket";
     router.replace(`/customize/${newSlug}`);

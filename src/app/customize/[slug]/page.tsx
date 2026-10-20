@@ -20,6 +20,28 @@ export function generateStaticParams() {
     "martial-arts-gi",
     "martial-arts",
     
+    // New Athletic Uniform Sets
+    "custom-american-football-uniform",
+    "american-football-uniform",
+    "american-football",
+    "football",
+    "custom-soccer-uniform",
+    "soccer-uniform",
+    "soccer",
+    "custom-rugby-uniform",
+    "rugby-uniform",
+    "custom-cricket-uniform",
+    "cricket-uniform",
+    "cricket",
+    "custom-women-golf-uniform",
+    "women-golf-uniform",
+    "women-golf",
+    "golf",
+    "custom-women-volleyball-uniform",
+    "women-volleyball-uniform",
+    "women-volleyball",
+    "volleyball",
+
     // Core garment aliases
     "varsity-jacket",
     "hoodie",

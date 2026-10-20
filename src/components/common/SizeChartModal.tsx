@@ -6,7 +6,7 @@ import { X, Ruler, Printer } from "lucide-react";
 export interface SizeChartModalProps {
   isOpen: boolean;
   onClose: () => void;
-  activeModel: "hoodie" | "varsity" | "equestrian" | "basketball" | "baseball" | "icehockey" | "martialarts";
+  activeModel: "hoodie" | "varsity" | "equestrian" | "basketball" | "baseball" | "icehockey" | "martialarts" | "americanfootball" | "soccer" | "rugby" | "cricket" | "womengolf" | "womenvolleyball";
   templates?: any[];
 }
 
@@ -72,6 +72,66 @@ const FALLBACK_POM: Record<string, { title: string; grading: Record<string, Reco
       A5: { chest_width: 70, jacket_length: 86, sleeve_wingspan: 180, pants_length: 109 },
     },
   },
+  americanfootball: {
+    title: "Custom Pro American Football Uniform (Jersey & Pants)",
+    grading: {
+      S: { chest_width: 54, jersey_length: 76, pants_waist: 38, pants_inseam: 48 },
+      M: { chest_width: 57, jersey_length: 78, pants_waist: 41, pants_inseam: 49 },
+      L: { chest_width: 60, jersey_length: 80, pants_waist: 44, pants_inseam: 50 },
+      XL: { chest_width: 63, jersey_length: 82, pants_waist: 47, pants_inseam: 51 },
+      "2XL": { chest_width: 66, jersey_length: 84, pants_waist: 50, pants_inseam: 52 },
+    },
+  },
+  soccer: {
+    title: "Pro Match Soccer Uniform Set (Jersey & Shorts)",
+    grading: {
+      S: { chest_width: 50, jersey_length: 72, shorts_waist: 36, shorts_length: 44 },
+      M: { chest_width: 53, jersey_length: 74, shorts_waist: 39, shorts_length: 46 },
+      L: { chest_width: 56, jersey_length: 76, shorts_waist: 42, shorts_length: 48 },
+      XL: { chest_width: 59, jersey_length: 78, shorts_waist: 45, shorts_length: 50 },
+      "2XL": { chest_width: 62, jersey_length: 80, shorts_waist: 48, shorts_length: 52 },
+    },
+  },
+  rugby: {
+    title: "Pro Match Rugby Uniform Set (Jersey, Shorts & Socks)",
+    grading: {
+      S: { chest_width: 52, jersey_length: 72, shorts_waist: 37, shorts_length: 38 },
+      M: { chest_width: 55, jersey_length: 74, shorts_waist: 40, shorts_length: 40 },
+      L: { chest_width: 58, jersey_length: 76, shorts_waist: 43, shorts_length: 42 },
+      XL: { chest_width: 61, jersey_length: 78, shorts_waist: 46, shorts_length: 44 },
+      "2XL": { chest_width: 64, jersey_length: 80, shorts_waist: 49, shorts_length: 46 },
+    },
+  },
+  cricket: {
+    title: "Tournament Cricket Uniform Set (Jersey & Trousers)",
+    grading: {
+      S: { chest_width: 53, jersey_length: 73, trouser_waist: 38, trouser_inseam: 78 },
+      M: { chest_width: 56, jersey_length: 75, trouser_waist: 41, trouser_inseam: 80 },
+      L: { chest_width: 59, jersey_length: 77, trouser_waist: 44, trouser_inseam: 82 },
+      XL: { chest_width: 62, jersey_length: 79, trouser_waist: 47, trouser_inseam: 84 },
+      "2XL": { chest_width: 65, jersey_length: 81, trouser_waist: 50, trouser_inseam: 86 },
+    },
+  },
+  womengolf: {
+    title: "Women's Pro Golf Polo & Skort Uniform Set",
+    grading: {
+      XS: { bust_width: 44, polo_length: 62, skort_waist: 34, skort_length: 37 },
+      S: { bust_width: 47, polo_length: 64, skort_waist: 37, skort_length: 38.5 },
+      M: { bust_width: 50, polo_length: 66, skort_waist: 40, skort_length: 40 },
+      L: { bust_width: 53, polo_length: 68, skort_waist: 43, skort_length: 41.5 },
+      XL: { bust_width: 56, polo_length: 70, skort_waist: 46, skort_length: 43 },
+    },
+  },
+  womenvolleyball: {
+    title: "Women's Pro Spandex Volleyball Uniform Set",
+    grading: {
+      XS: { bust_width: 43, jersey_length: 63, shorts_waist: 33, shorts_inseam: 8 },
+      S: { bust_width: 46, jersey_length: 65, shorts_waist: 36, shorts_inseam: 8.5 },
+      M: { bust_width: 49, jersey_length: 67, shorts_waist: 39, shorts_inseam: 9 },
+      L: { bust_width: 52, jersey_length: 69, shorts_waist: 42, shorts_inseam: 9.5 },
+      XL: { bust_width: 55, jersey_length: 71, shorts_waist: 45, shorts_inseam: 10 },
+    },
+  },
   equestrian: {
     title: "Italian Softshell Performance Equestrian Jacket",
     grading: {
@@ -98,6 +158,15 @@ export const SizeChartModal: React.FC<SizeChartModalProps> = ({
   const matchedTemplate = templates.find((t: any) => {
     if (activeModel === "varsity") return t.model_type === "varsity" || t.slug?.includes("varsity");
     if (activeModel === "basketball") return t.model_type === "basketball" || t.slug?.includes("basketball");
+    if (activeModel === "baseball") return t.model_type === "baseball" || t.slug?.includes("baseball");
+    if (activeModel === "icehockey") return t.model_type === "icehockey" || t.slug?.includes("hockey");
+    if (activeModel === "martialarts") return t.model_type === "martialarts" || t.slug?.includes("martial");
+    if (activeModel === "americanfootball") return t.model_type === "americanfootball" || t.slug?.includes("football");
+    if (activeModel === "soccer") return t.model_type === "soccer" || t.slug?.includes("soccer");
+    if (activeModel === "rugby") return t.model_type === "rugby" || t.slug?.includes("rugby");
+    if (activeModel === "cricket") return t.model_type === "cricket" || t.slug?.includes("cricket");
+    if (activeModel === "womengolf") return t.model_type === "womengolf" || t.slug?.includes("golf");
+    if (activeModel === "womenvolleyball") return t.model_type === "womenvolleyball" || t.slug?.includes("volleyball");
     if (activeModel === "equestrian") return t.model_type === "equestrian" || t.slug?.includes("riding") || t.slug?.includes("equestrian");
     return t.model_type === "hoodie" || t.slug?.includes("hoodie");
   });

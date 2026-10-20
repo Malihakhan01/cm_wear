@@ -159,6 +159,74 @@ const ASSET_MARTIAL_BACK_SLEEVES = "/martial-arts/back_sleeves.png";
 const ASSET_MARTIAL_BACK_BELT = "/martial-arts/back_belt.png";
 const ASSET_MARTIAL_BACK_PANTS = "/martial-arts/back_pants.png";
 
+// American Football High-Resolution Tech Pack Asset Layers
+const ASSET_FB_FRONT_BASE = "/american-football-uniform/front_base.png";
+const ASSET_FB_FRONT_JERSEY = "/american-football-uniform/front_jersey.png";
+const ASSET_FB_FRONT_SLEEVES = "/american-football-uniform/front_sleeves.png";
+const ASSET_FB_FRONT_PANTS = "/american-football-uniform/front_pants.png";
+
+const ASSET_FB_BACK_BASE = "/american-football-uniform/back_base.png";
+const ASSET_FB_BACK_JERSEY = "/american-football-uniform/back_jersey.png";
+const ASSET_FB_BACK_SLEEVES = "/american-football-uniform/back_sleeves.png";
+const ASSET_FB_BACK_PANTS = "/american-football-uniform/back_pants.png";
+
+// Soccer High-Resolution Tech Pack Asset Layers
+const ASSET_SOC_FRONT_BASE = "/socceruniform/front_base.png";
+const ASSET_SOC_FRONT_JERSEY = "/socceruniform/front_jersey.png";
+const ASSET_SOC_FRONT_SLEEVES = "/socceruniform/front_sleeves.png";
+const ASSET_SOC_FRONT_SHORTS = "/socceruniform/front_shorts.png";
+
+const ASSET_SOC_BACK_BASE = "/socceruniform/back_base.png";
+const ASSET_SOC_BACK_JERSEY = "/socceruniform/back_jersey.png";
+const ASSET_SOC_BACK_SLEEVES = "/socceruniform/back_sleeves.png";
+const ASSET_SOC_BACK_SHORTS = "/socceruniform/back_shorts.png";
+
+// Rugby High-Resolution Tech Pack Asset Layers
+const ASSET_RGB_FRONT_BASE = "/rugby-uniform/front_base.png";
+const ASSET_RGB_FRONT_JERSEY = "/rugby-uniform/front_jersey.png";
+const ASSET_RGB_FRONT_SLEEVES = "/rugby-uniform/front_sleeves.png";
+const ASSET_RGB_FRONT_SHORTS = "/rugby-uniform/front_shorts.png";
+const ASSET_RGB_FRONT_SOCKS = "/rugby-uniform/front_socks.png";
+
+const ASSET_RGB_BACK_BASE = "/rugby-uniform/back_base.png";
+const ASSET_RGB_BACK_JERSEY = "/rugby-uniform/back_jersey.png";
+const ASSET_RGB_BACK_SLEEVES = "/rugby-uniform/back_sleeves.png";
+const ASSET_RGB_BACK_SHORTS = "/rugby-uniform/back_shorts.png";
+const ASSET_RGB_BACK_SOCKS = "/rugby-uniform/back_socks.png";
+
+// Cricket High-Resolution Tech Pack Asset Layers
+const ASSET_CRK_FRONT_BASE = "/cricket uniform/front_base.png";
+const ASSET_CRK_FRONT_JERSEY = "/cricket uniform/front_jersey.png";
+const ASSET_CRK_FRONT_SLEEVES = "/cricket uniform/front_sleeves.png";
+const ASSET_CRK_FRONT_PANTS = "/cricket uniform/front_pants.png";
+
+const ASSET_CRK_BACK_BASE = "/cricket uniform/back_base.png";
+const ASSET_CRK_BACK_JERSEY = "/cricket uniform/back_jersey.png";
+const ASSET_CRK_BACK_SLEEVES = "/cricket uniform/back_sleeves.png";
+const ASSET_CRK_BACK_PANTS = "/cricket uniform/back_pants.png";
+
+// Women Golf High-Resolution Tech Pack Asset Layers
+const ASSET_GLF_FRONT_BASE = "/women-golf-uniform/front_base.png";
+const ASSET_GLF_FRONT_JERSEY = "/women-golf-uniform/front_jersey.png";
+const ASSET_GLF_FRONT_SLEEVES = "/women-golf-uniform/front_sleeves.png";
+const ASSET_GLF_FRONT_SKORT = "/women-golf-uniform/front_skort.png";
+
+const ASSET_GLF_BACK_BASE = "/women-golf-uniform/back_base.png";
+const ASSET_GLF_BACK_JERSEY = "/women-golf-uniform/back_jersey.png";
+const ASSET_GLF_BACK_SLEEVES = "/women-golf-uniform/back_sleeves.png";
+const ASSET_GLF_BACK_SKORT = "/women-golf-uniform/back_skort.png";
+
+// Women Volleyball High-Resolution Tech Pack Asset Layers
+const ASSET_VLB_FRONT_BASE = "/women-volleyball-uniform/front_base.png";
+const ASSET_VLB_FRONT_JERSEY = "/women-volleyball-uniform/front_jersey.png";
+const ASSET_VLB_FRONT_SLEEVES = "/women-volleyball-uniform/front_sleeves.png";
+const ASSET_VLB_FRONT_SHORTS = "/women-volleyball-uniform/front_shorts.png";
+
+const ASSET_VLB_BACK_BASE = "/women-volleyball-uniform/back_base.png";
+const ASSET_VLB_BACK_JERSEY = "/women-volleyball-uniform/back_jersey.png";
+const ASSET_VLB_BACK_SLEEVES = "/women-volleyball-uniform/back_sleeves.png";
+const ASSET_VLB_BACK_SHORTS = "/women-volleyball-uniform/back_shorts.png";
+
 const getMaskStyle = (assetPath: string) => {
   const encoded = encodeURI(assetPath);
   return {
@@ -236,6 +304,52 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
     product.subcategory?.toLowerCase().includes("martial")
   );
 
+  const isAmericanFootball = Boolean(
+    state.productId?.includes("american-football") ||
+    state.productId?.includes("football") ||
+    product.slug?.includes("american-football") ||
+    product.slug?.includes("football") ||
+    product.category?.toLowerCase().includes("football") ||
+    product.subcategory?.toLowerCase().includes("football")
+  );
+
+  const isSoccer = Boolean(
+    state.productId?.includes("soccer") ||
+    product.slug?.includes("soccer") ||
+    product.category?.toLowerCase().includes("soccer") ||
+    product.subcategory?.toLowerCase().includes("soccer")
+  );
+
+  const isRugby = Boolean(
+    state.productId?.includes("rugby") ||
+    product.slug?.includes("rugby") ||
+    product.category?.toLowerCase().includes("rugby") ||
+    product.subcategory?.toLowerCase().includes("rugby")
+  );
+
+  const isCricket = Boolean(
+    state.productId?.includes("cricket") ||
+    product.slug?.includes("cricket") ||
+    product.category?.toLowerCase().includes("cricket") ||
+    product.subcategory?.toLowerCase().includes("cricket")
+  );
+
+  const isWomenGolf = Boolean(
+    state.productId?.includes("golf") ||
+    state.productId?.includes("skort") ||
+    product.slug?.includes("golf") ||
+    product.slug?.includes("skort") ||
+    product.category?.toLowerCase().includes("golf") ||
+    product.subcategory?.toLowerCase().includes("golf")
+  );
+
+  const isWomenVolleyball = Boolean(
+    state.productId?.includes("volleyball") ||
+    product.slug?.includes("volleyball") ||
+    product.category?.toLowerCase().includes("volleyball") ||
+    product.subcategory?.toLowerCase().includes("volleyball")
+  );
+
   const isEquestrian = Boolean(
     state.productId?.includes("equestrian") ||
     state.productId?.includes("riding") ||
@@ -251,6 +365,12 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
     !isBaseball &&
     !isIceHockey &&
     !isMartialArts &&
+    !isAmericanFootball &&
+    !isSoccer &&
+    !isRugby &&
+    !isCricket &&
+    !isWomenGolf &&
+    !isWomenVolleyball &&
     !isEquestrian &&
     Boolean(
       state.productId?.includes("hoodie") ||
@@ -277,6 +397,18 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
     ? "/icehockey-uniform/front_base.png"
     : isMartialArts
     ? "/martial-arts/front_base.png"
+    : isAmericanFootball
+    ? "/american-football-uniform/front_base.png"
+    : isSoccer
+    ? "/socceruniform/front_base.png"
+    : isRugby
+    ? "/rugby-uniform/front_base.png"
+    : isCricket
+    ? "/cricket uniform/front_base.png"
+    : isWomenGolf
+    ? "/women-golf-uniform/front_base.png"
+    : isWomenVolleyball
+    ? "/women-volleyball-uniform/front_base.png"
     : isBaseball
     ? "/baseball-uniform/front_base.png"
     : isBasketball
@@ -295,6 +427,18 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
     ? "/icehockey-uniform/back_base.png"
     : isMartialArts
     ? "/martial-arts/back_base.png"
+    : isAmericanFootball
+    ? "/american-football-uniform/back_base.png"
+    : isSoccer
+    ? "/socceruniform/back_base.png"
+    : isRugby
+    ? "/rugby-uniform/back_base.png"
+    : isCricket
+    ? "/cricket uniform/back_base.png"
+    : isWomenGolf
+    ? "/women-golf-uniform/back_base.png"
+    : isWomenVolleyball
+    ? "/women-volleyball-uniform/back_base.png"
     : isBaseball
     ? "/baseball-uniform/back_base.png"
     : isBasketball
@@ -351,6 +495,15 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
   const isTee =
     !isVarsity &&
     !isBasketball &&
+    !isBaseball &&
+    !isIceHockey &&
+    !isMartialArts &&
+    !isAmericanFootball &&
+    !isSoccer &&
+    !isRugby &&
+    !isCricket &&
+    !isWomenGolf &&
+    !isWomenVolleyball &&
     !isEquestrian &&
     !isHoodie &&
     Boolean(
@@ -366,6 +519,15 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
   const isPants =
     !isVarsity &&
     !isBasketball &&
+    !isBaseball &&
+    !isIceHockey &&
+    !isMartialArts &&
+    !isAmericanFootball &&
+    !isSoccer &&
+    !isRugby &&
+    !isCricket &&
+    !isWomenGolf &&
+    !isWomenVolleyball &&
     !isEquestrian &&
     !isHoodie &&
     !isTee &&
@@ -383,6 +545,15 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
   const isGeneralJacket =
     !isVarsity &&
     !isBasketball &&
+    !isBaseball &&
+    !isIceHockey &&
+    !isMartialArts &&
+    !isAmericanFootball &&
+    !isSoccer &&
+    !isRugby &&
+    !isCricket &&
+    !isWomenGolf &&
+    !isWomenVolleyball &&
     !isEquestrian &&
     !isHoodie &&
     !isTee &&
@@ -1427,6 +1598,116 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
       );
     }
 
+    // American Football Front Elevation
+    if (isAmericanFootball) {
+      const jerseyColor = state.partColors.jersey || "#1E3A8A";
+      const sleevesColor = state.partColors.sleeves || "#FFFFFF";
+      const pantsColor = state.partColors.pants || "#1E3A8A";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_FB_FRONT_BASE} alt="Football Base Front" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: pantsColor, ...getMaskStyle(ASSET_FB_FRONT_PANTS), ...getLayerBlendStyle(pantsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_FB_FRONT_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_FB_FRONT_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Soccer Front Elevation
+    if (isSoccer) {
+      const jerseyColor = state.partColors.jersey || "#0284C7";
+      const sleevesColor = state.partColors.sleeves || "#0284C7";
+      const shortsColor = state.partColors.shorts || "#0A0A0A";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_SOC_FRONT_BASE} alt="Soccer Base Front" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: shortsColor, ...getMaskStyle(ASSET_SOC_FRONT_SHORTS), ...getLayerBlendStyle(shortsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_SOC_FRONT_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_SOC_FRONT_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Rugby Front Elevation
+    if (isRugby) {
+      const jerseyColor = state.partColors.jersey || "#15803D";
+      const sleevesColor = state.partColors.sleeves || "#15803D";
+      const shortsColor = state.partColors.shorts || "#FFFFFF";
+      const socksColor = state.partColors.socks || "#15803D";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_RGB_FRONT_BASE} alt="Rugby Base Front" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: socksColor, ...getMaskStyle(ASSET_RGB_FRONT_SOCKS), ...getLayerBlendStyle(socksColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: shortsColor, ...getMaskStyle(ASSET_RGB_FRONT_SHORTS), ...getLayerBlendStyle(shortsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_RGB_FRONT_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_RGB_FRONT_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Cricket Front Elevation
+    if (isCricket) {
+      const jerseyColor = state.partColors.jersey || "#FFFFFF";
+      const sleevesColor = state.partColors.sleeves || "#FFFFFF";
+      const pantsColor = state.partColors.pants || "#FFFFFF";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_CRK_FRONT_BASE} alt="Cricket Base Front" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: pantsColor, ...getMaskStyle(ASSET_CRK_FRONT_PANTS), ...getLayerBlendStyle(pantsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_CRK_FRONT_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_CRK_FRONT_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Women Golf Front Elevation
+    if (isWomenGolf) {
+      const jerseyColor = state.partColors.jersey || "#FFFFFF";
+      const sleevesColor = state.partColors.sleeves || "#FFFFFF";
+      const skortColor = state.partColors.skort || "#0A0A0A";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_GLF_FRONT_BASE} alt="Golf Base Front" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: skortColor, ...getMaskStyle(ASSET_GLF_FRONT_SKORT), ...getLayerBlendStyle(skortColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_GLF_FRONT_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_GLF_FRONT_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Women Volleyball Front Elevation
+    if (isWomenVolleyball) {
+      const jerseyColor = state.partColors.jersey || "#D97706";
+      const sleevesColor = state.partColors.sleeves || "#D97706";
+      const shortsColor = state.partColors.shorts || "#0A0A0A";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_VLB_FRONT_BASE} alt="Volleyball Base Front" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: shortsColor, ...getMaskStyle(ASSET_VLB_FRONT_SHORTS), ...getLayerBlendStyle(shortsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_VLB_FRONT_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_VLB_FRONT_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
     // 2. Equestrian Front Elevation
     if (isEquestrian) {
       const bodyColor = state.partColors.body || "#111B2C";
@@ -2371,6 +2652,116 @@ export const TechPackModal: React.FC<TechPackModalProps> = ({ product, state, on
             <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_MARTIAL_BACK_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
             <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jacketColor, ...getMaskStyle(ASSET_MARTIAL_BACK_JACKET), ...getLayerBlendStyle(jacketColor, 0.9) }} />
             <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: beltColor, ...getMaskStyle(ASSET_MARTIAL_BACK_BELT), ...getLayerBlendStyle(beltColor, 0.95) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // American Football Back Elevation
+    if (isAmericanFootball) {
+      const jerseyColor = state.partColors.jersey || "#1E3A8A";
+      const sleevesColor = state.partColors.sleeves || "#FFFFFF";
+      const pantsColor = state.partColors.pants || "#1E3A8A";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_FB_BACK_BASE} alt="Football Base Back" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: pantsColor, ...getMaskStyle(ASSET_FB_BACK_PANTS), ...getLayerBlendStyle(pantsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_FB_BACK_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_FB_BACK_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Soccer Back Elevation
+    if (isSoccer) {
+      const jerseyColor = state.partColors.jersey || "#0284C7";
+      const sleevesColor = state.partColors.sleeves || "#0284C7";
+      const shortsColor = state.partColors.shorts || "#0A0A0A";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_SOC_BACK_BASE} alt="Soccer Base Back" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: shortsColor, ...getMaskStyle(ASSET_SOC_BACK_SHORTS), ...getLayerBlendStyle(shortsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_SOC_BACK_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_SOC_BACK_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Rugby Back Elevation
+    if (isRugby) {
+      const jerseyColor = state.partColors.jersey || "#15803D";
+      const sleevesColor = state.partColors.sleeves || "#15803D";
+      const shortsColor = state.partColors.shorts || "#FFFFFF";
+      const socksColor = state.partColors.socks || "#15803D";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_RGB_BACK_BASE} alt="Rugby Base Back" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: socksColor, ...getMaskStyle(ASSET_RGB_BACK_SOCKS), ...getLayerBlendStyle(socksColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: shortsColor, ...getMaskStyle(ASSET_RGB_BACK_SHORTS), ...getLayerBlendStyle(shortsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_RGB_BACK_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_RGB_BACK_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Cricket Back Elevation
+    if (isCricket) {
+      const jerseyColor = state.partColors.jersey || "#FFFFFF";
+      const sleevesColor = state.partColors.sleeves || "#FFFFFF";
+      const pantsColor = state.partColors.pants || "#FFFFFF";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_CRK_BACK_BASE} alt="Cricket Base Back" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: pantsColor, ...getMaskStyle(ASSET_CRK_BACK_PANTS), ...getLayerBlendStyle(pantsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_CRK_BACK_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_CRK_BACK_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Women Golf Back Elevation
+    if (isWomenGolf) {
+      const jerseyColor = state.partColors.jersey || "#FFFFFF";
+      const sleevesColor = state.partColors.sleeves || "#FFFFFF";
+      const skortColor = state.partColors.skort || "#0A0A0A";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_GLF_BACK_BASE} alt="Golf Base Back" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: skortColor, ...getMaskStyle(ASSET_GLF_BACK_SKORT), ...getLayerBlendStyle(skortColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_GLF_BACK_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_GLF_BACK_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
+          </div>
+        </div>
+      );
+    }
+
+    // Women Volleyball Back Elevation
+    if (isWomenVolleyball) {
+      const jerseyColor = state.partColors.jersey || "#D97706";
+      const sleevesColor = state.partColors.sleeves || "#D97706";
+      const shortsColor = state.partColors.shorts || "#0A0A0A";
+
+      return (
+        <div className="w-full h-full relative flex items-center justify-center p-1">
+          <div className="w-full h-full relative flex items-center justify-center max-w-[280px] aspect-square" style={{ isolation: "isolate" }}>
+            <img src={ASSET_VLB_BACK_BASE} alt="Volleyball Base Back" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: shortsColor, ...getMaskStyle(ASSET_VLB_BACK_SHORTS), ...getLayerBlendStyle(shortsColor, 0.92) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: sleevesColor, ...getMaskStyle(ASSET_VLB_BACK_SLEEVES), ...getLayerBlendStyle(sleevesColor, 0.9) }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: jerseyColor, ...getMaskStyle(ASSET_VLB_BACK_JERSEY), ...getLayerBlendStyle(jerseyColor, 0.9) }} />
           </div>
         </div>
       );
