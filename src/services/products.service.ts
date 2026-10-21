@@ -181,7 +181,7 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
     id: String(p.id),
     name: p.name,
     slug: p.slug,
-    sku: (p.sku && p.sku.trim()) ? p.sku.trim() : `CM-${p.id}`,
+    sku: (p.sku && p.sku.trim()) ? (p.sku.trim().startsWith("TI-") ? p.sku.trim().replace(/^TI-/, "CM-") : p.sku.trim()) : `CM-${p.id}`,
     category: catSlug,
     subcategory: subSlug,
     description: cleanedDesc,
@@ -247,7 +247,7 @@ export function saveLocalImportedProducts(products: Product[]): void {
 let memoryProductsCache: Product[] | null = null;
 let inFlightPromise: Promise<Product[]> | null = null;
 let lastFetchTime = 0;
-const CACHED_PRODUCTS_STORAGE_KEY = "cm_cached_products_catalog_v1";
+const CACHED_PRODUCTS_STORAGE_KEY = "cm_cached_products_catalog_v2";
 
 export function getCachedProducts(): Product[] {
   if (memoryProductsCache && memoryProductsCache.length > 0) {
