@@ -64,11 +64,11 @@ export const Header: React.FC = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 select-none transition-[background-color,border-color,box-shadow] duration-200 ease-out will-change-transform translate-y-0 opacity-100 ${
+        className={`fixed top-0 left-0 right-0 z-50 select-none transition-[background-color,border-color,box-shadow,backdrop-filter] duration-200 ease-out will-change-transform translate-y-0 opacity-100 ${
           isHome
-            ? isScrolled
+            ? isScrolled || megaMenuOpen
               ? "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 shadow-lg text-white"
-              : "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 text-white lg:bg-transparent lg:border-transparent lg:shadow-none"
+              : "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 text-white lg:bg-transparent lg:backdrop-blur-none lg:border-transparent lg:shadow-none"
             : "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 shadow-sm text-white"
         }`}
       >
