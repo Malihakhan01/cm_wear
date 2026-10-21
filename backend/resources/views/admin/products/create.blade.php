@@ -78,7 +78,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2">SKU (Parent)</label>
-                            <input type="text" name="sku" value="{{ old('sku') }}" placeholder="e.g. TI-HD-001" class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-950">
+                            <input type="text" name="sku" value="{{ old('sku') }}" placeholder="e.g. CM-HD-001" class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-950">
                             <p class="text-[11px] text-slate-400 mt-1">Leave empty for variable products or auto-generation.</p>
                         </div>
 

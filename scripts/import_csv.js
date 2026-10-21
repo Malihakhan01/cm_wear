@@ -120,7 +120,7 @@ function mapToProduct(row, idx) {
     row.sku ||
     row.product_sku ||
     row.item_sku ||
-    `TI-PROD-${String(idx + 1).padStart(3, "0")}`;
+    `CM-PROD-${String(idx + 1).padStart(3, "0")}`;
 
   const slug = slugify(row.slug || name || sku);
 

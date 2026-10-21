@@ -181,7 +181,7 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
     id: String(p.id),
     name: p.name,
     slug: p.slug,
-    sku: p.sku || `TI-${p.id}`,
+    sku: (p.sku && p.sku.trim()) ? p.sku.trim() : `CM-${p.id}`,
     category: catSlug,
     subcategory: subSlug,
     description: cleanedDesc,

@@ -5,7 +5,7 @@ import { apiClient } from "@/services/api.client";
 export const quotesService = {
   async submitQuote(quote: Omit<QuoteRequest, "id" | "referenceNumber" | "createdAt" | "status">): Promise<QuoteRequest> {
     await delay(300);
-    const refNum = `TI-RFQ-${Math.floor(100000 + Math.random() * 900000)}`;
+    const refNum = `CM-RFQ-${Math.floor(100000 + Math.random() * 900000)}`;
     const newQuote: QuoteRequest = {
       ...quote,
       id: `quote_${Date.now()}`,
