@@ -100,6 +100,46 @@
 .wysiwyg-wrapper .ql-editor {
     min-height: 120px;
     font-family: inherit;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.wysiwyg-wrapper .ql-container {
+    overflow-x: auto;
+}
+
+/* Responsive Table Support inside WYSIWYG Editor */
+.wysiwyg-wrapper .ql-editor table {
+    width: 100%;
+    min-width: 780px;
+    border-collapse: collapse;
+    margin: 0.75rem 0;
+    table-layout: auto;
+}
+
+.wysiwyg-wrapper .ql-editor th,
+.wysiwyg-wrapper .ql-editor td {
+    border: 1px solid #cbd5e1;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    vertical-align: top;
+    text-align: left;
+    min-width: 130px;
+    white-space: normal;
+    word-break: normal;
+}
+
+.wysiwyg-wrapper .ql-editor th {
+    background-color: #f1f5f9;
+    font-weight: 700;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.wysiwyg-wrapper .ql-editor tr:nth-child(even) td {
+    background-color: #f8fafc;
 }
 
 .wysiwyg-wrapper .ql-editor.ql-blank::before {
@@ -170,4 +210,25 @@
     border-color: #334155;
     color: #ffffff;
 }
+
+/* Dark Mode WYSIWYG Table Styling */
+.dark .wysiwyg-wrapper .ql-editor table {
+    border-color: #334155;
+}
+
+.dark .wysiwyg-wrapper .ql-editor th,
+.dark .wysiwyg-wrapper .ql-editor td {
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+.dark .wysiwyg-wrapper .ql-editor th {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+.dark .wysiwyg-wrapper .ql-editor tr:nth-child(even) td {
+    background-color: rgba(30, 41, 59, 0.4);
+}
+
 

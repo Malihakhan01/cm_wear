@@ -42,6 +42,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/products/import/{job}/retry', [WooCommerceImportController::class, 'retry'])->name('products.import.retry');
         Route::delete('/products/import/{job}', [WooCommerceImportController::class, 'destroy'])->name('products.import.destroy');
         Route::delete('/products/{product}/images/{image}', [ProductController::class, 'deleteImage'])->name('products.images.destroy');
+        Route::patch('/products/{product}/images/{image}/set-primary', [ProductController::class, 'setPrimaryImage'])->name('products.images.set-primary');
+        Route::post('/products/{product}/images/{image}/set-primary', [ProductController::class, 'setPrimaryImage'])->name('products.images.set-primary.post');
         Route::post('/products/bulk-delete', [ProductController::class, 'bulkDestroy'])->name('products.bulk-delete');
         Route::resource('products', ProductController::class);
 

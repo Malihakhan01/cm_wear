@@ -48,6 +48,57 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         [x-cloak] { display: none !important; }
+
+        /* WYSIWYG Editor Table Responsiveness */
+        .wysiwyg-wrapper .ql-container,
+        .wysiwyg-wrapper .ql-editor {
+            overflow-x: auto !important;
+            max-width: 100% !important;
+        }
+        .wysiwyg-wrapper .ql-editor table {
+            width: 100% !important;
+            min-width: 780px !important;
+            border-collapse: collapse !important;
+            margin: 0.75rem 0 !important;
+            table-layout: auto !important;
+        }
+        .wysiwyg-wrapper .ql-editor th,
+        .wysiwyg-wrapper .ql-editor td {
+            border: 1px solid #cbd5e1 !important;
+            padding: 0.5rem 0.75rem !important;
+            font-size: 0.75rem !important;
+            line-height: 1.45 !important;
+            vertical-align: top !important;
+            text-align: left !important;
+            min-width: 130px !important;
+            white-space: normal !important;
+            word-break: normal !important;
+        }
+        .wysiwyg-wrapper .ql-editor th {
+            background-color: #f1f5f9 !important;
+            font-weight: 700 !important;
+            color: #1e293b !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+        }
+        .wysiwyg-wrapper .ql-editor tr:nth-child(even) td {
+            background-color: #f8fafc !important;
+        }
+        .dark .wysiwyg-wrapper .ql-editor table {
+            border-color: #334155 !important;
+        }
+        .dark .wysiwyg-wrapper .ql-editor th,
+        .dark .wysiwyg-wrapper .ql-editor td {
+            border-color: #334155 !important;
+            color: #e2e8f0 !important;
+        }
+        .dark .wysiwyg-wrapper .ql-editor th {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+        }
+        .dark .wysiwyg-wrapper .ql-editor tr:nth-child(even) td {
+            background-color: rgba(30, 41, 59, 0.4) !important;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

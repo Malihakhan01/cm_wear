@@ -248,6 +248,15 @@ class ProductController extends Controller
                 'alt_text' => $product->name,
                 'sort_order' => 0,
             ]);
+        } elseif ($request->filled('set_primary_image_id')) {
+            $targetImage = ProductImage::where('product_id', $product->id)->where('id', $request->input('set_primary_image_id'))->first();
+            if ($targetImage) {
+                ProductImage::where('product_id', $product->id)->update(['is_primary' => false]);
+                $targetImage->update([
+                    'is_primary' => true,
+                    'sort_order' => 0,
+                ]);
+            }
         }
 
         // Handle Additional Gallery Images upload
@@ -270,6 +279,34 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.edit', $product->id)
             ->with('success', "Product updated successfully.");
+    }
+
+    public function setPrimaryImage(Request $request, Product $product, ProductImage $image)
+    {
+        if ($image->product_id === $product->id) {
+            ProductImage::where('product_id', $product->id)->update(['is_primary' => false]);
+            $image->update([
+                'is_primary' => true,
+                'sort_order' => 0,
+            ]);
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Main featured image set successfully.',
+                    'image_id' => $image->id,
+                    'image_url' => $image->url,
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Main featured image updated successfully.');
+        }
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => false, 'message' => 'Image does not belong to this product.'], 403);
+        }
+
+        return redirect()->back()->with('error', 'Image does not belong to this product.');
     }
 
     public function deleteImage(Request $request, Product $product, ProductImage $image)
