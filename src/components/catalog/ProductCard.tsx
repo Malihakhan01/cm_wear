@@ -92,7 +92,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       {/* Main Image Area (Dominates Card, clean unblocked view) */}
-      <div className="relative aspect-square bg-[#F4F4EF] overflow-hidden p-6">
+      <div className="relative aspect-square bg-[#F4F4EF] overflow-hidden p-2.5 sm:p-5 lg:p-6">
         <Link href={`/products/${product.slug}/`} prefetch={false} className="block w-full h-full">
           <img
             src={displayImage}
@@ -111,61 +111,67 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       {/* Product Information */}
-      <div className="p-4 flex flex-col justify-between flex-1">
+      <div className="p-2.5 sm:p-4 flex flex-col justify-between flex-1">
         <div>
           {/* Subcategory & SKU */}
-          <div className="flex items-center justify-between text-[10px] font-mono text-[#72726D] mb-1">
-            <span className="uppercase">{product.subcategory}</span>
-            <span>{product.sku}</span>
+          <div className="flex items-center justify-between text-[8.5px] sm:text-[10px] font-mono text-[#72726D] mb-1">
+            <span className="uppercase truncate pr-1">{product.subcategory}</span>
+            <span className="shrink-0">{product.sku}</span>
           </div>
 
-          {/* Title */}
+          {/* Title - Max 2 lines with ellipses effect and consistent fixed height */}
           <Link
             href={`/products/${product.slug}/`}
             prefetch={false}
-            className="text-sm font-bold uppercase tracking-tight text-[#0A0A0A] group-hover:text-[#D61C24] transition-colors line-clamp-1 mb-2"
+            className="text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-tight text-[#0A0A0A] group-hover:text-[#DC2626] transition-colors line-clamp-2 h-[2.5em] sm:h-[2.6em] mb-1.5 sm:mb-2 leading-tight sm:leading-snug"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
           >
             {product.name}
           </Link>
         </div>
 
-        <div className="space-y-3 pt-3 border-t border-[#F4F4EF]">
+        <div className="space-y-2 sm:space-y-3 pt-2 sm:pt-3 border-t border-[#F4F4EF]">
           {/* Color Dots & Pricing Row */}
-          <div className="flex items-end justify-between">
+          <div className="flex items-end justify-between gap-1">
             {/* Swatch Previews */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5 sm:gap-1">
               {product.colors.slice(0, 4).map((c) => (
                 <span
                   key={c.id}
-                  className="w-2.5 h-2.5 rounded-full border border-black/20"
+                  className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full border border-black/20"
                   style={{ backgroundColor: c.hex }}
                   title={c.name}
                 />
               ))}
               {product.colors.length > 4 && (
-                <span className="text-[9px] font-mono text-[#72726D]">
+                <span className="text-[8px] sm:text-[9px] font-mono text-[#72726D]">
                   +{product.colors.length - 4}
                 </span>
               )}
             </div>
 
             {/* Pricing based on store mode */}
-            <div className="text-right">
+            <div className="text-right shrink-0">
               {mode === "wholesale" ? (
                 <div>
-                  <div className="text-xs font-bold text-[#0A0A0A] font-mono">
+                  <div className="text-[10.5px] sm:text-xs font-bold text-[#0A0A0A] font-mono leading-tight">
                     From ${product.wholesalePrice.toFixed(2)}/pc
                   </div>
-                  <div className="text-[10px] font-mono text-[#D61C24] font-semibold">
+                  <div className="text-[8px] sm:text-[9.5px] font-mono text-[#D61C24] font-semibold">
                     MOQ {product.MOQ} PCS
                   </div>
                 </div>
               ) : (
                 <div>
-                  <div className="text-xs font-bold text-[#0A0A0A] font-mono">
+                  <div className="text-[10.5px] sm:text-xs font-bold text-[#0A0A0A] font-mono leading-tight">
                     ${product.retailPrice.toFixed(2)}
                   </div>
-                  <div className="text-[10px] font-mono text-[#72726D]">
+                  <div className="text-[8px] sm:text-[9.5px] font-mono text-[#72726D]">
                     Single Piece
                   </div>
                 </div>
@@ -174,20 +180,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
 
           {/* Action Buttons Row (Placed directly below product details) */}
-          <div className="pt-2 border-t border-[#F4F4EF] flex items-center gap-2">
+          <div className="pt-2 border-t border-[#F4F4EF] flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={handleQuickAdd}
-              className="flex-1 py-2 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-[10px] font-mono uppercase font-bold tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+              className="flex-1 py-1.5 sm:py-2 px-1.5 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-[8.5px] sm:text-[10px] font-mono uppercase font-bold tracking-wider rounded-[2px] flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer shadow-xs min-w-0"
             >
               {addedToast ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-[#FF333D]" />
-                  <span>Added!</span>
+                  <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#FF333D] shrink-0" />
+                  <span className="truncate">Added!</span>
                 </>
               ) : (
                 <>
-                  <ShoppingBag className="w-3.5 h-3.5" />
-                  <span>{mode === "wholesale" ? "Add MOQ" : "Quick Add"}</span>
+                  <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                  <span className="truncate">
+                    <span className="sm:hidden">{mode === "wholesale" ? "MOQ" : "Add"}</span>
+                    <span className="hidden sm:inline">{mode === "wholesale" ? "Add MOQ" : "Quick Add"}</span>
+                  </span>
                 </>
               )}
             </button>
@@ -195,10 +204,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <Link
               href={`/products/${product.slug}/`}
               prefetch={false}
-              className="px-3.5 py-2 bg-white hover:bg-[#F4F4EF] text-[#0A0A0A] border border-[#DADBD2] hover:border-[#0A0A0A] rounded-[2px] text-[10px] font-mono uppercase font-bold text-center transition-colors shrink-0 cursor-pointer"
+              className="px-2 sm:px-3.5 py-1.5 sm:py-2 bg-white hover:bg-[#F4F4EF] text-[#0A0A0A] border border-[#DADBD2] hover:border-[#0A0A0A] rounded-[2px] text-[8.5px] sm:text-[10px] font-mono uppercase font-bold text-center transition-colors shrink-0 cursor-pointer"
               title="View Product Details"
             >
-              View Specs
+              <span className="hidden sm:inline">View </span>Specs
             </Link>
           </div>
         </div>

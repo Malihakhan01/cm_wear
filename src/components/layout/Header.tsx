@@ -68,11 +68,11 @@ export const Header: React.FC = () => {
           isHome
             ? isScrolled
               ? "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 shadow-lg text-white"
-              : "bg-transparent border-b border-transparent text-white"
+              : "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 text-white lg:bg-transparent lg:border-transparent lg:shadow-none"
             : "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 shadow-sm text-white"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 lg:h-[72px] flex items-center justify-between relative">
           
           {/* Left: Brand Identity Logo (Official CM SPORTS WEAR Emblem) */}
           <Link
@@ -82,7 +82,7 @@ export const Header: React.FC = () => {
             <img
               src="/cm_logo/Red and White Wear Emblem.png"
               alt="CM SPORTS WEAR"
-              className="h-11 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-md"
+              className="h-8 sm:h-10 lg:h-12 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-md"
             />
           </Link>
 
@@ -275,8 +275,8 @@ export const Header: React.FC = () => {
 
       <CartDrawer />
 
-      {/* On non-home pages, keep 72px space in normal document flow so page content is not covered */}
-      {!isHome && <div className="h-[72px] w-full shrink-0" aria-hidden="true" />}
+      {/* On non-home pages, keep matching space in normal document flow so page content is not covered */}
+      {!isHome && <div className="h-14 sm:h-16 lg:h-[72px] w-full shrink-0" aria-hidden="true" />}
     </>
   );
 };

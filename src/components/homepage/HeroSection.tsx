@@ -124,7 +124,7 @@ export const HeroSection: React.FC = () => {
       className="relative w-full bg-[#0A0A0A] select-none"
     >
       {/* Hero Stage with Dynamic Viewport Height & Zero Overflow Clipping */}
-      <section className="relative w-full min-h-[100svh] lg:h-[100svh] lg:max-h-[1080px] overflow-hidden bg-[#0A0A0A] text-white flex flex-col justify-between">
+      <section className="relative w-full h-[320px] sm:h-[400px] lg:h-[100svh] lg:max-h-[1080px] overflow-hidden bg-[#0A0A0A] text-white flex flex-col justify-between mt-14 sm:mt-16 lg:mt-0">
         {/* ======================================================== */}
         {/* BACKGROUND SLIDES: CINEMATIC ANIMATION ON ALL SLIDES      */}
         {/* ======================================================== */}
@@ -144,7 +144,7 @@ export const HeroSection: React.FC = () => {
                   loading={idx === 0 ? "eager" : "lazy"}
                   decoding="async"
                   fetchPriority={idx === 0 ? "high" : "low"}
-                  className="w-full h-full object-cover object-center brightness-100 contrast-105 select-none pointer-events-none scale-100"
+                  className="w-full h-full object-cover object-top sm:object-center brightness-100 contrast-105 select-none pointer-events-none scale-100"
                 />
                 {/* Subtle gradient focused only on the text area on left */}
                 <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/55 via-25% to-transparent pointer-events-none" />
@@ -157,7 +157,7 @@ export const HeroSection: React.FC = () => {
         {/* ======================================================== */}
         {/* TOP CONTROLS: CATEGORY TABS & SLIDE COUNTER              */}
         {/* ======================================================== */}
-        <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-2 flex items-center justify-between shrink-0">
+        <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-3 sm:pt-5 lg:pt-24 pb-1 sm:pb-2 flex items-center justify-between shrink-0">
           {/* Top Left: Category Toggle Pills for all 8 categories with active animated progress effect */}
           <div 
             ref={tabsContainerRef}
@@ -230,7 +230,7 @@ export const HeroSection: React.FC = () => {
           <div className="max-w-2xl lg:max-w-3xl">
             {/* Scaled Responsive Display Headline (Ensures breathing room for bottom banners) */}
             <h1
-              className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.2rem] xl:text-[5.8rem] font-black uppercase tracking-tighter text-[#F4F4EF] leading-[0.92] sm:leading-[0.88] select-none font-display drop-shadow-md"
+              className="text-2xl sm:text-5xl md:text-7xl lg:text-[5.2rem] xl:text-[5.8rem] font-black uppercase tracking-tighter text-[#F4F4EF] leading-[0.92] sm:leading-[0.88] select-none font-display drop-shadow-md"
             >
               <div className="overflow-hidden py-0.5 sm:py-1">
                 <span
@@ -260,7 +260,7 @@ export const HeroSection: React.FC = () => {
             {/* Supporting Copy */}
             <p
               key={`desc-${activeIdx}`}
-              className="text-xs sm:text-sm md:text-base text-neutral-300 max-w-md font-normal leading-relaxed mt-2.5 sm:mt-4 animate-in fade-in slide-in-from-bottom-4 duration-300 delay-150 fill-mode-both line-clamp-2 sm:line-clamp-none"
+              className="text-[11px] sm:text-sm md:text-base text-neutral-300 max-w-md font-normal leading-relaxed mt-1 sm:mt-4 animate-in fade-in slide-in-from-bottom-4 duration-300 delay-150 fill-mode-both line-clamp-1 sm:line-clamp-none"
             >
               {currentSlide.description}
             </p>
@@ -268,14 +268,14 @@ export const HeroSection: React.FC = () => {
             {/* Action Row */}
             <div
               key={`actions-${activeIdx}`}
-              className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 pt-3.5 sm:pt-6 animate-in fade-in slide-in-from-bottom-3 duration-300 delay-200 fill-mode-both"
+              className="flex flex-wrap items-center gap-2 sm:gap-3.5 pt-2 sm:pt-6 animate-in fade-in slide-in-from-bottom-3 duration-300 delay-200 fill-mode-both"
             >
               <Link
                 href={currentSlide.link}
-                className="px-4.5 sm:px-6 py-2.5 sm:py-3.5 bg-white hover:bg-neutral-200 text-[#0A0A0A] text-[10px] sm:text-xs font-bold font-mono tracking-wider uppercase rounded-[2px] transition-all flex items-center gap-2 shadow-xl hover:shadow-2xl hover:scale-102 group"
+                className="px-3.5 sm:px-6 py-2 sm:py-3.5 bg-white hover:bg-neutral-200 text-[#0A0A0A] text-[9.5px] sm:text-xs font-bold font-mono tracking-wider uppercase rounded-[2px] transition-all flex items-center gap-2 shadow-xl hover:shadow-2xl hover:scale-102 group"
               >
                 <span>VIEW THE RANGES</span>
-                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
 
               {/* Tag Pill with Plus Icon */}

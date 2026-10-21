@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Star, ShieldCheck, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeading } from "@/components/common/SectionHeading";
 import { contentService } from "@/services/content.service";
@@ -65,7 +65,13 @@ const cleanHtml = (text: string) => {
 export const TestimonialsSection: React.FC = () => {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [reviews, setReviews] = useState<ReviewItem[]>(DEFAULT_REVIEWS);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [activeDot, setActiveDot] = useState<number>(0);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const isMouseDownRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const hasMovedRef = useRef(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -113,25 +119,47 @@ export const TestimonialsSection: React.FC = () => {
     };
   }, []);
 
-  // Visible reviews window (showing 3 at a time)
-  const visibleReviews = reviews.slice(currentIndex, currentIndex + 3);
-  // If fewer than 3, wrap around
-  if (visibleReviews.length < 3 && reviews.length >= 3) {
-    visibleReviews.push(...reviews.slice(0, 3 - visibleReviews.length));
-  }
-
-  const handleNext = () => {
-    if (reviews.length <= 3) return;
-    setCurrentIndex((prev) => (prev + 1 >= reviews.length ? 0 : prev + 1));
+  const handleScroll = () => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, clientWidth } = scrollContainerRef.current;
+    const cardWidth = scrollContainerRef.current.firstElementChild?.clientWidth || clientWidth * 0.85;
+    const index = Math.round(scrollLeft / (cardWidth + 16));
+    setActiveDot(Math.min(Math.max(0, index), reviews.length - 1));
   };
 
-  const handlePrev = () => {
-    if (reviews.length <= 3) return;
-    setCurrentIndex((prev) => (prev - 1 < 0 ? reviews.length - 1 : prev - 1));
+  const scroll = (direction: "left" | "right") => {
+    if (!scrollContainerRef.current) return;
+    const cardWidth = scrollContainerRef.current.firstElementChild?.clientWidth || 320;
+    const offset = direction === "left" ? -(cardWidth + 24) : (cardWidth + 24);
+    scrollContainerRef.current.scrollBy({ left: offset, behavior: "smooth" });
+  };
+
+  // Mouse Drag Handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    isMouseDownRef.current = true;
+    hasMovedRef.current = false;
+    startXRef.current = e.pageX - scrollContainerRef.current.offsetLeft;
+    scrollLeftRef.current = scrollContainerRef.current.scrollLeft;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isMouseDownRef.current || !scrollContainerRef.current) return;
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 1.5;
+    if (Math.abs(walk) > 5) {
+      hasMovedRef.current = true;
+    }
+    scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walk;
+    handleScroll();
+  };
+
+  const handleMouseUpOrLeave = () => {
+    isMouseDownRef.current = false;
   };
 
   return (
-    <section className="bg-[#F4F4EF] py-20 sm:py-24 border-b border-[#DADBD2] select-none relative overflow-hidden">
+    <section className="bg-[#F4F4EF] py-12 sm:py-20 lg:py-24 border-b border-[#DADBD2] select-none relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header with Integrated Navigation Controls */}
@@ -141,39 +169,52 @@ export const TestimonialsSection: React.FC = () => {
           title="Trusted by Discerning Label Founders"
           description="Independent testimonials from direct-to-consumer apparel founders, wholesale distributors, and sports federations."
           action={
-            reviews.length > 3 ? (
-              <div className="flex items-center gap-2 pt-1">
-                <button
-                  onClick={handlePrev}
-                  aria-label="Previous testimonials"
-                  className="w-9 h-9 rounded-[2px] bg-white border border-[#DADBD2] hover:border-[#D61C24] hover:text-[#D61C24] flex items-center justify-center transition-colors shadow-xs cursor-pointer"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={handleNext}
-                  aria-label="Next testimonials"
-                  className="w-9 h-9 rounded-[2px] bg-white border border-[#DADBD2] hover:border-[#D61C24] hover:text-[#D61C24] flex items-center justify-center transition-colors shadow-xs cursor-pointer"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            ) : null
+            <div className="flex items-center gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => scroll("left")}
+                aria-label="Previous testimonials"
+                className="w-9 h-9 rounded-[2px] bg-white border border-[#DADBD2] hover:border-[#D61C24] hover:text-[#D61C24] flex items-center justify-center transition-colors shadow-xs cursor-pointer"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scroll("right")}
+                aria-label="Next testimonials"
+                className="w-9 h-9 rounded-[2px] bg-white border border-[#DADBD2] hover:border-[#D61C24] hover:text-[#D61C24] flex items-center justify-center transition-colors shadow-xs cursor-pointer"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           }
         />
 
-        {/* 3 Interactive Testimonial Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 pt-2">
-          {visibleReviews.map((r, idx) => {
+        {/* Unified Horizontal Slider Track: Touch swipe & Mouse drag */}
+        <div
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUpOrLeave}
+          onMouseLeave={handleMouseUpOrLeave}
+          className="flex items-stretch gap-4 sm:gap-6 md:gap-8 overflow-x-auto no-scrollbar scroll-smooth touch-pan-x snap-x snap-mandatory pb-4 pt-2 cursor-grab active:cursor-grabbing"
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          {reviews.map((r, idx) => {
             const isHovered = hoveredIdx === idx;
             return (
               <div
                 key={`${r.id}-${idx}`}
                 onMouseEnter={() => setHoveredIdx(idx)}
                 onMouseLeave={() => setHoveredIdx(null)}
-                className={`group relative bg-white border rounded-[2px] p-7 sm:p-8 flex flex-col justify-between space-y-6 transition-all duration-400 ease-out cursor-pointer overflow-hidden ${
+                className={`w-[85vw] max-w-[340px] sm:w-[380px] md:w-[calc((100%-4rem)/3)] shrink-0 snap-start group relative bg-white border rounded-[2px] p-6 sm:p-8 flex flex-col justify-between space-y-5 sm:space-y-6 transition-all duration-300 ease-out cursor-pointer overflow-hidden ${
                   isHovered
-                    ? "border-[#D61C24] -translate-y-2.5 shadow-[0_25px_50px_-12px_rgba(214,28,36,0.18)] ring-1 ring-[#D61C24]/20"
+                    ? "border-[#D61C24] -translate-y-1.5 shadow-[0_20px_40px_-10px_rgba(214,28,36,0.18)] ring-1 ring-[#D61C24]/20"
                     : "border-[#DADBD2] shadow-sm hover:border-[#D61C24]/70"
                 }`}
               >
@@ -193,7 +234,7 @@ export const TestimonialsSection: React.FC = () => {
 
                 {/* Subtle Quote Watermark */}
                 <Quote
-                  className={`absolute top-6 right-6 w-16 h-16 pointer-events-none transition-all duration-500 ${
+                  className={`absolute top-6 right-6 w-14 h-14 sm:w-16 sm:h-16 pointer-events-none transition-all duration-500 ${
                     isHovered
                       ? "text-[#D61C24]/12 translate-x-1 -translate-y-1 scale-110"
                       : "text-neutral-900/5 translate-x-0 translate-y-0"
@@ -201,21 +242,21 @@ export const TestimonialsSection: React.FC = () => {
                 />
 
                 {/* Main Content Area */}
-                <div className="space-y-4 relative z-10">
+                <div className="space-y-3.5 sm:space-y-4 relative z-10">
                   {/* Rating Stars with Staggered Hover Scaling */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1 text-[#D61C24]">
                       {[...Array(r.rating || 5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-4 h-4 fill-[#D61C24] transition-transform duration-300 ease-out ${
+                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 fill-[#D61C24] transition-transform duration-300 ease-out ${
                             isHovered ? "scale-110" : "scale-100"
                           }`}
                           style={{ transitionDelay: `${i * 40}ms` }}
                         />
                       ))}
                     </div>
-                    <span className="text-[11px] font-mono text-[#72726D]">
+                    <span className="text-[10px] sm:text-[11px] font-mono text-[#72726D]">
                       {r.country}
                     </span>
                   </div>
@@ -233,7 +274,7 @@ export const TestimonialsSection: React.FC = () => {
 
                 {/* Author Footer */}
                 <div
-                  className={`pt-4 border-t space-y-1.5 relative z-10 transition-colors duration-300 ${
+                  className={`pt-3.5 sm:pt-4 border-t space-y-1.5 relative z-10 transition-colors duration-300 ${
                     isHovered ? "border-[#D61C24]/20" : "border-[#F4F4EF]"
                   }`}
                 >
@@ -241,18 +282,18 @@ export const TestimonialsSection: React.FC = () => {
                     <div className="text-xs font-bold uppercase tracking-tight text-[#0A0A0A] font-display">
                       {r.author}
                     </div>
-                    <span className="text-[10px] font-mono uppercase text-[#D61C24] font-semibold">
+                    <span className="text-[9.5px] sm:text-[10px] font-mono uppercase text-[#D61C24] font-semibold">
                       {r.discipline}
                     </span>
                   </div>
 
-                  <div className="text-[11px] font-mono text-[#72726D]">
+                  <div className="text-[10.5px] sm:text-[11px] font-mono text-[#72726D]">
                     {r.company}
                   </div>
 
                   {/* Verified Order Tag */}
                   <div
-                    className={`text-[10px] font-mono flex items-center gap-1.5 pt-1.5 transition-all duration-300 ${
+                    className={`text-[9.5px] sm:text-[10px] font-mono flex items-center gap-1.5 pt-1 transition-all duration-300 ${
                       isHovered
                         ? "text-[#D61C24] translate-x-0.5"
                         : "text-[#72726D]"
@@ -269,6 +310,26 @@ export const TestimonialsSection: React.FC = () => {
               </div>
             );
           })}
+        </div>
+
+        {/* Mobile Slide Indicator Dots */}
+        <div className="md:hidden flex items-center justify-center gap-1.5 pt-4">
+          {reviews.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => {
+                if (!scrollContainerRef.current) return;
+                const cardWidth = scrollContainerRef.current.firstElementChild?.clientWidth || 320;
+                scrollContainerRef.current.scrollTo({ left: i * (cardWidth + 16), behavior: "smooth" });
+                setActiveDot(i);
+              }}
+              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                activeDot === i ? "w-6 bg-[#D61C24]" : "w-1.5 bg-[#DADBD2]"
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
         </div>
 
       </div>

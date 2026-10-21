@@ -187,13 +187,13 @@ function normalizeCategoryTarget(slugOrName?: string): string {
 
         {/* Loading Skeleton */}
         {loading && filteredProducts.length === 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-6 pt-2">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 pb-6 pt-2">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="border border-[#DADBD2] rounded-[2px] p-3 space-y-3 bg-[#FAFAF8] animate-pulse">
+              <div key={i} className="border border-[#DADBD2] rounded-[2px] p-2.5 sm:p-3 space-y-2 sm:space-y-3 bg-[#FAFAF8] animate-pulse">
                 <div className="aspect-square bg-[#E8E8E2] rounded-[2px]" />
                 <div className="h-3 bg-[#E0E0DA] rounded-[2px] w-3/4" />
                 <div className="h-2.5 bg-[#E8E8E2] rounded-[2px] w-1/2" />
-                <div className="h-4 bg-[#E0E0DA] rounded-[2px] w-1/3 pt-2" />
+                <div className="h-3.5 sm:h-4 bg-[#E0E0DA] rounded-[2px] w-1/3 pt-1.5" />
               </div>
             ))}
           </div>
@@ -219,7 +219,7 @@ function normalizeCategoryTarget(slugOrName?: string): string {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-6 pt-2">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 pb-6 pt-2">
             {filteredProducts.map((p, idx) => (
               <div
                 key={p.id}

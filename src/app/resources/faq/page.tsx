@@ -127,7 +127,7 @@ export default function FaqPage() {
   return (
     <div className="w-full bg-[#FAFAF8] min-h-screen text-[#0A0A0A]">
       {/* Dark Industrial Hero */}
-      <section className="bg-[#0A0A0A] text-white border-b border-[#2A2A28] py-16 sm:py-24 relative overflow-hidden">
+      <section className="bg-[#0A0A0A] text-white border-b border-[#2A2A28] py-12 sm:py-20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#D61C24_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -330,7 +330,7 @@ export default function FaqPage() {
                     >
                       <button
                         onClick={() => toggleAccordion(faq.id)}
-                        className={`w-full text-left p-5 sm:p-6 flex items-start justify-between gap-4 transition-colors ${
+                        className={`w-full text-left p-4 sm:p-6 flex items-start justify-between gap-3 sm:gap-4 transition-colors ${
                           isOpen ? "bg-[#FBFBFA]" : "bg-white hover:bg-[#F9F9F7]"
                         }`}
                         aria-expanded={isOpen}
@@ -341,7 +341,7 @@ export default function FaqPage() {
                               {faq.topic}
                             </span>
                           </div>
-                          <h3 className="text-sm sm:text-base font-bold text-[#0A0A0A] leading-snug font-sans">
+                          <h3 className="text-xs sm:text-base font-bold text-[#0A0A0A] leading-snug font-sans">
                             {faq.question}
                           </h3>
                         </div>
@@ -356,7 +356,7 @@ export default function FaqPage() {
                       </button>
 
                       {isOpen && (
-                        <div className="px-5 sm:px-6 pb-6 pt-3 bg-white border-t border-[#F4F4EF] text-xs sm:text-sm text-[#40403C] leading-relaxed font-sans">
+                        <div className="px-4 sm:px-6 pb-5 sm:pb-6 pt-3 bg-white border-t border-[#F4F4EF] text-[11.5px] sm:text-sm text-[#40403C] leading-relaxed font-sans">
                           <p className="whitespace-pre-line">{cleanAnswer}</p>
                           
                           <div className="mt-4 pt-3 border-t border-[#F4F4EF] flex items-center justify-between text-[11px] font-mono text-[#72726D]">

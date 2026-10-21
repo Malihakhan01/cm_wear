@@ -105,8 +105,11 @@ const ROW_TWO_CATEGORIES: CategoryCardItem[] = [
   },
 ];
 
+const ALL_CATEGORIES = [...ROW_ONE_CATEGORIES, ...ROW_TWO_CATEGORIES];
+
 export const CategoryGridSection: React.FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const mobileScrollContainerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const isMouseDownRef = useRef(false);
   const startXRef = useRef(0);
@@ -114,18 +117,26 @@ export const CategoryGridSection: React.FC = () => {
   const hasMovedRef = useRef(false);
 
   const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-  const [isScrollableState, setIsScrollableState] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isScrollableState, setIsScrollableState] = useState(true);
 
   const checkScrollRaf = useRef<number | null>(null);
+
+  const getActiveContainer = () => {
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      return mobileScrollContainerRef.current;
+    }
+    return scrollContainerRef.current;
+  };
 
   // Check scroll position for arrow buttons (RAF throttled)
   const checkScroll = () => {
     if (checkScrollRaf.current) return;
     checkScrollRaf.current = window.requestAnimationFrame(() => {
       checkScrollRaf.current = null;
-      if (!scrollContainerRef.current) return;
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      const el = getActiveContainer();
+      if (!el) return;
+      const { scrollLeft, scrollWidth, clientWidth } = el;
       const hasOverflow = scrollWidth > clientWidth + 10;
       setIsScrollableState(hasOverflow);
       setCanScrollLeft(hasOverflow && scrollLeft > 15);
@@ -134,39 +145,43 @@ export const CategoryGridSection: React.FC = () => {
   };
 
   useEffect(() => {
-    const el = scrollContainerRef.current;
-    if (!el) return;
+    const desktopEl = scrollContainerRef.current;
+    const mobileEl = mobileScrollContainerRef.current;
     checkScroll();
-    el.addEventListener("scroll", checkScroll, { passive: true });
+    desktopEl?.addEventListener("scroll", checkScroll, { passive: true });
+    mobileEl?.addEventListener("scroll", checkScroll, { passive: true });
     window.addEventListener("resize", checkScroll);
     return () => {
       if (checkScrollRaf.current) window.cancelAnimationFrame(checkScrollRaf.current);
-      el.removeEventListener("scroll", checkScroll);
+      desktopEl?.removeEventListener("scroll", checkScroll);
+      mobileEl?.removeEventListener("scroll", checkScroll);
       window.removeEventListener("resize", checkScroll);
     };
   }, []);
 
   // Mouse Drag Handlers
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (!scrollContainerRef.current) return;
-    const { scrollWidth, clientWidth } = scrollContainerRef.current;
-    if (scrollWidth <= clientWidth + 5) return; // Don't drag if not scrollable
+    const el = getActiveContainer();
+    if (!el) return;
+    const { scrollWidth, clientWidth } = el;
+    if (scrollWidth <= clientWidth + 5) return;
 
     isMouseDownRef.current = true;
     hasMovedRef.current = false;
-    startXRef.current = e.pageX - scrollContainerRef.current.offsetLeft;
-    scrollLeftRef.current = scrollContainerRef.current.scrollLeft;
+    startXRef.current = e.pageX - el.offsetLeft;
+    scrollLeftRef.current = el.scrollLeft;
     setIsDragging(true);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isMouseDownRef.current || !scrollContainerRef.current) return;
-    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const el = getActiveContainer();
+    if (!isMouseDownRef.current || !el) return;
+    const x = e.pageX - el.offsetLeft;
     const walk = (x - startXRef.current) * 1.5;
     if (Math.abs(walk) > 5) {
       hasMovedRef.current = true;
     }
-    scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walk;
+    el.scrollLeft = scrollLeftRef.current - walk;
     checkScroll();
   };
 
@@ -185,16 +200,17 @@ export const CategoryGridSection: React.FC = () => {
 
   // Left/Right Button scroll
   const scroll = (direction: "left" | "right") => {
-    if (!scrollContainerRef.current) return;
-    const offset = direction === "left" ? -440 : 440;
-    scrollContainerRef.current.scrollBy({ left: offset, behavior: "smooth" });
+    const el = getActiveContainer();
+    if (!el) return;
+    const offset = direction === "left" ? -(el.clientWidth * 0.85) : (el.clientWidth * 0.85);
+    el.scrollBy({ left: offset, behavior: "smooth" });
   };
 
   return (
-    <section className="bg-[#0A0A0A] text-white py-20 sm:py-24 overflow-hidden border-b border-[#2A2A28] select-none">
+    <section className="bg-[#0A0A0A] text-white py-12 sm:py-20 lg:py-24 overflow-hidden border-b border-[#2A2A28] select-none">
       
       {/* Top Section Header */}
-      <div className="max-w-7xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
+      <div className="max-w-7xl 2xl:max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 mb-6 sm:mb-12">
         <SectionHeading
           theme="dark"
           eyebrow="MANUFACTURING ARCHIVE • 08 DIVISIONS"
@@ -221,7 +237,7 @@ export const CategoryGridSection: React.FC = () => {
                 onClick={() => scroll("left")}
                 disabled={!canScrollLeft}
                 aria-label="Scroll left"
-                className="w-10 h-10 rounded-full bg-[#161616] hover:bg-[#222222] border border-white/10 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer text-white"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#161616] hover:bg-[#222222] border border-white/10 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer text-white"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -231,7 +247,7 @@ export const CategoryGridSection: React.FC = () => {
                 onClick={() => scroll("right")}
                 disabled={!canScrollRight}
                 aria-label="Scroll right"
-                className="w-10 h-10 rounded-full bg-[#161616] hover:bg-[#222222] border border-white/10 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer text-white"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#161616] hover:bg-[#222222] border border-white/10 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer text-white"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -239,10 +255,10 @@ export const CategoryGridSection: React.FC = () => {
               {/* Explore All Button */}
               <Link
                 href="/catalog/"
-                className="px-5 py-2.5 bg-white hover:bg-neutral-200 text-[#0A0A0A] text-xs font-mono font-bold uppercase tracking-wider rounded-[2px] transition-colors flex items-center gap-2 shrink-0 ml-1"
+                className="px-3.5 sm:px-5 py-2 sm:py-2.5 bg-white hover:bg-neutral-200 text-[#0A0A0A] text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider rounded-[2px] transition-colors flex items-center gap-1.5 sm:gap-2 shrink-0 ml-1"
               >
                 <span>EXPLORE ALL</span>
-                <ArrowUpRight className="w-4 h-4" />
+                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </Link>
             </div>
           }
@@ -250,8 +266,29 @@ export const CategoryGridSection: React.FC = () => {
       </div>
 
       {/* ======================================================== */}
-      {/* 8 CARDS DRAGGABLE & SCROLLABLE CONTAINER (4 TOP, 4 BOTTOM) */}
-      {/* Centered when screen is wide / zoomed out, scrollable when narrow */}
+      {/* MOBILE VIEW: SINGLE UNIFIED HORIZONTAL SLIDER ROW        */}
+      {/* Cards sized w-[84vw] max-w-[340px] with peeking effect    */}
+      {/* ======================================================== */}
+      <div
+        ref={mobileScrollContainerRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUpOrLeave}
+        onMouseLeave={handleMouseUpOrLeave}
+        className="md:hidden flex items-center gap-3.5 overflow-x-auto no-scrollbar scroll-smooth touch-pan-x cursor-grab active:cursor-grabbing snap-x snap-mandatory px-4 pb-2"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
+        {ALL_CATEGORIES.map((cat) => (
+          <CardItem key={`mobile-${cat.id}`} cat={cat} onCardClick={handleCardClick} isMobile />
+        ))}
+      </div>
+
+      {/* ======================================================== */}
+      {/* DESKTOP VIEW: DUAL ROW DRAGGABLE CONTAINER               */}
       {/* ======================================================== */}
       <div
         ref={scrollContainerRef}
@@ -259,7 +296,7 @@ export const CategoryGridSection: React.FC = () => {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUpOrLeave}
         onMouseLeave={handleMouseUpOrLeave}
-        className={`w-full overflow-x-auto select-none pb-4 pt-1 ${
+        className={`hidden md:block w-full overflow-x-auto select-none pb-4 pt-1 no-scrollbar scroll-smooth touch-pan-x ${
           isScrollableState ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-default"
         }`}
         style={{
@@ -271,14 +308,14 @@ export const CategoryGridSection: React.FC = () => {
         <div className="w-fit min-w-full flex flex-col items-center px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-5 sm:gap-6">
             
-            {/* ROW 1: 4 Cards (01, 02, 03, 04) */}
+            {/* ROW 1: Categories 01 to 05 */}
             <div className="flex items-center gap-4 sm:gap-6">
               {ROW_ONE_CATEGORIES.map((cat) => (
                 <CardItem key={cat.id} cat={cat} onCardClick={handleCardClick} />
               ))}
             </div>
 
-            {/* ROW 2: 4 Cards (05, 06, 07, 08) */}
+            {/* ROW 2: Categories 06 to 09 */}
             <div className="flex items-center gap-4 sm:gap-6">
               {ROW_TWO_CATEGORIES.map((cat) => (
                 <CardItem key={cat.id} cat={cat} onCardClick={handleCardClick} />
@@ -297,12 +334,17 @@ export const CategoryGridSection: React.FC = () => {
 const CardItem: React.FC<{
   cat: CategoryCardItem;
   onCardClick: (e: React.MouseEvent) => void;
-}> = ({ cat, onCardClick }) => (
+  isMobile?: boolean;
+}> = ({ cat, onCardClick, isMobile }) => (
   <Link
     href={cat.link}
     onClick={onCardClick}
     draggable={false}
-    className="relative w-[280px] sm:w-[340px] md:w-[380px] h-[360px] sm:h-[460px] md:h-[490px] shrink-0 rounded-2xl overflow-hidden group bg-[#141414] border border-white/10 transition-all duration-300 hover:border-[#D61C24] hover:shadow-2xl block"
+    className={`relative shrink-0 rounded-2xl overflow-hidden group bg-[#141414] border border-white/10 transition-all duration-300 hover:border-[#D61C24] hover:shadow-2xl block ${
+      isMobile
+        ? "w-[84vw] max-w-[340px] h-[340px] snap-start"
+        : "w-[280px] sm:w-[340px] md:w-[380px] h-[360px] sm:h-[460px] md:h-[490px]"
+    }`}
   >
     {/* Card Image */}
     <img

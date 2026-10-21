@@ -52,6 +52,7 @@ const FINISHES: FinishItem[] = [
 
 export const ManufacturingStorySection: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [activeMobileFinishId, setActiveMobileFinishId] = useState<string | null>(null);
 
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -138,7 +139,7 @@ export const ManufacturingStorySection: React.FC = () => {
     <section
       ref={sectionRef}
       onMouseMove={handleMouseMove}
-      className="relative bg-[#EDEDE9] text-[#0A0A0A] py-20 sm:py-28 border-b border-[#D5D5CF] select-none overflow-hidden"
+      className="relative bg-[#EDEDE9] text-[#0A0A0A] py-12 sm:py-20 lg:py-28 border-b border-[#D5D5CF] select-none overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         
@@ -152,43 +153,74 @@ export const ManufacturingStorySection: React.FC = () => {
               MADE TO ORDER
             </>
           }
-          description="Rhinestones, puff print, chenille and specialty embroidery. Hover a finish to explore textures up close."
+          description="Rhinestones, puff print, chenille and specialty embroidery. Hover a finish on desktop or tap to inspect macro textures."
         />
 
         {/* 6 Finishes Rows */}
         <div ref={rowsContainerRef} className="divide-y divide-[#D5D5CF]">
           {FINISHES.map((finish, idx) => {
             const isHovered = activeIndex === idx;
+            const isMobileExpanded = activeMobileFinishId === finish.number;
 
             return (
               <div
                 key={finish.number}
                 onMouseEnter={(e) => handleMouseEnter(idx, e)}
                 onMouseLeave={handleMouseLeave}
-                className="finish-row-item relative py-7 sm:py-9 transition-colors duration-200 cursor-pointer group"
+                onClick={() => {
+                  setActiveMobileFinishId((prev) => (prev === finish.number ? null : finish.number));
+                }}
+                className="finish-row-item relative py-5 sm:py-8 lg:py-9 transition-colors duration-200 cursor-pointer group"
                 style={{
-                  backgroundColor: isHovered ? "rgba(255, 255, 255, 0.72)" : "transparent",
+                  backgroundColor: isHovered || isMobileExpanded ? "rgba(255, 255, 255, 0.72)" : "transparent",
                 }}
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-6">
                   {/* Left: 01 + Finish Title */}
-                  <div className="flex items-baseline gap-6 sm:gap-12 md:gap-16">
-                    <span className="text-xs sm:text-sm font-mono font-bold text-[#0A0A0A] w-6 sm:w-8 shrink-0">
-                      {finish.number}
+                  <div className="flex items-center justify-between sm:justify-start gap-4 sm:gap-12 md:gap-16">
+                    <div className="flex items-baseline gap-4 sm:gap-8 md:gap-12 min-w-0">
+                      <span className="text-xs sm:text-sm font-mono font-bold text-[#0A0A0A] w-5 sm:w-8 shrink-0">
+                        {finish.number}
+                      </span>
+                      <h3
+                        className="text-xl sm:text-3xl md:text-4xl lg:text-[42px] font-black uppercase tracking-tight text-[#0A0A0A] font-display not-italic leading-tight transition-transform duration-200 group-hover:translate-x-1.5"
+                        style={{ fontStyle: "normal" }}
+                      >
+                        {finish.title}
+                      </h3>
+                    </div>
+
+                    {/* Mobile Pill indicator */}
+                    <span className="md:hidden text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-black/5 border border-black/10 text-neutral-700 shrink-0">
+                      {isMobileExpanded ? "Close ⌃" : "View ⌄"}
                     </span>
-                    <h3
-                      className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-black uppercase tracking-tight text-[#0A0A0A] font-display not-italic leading-none transition-transform duration-200 group-hover:translate-x-1.5"
-                      style={{ fontStyle: "normal" }}
-                    >
-                      {finish.title}
-                    </h3>
                   </div>
 
                   {/* Right: Description */}
-                  <p className="text-xs sm:text-sm md:text-base text-[#555555] font-sans sm:text-left max-w-md pl-12 sm:pl-0">
+                  <p className="text-xs sm:text-sm md:text-base text-[#555555] font-sans sm:text-left max-w-md pl-9 sm:pl-0">
                     {finish.desc}
                   </p>
                 </div>
+
+                {/* Mobile Expandable Macro Texture Card */}
+                {isMobileExpanded && (
+                  <div className="md:hidden mt-3.5 pt-3.5 border-t border-black/10 animate-in fade-in zoom-in-95 duration-200">
+                    <div className="relative w-full aspect-16/10 rounded-xl overflow-hidden shadow-md border border-black/10">
+                      <img
+                        src={finish.image}
+                        alt={finish.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/85 via-black/50 to-transparent text-white flex items-center justify-between">
+                        <span className="text-xs font-mono font-bold tracking-wider">{finish.title}</span>
+                        <span className="text-[10px] font-mono text-white/75 bg-black/40 px-2 py-0.5 rounded border border-white/20">
+                          MACRO TEXTURE
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}

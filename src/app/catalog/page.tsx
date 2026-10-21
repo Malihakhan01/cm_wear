@@ -11,7 +11,7 @@ import { categoriesService } from "@/services/categories.service";
 import { menuService } from "@/services/menu.service";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { useStoreModeStore } from "@/stores/useStoreModeStore";
-import { Search, SlidersHorizontal, ArrowRight, Box, ChevronDown } from "lucide-react";
+import { Search, SlidersHorizontal, ArrowRight, Box, ChevronDown, X } from "lucide-react";
 
 function findParentCategorySlug(slugOrName: string): string {
   const norm = (slugOrName || "").toLowerCase().replace(/[-_\s]/g, "");
@@ -199,6 +199,7 @@ function CatalogContent() {
 
   const [hoveredCat, setHoveredCat] = useState<Category | null>(null);
   const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number } | null>(null);
+  const [mobileDrawerCat, setMobileDrawerCat] = useState<Category | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { mode, toggleMode } = useStoreModeStore();
@@ -386,6 +387,7 @@ function CatalogContent() {
   }, []);
 
   const handleCategoryMouseEnter = (cat: Category, btnElement: HTMLButtonElement) => {
+    if (typeof window !== "undefined" && window.innerWidth < 1024) return;
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
       closeTimeoutRef.current = null;
@@ -567,7 +569,7 @@ function CatalogContent() {
     <div className="w-full bg-[#FFFFFF]">
       
       {/* Editorial Header */}
-      <section className="bg-[#0A0A0A] text-white border-b border-[#2A2A28] py-16 sm:py-20 select-none">
+      <section className="bg-[#0A0A0A] text-white border-b border-[#2A2A28] pt-20 sm:pt-24 lg:pt-28 pb-12 sm:pb-16 select-none">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-3">
@@ -601,8 +603,8 @@ function CatalogContent() {
         </div>
       </section>
 
-      {/* Filter Bar Sticky */}
-      <section className="bg-[#F4F4EF] border-b border-[#DADBD2] py-4 sticky top-[72px] z-30 select-none">
+      {/* Filter Bar: Relative on Mobile (scrolls naturally with page) and Sticky on Desktop */}
+      <section className="bg-[#F4F4EF] border-b border-[#DADBD2] py-4 relative lg:sticky lg:top-[72px] z-30 select-none">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
           
           {/* Category Tabs */}
@@ -647,6 +649,12 @@ function CatalogContent() {
                 <button
                   key={cat.id}
                   onClick={() => {
+                    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+                      if (hasSubcategories) {
+                        setMobileDrawerCat(cat);
+                        return;
+                      }
+                    }
                     setActiveCategory(cat.id);
                     setActiveSubcategory("all");
                     setHoveredCat(null);
@@ -777,17 +785,17 @@ function CatalogContent() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
               {[...Array(8)].map((_, i) => (
-                <div key={i} className="border border-[#DADBD2] rounded-[2px] p-3 space-y-3 bg-[#FAFAF8] overflow-hidden">
+                <div key={i} className="border border-[#DADBD2] rounded-[2px] p-2.5 sm:p-3 space-y-2 sm:space-y-3 bg-[#FAFAF8] overflow-hidden">
                   <div className="aspect-square bg-neutral-200/80 rounded-[2px] relative overflow-hidden animate-pulse">
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
                   </div>
-                  <div className="h-4 bg-neutral-200/90 rounded-[2px] w-3/4 animate-pulse" />
-                  <div className="h-3 bg-neutral-200/70 rounded-[2px] w-1/2 animate-pulse" />
+                  <div className="h-3.5 sm:h-4 bg-neutral-200/90 rounded-[2px] w-3/4 animate-pulse" />
+                  <div className="h-2.5 sm:h-3 bg-neutral-200/70 rounded-[2px] w-1/2 animate-pulse" />
                   <div className="flex justify-between items-center pt-2 border-t border-neutral-100">
-                    <div className="h-4 bg-neutral-200/80 rounded-[2px] w-1/3 animate-pulse" />
-                    <div className="h-3.5 bg-neutral-200/60 rounded-[2px] w-1/4 animate-pulse" />
+                    <div className="h-3.5 sm:h-4 bg-neutral-200/80 rounded-[2px] w-1/3 animate-pulse" />
+                    <div className="h-3 sm:h-3.5 bg-neutral-200/60 rounded-[2px] w-1/4 animate-pulse" />
                   </div>
                 </div>
               ))}
@@ -834,7 +842,7 @@ function CatalogContent() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
                 {displayedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -891,7 +899,7 @@ function CatalogContent() {
           }}
           onMouseEnter={handleDropdownMouseEnter}
           onMouseLeave={handleDropdownMouseLeave}
-          className="w-80 bg-white border border-[#DADBD2] shadow-2xl rounded-[2px] overflow-hidden animate-in fade-in zoom-in-95 duration-150 select-none"
+          className="hidden lg:block w-80 bg-white border border-[#DADBD2] shadow-2xl rounded-[2px] overflow-hidden animate-in fade-in zoom-in-95 duration-150 select-none"
         >
           {/* Dropdown Header */}
           <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#F0F0ED] bg-[#FAFAF8]">
@@ -955,6 +963,99 @@ function CatalogContent() {
                 </button>
               );
             })}
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Category Sub-disciplines Drawer / Bottom Sheet */}
+      {mobileDrawerCat && (
+        <div
+          className="lg:hidden fixed inset-0 z-[9999] bg-black/60 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-xs animate-in fade-in duration-200"
+          onClick={() => setMobileDrawerCat(null)}
+        >
+          <div
+            className="w-full sm:max-w-md bg-white rounded-t-2xl sm:rounded-2xl max-h-[85vh] flex flex-col overflow-hidden shadow-2xl border border-[#DADBD2] animate-in slide-in-from-bottom duration-250 select-none"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Drawer Header */}
+            <div className="p-4 sm:p-5 border-b border-[#F0F0ED] bg-[#FAFAF8] flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-mono font-bold text-[#D61C24] bg-[#F4F4EF] px-1.5 py-0.5 rounded-[2px]">
+                    {mobileDrawerCat.number}
+                  </span>
+                  <span className="text-xs font-mono text-[#72726D] uppercase">
+                    {allProducts.filter((p) => isProductInParentCategory(p, mobileDrawerCat)).length} Products
+                  </span>
+                </div>
+                <h3 className="text-sm sm:text-base font-bold uppercase tracking-tight text-[#0A0A0A] font-display">
+                  {mobileDrawerCat.name}
+                </h3>
+              </div>
+
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setMobileDrawerCat(null)}
+                className="w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-neutral-600 hover:text-black transition-colors cursor-pointer"
+                aria-label="Close subcategory menu"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Quick Action: View All Products */}
+            <div className="p-3 bg-[#FBFBFA] border-b border-[#F0F0ED]">
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveCategory(mobileDrawerCat.id);
+                  setActiveSubcategory("all");
+                  setMobileDrawerCat(null);
+                }}
+                className="w-full py-2.5 px-4 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono font-bold uppercase tracking-wider rounded-[2px] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              >
+                <span>View All {mobileDrawerCat.name} Products</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Subcategories List with live counts */}
+            <div className="overflow-y-auto p-3 space-y-1 max-h-[50vh] divide-y divide-[#F0F0ED]">
+              {(mobileDrawerCat.subcategories || []).map((sub) => {
+                const isSelected =
+                  (activeCategory === mobileDrawerCat.id || activeCategory === mobileDrawerCat.slug) &&
+                  activeSubcategory.toLowerCase() === sub.name.toLowerCase();
+                const count = getSubcategoryCount(mobileDrawerCat, sub.name);
+
+                return (
+                  <button
+                    key={sub.id || sub.slug || sub.name}
+                    type="button"
+                    onClick={() => {
+                      setActiveCategory(mobileDrawerCat.id);
+                      setActiveSubcategory(sub.name);
+                      setMobileDrawerCat(null);
+                    }}
+                    className={`w-full py-2.5 px-3 rounded-[2px] flex items-center justify-between text-left transition-colors text-xs font-medium cursor-pointer ${
+                      isSelected
+                        ? "bg-[#FFF1F2] text-[#D61C24] font-bold"
+                        : "text-[#20201E] hover:bg-neutral-100"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2 truncate pr-2">
+                      <span className={`text-sm leading-none shrink-0 ${isSelected ? "text-[#D61C24]" : "text-[#A8A8A8]"}`}>
+                        •
+                      </span>
+                      <span className="truncate">{sub.name}</span>
+                    </span>
+                    <span className={`text-[11px] font-mono shrink-0 ${isSelected ? "text-[#D61C24] font-bold" : "text-[#72726D]"}`}>
+                      ({count})
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}

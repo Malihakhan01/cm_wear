@@ -76,20 +76,20 @@ export const FaqSection: React.FC = () => {
   }, []);
 
   return (
-    <section className="bg-white py-20 border-b border-[#DADBD2] select-none">
+    <section className="bg-white py-12 sm:py-20 border-b border-[#DADBD2] select-none">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <SectionHeading
           align="center"
-          eyebrow="EXPORT SPECIFICATIONS & PROTOCOLS"
+          eyebrow="EXPORT SPECIFICATIONS &amp; PROTOCOLS"
           eyebrowColor="#D61C24"
           title="Frequently Answered Questions"
           description="Everything you need to know about working with our Sialkot manufacturing facility, minimums, sampling, and export logistics."
         />
 
         {/* Accordion List */}
-        <div className="space-y-3">
+        <div className="space-y-2.5 sm:space-y-3">
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
@@ -99,12 +99,12 @@ export const FaqSection: React.FC = () => {
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
-                  className={`w-full text-left p-5 flex items-center justify-between transition-colors ${
+                  className={`w-full text-left p-4 sm:p-5 flex items-center justify-between transition-colors ${
                     isOpen ? "bg-[#F4F4EF] text-[#0A0A0A]" : "bg-white text-[#0A0A0A] hover:bg-[#F4F4EF]"
                   }`}
                   aria-expanded={isOpen}
                 >
-                  <span className="text-sm font-bold uppercase tracking-tight font-sans not-italic text-[#0A0A0A] pr-4">
+                  <span className="text-xs sm:text-sm font-bold uppercase tracking-tight font-sans not-italic text-[#0A0A0A] pr-3 sm:pr-4 leading-snug">
                     {faq.q}
                   </span>
                   <ChevronDown
@@ -115,7 +115,7 @@ export const FaqSection: React.FC = () => {
                 </button>
 
                 {isOpen && (
-                  <div className="p-5 bg-white border-t border-[#DADBD2] text-xs text-[#72726D] leading-relaxed font-sans whitespace-pre-line">
+                  <div className="p-4 sm:p-5 bg-white border-t border-[#DADBD2] text-[11.5px] sm:text-xs text-[#72726D] leading-relaxed font-sans whitespace-pre-line">
                     {faq.a}
                   </div>
                 )}

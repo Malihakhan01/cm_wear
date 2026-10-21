@@ -760,6 +760,49 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
     setOpenLetterSections((prev) => ({ ...prev, [sec]: !prev[sec] }));
   };
 
+  // Action bar & option tabs drag-scroll refs for desktop/touch horizontal tracks
+  const actionMenuTrackRef = useRef<HTMLDivElement>(null);
+  const actionMenuDragState = useRef({ isDown: false, startX: 0, scrollLeft: 0 });
+
+  const handleActionMenuMouseDown = (e: React.MouseEvent) => {
+    actionMenuDragState.current = {
+      isDown: true,
+      startX: e.pageX - (actionMenuTrackRef.current?.offsetLeft || 0),
+      scrollLeft: actionMenuTrackRef.current?.scrollLeft || 0,
+    };
+  };
+  const handleActionMenuMouseUp = () => {
+    actionMenuDragState.current.isDown = false;
+  };
+  const handleActionMenuMouseMove = (e: React.MouseEvent) => {
+    if (!actionMenuDragState.current.isDown || !actionMenuTrackRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - actionMenuTrackRef.current.offsetLeft;
+    const walk = (x - actionMenuDragState.current.startX) * 1.5;
+    actionMenuTrackRef.current.scrollLeft = actionMenuDragState.current.scrollLeft - walk;
+  };
+
+  const optionTabsTrackRef = useRef<HTMLDivElement>(null);
+  const optionTabsDragState = useRef({ isDown: false, startX: 0, scrollLeft: 0 });
+
+  const handleOptionTabsMouseDown = (e: React.MouseEvent) => {
+    optionTabsDragState.current = {
+      isDown: true,
+      startX: e.pageX - (optionTabsTrackRef.current?.offsetLeft || 0),
+      scrollLeft: optionTabsTrackRef.current?.scrollLeft || 0,
+    };
+  };
+  const handleOptionTabsMouseUp = () => {
+    optionTabsDragState.current.isDown = false;
+  };
+  const handleOptionTabsMouseMove = (e: React.MouseEvent) => {
+    if (!optionTabsDragState.current.isDown || !optionTabsTrackRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - optionTabsTrackRef.current.offsetLeft;
+    const walk = (x - optionTabsDragState.current.startX) * 1.5;
+    optionTabsTrackRef.current.scrollLeft = optionTabsDragState.current.scrollLeft - walk;
+  };
+
   const handleTabClick = (tab: "colors" | "logo" | "letters" | "specs" | "sizing") => {
     if (controlTab === tab) {
       setIsMobileOptionsOpen((prev) => !prev);
@@ -3224,32 +3267,39 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
 
           {/* Right Configuration Controls (Col 8 to 12) */}
           <div className="lg:col-span-5 flex flex-col justify-between bg-white max-h-[850px] relative overflow-hidden">
-            {/* Top Studio Action Bar (Save Design, Tech Pack, Add to Cart) */}
-            <div className="flex items-center justify-between gap-1.5 p-2.5 sm:p-3 border-b border-[#E6E6E2] bg-white shrink-0">
+            {/* Top Studio Action Bar (Save Design, Tech Pack, Size Chart, Add to Cart) - Draggable/Swipeable Track */}
+            <div
+              ref={actionMenuTrackRef}
+              onMouseDown={handleActionMenuMouseDown}
+              onMouseUp={handleActionMenuMouseUp}
+              onMouseLeave={handleActionMenuMouseUp}
+              onMouseMove={handleActionMenuMouseMove}
+              className="flex items-center gap-1.5 p-2 sm:p-3 border-b border-[#E6E6E2] bg-white shrink-0 overflow-x-auto no-scrollbar scroll-smooth touch-pan-x cursor-grab active:cursor-grabbing select-none"
+            >
               <button
                 type="button"
                 onClick={() => setIsSaveModalOpen(true)}
-                className="flex-1 py-1.5 sm:py-2 px-2 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 font-mono font-bold text-[10px] sm:text-[11px] uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                className="shrink-0 min-w-[105px] sm:flex-1 py-1.5 sm:py-2 px-2.5 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 font-mono font-bold text-[10px] sm:text-[11px] uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
-                <Save className="w-3.5 h-3.5 text-[#D10115]" />
+                <Save className="w-3.5 h-3.5 text-[#D10115] shrink-0" />
                 <span className="truncate">Save Design</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setIsTechPackOpen(true)}
-                className="flex-1 py-1.5 sm:py-2 px-2 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 font-mono font-bold text-[10px] sm:text-[11px] uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                className="shrink-0 min-w-[105px] sm:flex-1 py-1.5 sm:py-2 px-2.5 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 font-mono font-bold text-[10px] sm:text-[11px] uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
-                <FileText className="w-3.5 h-3.5 text-[#D10115]" />
+                <FileText className="w-3.5 h-3.5 text-[#D10115] shrink-0" />
                 <span className="truncate">Tech Pack</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setIsSizeChartOpen(true)}
-                className="flex-1 py-1.5 sm:py-2 px-2 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 font-mono font-bold text-[10px] sm:text-[11px] uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                className="shrink-0 min-w-[105px] sm:flex-1 py-1.5 sm:py-2 px-2.5 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 font-mono font-bold text-[10px] sm:text-[11px] uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
-                <Ruler className="w-3.5 h-3.5 text-[#D10115]" />
+                <Ruler className="w-3.5 h-3.5 text-[#D10115] shrink-0" />
                 <span className="truncate">Size Chart</span>
               </button>
 
@@ -3263,21 +3313,28 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                     handleAddBatchToCart();
                   }
                 }}
-                className="flex-1 py-1.5 sm:py-2 px-2 bg-[#0B0B0B] hover:bg-neutral-900 text-white font-mono font-bold text-[10px] sm:text-[11px] uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                className="shrink-0 min-w-[105px] sm:flex-1 py-1.5 sm:py-2 px-2.5 bg-[#0B0B0B] hover:bg-neutral-900 text-white font-mono font-bold text-[10px] sm:text-[11px] uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
-                <ShoppingBag className="w-3.5 h-3.5 text-[#D10115]" />
+                <ShoppingBag className="w-3.5 h-3.5 text-[#D10115] shrink-0" />
                 <span className="truncate">{totalBatchUnits > 0 ? `Add (${totalBatchUnits})` : "Add to Cart"}</span>
               </button>
             </div>
 
-            {/* Studio Navigation Tabs (01 COLORS, 02 ARTWORK, 03 TEXT, 04 SPECS, 05 SIZING) */}
-            <div className="flex items-center border-b border-[#DADBD2] overflow-x-auto scrollbar-none bg-[#FAFAF8] shrink-0 z-20">
+            {/* Studio Navigation Tabs (COLORS, ARTWORK, TEXT, SPECS, SIZING) - Draggable/Swipeable Track */}
+            <div
+              ref={optionTabsTrackRef}
+              onMouseDown={handleOptionTabsMouseDown}
+              onMouseUp={handleOptionTabsMouseUp}
+              onMouseLeave={handleOptionTabsMouseUp}
+              onMouseMove={handleOptionTabsMouseMove}
+              className="flex items-center border-b border-[#DADBD2] overflow-x-auto no-scrollbar scroll-smooth touch-pan-x bg-[#FAFAF8] shrink-0 z-20 cursor-grab active:cursor-grabbing select-none"
+            >
               {[
-                { id: "colors" as const, label: "01 COLORS", icon: Palette },
-                { id: "logo" as const, label: "02 ARTWORK", icon: ImageIcon },
-                { id: "letters" as const, label: "03 TEXT", icon: Type },
-                { id: "specs" as const, label: "04 SPECS", icon: Sliders },
-                { id: "sizing" as const, label: "05 SIZING", icon: ShoppingBag },
+                { id: "colors" as const, label: "COLORS", icon: Palette },
+                { id: "logo" as const, label: "ARTWORK", icon: ImageIcon },
+                { id: "letters" as const, label: "TEXT", icon: Type },
+                { id: "specs" as const, label: "SPECS", icon: Sliders },
+                { id: "sizing" as const, label: "SIZING", icon: ShoppingBag },
               ].map((t) => {
                 const Icon = t.icon;
                 const isCurrent = controlTab === t.id;
@@ -3288,13 +3345,13 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
                       setControlTab(t.id);
                       setIsMobileOptionsOpen(true);
                     }}
-                    className={`flex-1 py-2 sm:py-2.5 px-2 text-[10px] sm:text-[11px] font-mono uppercase font-bold tracking-wider shrink-0 flex items-center justify-center gap-1 sm:gap-1.5 transition-colors border-b-2 cursor-pointer ${
+                    className={`shrink-0 min-w-[85px] sm:flex-1 py-2 sm:py-2.5 px-3 text-[10px] sm:text-[11px] font-mono uppercase font-bold tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 transition-colors border-b-2 cursor-pointer ${
                       isCurrent
                         ? "border-[#D61C24] bg-white text-[#D61C24]"
                         : "border-transparent text-neutral-500 hover:text-black hover:bg-neutral-100"
                     }`}
                   >
-                    <Icon className="w-3.5 h-3.5" />
+                    <Icon className="w-3.5 h-3.5 shrink-0" />
                     <span className="truncate">{t.label}</span>
                   </button>
                 );
@@ -5140,9 +5197,9 @@ export const CustomizerStudioEngine: React.FC<CustomizerStudioEngineProps> = ({
   return (
     <>
       {mode === "homepage" ? (
-        <section id="customizer-studio" className="w-full bg-white py-20 border-b border-[#E6E6E2]">
+        <section id="customizer-studio" className="w-full bg-white py-8 sm:py-16 lg:py-20 border-b border-[#E6E6E2]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-12 gap-4">
               <RevealHeading
                 eyebrow={<>CUSTOMIZER LAB &bull; VARSITY ATELIER &bull; MULTI-PANEL DYE</>}
                 line1="BUILD IT."

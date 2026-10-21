@@ -304,3 +304,12 @@
   animation-play-state: paused;
 }
 
+/* Explicit line-clamp-2 utility to guarantee 2-line title clamping */
+.line-clamp-2 {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+

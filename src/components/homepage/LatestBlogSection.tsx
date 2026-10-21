@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowRight, Clock, BookOpen, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, BookOpen, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeading } from "@/components/common/SectionHeading";
 import { contentService } from "@/services/content.service";
 import { BlogPostItem } from "@/types";
@@ -57,6 +57,13 @@ const DEFAULT_HOMEPAGE_POSTS: BlogPostItem[] = [
 export const LatestBlogSection: React.FC = () => {
   const [posts, setPosts] = useState<BlogPostItem[]>(DEFAULT_HOMEPAGE_POSTS);
   const [totalCount, setTotalCount] = useState<number>(7);
+  const [activeDot, setActiveDot] = useState<number>(0);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const isMouseDownRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const hasMovedRef = useRef(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -81,13 +88,58 @@ export const LatestBlogSection: React.FC = () => {
     };
   }, []);
 
+  const handleScroll = () => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, clientWidth } = scrollContainerRef.current;
+    const cardWidth = scrollContainerRef.current.firstElementChild?.clientWidth || clientWidth * 0.85;
+    const index = Math.round(scrollLeft / (cardWidth + 16));
+    setActiveDot(Math.min(Math.max(0, index), posts.length - 1));
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    isMouseDownRef.current = true;
+    hasMovedRef.current = false;
+    startXRef.current = e.pageX - scrollContainerRef.current.offsetLeft;
+    scrollLeftRef.current = scrollContainerRef.current.scrollLeft;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isMouseDownRef.current || !scrollContainerRef.current) return;
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 1.5;
+    if (Math.abs(walk) > 5) {
+      hasMovedRef.current = true;
+    }
+    scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walk;
+    handleScroll();
+  };
+
+  const handleMouseUpOrLeave = () => {
+    isMouseDownRef.current = false;
+  };
+
+  const handleLinkClick = (e: React.MouseEvent) => {
+    if (hasMovedRef.current) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
+  const scroll = (direction: "left" | "right") => {
+    if (!scrollContainerRef.current) return;
+    const cardWidth = scrollContainerRef.current.firstElementChild?.clientWidth || 320;
+    const offset = direction === "left" ? -(cardWidth + 24) : (cardWidth + 24);
+    scrollContainerRef.current.scrollBy({ left: offset, behavior: "smooth" });
+  };
+
   return (
-    <section className="bg-white py-20 border-b border-[#DADBD2] select-none">
+    <section className="bg-white py-12 sm:py-20 border-b border-[#DADBD2] select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header with Integrated Action CTA */}
+        {/* Header with Integrated Action CTA and Previous/Next buttons */}
         <SectionHeading
-          eyebrow="FACTORY INSIGHTS & SPECIFICATIONS"
+          eyebrow="FACTORY INSIGHTS &amp; SPECIFICATIONS"
           eyebrowColor="#D61C24"
           title={
             <>
@@ -96,18 +148,54 @@ export const LatestBlogSection: React.FC = () => {
           }
           description="Deep-dive technical guides on fabric density, pattern engineering, private label tech packs, and commercial export logistics."
           action={
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-1.5 text-xs font-mono uppercase font-bold text-[#0A0A0A] hover:text-[#D61C24] transition-colors group pt-1"
-            >
-              <span>View All Editorial Guides ({totalCount > 0 ? totalCount : posts.length}+)</span>
-              <ArrowRight className="w-4 h-4 text-[#D61C24] transition-transform group-hover:translate-x-1" />
-            </Link>
+            <div className="flex items-center gap-3 pt-1">
+              {/* Previous & Next Chevron Buttons */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => scroll("left")}
+                  aria-label="Previous articles"
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-[2px] bg-white border border-[#DADBD2] hover:border-[#D61C24] hover:text-[#D61C24] flex items-center justify-center transition-colors shadow-xs cursor-pointer"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scroll("right")}
+                  aria-label="Next articles"
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-[2px] bg-white border border-[#DADBD2] hover:border-[#D61C24] hover:text-[#D61C24] flex items-center justify-center transition-colors shadow-xs cursor-pointer"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* View All CTA */}
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-1.5 text-xs font-mono uppercase font-bold text-[#0A0A0A] hover:text-[#D61C24] transition-colors group ml-1"
+              >
+                <span>View All ({totalCount > 0 ? totalCount : posts.length}+)</span>
+                <ArrowRight className="w-4 h-4 text-[#D61C24] transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
           }
         />
 
-        {/* 3 Articles Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        {/* Horizontal Slider Track: Touch swipe & Mouse drag with Click Guard */}
+        <div
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUpOrLeave}
+          onMouseLeave={handleMouseUpOrLeave}
+          className="flex items-stretch gap-4 sm:gap-6 md:gap-8 overflow-x-auto no-scrollbar scroll-smooth touch-pan-x snap-x snap-mandatory pb-4 pt-2 cursor-grab active:cursor-grabbing"
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
           {posts.map((post) => {
             const fallbackImg = "/categories/Casual wear (1).png";
             const cover = post.cover_image || fallbackImg;
@@ -116,11 +204,15 @@ export const LatestBlogSection: React.FC = () => {
             return (
               <article
                 key={post.id}
-                className="bg-white border border-[#DADBD2] rounded-[2px] overflow-hidden flex flex-col justify-between hover:border-[#D61C24] transition-all group shadow-sm hover:shadow-md"
+                className="w-[85vw] max-w-[340px] sm:w-[380px] md:w-[calc((100%-4rem)/3)] shrink-0 snap-start bg-white border border-[#DADBD2] rounded-[2px] overflow-hidden flex flex-col justify-between hover:border-[#D61C24] transition-all group shadow-sm hover:shadow-md"
               >
                 <div>
                   {/* Article Thumbnail */}
-                  <Link href={`/blog/${post.slug}`} className="block relative h-48 sm:h-52 overflow-hidden bg-neutral-900">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    onClick={handleLinkClick}
+                    className="block relative h-44 sm:h-52 overflow-hidden bg-neutral-900"
+                  >
                     <img
                       src={cover}
                       alt={post.title}
@@ -142,8 +234,8 @@ export const LatestBlogSection: React.FC = () => {
                   </Link>
 
                   {/* Body */}
-                  <div className="p-6 space-y-3">
-                    <div className="flex items-center gap-3 text-[11px] font-mono text-[#72726D]">
+                  <div className="p-4 sm:p-6 space-y-2.5 sm:space-y-3">
+                    <div className="flex items-center gap-2.5 text-[10.5px] sm:text-[11px] font-mono text-[#72726D]">
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3 text-[#D61C24]" />
                         {post.estimated_reading_time || 5} min read
@@ -152,27 +244,28 @@ export const LatestBlogSection: React.FC = () => {
                       <span>Published Article</span>
                     </div>
 
-                    <h3 className="text-base font-bold uppercase tracking-tight text-[#0A0A0A] font-display group-hover:text-[#D61C24] transition-colors leading-snug line-clamp-2">
-                      <Link href={`/blog/${post.slug}`}>
+                    <h3 className="text-sm sm:text-base font-bold uppercase tracking-tight text-[#0A0A0A] font-display group-hover:text-[#D61C24] transition-colors leading-snug line-clamp-2">
+                      <Link href={`/blog/${post.slug}`} onClick={handleLinkClick}>
                         {post.title}
                       </Link>
                     </h3>
 
-                    <p className="text-xs text-[#72726D] leading-relaxed font-sans line-clamp-3">
+                    <p className="text-[11.5px] sm:text-xs text-[#72726D] leading-relaxed font-sans line-clamp-2 sm:line-clamp-3">
                       {cleanHtml(post.summary || "")}
                     </p>
                   </div>
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 pb-6 pt-3 border-t border-[#F4F4EF] flex items-center justify-between">
-                  <span className="text-[11px] font-mono text-[#72726D]">
+                <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-3 border-t border-[#F4F4EF] flex items-center justify-between">
+                  <span className="text-[10px] sm:text-[11px] font-mono text-[#72726D]">
                     CM Technical
                   </span>
 
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-mono uppercase font-bold text-[#0A0A0A] group-hover:text-[#D61C24] transition-colors"
+                    onClick={handleLinkClick}
+                    className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-mono uppercase font-bold text-[#0A0A0A] group-hover:text-[#D61C24] transition-colors"
                   >
                     <span>Read Guide</span>
                     <ArrowRight className="w-3.5 h-3.5 text-[#D61C24]" />
@@ -181,6 +274,26 @@ export const LatestBlogSection: React.FC = () => {
               </article>
             );
           })}
+        </div>
+
+        {/* Mobile Slide Indicator Dots */}
+        <div className="md:hidden flex items-center justify-center gap-1.5 pt-4">
+          {posts.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => {
+                if (!scrollContainerRef.current) return;
+                const cardWidth = scrollContainerRef.current.firstElementChild?.clientWidth || 320;
+                scrollContainerRef.current.scrollTo({ left: i * (cardWidth + 16), behavior: "smooth" });
+                setActiveDot(i);
+              }}
+              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                activeDot === i ? "w-6 bg-[#D61C24]" : "w-1.5 bg-[#DADBD2]"
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
         </div>
 
       </div>

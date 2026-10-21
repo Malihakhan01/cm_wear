@@ -198,13 +198,13 @@ export default function WishlistPage() {
         {/* Content State Handling */}
         {!mounted ? (
           /* Loading Skeletons for SSR hydration safety */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="bg-white border border-[#DADBD2] rounded-[2px] p-4 space-y-4 animate-pulse">
+              <div key={i} className="bg-white border border-[#DADBD2] rounded-[2px] p-2.5 sm:p-4 space-y-3 sm:space-y-4 animate-pulse">
                 <div className="aspect-square bg-[#F4F4EF] rounded-[2px]" />
-                <div className="h-4 bg-[#F4F4EF] rounded w-3/4" />
-                <div className="h-3 bg-[#F4F4EF] rounded w-1/2" />
-                <div className="h-9 bg-[#F4F4EF] rounded w-full" />
+                <div className="h-3 sm:h-4 bg-[#F4F4EF] rounded w-3/4" />
+                <div className="h-2.5 sm:h-3 bg-[#F4F4EF] rounded w-1/2" />
+                <div className="h-7 sm:h-9 bg-[#F4F4EF] rounded w-full" />
               </div>
             ))}
           </div>
@@ -282,7 +282,7 @@ export default function WishlistPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
               {items.map((product) => {
                 const demoImage = getProductDemoImage(product.category, product.name, product.subcategory);
                 const displayImage = product.images?.[0] && product.images[0] !== "/placeholder.jpg" ? product.images[0] : demoImage;
@@ -294,8 +294,8 @@ export default function WishlistPage() {
                     className="group bg-white border border-[#DADBD2] rounded-[2px] flex flex-col justify-between overflow-hidden transition-all duration-300 hover:border-[#D61C24] hover:shadow-md relative"
                   >
                     {/* Top Action Bar */}
-                    <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-20 pointer-events-none">
-                      <span className="bg-[#0A0A0A]/85 backdrop-blur-xs text-white text-[9px] font-mono uppercase px-2 py-0.5 rounded-[1px] font-bold">
+                    <div className="absolute top-2 left-2 right-2 sm:top-2.5 sm:left-2.5 sm:right-2.5 flex items-center justify-between z-20 pointer-events-none">
+                      <span className="bg-[#0A0A0A]/85 backdrop-blur-xs text-white text-[8px] sm:text-[9px] font-mono uppercase px-1.5 sm:px-2 py-0.5 rounded-[1px] font-bold truncate max-w-[70%]">
                         {product.subcategory || product.category}
                       </span>
 
@@ -306,15 +306,15 @@ export default function WishlistPage() {
                           e.stopPropagation();
                           removeItem(product.id);
                         }}
-                        className="pointer-events-auto p-1.5 rounded-full bg-white/90 hover:bg-[#D61C24] text-[#72726D] hover:text-white border border-[#DADBD2] hover:border-[#D61C24] transition-colors cursor-pointer shadow-xs"
+                        className="pointer-events-auto p-1 sm:p-1.5 rounded-full bg-white/90 hover:bg-[#D61C24] text-[#72726D] hover:text-white border border-[#DADBD2] hover:border-[#D61C24] transition-colors cursor-pointer shadow-xs"
                         title="Remove from wishlist"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       </button>
                     </div>
 
                     {/* Image Area */}
-                    <div className="relative aspect-square bg-[#F4F4EF] overflow-hidden p-6">
+                    <div className="relative aspect-square bg-[#F4F4EF] overflow-hidden p-2.5 sm:p-5 lg:p-6">
                       <Link href={`/products/${product.slug}`} className="block w-full h-full">
                         <img
                           src={displayImage}
@@ -331,66 +331,72 @@ export default function WishlistPage() {
                     </div>
 
                     {/* Details Area */}
-                    <div className="p-4 flex flex-col justify-between flex-1">
+                    <div className="p-2.5 sm:p-4 flex flex-col justify-between flex-1">
                       <div>
                         {/* Category & SKU */}
-                        <div className="flex items-center justify-between text-[10px] font-mono text-[#72726D] mb-1">
-                          <span className="uppercase text-[#D61C24] font-semibold">{product.category}</span>
-                          <span>{product.sku}</span>
+                        <div className="flex items-center justify-between text-[8.5px] sm:text-[10px] font-mono text-[#72726D] mb-1">
+                          <span className="uppercase text-[#D61C24] font-semibold truncate pr-1">{product.category}</span>
+                          <span className="shrink-0">{product.sku}</span>
                         </div>
 
                         {/* Title */}
                         <Link
                           href={`/products/${product.slug}`}
-                          className="text-sm font-bold uppercase tracking-tight text-[#0A0A0A] group-hover:text-[#D61C24] transition-colors line-clamp-1 mb-2 block"
+                          className="text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-tight text-[#0A0A0A] group-hover:text-[#D61C24] transition-colors line-clamp-2 h-[2.5em] sm:h-[2.6em] mb-1.5 sm:mb-2 leading-tight sm:leading-snug"
+                          style={{
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                          }}
                         >
                           {product.name}
                         </Link>
 
                         {/* Fabric Snippet */}
                         {product.fabric && (
-                          <div className="text-[10px] font-mono text-[#72726D] line-clamp-1 mb-3">
+                          <div className="text-[8.5px] sm:text-[10px] font-mono text-[#72726D] line-clamp-1 mb-2 sm:mb-3">
                             Fabric: <span className="text-[#0A0A0A] font-medium">{product.fabric}</span>
                           </div>
                         )}
                       </div>
 
-                      <div className="space-y-3 pt-3 border-t border-[#F4F4EF]">
+                      <div className="space-y-2 sm:space-y-3 pt-2 sm:pt-3 border-t border-[#F4F4EF]">
                         {/* Swatches & Price */}
-                        <div className="flex items-end justify-between">
+                        <div className="flex items-end justify-between gap-1">
                           <div className="flex items-center gap-1">
                             {product.colors?.slice(0, 4).map((c) => (
                               <span
                                 key={c.id}
-                                className="w-2.5 h-2.5 rounded-full border border-black/20"
+                                className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full border border-black/20"
                                 style={{ backgroundColor: c.hex }}
                                 title={c.name}
                               />
                             ))}
                             {(product.colors?.length || 0) > 4 && (
-                              <span className="text-[9px] font-mono text-[#72726D]">
+                              <span className="text-[8px] sm:text-[9px] font-mono text-[#72726D]">
                                 +{(product.colors?.length || 0) - 4}
                               </span>
                             )}
                           </div>
 
-                          <div className="text-right">
+                          <div className="text-right shrink-0">
                             {mode === "wholesale" ? (
                               <div>
-                                <div className="text-xs font-bold text-[#0A0A0A] font-mono">
+                                <div className="text-[10.5px] sm:text-xs font-bold text-[#0A0A0A] font-mono">
                                   From ${product.wholesalePrice.toFixed(2)}/pc
                                 </div>
-                                <div className="text-[10px] font-mono text-[#D61C24] font-semibold">
+                                <div className="text-[8px] sm:text-[9.5px] font-mono text-[#D61C24] font-semibold">
                                   MOQ {product.MOQ} PCS
                                 </div>
                               </div>
                             ) : (
                               <div>
-                                <div className="text-xs font-bold text-[#0A0A0A] font-mono">
+                                <div className="text-[10.5px] sm:text-xs font-bold text-[#0A0A0A] font-mono">
                                   ${product.retailPrice.toFixed(2)}
                                 </div>
-                                <div className="text-[10px] font-mono text-[#72726D]">
-                                  Single Sample Piece
+                                <div className="text-[8px] sm:text-[9.5px] font-mono text-[#72726D]">
+                                  Single Sample
                                 </div>
                               </div>
                             )}
@@ -398,30 +404,33 @@ export default function WishlistPage() {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="pt-2 border-t border-[#F4F4EF] flex items-center gap-2">
+                        <div className="pt-2 border-t border-[#F4F4EF] flex items-center gap-1.5 sm:gap-2">
                           <button
                             onClick={(e) => handleAddToCart(product, e)}
-                            className="flex-1 py-2 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-[10px] font-mono uppercase font-bold tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+                            className="flex-1 py-1.5 sm:py-2 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-[8.5px] sm:text-[10px] font-mono uppercase font-bold tracking-wider rounded-[2px] flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer shadow-xs"
                           >
                             {isAdded ? (
                               <>
-                                <Check className="w-3.5 h-3.5 text-[#FF333D]" />
+                                <Check className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-[#FF333D]" />
                                 <span>Added!</span>
                               </>
                             ) : (
                               <>
-                                <ShoppingBag className="w-3.5 h-3.5" />
-                                <span>{mode === "wholesale" ? "Add MOQ" : "Add to Bag"}</span>
+                                <ShoppingBag className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
+                                <span>
+                                  <span className="sm:hidden">{mode === "wholesale" ? "MOQ" : "Add"}</span>
+                                  <span className="hidden sm:inline">{mode === "wholesale" ? "Add MOQ" : "Add to Bag"}</span>
+                                </span>
                               </>
                             )}
                           </button>
 
                           <Link
                             href={`/products/${product.slug}`}
-                            className="px-3 py-2 bg-white hover:bg-[#F4F4EF] text-[#0A0A0A] border border-[#DADBD2] hover:border-[#0A0A0A] rounded-[2px] text-[10px] font-mono uppercase font-bold text-center transition-colors shrink-0 cursor-pointer"
+                            className="px-2 sm:px-3 py-1.5 sm:py-2 bg-white hover:bg-[#F4F4EF] text-[#0A0A0A] border border-[#DADBD2] hover:border-[#0A0A0A] rounded-[2px] text-[8.5px] sm:text-[10px] font-mono uppercase font-bold text-center transition-colors shrink-0 cursor-pointer"
                             title="Inspect Technical Specifications"
                           >
-                            Specs
+                            <span className="hidden sm:inline">View </span>Specs
                           </Link>
                         </div>
                       </div>
