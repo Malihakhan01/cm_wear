@@ -19,11 +19,20 @@
               name: {{ Js::from(old('name', '')) }},
               shortDesc: {{ Js::from(old('short_description', '')) }},
               metaTitle: {{ Js::from(old('meta_title', '')) }},
-              metaDescription: {{ Js::from(old('meta_description', '')) }},
+              metaDescription: {{ Js::from(trim(preg_replace('/\s+/', ' ', str_replace(['\r\n', '\r', '\n', "\r\n", "\r", "\n"], ' ', old('meta_description', ''))))) }},
               metaTitleManuallyEdited: {{ old('meta_title') ? 'true' : 'false' }},
               metaDescManuallyEdited: {{ old('meta_description') ? 'true' : 'false' }},
               primaryImagePreview: null,
               galleryPreviews: [],
+
+              cleanMetaText(str) {
+                  if (!str) return '';
+                  return str.replace(/\\r\\n|\\n|\\r/g, ' ').replace(/\r\n|\r|\n/g, ' ').replace(/\s+/g, ' ').trim();
+              },
+              onMetaDescriptionInput() {
+                  this.metaDescription = this.cleanMetaText(this.metaDescription);
+                  this.metaDescManuallyEdited = (this.metaDescription.trim() !== '');
+              },
 
               onNameInput() {
                   if (!this.metaTitleManuallyEdited || this.metaTitle.trim() === '') {
@@ -90,7 +99,7 @@
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2">Full Specifications & Description</label>
-                        <x-wysiwyg name="description" :value="old('description')" placeholder="Full garment specifications, material breakdown, GSM, washing instructions, and customization details..." height="240px" />
+                        <x-wysiwyg name="description" :value="old('description')" placeholder="Full garment specifications, material breakdown, GSM, washing instructions, and customization details..." height="240px" maxHeight="550px" class="wysiwyg-description" />
                     </div>
                 </div>
 
@@ -280,7 +289,7 @@
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">Meta Description</label>
                             <span class="text-[11px] text-slate-400 dark:text-slate-500" x-text="metaDescription ? metaDescription.length + ' chars' : 'Auto'"></span>
                         </div>
-                        <textarea name="meta_description" rows="3" x-model="metaDescription" @input="metaDescManuallyEdited = (metaDescription.trim() !== '')" placeholder="Leave empty to auto write from short description..." class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-950">{{ old('meta_description') }}</textarea>
+                        <textarea name="meta_description" rows="3" x-model="metaDescription" @input="onMetaDescriptionInput()" placeholder="Leave empty to auto write from short description..." class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-950">{{ trim(preg_replace('/\s+/', ' ', str_replace(['\r\n', '\r', '\n', "\r\n", "\r", "\n"], ' ', old('meta_description', '')))) }}</textarea>
                         <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1.5 flex items-center gap-1.5">
                             <svg class="w-3.5 h-3.5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             Leave empty to auto write from short description or product specifications (up to 160 characters).

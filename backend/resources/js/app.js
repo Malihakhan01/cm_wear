@@ -44,6 +44,10 @@ Alpine.data('wysiwyg', (config = {}) => ({
         const editorArea = this.$refs.editorContainer.querySelector('.ql-editor');
         if (editorArea) {
             editorArea.style.minHeight = minHeight;
+            if (config.maxHeight) {
+                editorArea.style.maxHeight = config.maxHeight;
+                editorArea.style.overflowY = 'auto';
+            }
         }
 
         if (this.content && this.content.trim() !== '') {

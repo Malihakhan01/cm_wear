@@ -105,7 +105,7 @@ class ProductController extends Controller
         $validated['wholesale_price'] = $firstTierPrice ?? ($request->filled('wholesale_price') ? (float) $request->wholesale_price : (float) $validated['regular_price']);
 
         $validated['meta_title'] = !empty($validated['meta_title']) ? $validated['meta_title'] : $validated['name'];
-        $validated['meta_description'] = !empty($validated['meta_description']) ? $validated['meta_description'] : (!empty($validated['short_description']) ? Str::limit(strip_tags($validated['short_description']), 155) : Str::limit(strip_tags($validated['description'] ?? ''), 155));
+        $validated['meta_description'] = $this->sanitizeMetaDescription($validated['meta_description'] ?? null, $validated['short_description'] ?? null, $validated['description'] ?? null);
 
         $product = Product::create($validated);
 
@@ -218,7 +218,7 @@ class ProductController extends Controller
         $validated['wholesale_price'] = $firstTierPrice ?? ($request->filled('wholesale_price') ? (float) $request->wholesale_price : (float) $validated['regular_price']);
 
         $validated['meta_title'] = !empty($validated['meta_title']) ? $validated['meta_title'] : $validated['name'];
-        $validated['meta_description'] = !empty($validated['meta_description']) ? $validated['meta_description'] : (!empty($validated['short_description']) ? Str::limit(strip_tags($validated['short_description']), 155) : Str::limit(strip_tags($validated['description'] ?? ''), 155));
+        $validated['meta_description'] = $this->sanitizeMetaDescription($validated['meta_description'] ?? null, $validated['short_description'] ?? null, $validated['description'] ?? null);
 
         $product->update($validated);
 
@@ -384,5 +384,21 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')
             ->with('success', "{$count} product(s) successfully deleted.");
+    }
+
+    protected function sanitizeMetaDescription(?string $metaDescription, ?string $shortDesc = null, ?string $desc = null): ?string
+    {
+        if (!empty($metaDescription)) {
+            $clean = str_replace(['\r\n', '\r', '\n', "\r\n", "\r", "\n"], ' ', $metaDescription);
+            return Str::limit(trim(preg_replace('/\s+/', ' ', $clean)), 160, '');
+        }
+
+        $source = !empty($shortDesc) ? $shortDesc : ($desc ?? '');
+        if (!empty($source)) {
+            $clean = str_replace(['\r\n', '\r', '\n', "\r\n", "\r", "\n"], ' ', strip_tags($source));
+            return Str::limit(trim(preg_replace('/\s+/', ' ', $clean)), 155, '');
+        }
+
+        return null;
     }
 }

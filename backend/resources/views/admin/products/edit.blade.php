@@ -28,12 +28,21 @@
     @endphp
 
     <script>
+        function cleanMetaText(str) {
+            if (!str) return '';
+            return str
+                .replace(/\\r\\n|\\n|\\r/g, ' ')
+                .replace(/\r\n|\r|\n/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
         function productEditForm() {
             return {
                 name: @json(old('name', $product->name ?? '')),
                 shortDesc: @json(old('short_description', $product->short_description ?? '')),
                 metaTitle: @json(old('meta_title', $product->meta_title ?? '')),
-                metaDescription: @json(old('meta_description', $product->meta_description ?? '')),
+                metaDescription: cleanMetaText(@json(old('meta_description', $product->meta_description ?? ''))),
                 metaTitleManuallyEdited: {{ old('meta_title', $product->meta_title) ? 'true' : 'false' }},
                 metaDescManuallyEdited: {{ old('meta_description', $product->meta_description) ? 'true' : 'false' }},
                 primaryImagePreview: null,
@@ -43,6 +52,14 @@
                 selectedPrimaryImageId: null,
                 isSettingCover: false,
                 statusToast: '',
+
+                cleanMetaText(str) {
+                    return cleanMetaText(str);
+                },
+                onMetaDescriptionInput() {
+                    this.metaDescription = cleanMetaText(this.metaDescription);
+                    this.metaDescManuallyEdited = (this.metaDescription.trim() !== '');
+                },
 
                 onNameInput() {
                     if (!this.metaTitleManuallyEdited || !this.metaTitle || this.metaTitle.trim() === '') {
@@ -152,7 +169,7 @@
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2">Full Specifications & Description</label>
-                        <x-wysiwyg name="description" :value="old('description', $product->description)" placeholder="Full garment specifications, material breakdown, GSM, washing instructions, and customization details..." height="240px" />
+                        <x-wysiwyg name="description" :value="old('description', $product->description)" placeholder="Full garment specifications, material breakdown, GSM, washing instructions, and customization details..." height="240px" maxHeight="550px" class="wysiwyg-description" />
                     </div>
                 </div>
 
@@ -382,7 +399,7 @@
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">Meta Description</label>
                             <span class="text-[11px] text-slate-400 dark:text-slate-500" x-text="metaDescription ? metaDescription.length + ' chars' : 'Auto'"></span>
                         </div>
-                        <textarea name="meta_description" rows="3" x-model="metaDescription" @input="metaDescManuallyEdited = (metaDescription.trim() !== '')" class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-950">{{ old('meta_description', $product->meta_description) }}</textarea>
+                        <textarea name="meta_description" rows="3" x-model="metaDescription" @input="onMetaDescriptionInput()" class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-950">{{ trim(preg_replace('/\s+/', ' ', str_replace(['\r\n', '\r', '\n', "\r\n", "\r", "\n"], ' ', old('meta_description', $product->meta_description)))) }}</textarea>
                     </div>
                 </div>
 

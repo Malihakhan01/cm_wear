@@ -239,12 +239,15 @@ class WooCommerceCsvParserService
             ?? $row['Meta: rank_math_description'] 
             ?? null;
 
-        if (empty($metaDescription)) {
+        if (!empty($metaDescription)) {
+            $metaDescription = Str::limit(trim(preg_replace('/\s+/', ' ', str_replace(['\r\n', '\r', '\n', "\r\n", "\r", "\n"], ' ', $metaDescription))), 160, '');
+        } else {
             $plainShort = !empty($row['Short description']) ? strip_tags($row['Short description']) : '';
             $plainDesc = !empty($row['Description']) ? strip_tags($row['Description']) : '';
             $sourceText = !empty($plainShort) ? $plainShort : $plainDesc;
             if (!empty($sourceText)) {
-                $metaDescription = Str::limit(trim(preg_replace('/\s+/', ' ', $sourceText)), 160, '');
+                $cleanSource = str_replace(['\r\n', '\r', '\n', "\r\n", "\r", "\n"], ' ', $sourceText);
+                $metaDescription = Str::limit(trim(preg_replace('/\s+/', ' ', $cleanSource)), 160, '');
             }
         }
 

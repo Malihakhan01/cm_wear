@@ -99,6 +99,10 @@
         .dark .wysiwyg-wrapper .ql-editor tr:nth-child(even) td {
             background-color: rgba(30, 41, 59, 0.4) !important;
         }
+        .wysiwyg-description .ql-editor {
+            max-height: 550px !important;
+            overflow-y: auto !important;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
