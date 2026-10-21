@@ -27,80 +27,89 @@
         $tier4 = $tiers->get(3);
     @endphp
 
+    <script>
+        function productEditForm() {
+            return {
+                name: @json(old('name', $product->name ?? '')),
+                shortDesc: @json(old('short_description', $product->short_description ?? '')),
+                metaTitle: @json(old('meta_title', $product->meta_title ?? '')),
+                metaDescription: @json(old('meta_description', $product->meta_description ?? '')),
+                metaTitleManuallyEdited: {{ old('meta_title', $product->meta_title) ? 'true' : 'false' }},
+                metaDescManuallyEdited: {{ old('meta_description', $product->meta_description) ? 'true' : 'false' }},
+                primaryImagePreview: null,
+                galleryPreviews: [],
+                currentCoverUrl: @json(optional($primaryImg)->url),
+                currentCoverId: @json(optional($primaryImg)->id),
+                selectedPrimaryImageId: null,
+                isSettingCover: false,
+                statusToast: '',
+
+                onNameInput() {
+                    if (!this.metaTitleManuallyEdited || !this.metaTitle || this.metaTitle.trim() === '') {
+                        this.metaTitle = this.name;
+                    }
+                },
+                previewPrimaryImage(event) {
+                    const file = event.target && event.target.files ? event.target.files[0] : null;
+                    if (file) {
+                        this.primaryImagePreview = URL.createObjectURL(file);
+                    }
+                },
+                previewGalleryImages(event) {
+                    this.galleryPreviews = [];
+                    const files = event.target ? event.target.files : null;
+                    if (files) {
+                        for (let i = 0; i < files.length; i++) {
+                            this.galleryPreviews.push({
+                                name: files[i].name,
+                                url: URL.createObjectURL(files[i])
+                            });
+                        }
+                    }
+                },
+                async setAsMainCover(imgId, imgUrl) {
+                    this.currentCoverUrl = imgUrl;
+                    this.currentCoverId = imgId;
+                    this.selectedPrimaryImageId = imgId;
+                    this.primaryImagePreview = null;
+                    if (this.$refs.primaryFileInput) {
+                        this.$refs.primaryFileInput.value = '';
+                    }
+
+                    try {
+                        const tokenEl = document.querySelector('input[name="_token"]');
+                        const token = tokenEl ? tokenEl.value : '';
+                        const url = '{{ url("/admin/products/" . $product->id . "/images") }}/' + imgId + '/set-primary';
+                        const res = await fetch(url, {
+                            method: 'PATCH',
+                            headers: {
+                                'X-CSRF-TOKEN': token,
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                            this.currentCoverUrl = data.image_url || imgUrl;
+                            this.currentCoverId = data.image_id || imgId;
+                            this.statusToast = 'Main featured image updated successfully!';
+                            setTimeout(() => { this.statusToast = ''; }, 3500);
+                        } else {
+                            alert(data.message || 'Failed to update cover image.');
+                        }
+                    } catch (err) {
+                        const form = document.getElementById('set-primary-form-' + imgId);
+                        if (form) form.submit();
+                    }
+                }
+            };
+        }
+    </script>
+
     <form method="POST" 
           action="{{ route('admin.products.update', $product->id) }}" 
           enctype="multipart/form-data"
-          x-data="{
-              name: {{ Js::from(old('name', $product->name ?? '')) }},
-              shortDesc: {{ Js::from(old('short_description', $product->short_description ?? '')) }},
-              metaTitle: {{ Js::from(old('meta_title', $product->meta_title ?? '')) }},
-              metaDescription: {{ Js::from(old('meta_description', $product->meta_description ?? '')) }},
-              metaTitleManuallyEdited: {{ (old('meta_title', $product->meta_title) ? 'true' : 'false') }},
-              metaDescManuallyEdited: {{ (old('meta_description', $product->meta_description) ? 'true' : 'false') }},
-              primaryImagePreview: null,
-              galleryPreviews: [],
-              currentCoverUrl: {{ Js::from(optional($primaryImg)->url) }},
-              currentCoverId: {{ Js::from(optional($primaryImg)->id) }},
-              selectedPrimaryImageId: null,
-              isSettingCover: false,
-              statusToast: '',
-
-              async setAsMainCover(imgId, imgUrl) {
-                  this.currentCoverUrl = imgUrl;
-                  this.currentCoverId = imgId;
-                  this.selectedPrimaryImageId = imgId;
-                  this.primaryImagePreview = null;
-                  if (this.$refs.primaryFileInput) this.$refs.primaryFileInput.value = '';
-
-                  try {
-                      const token = document.querySelector('input[name="_token"]').value;
-                      const res = await fetch(`{{ url('/admin/products/' . $product->id . '/images') }}/${imgId}/set-primary`, {
-                          method: 'PATCH',
-                          headers: {
-                              'X-CSRF-TOKEN': token,
-                              'Accept': 'application/json',
-                              'Content-Type': 'application/json'
-                          }
-                      });
-                      const data = await res.json();
-                      if (data.success) {
-                          this.currentCoverUrl = data.image_url || imgUrl;
-                          this.currentCoverId = data.image_id || imgId;
-                          this.statusToast = 'Main featured image updated successfully!';
-                          setTimeout(() => { this.statusToast = ''; }, 3500);
-                      } else {
-                          alert(data.message || 'Failed to update cover image.');
-                      }
-                  } catch (err) {
-                      const form = document.getElementById('set-primary-form-' + imgId);
-                      if (form) form.submit();
-                  }
-              },
-
-              onNameInput() {
-                  if (!this.metaTitleManuallyEdited || this.metaTitle.trim() === '') {
-                      this.metaTitle = this.name;
-                  }
-              },
-              previewPrimaryImage(event) {
-                  const file = event.target.files[0];
-                  if (file) {
-                      this.primaryImagePreview = URL.createObjectURL(file);
-                  }
-              },
-              previewGalleryImages(event) {
-                  this.galleryPreviews = [];
-                  const files = event.target.files;
-                  if (files) {
-                      for (let i = 0; i < files.length; i++) {
-                          this.galleryPreviews.push({
-                              name: files[i].name,
-                              url: URL.createObjectURL(files[i])
-                          });
-                      }
-                  }
-              }
-          }"
+          x-data="productEditForm()"
           class="space-y-8">
         @csrf
         @method('PUT')
@@ -569,25 +578,29 @@
                                         </span>
 
                                         <!-- Action overlay on hover -->
-                                        <div class="absolute inset-0 bg-slate-950/80 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-1.5 p-1.5 z-20">
+                                        <div class="absolute inset-0 bg-slate-950/85 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-2 p-2 z-20">
                                             <button type="button" 
                                                     x-show="currentCoverId != {{ $img->id }}"
                                                     @click.stop="setAsMainCover({{ $img->id }}, '{{ $img->url }}')"
                                                     title="Set as Main Featured Image"
-                                                    class="w-full py-1.5 px-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-[9px] font-extrabold uppercase tracking-wider flex items-center justify-center gap-1 shadow-lg transition active:scale-95">
-                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                Set Cover
+                                                    style="background-color: #2563eb;"
+                                                    class="w-full py-1.5 px-2 rounded-lg text-white text-[10px] font-extrabold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg transition hover:opacity-90 active:scale-95 cursor-pointer">
+                                                <svg class="w-3.5 h-3.5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                                Set as Cover
                                             </button>
 
-                                            <span x-show="currentCoverId == {{ $img->id }}" class="text-[9px] font-bold text-blue-400 uppercase tracking-wider py-1">
+                                            <span x-show="currentCoverId == {{ $img->id }}" 
+                                                  class="text-[10px] font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1 py-1">
+                                                <svg class="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                                                 Active Cover
                                             </span>
 
                                             <button type="button" 
                                                     onclick="if(confirm('Delete this photo from product gallery?')) { document.getElementById('delete-img-form-{{ $img->id }}').submit(); }"
                                                     title="Delete photo"
-                                                    class="rounded-lg bg-rose-600/90 hover:bg-rose-600 p-1.5 text-white shadow transition hover:scale-105 active:scale-95">
-                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                    style="background-color: #e11d48;"
+                                                    class="rounded-lg p-2 text-white shadow-lg transition hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center">
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </div>
                                     </div>
