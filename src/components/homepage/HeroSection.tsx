@@ -40,7 +40,7 @@ const HERO_SLIDES: HeroSlide[] = [
     categoryLabel: "TEAM SPORTS WEAR",
     categoryTag: "PRO MATCH · REINFORCED · SUBLIMATED TEAM KITS",
     number: "02",
-    image: "/HERO/Multi-Sport Ice Arena Showdown.png",
+    image: "/HERO/Multi-Sport Ice Arena Showdown.webp",
     titleLine1: "OWN •",
     titleLine2: "THE ARENA",
     description:
