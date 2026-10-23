@@ -40,7 +40,7 @@ const HERO_SLIDES: HeroSlide[] = [
     categoryLabel: "TEAM SPORTS WEAR",
     categoryTag: "PRO MATCH · REINFORCED · SUBLIMATED TEAM KITS",
     number: "02",
-    image: "/HERO/Cinematic Basketball Duo in Arena.png",
+    image: "/HERO/Multi-Sport Ice Arena Showdown.png",
     titleLine1: "OWN •",
     titleLine2: "THE ARENA",
     description:
@@ -148,9 +148,8 @@ export const HeroSection: React.FC = () => {
             return (
               <div
                 key={slide.id}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-                  isActive ? "opacity-100 z-1" : "opacity-0 z-0 pointer-events-none"
-                }`}
+                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${isActive ? "opacity-100 z-1" : "opacity-0 z-0 pointer-events-none"
+                  }`}
               >
                 <img
                   src={slide.image}
@@ -173,7 +172,7 @@ export const HeroSection: React.FC = () => {
         {/* ======================================================== */}
         <div className="relative z-20 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pt-3 sm:pt-5 lg:pt-24 pb-1 sm:pb-2 flex items-center justify-between shrink-0">
           {/* Top Left: Category Toggle Pills for all 8 categories with active animated progress effect */}
-          <div 
+          <div
             ref={tabsContainerRef}
             className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar max-w-[68%] sm:max-w-none pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             style={{
@@ -190,11 +189,10 @@ export const HeroSection: React.FC = () => {
                     tabRefs.current[idx] = el;
                   }}
                   onClick={() => goToSlide(idx)}
-                  className={`relative overflow-hidden px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-[9px] sm:text-xs font-mono font-bold tracking-wider uppercase rounded-[2px] transition-all duration-200 cursor-pointer shrink-0 ${
-                    isActive
+                  className={`relative overflow-hidden px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-[9px] sm:text-xs font-mono font-bold tracking-wider uppercase rounded-[2px] transition-all duration-200 cursor-pointer shrink-0 ${isActive
                       ? "bg-white text-[#0A0A0A] shadow-lg ring-1 ring-white/60"
                       : "bg-black/50 hover:bg-black/80 text-white/70 border border-white/20 hover:border-white/50 backdrop-blur-sm"
-                  }`}
+                    }`}
                 >
                   <span className="relative z-10">{slide.categoryLabel}</span>
                   {/* Animation progress effect active on current tab, moving seamlessly across all 8 tabs */}

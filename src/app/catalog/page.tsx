@@ -183,9 +183,100 @@ function isProductInParentCategory(p: Product, parentCat: Category): boolean {
   return false;
 }
 
+function getSportswearSubcategoryPriority(nameOrSlug: string): number {
+  const text = (nameOrSlug || "").toLowerCase();
+  if (text.includes("ice hockey")) return 1;
+  if (text.includes("hockey")) return 2;
+  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 3;
+  if (text.includes("american") || text.includes("gridiron")) return 4;
+  if (text.includes("basketball")) return 5;
+  if (text.includes("baseball") || text.includes("softball")) return 6;
+  if (text.includes("cricket")) return 7;
+  if (text.includes("rugby")) return 8;
+  if (text.includes("lacrosse")) return 9;
+  if (text.includes("volleyball")) return 10;
+  if (text.includes("tennis") || text.includes("golf")) return 11;
+  return 100;
+}
+
+function getSportswearProductPriority(p: Product): number {
+  const rawCatNames = p.rawCategories ? p.rawCategories.map((rc: any) => `${rc.name} ${rc.slug}`).join(" ") : "";
+  const text = `${p.name} ${p.subcategory || ""} ${p.category || ""} ${rawCatNames}`.toLowerCase();
+
+  // 1. Ice Hockey first
+  if (text.includes("ice hockey") || text.includes("hockey")) return 1;
+
+  // 2. Soccer then (ensure not american football)
+  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 2;
+
+  // 3. American Football then
+  if (text.includes("american football") || text.includes("american") || text.includes("gridiron")) return 3;
+
+  // 4. Basketball then
+  if (text.includes("basketball")) return 4;
+
+  // 5. Baseball & Softball
+  if (text.includes("baseball") || text.includes("softball")) return 5;
+
+  // 6. Cricket
+  if (text.includes("cricket")) return 6;
+
+  // 7. Rugby
+  if (text.includes("rugby")) return 7;
+
+  // 8. Lacrosse
+  if (text.includes("lacrosse")) return 8;
+
+  // 9. Volleyball
+  if (text.includes("volleyball")) return 9;
+
+  // 10. Tennis & Golf
+  if (text.includes("tennis") || text.includes("golf")) return 10;
+
+  return 100;
+}
+
+function matchesSportSubcategory(pSubOrCat: string, targetSub: string): boolean {
+  const normP = (pSubOrCat || "").toLowerCase().replace(/[-_\s&]/g, "");
+  const normT = (targetSub || "").toLowerCase().replace(/[-_\s&]/g, "");
+  if (!normP || !normT) return false;
+  if (normP === normT || (normT.length > 3 && normP.includes(normT)) || (normP.length > 3 && normT.includes(normP))) return true;
+
+  if (normT.includes("icehockey") || normT.includes("hockey")) {
+    return normP.includes("hockey");
+  }
+  if (normT.includes("soccer") || (normT.includes("football") && !normT.includes("american"))) {
+    return normP.includes("soccer") || (normP.includes("football") && !normP.includes("american"));
+  }
+  if (normT.includes("americanfootball") || normT.includes("american")) {
+    return normP.includes("american") || normP.includes("gridiron");
+  }
+  if (normT.includes("basketball")) {
+    return normP.includes("basketball");
+  }
+  if (normT.includes("baseball") || normT.includes("softball")) {
+    return normP.includes("baseball") || normP.includes("softball");
+  }
+  if (normT.includes("cricket")) {
+    return normP.includes("cricket");
+  }
+  if (normT.includes("rugby")) {
+    return normP.includes("rugby");
+  }
+  if (normT.includes("volleyball")) {
+    return normP.includes("volleyball");
+  }
+  if (normT.includes("tennis") || normT.includes("golf")) {
+    return normP.includes("tennis") || normP.includes("golf");
+  }
+
+  return false;
+}
+
 function CatalogContent() {
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get("category") || "all";
+  const paramCat = searchParams.get("category");
+  const initialCategory = paramCat !== null ? paramCat : "team-sports-wear";
   const initialSubcategory = searchParams.get("subcategory") || "all";
 
   const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -329,6 +420,17 @@ function CatalogContent() {
           });
         }
 
+        // Sort Team Sportswear subcategories so Ice Hockey, Soccer, American Football, Basketball are first
+        const teamParent = mergedMap.get("team-sports-wear");
+        if (teamParent && teamParent.subcategories) {
+          teamParent.subcategories.sort((a, b) => {
+            const prioA = getSportswearSubcategoryPriority(a.name || a.slug);
+            const prioB = getSportswearSubcategoryPriority(b.name || b.slug);
+            if (prioA !== prioB) return prioA - prioB;
+            return (a.name || a.slug).localeCompare(b.name || b.slug);
+          });
+        }
+
         setCategories(Array.from(mergedMap.values()));
       });
     };
@@ -446,23 +548,21 @@ function CatalogContent() {
   };
 
   const getSubcategoryCount = (category: Category, subName: string): number => {
-    const targetSub = subName.toLowerCase().replace(/[-_\s]/g, "");
     return allProducts.filter((p) => {
       if (!isProductInParentCategory(p, category)) return false;
-      const pSub = (p.subcategory || "").toLowerCase().replace(/[-_\s]/g, "");
-      const pCat = (p.category || "").toLowerCase().replace(/[-_\s]/g, "");
-      if (pSub === targetSub || pCat === targetSub || pSub.includes(targetSub) || targetSub.includes(pSub)) return true;
-      if (
-        p.rawCategories &&
-        p.rawCategories.some((rc: any) => {
-          const rcSlug = (rc.slug || "").toLowerCase().replace(/[-_\s]/g, "");
-          const rcName = (rc.name || "").toLowerCase().replace(/[-_\s]/g, "");
-          return rcSlug === targetSub || rcName === targetSub;
-        })
-      ) {
-        return true;
-      }
-      return false;
+      const pSub = p.subcategory || "";
+      const pCat = p.category || "";
+      const pName = p.name || "";
+      return (
+        matchesSportSubcategory(pSub, subName) ||
+        matchesSportSubcategory(pCat, subName) ||
+        matchesSportSubcategory(pName, subName) ||
+        (p.rawCategories &&
+          p.rawCategories.some((rc: any) =>
+            matchesSportSubcategory(rc.slug || "", subName) ||
+            matchesSportSubcategory(rc.name || "", subName)
+          ))
+      );
     }).length;
   };
 
@@ -519,29 +619,20 @@ function CatalogContent() {
       }
 
       if (activeSubcategory !== "all") {
-        const normActiveSub = activeSubcategory.toLowerCase().replace(/[-_\s]/g, "");
-        const pSubNorm = (p.subcategory || "").toLowerCase().replace(/[-_\s]/g, "");
-        const pCatNorm = (p.category || "").toLowerCase().replace(/[-_\s]/g, "");
+        const subTarget = activeSubcategory;
+        const pSub = p.subcategory || "";
+        const pCat = p.category || "";
+        const pName = p.name || "";
 
         const hasSubMatch =
-          pSubNorm === normActiveSub ||
-          pSubNorm.includes(normActiveSub) ||
-          normActiveSub.includes(pSubNorm) ||
-          pCatNorm === normActiveSub ||
-          pCatNorm.includes(normActiveSub) ||
+          matchesSportSubcategory(pSub, subTarget) ||
+          matchesSportSubcategory(pCat, subTarget) ||
+          matchesSportSubcategory(pName, subTarget) ||
           (p.rawCategories &&
-            p.rawCategories.some((c: any) => {
-              const cSlug = (c.slug || "").toLowerCase().replace(/[-_\s]/g, "");
-              const cName = (c.name || "").toLowerCase().replace(/[-_\s]/g, "");
-              return (
-                cSlug === normActiveSub ||
-                cName === normActiveSub ||
-                cSlug.includes(normActiveSub) ||
-                normActiveSub.includes(cSlug) ||
-                cName.includes(normActiveSub) ||
-                normActiveSub.includes(cName)
-              );
-            }));
+            p.rawCategories.some((c: any) =>
+              matchesSportSubcategory(c.slug || "", subTarget) ||
+              matchesSportSubcategory(c.name || "", subTarget)
+            ));
 
         if (!hasSubMatch) return false;
       }
@@ -560,6 +651,11 @@ function CatalogContent() {
       if (sortBy === "price-asc") return a.retailPrice - b.retailPrice;
       if (sortBy === "price-desc") return b.retailPrice - a.retailPrice;
       if (sortBy === "moq-asc") return a.MOQ - b.MOQ;
+
+      // Default "featured": prioritize Ice Hockey first, then Soccer, then American Football, then Basketball
+      const prioA = getSportswearProductPriority(a);
+      const prioB = getSportswearProductPriority(b);
+      if (prioA !== prioB) return prioA - prioB;
       return 0;
     });
 
@@ -689,6 +785,42 @@ function CatalogContent() {
               );
             })}
           </div>
+
+          {/* Subcategory Tabs Row for Current Selected Category */}
+          {currentCategoryData && currentCategoryData.subcategories && currentCategoryData.subcategories.length > 0 && (
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 scrollbar-none border-t border-[#DADBD2]/70">
+              <button
+                onClick={() => setActiveSubcategory("all")}
+                className={`px-3 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] transition-all shrink-0 cursor-pointer ${
+                  activeSubcategory === "all"
+                    ? "bg-[#D61C24] text-white shadow-xs"
+                    : "bg-white text-[#72726D] hover:text-black border border-[#DADBD2] hover:border-black"
+                }`}
+              >
+                All {currentCategoryData.name} ({allProducts.filter((p) => isProductInParentCategory(p, currentCategoryData)).length})
+              </button>
+              {currentCategoryData.subcategories.map((sub) => {
+                const isSubActive = activeSubcategory.toLowerCase() === sub.name.toLowerCase();
+                const count = getSubcategoryCount(currentCategoryData, sub.name);
+                return (
+                  <button
+                    key={sub.id || sub.slug || sub.name}
+                    onClick={() => setActiveSubcategory(sub.name)}
+                    className={`px-3 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
+                      isSubActive
+                        ? "bg-[#D61C24] text-white shadow-xs"
+                        : "bg-white text-[#72726D] hover:text-black border border-[#DADBD2] hover:border-black"
+                    }`}
+                  >
+                    <span>{sub.name}</span>
+                    <span className={`text-[10px] ${isSubActive ? "text-white/90" : "text-[#A8A8A8]"}`}>
+                      ({count})
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
           {/* Active Filter Indicator Tags (Subcategories removed from slide) */}
           {(activeCategory !== "all" || activeSubcategory !== "all") && (

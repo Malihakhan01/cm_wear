@@ -117,25 +117,85 @@ function normalizeCategoryTarget(slugOrName?: string): string {
   return norm;
 }
 
+function getSportswearProductPriority(p: Product): number {
+  const rawCatNames = p.rawCategories ? p.rawCategories.map((rc) => `${rc.name} ${rc.slug}`).join(" ") : "";
+  const text = `${p.name} ${p.subcategory || ""} ${p.category || ""} ${rawCatNames}`.toLowerCase();
+
+  // 1. Ice Hockey first
+  if (text.includes("ice hockey") || text.includes("hockey")) return 1;
+
+  // 2. Soccer then (ensure not american football)
+  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 2;
+
+  // 3. American Football then
+  if (text.includes("american football") || text.includes("american") || text.includes("gridiron")) return 3;
+
+  // 4. Basketball then
+  if (text.includes("basketball")) return 4;
+
+  // 5. Baseball & Softball
+  if (text.includes("baseball") || text.includes("softball")) return 5;
+
+  // 6. Cricket
+  if (text.includes("cricket")) return 6;
+
+  // 7. Rugby
+  if (text.includes("rugby")) return 7;
+
+  // 8. Lacrosse
+  if (text.includes("lacrosse")) return 8;
+
+  // 9. Volleyball
+  if (text.includes("volleyball")) return 9;
+
+  // 10. Tennis & Golf
+  if (text.includes("tennis") || text.includes("golf")) return 10;
+
+  return 100;
+}
+
   const selectedCat = categoriesList.find((c) => c.id === selectedCategory || c.slug === selectedCategory);
   const targetCategoryKey = normalizeCategoryTarget(selectedCat?.slug || selectedCat?.id || selectedCategory);
 
-  const filteredProducts = allProducts
-    .filter((p) => {
-      if (normalizeCategoryTarget(p.category) === targetCategoryKey) return true;
+  const categoryProducts = allProducts.filter((p) => {
+    if (normalizeCategoryTarget(p.category) === targetCategoryKey) return true;
 
-      if (p.rawCategories && p.rawCategories.length > 0) {
-        return p.rawCategories.some((rc) => {
-          return (
-            normalizeCategoryTarget(rc.slug) === targetCategoryKey ||
-            normalizeCategoryTarget(rc.name) === targetCategoryKey
-          );
-        });
-      }
+    if (p.rawCategories && p.rawCategories.length > 0) {
+      return p.rawCategories.some((rc) => {
+        return (
+          normalizeCategoryTarget(rc.slug) === targetCategoryKey ||
+          normalizeCategoryTarget(rc.name) === targetCategoryKey
+        );
+      });
+    }
 
-      return false;
-    })
-    .slice(0, 8);
+    return false;
+  });
+
+  let filteredProducts: Product[] = [];
+  if (targetCategoryKey === "sportswear") {
+    // 1. Ice Hockey first, 2. Soccer then, 3. American Football then, 4. Basketball
+    const hockeyProds = categoryProducts.filter((p) => getSportswearProductPriority(p) === 1);
+    const soccerProds = categoryProducts.filter((p) => getSportswearProductPriority(p) === 2);
+    const americanFbProds = categoryProducts.filter((p) => getSportswearProductPriority(p) === 3);
+    const basketballProds = categoryProducts.filter((p) => getSportswearProductPriority(p) === 4);
+
+    const picked: Product[] = [
+      ...hockeyProds.slice(0, 2),
+      ...soccerProds.slice(0, 2),
+      ...americanFbProds.slice(0, 2),
+      ...basketballProds.slice(0, 2),
+    ];
+
+    const pickedIds = new Set(picked.map((p) => p.id));
+    const remainingSportswear = categoryProducts
+      .filter((p) => !pickedIds.has(p.id))
+      .sort((a, b) => getSportswearProductPriority(a) - getSportswearProductPriority(b));
+
+    filteredProducts = [...picked, ...remainingSportswear].slice(0, 8);
+  } else {
+    filteredProducts = categoryProducts.slice(0, 8);
+  }
 
   return (
     <section className="bg-white py-20 border-b border-[#DADBD2] select-none">

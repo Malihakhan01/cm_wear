@@ -6,6 +6,22 @@ import { siteConfig } from "@/config/site.config";
 import { menuService, MegaMenuPillar } from "@/services/menu.service";
 import { ArrowRight, Sparkles, Search } from "lucide-react";
 
+function getSportswearSubcategoryPriority(nameOrSlug: string): number {
+  const text = (nameOrSlug || "").toLowerCase();
+  if (text.includes("ice hockey")) return 1;
+  if (text.includes("hockey")) return 2;
+  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 3;
+  if (text.includes("american") || text.includes("gridiron")) return 4;
+  if (text.includes("basketball")) return 5;
+  if (text.includes("baseball") || text.includes("softball")) return 6;
+  if (text.includes("cricket")) return 7;
+  if (text.includes("rugby")) return 8;
+  if (text.includes("lacrosse")) return 9;
+  if (text.includes("volleyball")) return 10;
+  if (text.includes("tennis") || text.includes("golf")) return 11;
+  return 100;
+}
+
 interface ProductsMegaMenuProps {
   isOpen: boolean;
   onClose: () => void;
@@ -212,17 +228,27 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
 
                 {/* Subcategories 2-column list */}
                 <div className="max-h-[380px] overflow-y-auto pr-1 custom-scrollbar grid grid-cols-2 gap-x-4 gap-y-2">
-                  {(activeCategory.subcategories || []).map((sub) => (
-                    <Link
-                      key={sub}
-                      href={`/catalog/?category=${activeCategory.slug || activeCategory.id}&subcategory=${encodeURIComponent(sub)}`}
-                      onClick={onClose}
-                      className="text-xs text-[#72726D] hover:text-[#0A0A0A] hover:translate-x-1 transition-all py-1 flex items-center gap-2 group"
-                    >
-                      <span className="w-1 h-1 rounded-full bg-[#DADBD2] group-hover:bg-[#D61C24] transition-colors shrink-0" />
-                      <span className="truncate">{sub}</span>
-                    </Link>
-                  ))}
+                  {[...(activeCategory.subcategories || [])]
+                    .sort((a, b) => {
+                      const isSport = (activeCategory.slug || activeCategory.id || "").toLowerCase().includes("sport");
+                      if (isSport) {
+                        const prioA = getSportswearSubcategoryPriority(a);
+                        const prioB = getSportswearSubcategoryPriority(b);
+                        if (prioA !== prioB) return prioA - prioB;
+                      }
+                      return 0;
+                    })
+                    .map((sub) => (
+                      <Link
+                        key={sub}
+                        href={`/catalog/?category=${activeCategory.slug || activeCategory.id}&subcategory=${encodeURIComponent(sub)}`}
+                        onClick={onClose}
+                        className="text-xs text-[#72726D] hover:text-[#0A0A0A] hover:translate-x-1 transition-all py-1 flex items-center gap-2 group"
+                      >
+                        <span className="w-1 h-1 rounded-full bg-[#DADBD2] group-hover:bg-[#D61C24] transition-colors shrink-0" />
+                        <span className="truncate">{sub}</span>
+                      </Link>
+                    ))}
                   {(!activeCategory.subcategories || activeCategory.subcategories.length === 0) && (
                     <div className="col-span-2 py-6 text-xs text-neutral-400 font-mono">
                       Full custom silhouette manufacturing available for this division.
