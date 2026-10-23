@@ -88,7 +88,7 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
       onMouseLeave={onClose}
       className="absolute top-full left-0 w-full bg-[#FFFFFF] border-b border-[#DADBD2] shadow-2xl z-40 transition-all duration-200 animate-in fade-in slide-in-from-top-1"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8">
         <div className="grid grid-cols-12 gap-8">
           
           {/* Column 1: Category Selector (4 cols) */}

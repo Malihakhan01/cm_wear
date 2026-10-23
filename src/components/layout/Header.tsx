@@ -72,7 +72,7 @@ export const Header: React.FC = () => {
             : "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 shadow-sm text-white"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 lg:h-[72px] flex items-center justify-between relative">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 h-14 sm:h-16 lg:h-[72px] flex items-center justify-between relative">
           
           {/* Left: Brand Identity Logo (Official CM SPORTS WEAR Emblem) */}
           <Link

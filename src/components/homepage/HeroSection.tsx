@@ -22,45 +22,59 @@ interface HeroSlide {
 // Hero Slides matching the high-resolution imagery in public/HERO
 const HERO_SLIDES: HeroSlide[] = [
   {
+    id: "ice-hockey",
+    categoryLabel: "ICE HOCKEY",
+    categoryTag: "PRO COMBAT · TACKLE TWILL · SUB-ZERO PERFORMANCE",
+    number: "01",
+    image: "/HERO/Dynamic Hockey Player in Motion.webp",
+    titleLine1: "DOMINATE •",
+    titleLine2: "THE ICE",
+    description:
+      "Tournament-grade ice hockey jerseys, reinforced double-elbow combat panels, custom tackle twill embroidery, and moisture-wicking heavy air-knit fabrics engineered for elite rinks.",
+    accentColor: "#0284C7",
+    specLabel: "SPEC: CM-HOCKEY-001 • 360 GSM PRO AIR-KNIT",
+    link: "/catalog/?category=ice-hockey",
+  },
+  {
     id: "team-sports-wear",
     categoryLabel: "TEAM SPORTS WEAR",
     categoryTag: "PRO MATCH · REINFORCED · SUBLIMATED TEAM KITS",
-    number: "01",
+    number: "02",
     image: "/HERO/Cinematic Basketball Duo in Arena.png",
-    titleLine1: "DOMINATE •",
+    titleLine1: "OWN •",
     titleLine2: "THE ARENA",
     description:
       "Pro arena jerseys, diamond air-knit mesh uniforms, reinforced coverstitching, and tournament team kits crafted for collegiate and professional leagues.",
     accentColor: "#E85923",
-    specLabel: "SPEC: CM-TEAM-001 • 330 GSM SPEED MESH",
+    specLabel: "SPEC: CM-TEAM-002 • 330 GSM SPEED MESH",
     link: "/catalog/?category=team-sports-wear",
   },
   {
     id: "martial-arts-combat-wear",
     categoryLabel: "COMBAT SPORTS",
     categoryTag: "BJJ GIS · FIGHT SHORTS · COMPRESSION APPAREL",
-    number: "02",
+    number: "03",
     image: "/HERO/Cinematic MMA Fighters in Industrial Gym (1).png",
     titleLine1: "FORGED FOR •",
     titleLine2: "THE CAGE",
     description:
       "Championship BJJ Gis, 4-way stretch fight rash guards, tear-resistant combat shorts, and competition doboks engineered for high friction.",
     accentColor: "#D61C24",
-    specLabel: "SPEC: CM-COMBAT-002 • 550 GSM PEARL WEAVE",
+    specLabel: "SPEC: CM-COMBAT-003 • 550 GSM PEARL WEAVE",
     link: "/catalog/?category=martial-arts-combat-wear",
   },
   {
     id: "workwear-medical-wear",
     categoryLabel: "WORKWEAR & UNIFORMS",
     categoryTag: "DUTY-GRADE · FLUID-SHIELD · REINFORCED TWILL",
-    number: "03",
+    number: "04",
     image: "/HERO/Emergency Response Heroes.png",
     titleLine1: "BUILT FOR •",
     titleLine2: "EVERY SHIFT",
     description:
       "Antimicrobial medical scrubs, industrial work uniforms, utility polo shirts, and high-visibility response apparel engineered to protect.",
     accentColor: "#0284C7",
-    specLabel: "SPEC: CM-WORK-003 • LIQUID-REPELLENT TWILL",
+    specLabel: "SPEC: CM-WORK-004 • LIQUID-REPELLENT TWILL",
     link: "/catalog/?category=workwear-medical-wear",
   },
 ];
@@ -157,7 +171,7 @@ export const HeroSection: React.FC = () => {
         {/* ======================================================== */}
         {/* TOP CONTROLS: CATEGORY TABS & SLIDE COUNTER              */}
         {/* ======================================================== */}
-        <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-3 sm:pt-5 lg:pt-24 pb-1 sm:pb-2 flex items-center justify-between shrink-0">
+        <div className="relative z-20 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pt-3 sm:pt-5 lg:pt-24 pb-1 sm:pb-2 flex items-center justify-between shrink-0">
           {/* Top Left: Category Toggle Pills for all 8 categories with active animated progress effect */}
           <div 
             ref={tabsContainerRef}
@@ -226,7 +240,7 @@ export const HeroSection: React.FC = () => {
         {/* ======================================================== */}
         {/* MAIN EDITORIAL HEADLINE & COPY (FLEX-1 CENTERED CONTENT) */}
         {/* ======================================================== */}
-        <div className="relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex-1 min-h-0 flex flex-col justify-center py-2 sm:py-4">
+        <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 flex-1 min-h-0 flex flex-col justify-center py-2 sm:py-4">
           <div className="max-w-2xl lg:max-w-3xl">
             {/* Scaled Responsive Display Headline (Ensures breathing room for bottom banners) */}
             <h1
@@ -293,7 +307,7 @@ export const HeroSection: React.FC = () => {
         {/* BOTTOM ELEMENTS: FLOATING QUOTE CAPSULE & SCROLL DOWN    */}
         {/* Guaranteed never-clip shrink-0 layout with safe padding  */}
         {/* ======================================================== */}
-        <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-5 sm:pb-7 pt-2 flex items-center justify-between shrink-0">
+        <div className="relative z-20 w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pb-5 sm:pb-7 pt-2 flex items-center justify-between shrink-0">
           <div className="hidden lg:block w-32" />
 
           {/* Center Floating Pill: "Samples first. Your label, your spec. | GET A QUOTE ↗" */}
