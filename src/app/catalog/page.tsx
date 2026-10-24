@@ -237,6 +237,11 @@ function getSportswearProductPriority(p: Product): number {
 }
 
 function matchesSportSubcategory(pSubOrCat: string, targetSub: string): boolean {
+  if (!targetSub || targetSub === "all") return true;
+  if (targetSub.includes(",")) {
+    const targets = targetSub.split(",").map((t) => t.trim()).filter(Boolean);
+    return targets.some((t) => matchesSportSubcategory(pSubOrCat, t));
+  }
   const normP = (pSubOrCat || "").toLowerCase().replace(/[-_\s&]/g, "");
   const normT = (targetSub || "").toLowerCase().replace(/[-_\s&]/g, "");
   if (!normP || !normT) return false;
@@ -278,6 +283,7 @@ function CatalogContent() {
   const paramCat = searchParams.get("category");
   const initialCategory = paramCat !== null ? paramCat : "team-sports-wear";
   const initialSubcategory = searchParams.get("subcategory") || "all";
+  const initialQuery = searchParams.get("q") || searchParams.get("search") || "";
 
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -285,8 +291,16 @@ function CatalogContent() {
   const [categories, setCategories] = useState<Category[]>(() => CATEGORIES_DATA);
   const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
   const [activeSubcategory, setActiveSubcategory] = useState<string>(initialSubcategory);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "moq-asc">("featured");
+
+  useEffect(() => {
+    if (paramCat) setActiveCategory(paramCat);
+    const sub = searchParams.get("subcategory");
+    if (sub !== null) setActiveSubcategory(sub);
+    const q = searchParams.get("q") || searchParams.get("search");
+    if (q !== null) setSearchQuery(q);
+  }, [paramCat, searchParams]);
 
   const [hoveredCat, setHoveredCat] = useState<Category | null>(null);
   const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number } | null>(null);

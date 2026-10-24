@@ -219,6 +219,7 @@ class MenuController extends Controller
                 'image' => !empty($item['image']) ? trim($item['image']) : '/categories/Casual wear (1).png',
                 'tagline' => !empty($item['tagline']) ? trim($item['tagline']) : 'Premium private label garment manufacturing and custom export production.',
                 'subcategories' => $subcategories,
+                'groups' => !empty($item['groups']) && is_array($item['groups']) ? $item['groups'] : [],
             ];
 
             $index++;
