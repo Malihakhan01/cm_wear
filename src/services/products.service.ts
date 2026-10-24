@@ -282,7 +282,7 @@ export function saveLocalImportedProducts(products: Product[]): void {
 let memoryProductsCache: Product[] | null = null;
 let inFlightPromise: Promise<Product[]> | null = null;
 let lastFetchTime = 0;
-const CACHED_PRODUCTS_STORAGE_KEY = "cm_cached_products_catalog_v3";
+const CACHED_PRODUCTS_STORAGE_KEY = "cm_cached_products_catalog_v5";
 
 export function getCachedProducts(): Product[] {
   if (memoryProductsCache && memoryProductsCache.length > 0) {

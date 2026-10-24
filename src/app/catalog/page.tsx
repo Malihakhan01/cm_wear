@@ -247,6 +247,7 @@ function matchesSportSubcategory(pSubOrCat: string, targetSub: string): boolean 
   if (!normP || !normT) return false;
   if (normP === normT || (normT.length > 3 && normP.includes(normT)) || (normP.length > 3 && normT.includes(normP))) return true;
 
+  // 1. Team Sports Wear
   if (normT.includes("icehockey") || normT.includes("hockey")) {
     return normP.includes("hockey");
   }
@@ -268,12 +269,40 @@ function matchesSportSubcategory(pSubOrCat: string, targetSub: string): boolean 
   if (normT.includes("rugby")) {
     return normP.includes("rugby");
   }
+  if (normT.includes("lacrosse")) {
+    return normP.includes("lacrosse");
+  }
   if (normT.includes("volleyball")) {
     return normP.includes("volleyball");
   }
   if (normT.includes("tennis") || normT.includes("golf")) {
     return normP.includes("tennis") || normP.includes("golf");
   }
+
+  // 2. Martial Arts & Combat Wear
+  if (normT.includes("bjj") || normT.includes("grappling") || normT.includes("jiujitsu")) {
+    return normP.includes("bjj") || normP.includes("grappling") || normP.includes("jiujitsu") || normP.includes("martialarts") || normP.includes("combattraining") || normP.includes("combatteamwear") || normP.includes("rashguard") || normP.includes("gi");
+  }
+  if (normT.includes("mma") || normT.includes("combatsports")) {
+    return normP.includes("mma") || normP.includes("combatsports") || normP.includes("fullcontact") || normP.includes("kickboxing") || normP.includes("fightshort") || normP.includes("valetudo");
+  }
+  if (normT.includes("boxing") || normT.includes("muaythai")) {
+    return normP.includes("boxing") || normP.includes("muaythai") || normP.includes("thaibox");
+  }
+  if (normT.includes("karate")) {
+    return normP.includes("karate");
+  }
+  if (normT.includes("judo")) {
+    return normP.includes("judo");
+  }
+  if (normT.includes("taekwondo")) {
+    return normP.includes("taekwondo");
+  }
+  if (normT.includes("wrestling")) {
+    return normP.includes("wrestling") || normP.includes("singlet");
+  }
+
+  // 3. Activewear & Fitness
   if (normT.includes("gym") || normT.includes("trainingwear")) {
     return normP.includes("gym") || normP.includes("fitnessapparel") || normP.includes("trainingtrouser") || normP.includes("fitness");
   }
@@ -289,11 +318,74 @@ function matchesSportSubcategory(pSubOrCat: string, targetSub: string): boolean 
   if (normT.includes("cycling")) {
     return normP.includes("cycling") || normP.includes("bmx");
   }
+
+  // 4. Casual & Lifestyle Wear
+  if (normT.includes("tshirt") || normT.includes("tee")) {
+    return normP.includes("tshirt") || normP.includes("tee");
+  }
+  if (normT.includes("hoodie") || normT.includes("sweatshirt")) {
+    return normP.includes("hoodie") || normP.includes("sweatshirt");
+  }
+  if (normT.includes("polo")) {
+    return normP.includes("polo");
+  }
+  if (normT.includes("tracksuit")) {
+    return normP.includes("tracksuit");
+  }
+  if (normT.includes("pant") || normT.includes("jogger")) {
+    return normP.includes("pant") || normP.includes("jogger") || normP.includes("trouser") || normP.includes("sweatpant");
+  }
+
+  // 5. Jackets & Outerwear
+  if (normT.includes("varsity")) {
+    return normP.includes("varsity");
+  }
+  if (normT.includes("bomber")) {
+    return normP.includes("bomber");
+  }
+  if (normT.includes("windbreaker")) {
+    return normP.includes("windbreaker") || normP.includes("coach");
+  }
+  if (normT.includes("puffer") || normT.includes("winter")) {
+    return normP.includes("puffer") || normP.includes("winter") || normP.includes("parka");
+  }
+  if (normT.includes("fleece")) {
+    return normP.includes("fleece");
+  }
+  if (normT.includes("leather")) {
+    return normP.includes("leather");
+  }
+
+  // 6. Kids & Youth Wear
+  if (normT.includes("kid") || normT.includes("youth")) {
+    return normP.includes("kid") || normP.includes("youth") || normP.includes("junior");
+  }
+
+  // 7. Workwear & Medical Wear
   if (normT.includes("scrub") || normT.includes("medical")) {
     return normP.includes("scrub") || normP.includes("medical");
   }
   if (normT.includes("workuniform") || normT.includes("safety")) {
-    return normP.includes("safety") || normP.includes("work") || normP.includes("coverall");
+    return normP.includes("safety") || normP.includes("work") || normP.includes("coverall") || normP.includes("hivis");
+  }
+
+  // 8. Sports Accessories
+  if (normT.includes("bag") || normT.includes("backpack")) {
+    return normP.includes("bag") || normP.includes("backpack") || normP.includes("duffel");
+  }
+  if (normT.includes("cap") || normT.includes("hat") || normT.includes("beanie")) {
+    return normP.includes("cap") || normP.includes("hat") || normP.includes("beanie");
+  }
+  if (normT.includes("sock") || normT.includes("wristband")) {
+    return normP.includes("sock") || normP.includes("wristband") || normP.includes("headband");
+  }
+  if (normT.includes("guard") || normT.includes("protect")) {
+    return normP.includes("guard") || normP.includes("pad") || normP.includes("protect");
+  }
+
+  // 9. Gloves
+  if (normT.includes("glove")) {
+    return normP.includes("glove");
   }
 
   return false;
@@ -315,15 +407,23 @@ function CatalogContent() {
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "moq-asc">("featured");
 
-  useEffect(() => {
-    if (paramCat) {
-      setActiveCategory(paramCat);
+  const navigateTo = (catSlug?: string, subSlug?: string, query?: string) => {
+    if (typeof window === "undefined") return;
+    if (!catSlug || catSlug === "all") {
+      window.location.href = "/catalog/?category=all";
+      return;
     }
-    const sub = searchParams.get("subcategory");
-    setActiveSubcategory(sub || "all");
-    const q = searchParams.get("q") || searchParams.get("search");
-    setSearchQuery(q || "");
-  }, [paramCat, searchParams]);
+    const params = new URLSearchParams();
+    params.set("category", catSlug);
+    if (subSlug && subSlug !== "all") {
+      const cleanSub = subSlug.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      params.set("subcategory", cleanSub);
+    }
+    if (query && query.trim()) {
+      params.set("q", query.trim());
+    }
+    window.location.href = `/catalog/?${params.toString()}`;
+  };
 
   const [hoveredCat, setHoveredCat] = useState<Category | null>(null);
   const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number } | null>(null);
@@ -397,67 +497,7 @@ function CatalogContent() {
           });
         });
 
-        // 2. Attach live subcategories from liveCats into their respective parent categories (DO NOT add as root tabs)
-        if (liveCats && liveCats.length > 0) {
-          liveCats.forEach((c) => {
-            if (mergedMap.has(c.slug)) {
-              // It is a parent category: merge its subcategories
-              const existing = mergedMap.get(c.slug)!;
-              if (c.subcategories && c.subcategories.length > 0) {
-                const subMap = new Map<string, { id: string; slug: string; name: string }>();
-                existing.subcategories.forEach((s) => subMap.set(s.slug, s));
-                c.subcategories.forEach((s) => subMap.set(s.slug, s));
-                existing.subcategories = Array.from(subMap.values());
-              }
-            } else {
-              // It is a child category: nest inside its parent category, NEVER add as a top-level tab
-              const parentSlug = findParentCategorySlug(c.slug || c.name);
-              const parent = mergedMap.get(parentSlug);
-              if (parent) {
-                const exists = parent.subcategories.some(
-                  (s) => s.slug === c.slug || s.name.toLowerCase() === c.name.toLowerCase()
-                );
-                if (!exists) {
-                  parent.subcategories.push({
-                    id: String(c.id || c.slug),
-                    slug: c.slug,
-                    name: c.name,
-                    description: c.description,
-                  });
-                }
-              }
-            }
-          });
-        }
-
-        // 3. Attach imported product categories into parent subcategories (NEVER as root tabs)
-        if (prods && prods.length > 0) {
-          prods.forEach((p) => {
-            if (p.category && !mergedMap.has(p.category)) {
-              const parentSlug = findParentCategorySlug(p.category);
-              const parent = mergedMap.get(parentSlug);
-              if (parent) {
-                const subSlug = p.category.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-                const subName = p.category
-                  .split("-")
-                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                  .join(" ");
-                const exists = parent.subcategories.some(
-                  (s) => s.slug === subSlug || s.name.toLowerCase() === subName.toLowerCase()
-                );
-                if (!exists) {
-                  parent.subcategories.push({
-                    id: subSlug,
-                    slug: subSlug,
-                    name: subName,
-                  });
-                }
-              }
-            }
-          });
-        }
-
-        // Ensure Team Sportswear subcategories have Ice Hockey Uniforms first and American Football Uniform second
+        // 2. Ensure Team Sportswear subcategories have Ice Hockey first and American Football second
         mergedMap.forEach((parentCat) => {
           const isSport =
             parentCat.slug === "team-sports-wear" ||
@@ -467,22 +507,6 @@ function CatalogContent() {
             (parentCat.name || "").toLowerCase().includes("sport");
 
           if (isSport && parentCat.subcategories) {
-            const others = parentCat.subcategories.filter((s) => {
-              const str = (s.name || s.slug || "").toLowerCase();
-              return (
-                !str.includes("ice hockey") &&
-                !str.includes("american football") &&
-                str !== "ice hockey uniforms" &&
-                str !== "american football uniform"
-              );
-            });
-
-            parentCat.subcategories = [
-              { id: "ice-hockey-uniforms", slug: "ice-hockey-uniforms", name: "Ice Hockey Uniforms" },
-              { id: "american-football-uniform", slug: "american-football-uniform", name: "American Football Uniform" },
-              ...others,
-            ];
-
             parentCat.subcategories.sort((a, b) => {
               const prioA = getSportswearSubcategoryPriority(a.name || a.slug);
               const prioB = getSportswearSubcategoryPriority(b.name || b.slug);
@@ -514,18 +538,29 @@ function CatalogContent() {
     setSearchQuery(q || "");
 
     if (cat) {
-      const isParent = categories.some((c) => c.slug === cat || c.id === cat || c.slug.toLowerCase().replace(/[-_\s]/g, "") === cat.toLowerCase().replace(/[-_\s]/g, ""));
-      if (isParent) {
-        setActiveCategory(cat);
-        setActiveSubcategory(sub || "all");
+      if (cat === "all") {
+        setActiveCategory("all");
+        setActiveSubcategory("all");
       } else {
-        const parentSlug = findParentCategorySlug(cat);
-        setActiveCategory(parentSlug);
-        setActiveSubcategory(cat);
+        const isParent = categories.some(
+          (c) =>
+            c.slug === cat ||
+            c.id === cat ||
+            c.slug.toLowerCase().replace(/[-_\s]/g, "") === cat.toLowerCase().replace(/[-_\s]/g, "")
+        );
+        if (isParent) {
+          setActiveCategory(cat);
+          setActiveSubcategory(sub || "all");
+        } else {
+          const parentSlug = findParentCategorySlug(cat);
+          setActiveCategory(parentSlug);
+          setActiveSubcategory(cat);
+        }
       }
     } else if (sub) {
       setActiveSubcategory(sub);
     } else {
+      setActiveCategory("team-sports-wear");
       setActiveSubcategory("all");
     }
   }, [searchParams, categories]);
@@ -779,12 +814,7 @@ function CatalogContent() {
             className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none"
           >
             <button
-              onClick={() => {
-                setActiveCategory("all");
-                setActiveSubcategory("all");
-                setHoveredCat(null);
-                setDropdownPos(null);
-              }}
+              onClick={() => navigateTo("all")}
               onMouseEnter={() => {
                 if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
                 setHoveredCat(null);
@@ -817,10 +847,7 @@ function CatalogContent() {
                         return;
                       }
                     }
-                    setActiveCategory(cat.id);
-                    setActiveSubcategory("all");
-                    setHoveredCat(null);
-                    setDropdownPos(null);
+                    navigateTo(cat.slug || cat.id);
                   }}
                   onMouseEnter={(e) => handleCategoryMouseEnter(cat, e.currentTarget)}
                   onMouseLeave={handleMouseLeave}
@@ -856,7 +883,7 @@ function CatalogContent() {
           {currentCategoryData && currentCategoryData.subcategories && currentCategoryData.subcategories.length > 0 && (
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 scrollbar-none border-t border-[#DADBD2]/70">
               <button
-                onClick={() => setActiveSubcategory("all")}
+                onClick={() => navigateTo(currentCategoryData.slug || currentCategoryData.id)}
                 className={`px-3 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] transition-all shrink-0 cursor-pointer ${
                   activeSubcategory === "all"
                     ? "bg-[#D61C24] text-white shadow-xs"
@@ -875,7 +902,7 @@ function CatalogContent() {
                 return (
                   <button
                     key={sub.id || sub.slug || sub.name}
-                    onClick={() => setActiveSubcategory(sub.slug || sub.name)}
+                    onClick={() => navigateTo(currentCategoryData.slug || currentCategoryData.id, sub.slug || sub.name)}
                     className={`px-3 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
                       isSubActive
                         ? "bg-[#D61C24] text-white shadow-xs"
@@ -892,8 +919,8 @@ function CatalogContent() {
             </div>
           )}
 
-          {/* Active Filter Indicator Tags (Subcategories removed from slide) */}
-          {(activeCategory !== "all" || activeSubcategory !== "all") && (
+          {/* Active Filter Indicator Tags */}
+          {(activeCategory !== "all" || activeSubcategory !== "all" || searchQuery) && (
             <div className="flex items-center gap-2 pt-1 border-t border-[#DADBD2] text-xs font-mono flex-wrap">
               <span className="text-[10px] text-[#72726D] uppercase font-bold tracking-wider">Filtered By:</span>
               {activeCategory !== "all" && (
@@ -901,7 +928,7 @@ function CatalogContent() {
                   <span>{currentCategoryData?.name || activeCategory}</span>
                   {activeSubcategory === "all" && (
                     <button
-                      onClick={() => setActiveCategory("all")}
+                      onClick={() => navigateTo("all")}
                       className="hover:text-[#FF333D] font-bold text-sm leading-none ml-1 cursor-pointer"
                       title="Clear category filter"
                     >
@@ -914,7 +941,7 @@ function CatalogContent() {
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#D61C24] text-white text-[11px] font-mono uppercase rounded-[2px] font-bold">
                   <span>{activeSubcategory}</span>
                   <button
-                    onClick={() => setActiveSubcategory("all")}
+                    onClick={() => navigateTo(currentCategoryData?.slug || currentCategoryData?.id || activeCategory)}
                     className="hover:text-black font-bold text-sm leading-none ml-1 cursor-pointer"
                     title="Clear subcategory filter"
                   >
@@ -922,11 +949,20 @@ function CatalogContent() {
                   </button>
                 </span>
               )}
+              {searchQuery && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-neutral-200 text-[#0A0A0A] text-[11px] font-mono rounded-[2px]">
+                  <span>Query: &quot;{searchQuery}&quot;</span>
+                  <button
+                    onClick={() => navigateTo(activeCategory, activeSubcategory, "")}
+                    className="hover:text-[#D61C24] font-bold text-sm leading-none ml-1 cursor-pointer"
+                    title="Clear search query"
+                  >
+                    ×
+                  </button>
+                </span>
+              )}
               <button
-                onClick={() => {
-                  setActiveCategory("all");
-                  setActiveSubcategory("all");
-                }}
+                onClick={() => navigateTo("all")}
                 className="text-[10px] text-[#D61C24] hover:underline uppercase font-bold ml-1 cursor-pointer"
               >
                 Clear Filters
@@ -934,34 +970,61 @@ function CatalogContent() {
             </div>
           )}
 
-            {/* Search, Badges & Sort Controls */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-[#DADBD2]">
-              {/* Search Input */}
-              <div className="relative w-full sm:w-72">
+          {/* Search, Badges & Sort Controls */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-[#DADBD2]">
+            {/* Search Input with Clear Button and Enter trigger */}
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <div className="relative w-full sm:w-80">
                 <Search className="w-3.5 h-3.5 text-[#72726D] absolute left-2.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      navigateTo(activeCategory, activeSubcategory, searchQuery);
+                    }
+                  }}
                   placeholder="Filter by keyword or SKU..."
-                  className="w-full pl-8 pr-3 py-1.5 bg-white border border-[#DADBD2] text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
+                  className="w-full pl-8 pr-7 py-1.5 bg-white border border-[#DADBD2] text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden focus:border-black"
                 />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery("");
+                      navigateTo(activeCategory, activeSubcategory, "");
+                    }}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black font-bold text-xs"
+                    title="Clear search"
+                  >
+                    ×
+                  </button>
+                )}
               </div>
-
-              {/* Sort Selector */}
-              <div className="flex items-center gap-2">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-white border border-[#DADBD2] px-2.5 py-1.5 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden"
-                >
-                  <option value="featured">Featured First</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
-                  <option value="moq-asc">MOQ: Lowest</option>
-                </select>
-              </div>
+              <button
+                type="button"
+                onClick={() => navigateTo(activeCategory, activeSubcategory, searchQuery)}
+                className="px-3 py-1.5 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono uppercase font-bold rounded-[2px] transition-colors shrink-0"
+              >
+                Search
+              </button>
             </div>
+
+            {/* Sort Selector */}
+            <div className="flex items-center gap-2">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="bg-white border border-[#DADBD2] px-2.5 py-1.5 text-xs font-mono text-[#0A0A0A] rounded-[2px] focus:outline-hidden"
+              >
+                <option value="featured">Featured First</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="moq-asc">MOQ: Lowest</option>
+              </select>
+            </div>
+          </div>
 
         </div>
       </section>
@@ -1032,11 +1095,7 @@ function CatalogContent() {
                 No styles found matching the current search criteria.
               </p>
               <button
-                onClick={() => {
-                  setActiveCategory("all");
-                  setActiveSubcategory("all");
-                  setSearchQuery("");
-                }}
+                onClick={() => navigateTo("all")}
                 className="px-4 py-2 bg-[#0A0A0A] text-white text-xs font-mono uppercase rounded-[2px] cursor-pointer"
               >
                 Reset All Filters
@@ -1109,12 +1168,7 @@ function CatalogContent() {
               {hoveredCat.name}
             </span>
             <button
-              onClick={() => {
-                setActiveCategory(hoveredCat.id);
-                setActiveSubcategory("all");
-                setHoveredCat(null);
-                setDropdownPos(null);
-              }}
+              onClick={() => navigateTo(hoveredCat.slug || hoveredCat.id)}
               className="text-[10px] font-mono uppercase font-bold text-[#72726D] hover:text-[#D61C24] transition-colors shrink-0 flex items-center gap-1 cursor-pointer"
             >
               <span>View All</span>
@@ -1127,18 +1181,16 @@ function CatalogContent() {
             {(hoveredCat.subcategories || []).map((sub) => {
               const isSelected =
                 (activeCategory === hoveredCat.id || activeCategory === hoveredCat.slug) &&
-                activeSubcategory.toLowerCase() === sub.name.toLowerCase();
-              const count = getSubcategoryCount(hoveredCat, sub.name);
+                (activeSubcategory.toLowerCase() === sub.name.toLowerCase() ||
+                 activeSubcategory.toLowerCase() === (sub.slug || "").toLowerCase() ||
+                 activeSubcategory.toLowerCase().replace(/[-_\s&]/g, "") === sub.name.toLowerCase().replace(/[-_\s&]/g, "") ||
+                 activeSubcategory.toLowerCase().replace(/[-_\s&]/g, "") === (sub.slug || "").toLowerCase().replace(/[-_\s&]/g, ""));
+              const count = getSubcategoryCount(hoveredCat, sub.slug || sub.name);
 
               return (
                 <button
                   key={sub.id || sub.slug || sub.name}
-                  onClick={() => {
-                    setActiveCategory(hoveredCat.id);
-                    setActiveSubcategory(sub.name);
-                    setHoveredCat(null);
-                    setDropdownPos(null);
-                  }}
+                  onClick={() => navigateTo(hoveredCat.slug || hoveredCat.id, sub.slug || sub.name)}
                   className={`w-full group px-4 py-2 flex items-center justify-between text-left transition-colors text-xs cursor-pointer ${
                     isSelected
                       ? "bg-[#FFF1F2] text-[#D61C24] font-semibold"
@@ -1210,11 +1262,7 @@ function CatalogContent() {
             <div className="p-3 bg-[#FBFBFA] border-b border-[#F0F0ED]">
               <button
                 type="button"
-                onClick={() => {
-                  setActiveCategory(mobileDrawerCat.id);
-                  setActiveSubcategory("all");
-                  setMobileDrawerCat(null);
-                }}
+                onClick={() => navigateTo(mobileDrawerCat.slug || mobileDrawerCat.id)}
                 className="w-full py-2.5 px-4 bg-[#0A0A0A] hover:bg-[#D61C24] text-white text-xs font-mono font-bold uppercase tracking-wider rounded-[2px] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
               >
                 <span>View All {mobileDrawerCat.name} Products</span>
@@ -1227,18 +1275,17 @@ function CatalogContent() {
               {(mobileDrawerCat.subcategories || []).map((sub) => {
                 const isSelected =
                   (activeCategory === mobileDrawerCat.id || activeCategory === mobileDrawerCat.slug) &&
-                  activeSubcategory.toLowerCase() === sub.name.toLowerCase();
-                const count = getSubcategoryCount(mobileDrawerCat, sub.name);
+                  (activeSubcategory.toLowerCase() === sub.name.toLowerCase() ||
+                   activeSubcategory.toLowerCase() === (sub.slug || "").toLowerCase() ||
+                   activeSubcategory.toLowerCase().replace(/[-_\s&]/g, "") === sub.name.toLowerCase().replace(/[-_\s&]/g, "") ||
+                   activeSubcategory.toLowerCase().replace(/[-_\s&]/g, "") === (sub.slug || "").toLowerCase().replace(/[-_\s&]/g, ""));
+                const count = getSubcategoryCount(mobileDrawerCat, sub.slug || sub.name);
 
                 return (
                   <button
                     key={sub.id || sub.slug || sub.name}
                     type="button"
-                    onClick={() => {
-                      setActiveCategory(mobileDrawerCat.id);
-                      setActiveSubcategory(sub.name);
-                      setMobileDrawerCat(null);
-                    }}
+                    onClick={() => navigateTo(mobileDrawerCat.slug || mobileDrawerCat.id, sub.slug || sub.name)}
                     className={`w-full py-2.5 px-3 rounded-[2px] flex items-center justify-between text-left transition-colors text-xs font-medium cursor-pointer ${
                       isSelected
                         ? "bg-[#FFF1F2] text-[#D61C24] font-bold"
