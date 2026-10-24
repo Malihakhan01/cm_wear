@@ -33,10 +33,24 @@ class ProductApiController extends Controller
             $catSlug = $request->category;
             $cat = \App\Models\Category::where('slug', $catSlug)->first();
             if ($cat) {
-                $catIds = $cat->children()->pluck('id')->push($cat->id);
+                $catIds = $this->getAllDescendantCategoryIds($cat);
                 $query->whereHas('categories', fn($q) => $q->whereIn('categories.id', $catIds));
             } else {
                 $query->whereHas('categories', fn($q) => $q->where('slug', $catSlug));
+            }
+        }
+
+        if ($request->filled('subcategory')) {
+            $subSlugs = array_filter(array_map('trim', explode(',', $request->subcategory)));
+            $subCats = \App\Models\Category::whereIn('slug', $subSlugs)->get();
+            if ($subCats->isNotEmpty()) {
+                $allSubIds = collect();
+                foreach ($subCats as $sc) {
+                    $allSubIds = $allSubIds->merge($this->getAllDescendantCategoryIds($sc));
+                }
+                $query->whereHas('categories', fn($q) => $q->whereIn('categories.id', $allSubIds->unique()));
+            } else {
+                $query->whereHas('categories', fn($q) => $q->whereIn('categories.slug', $subSlugs));
             }
         }
 
@@ -110,4 +124,14 @@ class ProductApiController extends Controller
             'total_products' => Product::count(),
         ]);
     }
+
+    private function getAllDescendantCategoryIds(\App\Models\Category $category): \Illuminate\Support\Collection
+    {
+        $ids = collect([$category->id]);
+        foreach ($category->children as $child) {
+            $ids = $ids->merge($this->getAllDescendantCategoryIds($child));
+        }
+        return $ids->unique();
+    }
 }
+

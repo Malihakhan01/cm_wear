@@ -274,6 +274,27 @@ function matchesSportSubcategory(pSubOrCat: string, targetSub: string): boolean 
   if (normT.includes("tennis") || normT.includes("golf")) {
     return normP.includes("tennis") || normP.includes("golf");
   }
+  if (normT.includes("gym") || normT.includes("trainingwear")) {
+    return normP.includes("gym") || normP.includes("fitnessapparel") || normP.includes("trainingtrouser") || normP.includes("fitness");
+  }
+  if (normT.includes("compression")) {
+    return normP.includes("compression") || normP.includes("baselayer");
+  }
+  if (normT.includes("womensactivewear") || normT.includes("womenactivewear")) {
+    return normP.includes("womensactivewear") || normP.includes("braslegging") || normP.includes("yogawear") || normP.includes("fitnessset");
+  }
+  if (normT.includes("running") || normT.includes("athletics")) {
+    return normP.includes("running") || normP.includes("athletics") || normP.includes("trackfield");
+  }
+  if (normT.includes("cycling")) {
+    return normP.includes("cycling") || normP.includes("bmx");
+  }
+  if (normT.includes("scrub") || normT.includes("medical")) {
+    return normP.includes("scrub") || normP.includes("medical");
+  }
+  if (normT.includes("workuniform") || normT.includes("safety")) {
+    return normP.includes("safety") || normP.includes("work") || normP.includes("coverall");
+  }
 
   return false;
 }
@@ -295,11 +316,13 @@ function CatalogContent() {
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "moq-asc">("featured");
 
   useEffect(() => {
-    if (paramCat) setActiveCategory(paramCat);
+    if (paramCat) {
+      setActiveCategory(paramCat);
+    }
     const sub = searchParams.get("subcategory");
-    if (sub !== null) setActiveSubcategory(sub);
+    setActiveSubcategory(sub || "all");
     const q = searchParams.get("q") || searchParams.get("search");
-    if (q !== null) setSearchQuery(q);
+    setSearchQuery(q || "");
   }, [paramCat, searchParams]);
 
   const [hoveredCat, setHoveredCat] = useState<Category | null>(null);
@@ -487,11 +510,14 @@ function CatalogContent() {
   useEffect(() => {
     const cat = searchParams.get("category");
     const sub = searchParams.get("subcategory");
+    const q = searchParams.get("q") || searchParams.get("search");
+    setSearchQuery(q || "");
+
     if (cat) {
-      const isParent = categories.some((c) => c.slug === cat || c.id === cat);
+      const isParent = categories.some((c) => c.slug === cat || c.id === cat || c.slug.toLowerCase().replace(/[-_\s]/g, "") === cat.toLowerCase().replace(/[-_\s]/g, ""));
       if (isParent) {
         setActiveCategory(cat);
-        if (sub) setActiveSubcategory(sub);
+        setActiveSubcategory(sub || "all");
       } else {
         const parentSlug = findParentCategorySlug(cat);
         setActiveCategory(parentSlug);
@@ -499,6 +525,8 @@ function CatalogContent() {
       }
     } else if (sub) {
       setActiveSubcategory(sub);
+    } else {
+      setActiveSubcategory("all");
     }
   }, [searchParams, categories]);
 
@@ -838,12 +866,16 @@ function CatalogContent() {
                 All {currentCategoryData.name} ({allProducts.filter((p) => isProductInParentCategory(p, currentCategoryData)).length})
               </button>
               {currentCategoryData.subcategories.map((sub) => {
-                const isSubActive = activeSubcategory.toLowerCase() === sub.name.toLowerCase();
-                const count = getSubcategoryCount(currentCategoryData, sub.name);
+                const isSubActive =
+                  activeSubcategory.toLowerCase() === sub.name.toLowerCase() ||
+                  activeSubcategory.toLowerCase() === (sub.slug || "").toLowerCase() ||
+                  activeSubcategory.toLowerCase().replace(/[-_\s&]/g, "") === sub.name.toLowerCase().replace(/[-_\s&]/g, "") ||
+                  activeSubcategory.toLowerCase().replace(/[-_\s&]/g, "") === (sub.slug || "").toLowerCase().replace(/[-_\s&]/g, "");
+                const count = getSubcategoryCount(currentCategoryData, sub.slug || sub.name);
                 return (
                   <button
                     key={sub.id || sub.slug || sub.name}
-                    onClick={() => setActiveSubcategory(sub.name)}
+                    onClick={() => setActiveSubcategory(sub.slug || sub.name)}
                     className={`px-3 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
                       isSubActive
                         ? "bg-[#D61C24] text-white shadow-xs"

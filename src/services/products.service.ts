@@ -29,16 +29,25 @@ interface BackendProductRaw {
   };
 }
 
-const MAIN_CAT_IDS: MainCategoryId[] = [
+const MAIN_CAT_IDS: (MainCategoryId | string)[] = [
+  "team-sports-wear",
+  "martial-arts-combat-wear",
+  "activewear-fitness",
+  "casual-lifestyle-wear",
+  "jackets-outerwear",
+  "kids-youth-wear",
+  "workwear-medical-wear",
+  "sports-accessories",
+  "gloves",
   "sportswear",
   "casual-wear",
-  "equestrian-clothing",
+  "fitness-wear",
+  "safety-wear",
+  "accessories",
   "ice-hockey",
   "cycling",
   "rugby",
   "basketball",
-  "ski-wear",
-  "go-karting-racing",
 ];
 
 export function getProductDemoImage(category?: string, name?: string, subcategory?: string): string {
