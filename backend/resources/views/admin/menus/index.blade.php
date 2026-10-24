@@ -87,22 +87,25 @@
                 <div x-show="addTab === 'categories'" class="space-y-3">
                     
                     <!-- Search Filter Box -->
-                    <div class="relative">
-                        <input type="text" x-model="searchQuery" placeholder="Search categories (e.g. Sportswear, Hoodies)..." class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pl-9 pr-3 text-xs text-slate-900 focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
-                        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <div class="relative flex items-center">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <input type="text" 
+                               x-model="searchQuery" 
+                               placeholder="Search categories..." 
+                               class="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-500">
                     </div>
 
                     <!-- Category Checkbox List (Scrollable box like WordPress) -->
-                    <div class="max-h-80 overflow-y-auto border border-slate-200 rounded-xl p-2.5 divide-y divide-slate-100 dark:border-slate-800 dark:divide-slate-800/60 custom-scrollbar bg-slate-50/50 dark:bg-slate-950/30">
+                    <div class="max-h-80 overflow-y-auto border border-slate-200 rounded-xl p-2 divide-y divide-slate-100 dark:border-slate-800 dark:divide-slate-800/80 custom-scrollbar bg-white dark:bg-slate-950">
                         <template x-for="cat in filteredCategories" :key="cat.id">
-                            <label class="flex items-center justify-between py-2 px-2 hover:bg-white dark:hover:bg-slate-800/60 rounded-lg cursor-pointer text-xs transition">
+                            <label class="flex items-center justify-between py-2 px-2.5 rounded-lg cursor-pointer text-xs transition hover:bg-slate-50 dark:hover:bg-slate-900">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" :value="cat.id" x-model="selectedCategoryIds" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-900">
-                                    <span class="font-semibold text-slate-800 dark:text-slate-200" x-text="cat.name"></span>
+                                    <input type="checkbox" :value="cat.id" x-model="selectedCategoryIds" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-900 dark:checked:bg-blue-600 cursor-pointer">
+                                    <span class="font-semibold text-slate-800 dark:text-slate-100" x-text="cat.name"></span>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span x-show="cat.children && cat.children.length" class="text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded font-mono" x-text="cat.children.length + ' subs'"></span>
-                                    <span class="text-[10px] text-slate-400 font-mono" x-text="'#' + cat.slug"></span>
+                                    <span x-show="cat.children && cat.children.length" class="text-[10px] bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/60 px-1.5 py-0.5 rounded font-mono font-bold" x-text="cat.children.length + ' subs'"></span>
+                                    <span class="text-[10px] text-slate-400 dark:text-slate-400 font-mono" x-text="'#' + cat.slug"></span>
                                 </div>
                             </label>
                         </template>
@@ -195,7 +198,7 @@
                 <!-- Draggable / Orderable Category Pillars List -->
                 <div class="space-y-3">
                     <template x-for="(item, index) in menu" :key="item._uid">
-                        <div class="rounded-2xl border border-slate-200 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-950/40 overflow-hidden shadow-xs transition hover:border-slate-300 dark:hover:border-slate-700">
+                        <div class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950 overflow-hidden shadow-xs transition hover:border-slate-300 dark:hover:border-slate-700">
                             
                             <!-- Accordion Header Bar -->
                             <div class="p-3.5 flex items-center justify-between gap-3 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
@@ -203,35 +206,35 @@
                                 <div class="flex items-center gap-3">
                                     <!-- Order Controls (Up / Down) -->
                                     <div class="flex flex-col gap-0.5">
-                                        <button type="button" @click="moveUp(index)" :disabled="index === 0" class="text-slate-400 hover:text-blue-600 disabled:opacity-20 disabled:hover:text-slate-400">
+                                        <button type="button" @click="moveUp(index)" :disabled="index === 0" class="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-20 disabled:hover:text-slate-400">
                                              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"></path></svg>
                                         </button>
-                                        <button type="button" @click="moveDown(index)" :disabled="index === menu.length - 1" class="text-slate-400 hover:text-blue-600 disabled:opacity-20 disabled:hover:text-slate-400">
+                                        <button type="button" @click="moveDown(index)" :disabled="index === menu.length - 1" class="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-20 disabled:hover:text-slate-400">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
                                         </button>
                                     </div>
 
                                     <!-- Pillar Number Badge -->
-                                    <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-mono font-bold text-blue-600 dark:text-blue-400" x-text="item.number || (index + 1 < 10 ? '0' + (index + 1) : index + 1)"></span>
+                                    <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-xs font-mono font-bold text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/60" x-text="item.number || (index + 1 < 10 ? '0' + (index + 1) : index + 1)"></span>
 
                                     <!-- Title & Slug -->
                                     <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2">
                                         <span class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight" x-text="item.name"></span>
-                                        <span class="text-[11px] font-mono text-slate-400" x-text="'/catalog?category=' + item.slug"></span>
+                                        <span class="text-[11px] font-mono text-slate-400 dark:text-slate-400" x-text="'/catalog?category=' + item.slug"></span>
                                     </div>
                                 </div>
 
                                 <div class="flex items-center gap-2">
                                     <!-- Subcategories Count Badge -->
-                                    <span class="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2.5 py-0.5 rounded-full font-semibold" x-text="(item.subcategories ? item.subcategories.length : 0) + ' Subcategories'"></span>
+                                    <span class="text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-0.5 rounded-full font-semibold border border-slate-200 dark:border-slate-700" x-text="(item.subcategories ? item.subcategories.length : 0) + ' Subcategories'"></span>
 
                                     <!-- Expand / Edit Button -->
                                     <button type="button" @click="item.open = !item.open" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                                        <svg class="w-4 h-4 transition-transform duration-200" :class="item.open ? 'rotate-180 text-blue-600' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        <svg class="w-4 h-4 transition-transform duration-200" :class="item.open ? 'rotate-180 text-blue-600 dark:text-blue-400' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                     </button>
 
                                     <!-- Remove Button -->
-                                    <button type="button" @click.stop="removePillar(item)" title="Remove pillar from mega menu" class="p-1.5 rounded-lg text-rose-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition cursor-pointer">
+                                    <button type="button" @click.stop="removePillar(item)" title="Remove pillar from mega menu" class="p-1.5 rounded-lg text-rose-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition cursor-pointer">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                     </button>
                                 </div>
@@ -239,30 +242,30 @@
                             </div>
 
                             <!-- Expandable Drawer to Edit Pillar Details -->
-                            <div x-show="item.open" x-transition class="p-5 border-t border-slate-100 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 space-y-4 text-xs">
+                            <div x-show="item.open" x-transition class="p-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/90 space-y-4 text-xs">
                                 
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     <div>
-                                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Navigation Label *</label>
+                                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1">Navigation Label *</label>
                                         <input type="text" x-model="item.name" class="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-900 font-semibold focus:border-blue-500 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
                                     </div>
                                     <div>
-                                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Category Slug / Filter *</label>
+                                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1">Category Slug / Filter *</label>
                                         <input type="text" x-model="item.slug" class="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-900 font-mono focus:border-blue-500 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
                                     </div>
                                     <div>
-                                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Index Number Badge</label>
+                                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1">Index Number Badge</label>
                                         <input type="text" x-model="item.number" class="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-900 font-mono focus:border-blue-500 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
                                     </div>
                                 </div>
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Promotional Banner Image URL</label>
+                                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1">Promotional Banner Image URL</label>
                                         <input type="text" x-model="item.image" placeholder="/categories/Casual wear (1).png" class="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-900 focus:border-blue-500 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
                                     </div>
                                     <div>
-                                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Card Tagline / Sourcing Hook</label>
+                                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1">Card Tagline / Sourcing Hook</label>
                                         <input type="text" x-model="item.tagline" placeholder="Minimum order 30–50 pieces with full Pantone lab-dip matching..." class="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-900 focus:border-blue-500 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
                                     </div>
                                 </div>
@@ -270,18 +273,18 @@
                                 <!-- Subcategories Management Box -->
                                 <div class="pt-2 border-t border-slate-200/60 dark:border-slate-800 space-y-2.5">
                                     <div class="flex items-center justify-between">
-                                        <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                                        <label class="text-[11px] font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-200">
                                             Subcategories Grid (<span x-text="item.subcategories ? item.subcategories.length : 0"></span> Items)
                                         </label>
                                         <span class="text-[10px] text-slate-400">Shown in the center column when hovered</span>
                                     </div>
 
                                     <!-- Subcategories Badges List -->
-                                    <div class="flex flex-wrap gap-2 p-3 bg-slate-100/60 dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 min-h-[50px]">
+                                    <div class="flex flex-wrap gap-2 p-3 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 min-h-[50px]">
                                         <template x-for="(sub, subIdx) in item.subcategories" :key="subIdx">
-                                            <span class="inline-flex items-center gap-1.5 rounded-lg bg-white dark:bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shadow-xs">
+                                            <span class="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 shadow-xs">
                                                 <span x-text="sub"></span>
-                                                <button type="button" @click="removeSubcategory(item, subIdx)" class="text-slate-400 hover:text-rose-500 ml-1">
+                                                <button type="button" @click="removeSubcategory(item, subIdx)" class="text-slate-400 hover:text-rose-500 dark:hover:text-rose-400 ml-1">
                                                     &times;
                                                 </button>
                                             </span>

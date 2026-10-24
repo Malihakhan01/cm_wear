@@ -28,6 +28,12 @@
                     </div>
                 @endif
             @endif
+            @if(request()->filled('date'))
+                <div class="mt-2 inline-flex items-center gap-2 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 px-2.5 py-1 text-xs text-blue-700 dark:text-blue-300">
+                    <span>Date: <strong>{{ \Carbon\Carbon::parse(request('date'))->format('M d, Y') }}</strong></span>
+                    <a href="{{ route('admin.products.index', request()->except('date', 'page')) }}" class="hover:text-blue-900 dark:hover:text-white font-bold ml-1 text-sm leading-none" title="Clear date filter">&times;</a>
+                </div>
+            @endif
         </div>
 
         <div class="flex items-center gap-3">
@@ -87,6 +93,12 @@
                     <option value="archived" {{ request('status') === 'archived' ? 'selected' : '' }}>Archived</option>
                 </select>
 
+                <input type="date" 
+                       name="date" 
+                       value="{{ request('date') }}" 
+                       class="w-full sm:w-auto rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+                       title="Filter by creation date">
+
                 <select name="per_page" class="w-full sm:w-auto min-w-[95px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300" title="Items per page">
                     <option value="10" {{ request('per_page', $perPage ?? 15) == 10 ? 'selected' : '' }}>10 / page</option>
                     <option value="15" {{ request('per_page', $perPage ?? 15) == 15 ? 'selected' : '' }}>15 / page</option>
@@ -101,7 +113,7 @@
                     <span>Filter</span>
                 </button>
 
-                @if(request()->hasAny(['search', 'category_id', 'category', 'type', 'status', 'per_page']))
+                @if(request()->hasAny(['search', 'category_id', 'category', 'type', 'status', 'date', 'per_page']))
                     <a href="{{ route('admin.products.index') }}" class="rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 px-3.5 py-2.5 text-xs font-bold text-slate-600 dark:text-slate-300 transition">
                         Reset
                     </a>
