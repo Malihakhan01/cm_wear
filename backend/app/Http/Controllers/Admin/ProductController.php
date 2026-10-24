@@ -34,10 +34,19 @@ class ProductController extends Controller
             $query->where('status', $request->status);
         }
 
-        if ($request->filled('category')) {
-            $query->whereHas('categories', function ($q) use ($request) {
-                $q->where('categories.id', (int) $request->category);
-            });
+        $catId = $request->input('category_id', $request->input('category'));
+        if ($catId) {
+            if ($catId === 'uncategorized') {
+                $query->doesntHave('categories');
+            } else {
+                $category = Category::with('children:id,parent_id')->find($catId);
+                if ($category) {
+                    $categoryIds = array_merge([$category->id], $category->children->pluck('id')->all());
+                    $query->whereHas('categories', function ($q) use ($categoryIds) {
+                        $q->whereIn('categories.id', $categoryIds);
+                    });
+                }
+            }
         }
 
         if ($request->filled('date')) {
@@ -45,13 +54,16 @@ class ProductController extends Controller
         }
 
         $allowedPerPage = [10, 15, 25, 50, 100, 250];
-        $perPage = in_array((int) $request->get('per_page'), $allowedPerPage)
-            ? (int) $request->get('per_page')
+        $perPage = in_array((int) $request->input('per_page'), $allowedPerPage, true)
+            ? (int) $request->input('per_page')
             : 15;
 
         $products = $query->latest()->paginate($perPage)->withQueryString();
 
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::whereNull('parent_id')
+            ->orderByRaw('CASE WHEN sort_order > 0 THEN 0 ELSE 1 END, sort_order ASC, name ASC')
+            ->with(['children' => fn($q) => $q->orderBy('sort_order')->orderBy('name')])
+            ->get();
 
         return view('admin.products.index', compact('products', 'categories', 'perPage'));
     }

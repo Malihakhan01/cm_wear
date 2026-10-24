@@ -12,10 +12,22 @@
             <div class="flex items-center gap-3">
                 <h2 class="text-xl font-bold text-slate-900 dark:text-white">All Products</h2>
                 <span class="rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-3 py-0.5 text-xs font-bold">
-                    {{ number_format($products->total()) }} Total Products
+                    {{ number_format($products->total()) }} {{ request()->hasAny(['search', 'category_id', 'category', 'type', 'status']) ? 'Filtered' : 'Total' }} Products
                 </span>
             </div>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Manage apparel blanks, customizable garments, and variants</p>
+            @if(request()->filled('category_id') || request()->filled('category'))
+                @php
+                    $activeCatId = request('category_id', request('category'));
+                    $activeCategory = $activeCatId === 'uncategorized' ? 'Uncategorized (No Category)' : \App\Models\Category::find($activeCatId)?->name;
+                @endphp
+                @if($activeCategory)
+                    <div class="mt-2 inline-flex items-center gap-2 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 px-2.5 py-1 text-xs text-blue-700 dark:text-blue-300">
+                        <span>Filtered by: <strong>{{ $activeCategory }}</strong></span>
+                        <a href="{{ route('admin.products.index', request()->except('category_id', 'category', 'page')) }}" class="hover:text-blue-900 dark:hover:text-white font-bold ml-1 text-sm leading-none" title="Clear category filter">&times;</a>
+                    </div>
+                @endif
+            @endif
         </div>
 
         <div class="flex items-center gap-3">
@@ -33,79 +45,63 @@
 
     <!-- Search & Filter Card -->
     <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <form method="GET" action="{{ route('admin.products.index') }}" class="space-y-3">
-            <!-- Row 1: Search + Type + Status -->
-            <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
-                <div class="relative flex-1 min-w-[240px]">
-                    <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <input type="text" 
-                           name="search" 
-                           value="{{ request('search') }}" 
-                           placeholder="Search by product name, SKU, or slug..." 
-                           class="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-500">
-                </div>
-
-                <div class="flex flex-wrap sm:flex-nowrap items-center gap-3">
-                    <select name="type" class="w-full sm:w-auto min-w-[170px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
-                        <option value="">All Product Types</option>
-                        <option value="simple" {{ request('type') === 'simple' ? 'selected' : '' }}>Simple</option>
-                        <option value="variable" {{ request('type') === 'variable' ? 'selected' : '' }}>Variable (WooCommerce)</option>
-                        <option value="customizable_apparel" {{ request('type') === 'customizable_apparel' ? 'selected' : '' }}>Customizable Garment</option>
-                    </select>
-
-                    <select name="status" class="w-full sm:w-auto min-w-[140px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
-                        <option value="">All Statuses</option>
-                        <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Published</option>
-                        <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
-                        <option value="archived" {{ request('status') === 'archived' ? 'selected' : '' }}>Archived</option>
-                    </select>
-                </div>
+        <form method="GET" action="{{ route('admin.products.index') }}" class="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
+            <div class="relative flex-1 min-w-[220px]">
+                <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" 
+                       name="search" 
+                       value="{{ request('search') }}" 
+                       placeholder="Search by product name, SKU, or slug..." 
+                       class="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-500">
             </div>
 
-            <!-- Row 2: Category + Date + Per Page + Actions -->
             <div class="flex flex-wrap items-center gap-3">
-                <!-- Category Filter -->
-                <div class="flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
-                    <select name="category" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300 min-w-[160px]">
-                        <option value="">All Categories</option>
-                        @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
-                                {{ $cat->name }}
+                <select name="category_id" class="w-full sm:w-auto min-w-[190px] max-w-[260px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+                    <option value="">All Categories</option>
+                    <option value="uncategorized" {{ request('category_id') === 'uncategorized' || request('category') === 'uncategorized' ? 'selected' : '' }}>⚠️ Uncategorized (No Category)</option>
+                    @if(isset($categories))
+                        @foreach($categories as $parent)
+                            <option value="{{ $parent->id }}" class="font-bold text-slate-900 dark:text-white" {{ request('category_id') == $parent->id || request('category') == $parent->id ? 'selected' : '' }}>
+                                📁 {{ $parent->name }} (All)
                             </option>
+                            @foreach($parent->children as $child)
+                                <option value="{{ $child->id }}" class="text-slate-600 dark:text-slate-400" {{ request('category_id') == $child->id || request('category') == $child->id ? 'selected' : '' }}>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;↳ {{ $child->name }}
+                                </option>
+                            @endforeach
                         @endforeach
-                    </select>
-                </div>
+                    @endif
+                </select>
 
-                <!-- Date Filter -->
-                <div class="flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    <input type="date" 
-                           name="date" 
-                           value="{{ request('date') }}" 
-                           class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300"
-                           title="Filter by date added">
-                </div>
+                <select name="type" class="w-full sm:w-auto min-w-[140px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+                    <option value="">All Types</option>
+                    <option value="simple" {{ request('type') === 'simple' ? 'selected' : '' }}>Simple</option>
+                    <option value="variable" {{ request('type') === 'variable' ? 'selected' : '' }}>Variable (WooCommerce)</option>
+                    <option value="customizable_apparel" {{ request('type') === 'customizable_apparel' ? 'selected' : '' }}>Customizable Garment</option>
+                </select>
 
-                <!-- Per Page -->
-                <div class="flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
-                    <select name="per_page" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
-                        <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10 / page</option>
-                        <option value="15" {{ $perPage == 15 ? 'selected' : '' }}>15 / page</option>
-                        <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25 / page</option>
-                        <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50 / page</option>
-                        <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100 / page</option>
-                        <option value="250" {{ $perPage == 250 ? 'selected' : '' }}>250 / page</option>
-                    </select>
-                </div>
+                <select name="status" class="w-full sm:w-auto min-w-[125px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+                    <option value="">All Statuses</option>
+                    <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Published</option>
+                    <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
+                    <option value="archived" {{ request('status') === 'archived' ? 'selected' : '' }}>Archived</option>
+                </select>
+
+                <select name="per_page" class="w-full sm:w-auto min-w-[95px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300" title="Items per page">
+                    <option value="10" {{ request('per_page', $perPage ?? 15) == 10 ? 'selected' : '' }}>10 / page</option>
+                    <option value="15" {{ request('per_page', $perPage ?? 15) == 15 ? 'selected' : '' }}>15 / page</option>
+                    <option value="25" {{ request('per_page', $perPage ?? 15) == 25 ? 'selected' : '' }}>25 / page</option>
+                    <option value="50" {{ request('per_page', $perPage ?? 15) == 50 ? 'selected' : '' }}>50 / page</option>
+                    <option value="100" {{ request('per_page', $perPage ?? 15) == 100 ? 'selected' : '' }}>100 / page</option>
+                    <option value="250" {{ request('per_page', $perPage ?? 15) == 250 ? 'selected' : '' }}>250 / page</option>
+                </select>
 
                 <button type="submit" class="rounded-xl bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 text-xs font-bold shadow-md shadow-blue-600/20 transition flex items-center justify-center gap-1.5">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                     <span>Filter</span>
                 </button>
 
-                @if(request()->hasAny(['search', 'type', 'status', 'category', 'date', 'per_page']))
+                @if(request()->hasAny(['search', 'category_id', 'category', 'type', 'status', 'per_page']))
                     <a href="{{ route('admin.products.index') }}" class="rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 px-3.5 py-2.5 text-xs font-bold text-slate-600 dark:text-slate-300 transition">
                         Reset
                     </a>
@@ -114,7 +110,7 @@
         </form>
     </div>
 
-    <!-- Delete Products by Day Panel -->
+    {{-- Bulk Delete by Day (temporarily commented out)
     <div class="rounded-2xl border border-rose-200 bg-rose-50 dark:border-rose-900/40 dark:bg-rose-950/20 p-4 shadow-sm"
          x-data="{ open: false }">
         <div class="flex items-center justify-between gap-4">
@@ -167,6 +163,7 @@
             </form>
         </div>
     </div>
+    --}}
 
     <!-- Products Table -->
     <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 relative"
