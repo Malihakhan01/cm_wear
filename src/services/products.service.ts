@@ -282,7 +282,7 @@ export function saveLocalImportedProducts(products: Product[]): void {
 let memoryProductsCache: Product[] | null = null;
 let inFlightPromise: Promise<Product[]> | null = null;
 let lastFetchTime = 0;
-const CACHED_PRODUCTS_STORAGE_KEY = "cm_cached_products_catalog_v5";
+const CACHED_PRODUCTS_STORAGE_KEY = "cm_cached_products_catalog_v6";
 
 export function getCachedProducts(): Product[] {
   if (memoryProductsCache && memoryProductsCache.length > 0) {
@@ -343,10 +343,10 @@ export const productsService = {
   },
 
   async getAll(forceFresh = false): Promise<Product[]> {
-    // 1. Instant Cache Hit: Return cached products immediately if fresh enough (< 3 minutes)
+    // 1. Instant Cache Hit: Return cached products immediately if fresh enough (< 10 seconds)
     const now = Date.now();
     const cached = getCachedProducts();
-    const isFresh = now - lastFetchTime < 180000;
+    const isFresh = now - lastFetchTime < 10000;
 
     if (!forceFresh && cached.length > 0) {
       if (!isFresh && !inFlightPromise) {
@@ -393,7 +393,7 @@ export const productsService = {
 
         let allLiveRaw: BackendProductRaw[] = [...list1];
         if (total > list1.length) {
-          // If total ever exceeds 1000, fetch page 2
+          // If total exceeds 1000, fetch page 2
           const resPage2 = await apiClient.get<{ data?: BackendProductRaw[] }>(
             `/products?per_page=1000&page=2&_t=${now}`
           );
@@ -404,19 +404,15 @@ export const productsService = {
 
         if (allLiveRaw.length > 0) {
           const liveProducts = allLiveRaw.map(mapBackendProductToFrontend);
-          const liveSlugs = new Set(liveProducts.map((p) => p.slug));
-          const remainingStatic = sanitizedBase.filter((p) => !liveSlugs.has(p.slug));
-          const combined = [...liveProducts, ...remainingStatic];
-
-          memoryProductsCache = combined;
+          memoryProductsCache = liveProducts;
           lastFetchTime = Date.now();
-          saveProductsToLocalStorage(combined);
+          saveProductsToLocalStorage(liveProducts);
 
           if (typeof window !== "undefined") {
-            window.dispatchEvent(new CustomEvent("cm_products_updated", { detail: combined }));
+            window.dispatchEvent(new CustomEvent("cm_products_updated", { detail: liveProducts }));
           }
 
-          return combined;
+          return liveProducts;
         }
       } catch (e) {
         console.warn("Live backend products fetch fallback:", e);

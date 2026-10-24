@@ -128,56 +128,52 @@ function findParentCategorySlug(slugOrName: string): string {
 }
 
 function isProductInParentCategory(p: Product, parentCat: Category): boolean {
-  const normActive = parentCat.slug.toLowerCase().replace(/[-_\s]/g, "");
-  const prodCatNorm = (p.category || "").toLowerCase().replace(/[-_\s]/g, "");
-  const prodSubNorm = (p.subcategory || "").toLowerCase().replace(/[-_\s]/g, "");
+  const normActive = (parentCat.slug || parentCat.id || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const parentIdStr = String(parentCat.id || "");
 
-  // Direct match
-  if (prodCatNorm === normActive || p.category === parentCat.slug || p.category === parentCat.id) {
-    return true;
-  }
-
-  // Mapped parent category check
-  if (findParentCategorySlug(p.category || "") === parentCat.slug) {
-    return true;
-  }
-
-  // Check subcategories list
-  if (parentCat.subcategories && parentCat.subcategories.length > 0) {
-    const hasSub = parentCat.subcategories.some((sub) => {
-      const sSlug = (sub.slug || "").toLowerCase().replace(/[-_\s]/g, "");
-      const sName = (sub.name || "").toLowerCase().replace(/[-_\s]/g, "");
-      return (
-        prodCatNorm === sSlug ||
-        prodCatNorm === sName ||
-        prodSubNorm === sSlug ||
-        prodSubNorm === sName ||
-        (sSlug.length > 3 && prodCatNorm.includes(sSlug)) ||
-        (sName.length > 3 && prodCatNorm.includes(sName)) ||
-        (sSlug.length > 3 && prodSubNorm.includes(sSlug)) ||
-        (sName.length > 3 && prodSubNorm.includes(sName))
-      );
-    });
-    if (hasSub) return true;
-  }
-
-  // Check rawCategories
+  // 1. Check p.rawCategories (the actual categories from the DB)
   if (p.rawCategories && p.rawCategories.length > 0) {
     const rawMatch = p.rawCategories.some((rc: any) => {
-      const rcSlug = (rc.slug || "").toLowerCase().replace(/[-_\s]/g, "");
-      const rcName = (rc.name || "").toLowerCase().replace(/[-_\s]/g, "");
-      if (rcSlug === normActive || rcName === normActive) return true;
-      if (findParentCategorySlug(rc.slug || rc.name || "") === parentCat.slug) return true;
+      const rcSlug = (rc.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+      const rcName = (rc.name || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+      const rcId = String(rc.id || "");
+      const rcParentId = String(rc.parentId || "");
+
+      // Direct parent match
+      if (rcSlug === normActive || rcName === normActive || rcId === parentIdStr) {
+        return true;
+      }
+
+      // If the product category's parent is this parent category
+      if (rcParentId && rcParentId === parentIdStr) {
+        return true;
+      }
+
+      // If rc matches any subcategory of this parent
       if (parentCat.subcategories && parentCat.subcategories.length > 0) {
         return parentCat.subcategories.some((sub) => {
-          const sSlug = (sub.slug || "").toLowerCase().replace(/[-_\s]/g, "");
-          const sName = (sub.name || "").toLowerCase().replace(/[-_\s]/g, "");
-          return rcSlug === sSlug || rcName === sName;
+          const sSlug = (sub.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+          const sName = (sub.name || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+          const sId = String(sub.id || "");
+          return rcSlug === sSlug || rcName === sName || rcId === sId || rcParentId === sId;
         });
       }
+
       return false;
     });
+
     if (rawMatch) return true;
+  }
+
+  // 2. Direct match on p.category
+  const prodCatNorm = (p.category || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (prodCatNorm === normActive || p.category === parentCat.slug || String(p.category) === parentIdStr) {
+    return true;
+  }
+
+  // 3. Fallback parent mapping
+  if (findParentCategorySlug(p.category || "") === parentCat.slug) {
+    return true;
   }
 
   return false;
@@ -236,156 +232,55 @@ function getSportswearProductPriority(p: Product): number {
   return 100;
 }
 
-function matchesSportSubcategory(pSubOrCat: string, targetSub: string): boolean {
-  if (!targetSub || targetSub === "all") return true;
-  if (targetSub.includes(",")) {
-    const targets = targetSub.split(",").map((t) => t.trim()).filter(Boolean);
-    return targets.some((t) => matchesSportSubcategory(pSubOrCat, t));
-  }
-  const normP = (pSubOrCat || "").toLowerCase().replace(/[-_\s&]/g, "");
-  const normT = (targetSub || "").toLowerCase().replace(/[-_\s&]/g, "");
-  if (!normP || !normT) return false;
-  if (normP === normT || (normT.length > 3 && normP.includes(normT)) || (normP.length > 3 && normT.includes(normP))) return true;
+function isProductInSubcategory(
+  p: Product,
+  subTarget: string,
+  parentCat?: Category | null
+): boolean {
+  if (!subTarget || subTarget === "all") return true;
 
-  // 1. Team Sports Wear
-  if (normT.includes("icehockey") || normT.includes("hockey")) {
-    return normP.includes("hockey");
-  }
-  if (normT.includes("soccer") || (normT.includes("football") && !normT.includes("american"))) {
-    return normP.includes("soccer") || (normP.includes("football") && !normP.includes("american"));
-  }
-  if (normT.includes("americanfootball") || normT.includes("american")) {
-    return normP.includes("american") || normP.includes("gridiron");
-  }
-  if (normT.includes("basketball")) {
-    return normP.includes("basketball");
-  }
-  if (normT.includes("baseball") || normT.includes("softball")) {
-    return normP.includes("baseball") || normP.includes("softball");
-  }
-  if (normT.includes("cricket")) {
-    return normP.includes("cricket");
-  }
-  if (normT.includes("rugby")) {
-    return normP.includes("rugby");
-  }
-  if (normT.includes("lacrosse")) {
-    return normP.includes("lacrosse");
-  }
-  if (normT.includes("volleyball")) {
-    return normP.includes("volleyball");
-  }
-  if (normT.includes("tennis") || normT.includes("golf")) {
-    return normP.includes("tennis") || normP.includes("golf");
-  }
+  const targetNorm = subTarget.toLowerCase().replace(/[^a-z0-9]/g, "");
 
-  // 2. Martial Arts & Combat Wear
-  if (normT.includes("bjj") || normT.includes("grappling") || normT.includes("jiujitsu")) {
-    return normP.includes("bjj") || normP.includes("grappling") || normP.includes("jiujitsu") || normP.includes("martialarts") || normP.includes("combattraining") || normP.includes("combatteamwear") || normP.includes("rashguard") || normP.includes("gi");
-  }
-  if (normT.includes("mma") || normT.includes("combatsports")) {
-    return normP.includes("mma") || normP.includes("combatsports") || normP.includes("fullcontact") || normP.includes("kickboxing") || normP.includes("fightshort") || normP.includes("valetudo");
-  }
-  if (normT.includes("boxing") || normT.includes("muaythai")) {
-    return normP.includes("boxing") || normP.includes("muaythai") || normP.includes("thaibox");
-  }
-  if (normT.includes("karate")) {
-    return normP.includes("karate");
-  }
-  if (normT.includes("judo")) {
-    return normP.includes("judo");
-  }
-  if (normT.includes("taekwondo")) {
-    return normP.includes("taekwondo");
-  }
-  if (normT.includes("wrestling")) {
-    return normP.includes("wrestling") || normP.includes("singlet");
+  // 1. Direct match on product's rawCategories from DB
+  if (p.rawCategories && p.rawCategories.length > 0) {
+    const directMatch = p.rawCategories.some((rc: any) => {
+      const rcSlug = (rc.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+      const rcName = (rc.name || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+      const rcId = String(rc.id || "");
+
+      // Exact slug, name, or ID match
+      if (rcSlug === targetNorm || rcName === targetNorm || rcId === subTarget) {
+        return true;
+      }
+
+      // Check if rc is a child of this subcategory (rc.parentId === matchingSub.id)
+      if (parentCat && parentCat.subcategories) {
+        const matchingSub = parentCat.subcategories.find(
+          (s) =>
+            s.slug === subTarget ||
+            s.id === subTarget ||
+            (s.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "") === targetNorm ||
+            (s.name || "").toLowerCase().replace(/[^a-z0-9]/g, "") === targetNorm
+        );
+        if (matchingSub) {
+          const subId = String(matchingSub.id || "");
+          if (subId && rc.parentId && String(rc.parentId) === subId) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    });
+
+    if (directMatch) return true;
   }
 
-  // 3. Activewear & Fitness
-  if (normT.includes("gym") || normT.includes("trainingwear")) {
-    return normP.includes("gym") || normP.includes("fitnessapparel") || normP.includes("trainingtrouser") || normP.includes("fitness");
-  }
-  if (normT.includes("compression")) {
-    return normP.includes("compression") || normP.includes("baselayer");
-  }
-  if (normT.includes("womensactivewear") || normT.includes("womenactivewear")) {
-    return normP.includes("womensactivewear") || normP.includes("braslegging") || normP.includes("yogawear") || normP.includes("fitnessset");
-  }
-  if (normT.includes("running") || normT.includes("athletics")) {
-    return normP.includes("running") || normP.includes("athletics") || normP.includes("trackfield");
-  }
-  if (normT.includes("cycling")) {
-    return normP.includes("cycling") || normP.includes("bmx");
-  }
-
-  // 4. Casual & Lifestyle Wear
-  if (normT.includes("tshirt") || normT.includes("tee")) {
-    return normP.includes("tshirt") || normP.includes("tee");
-  }
-  if (normT.includes("hoodie") || normT.includes("sweatshirt")) {
-    return normP.includes("hoodie") || normP.includes("sweatshirt");
-  }
-  if (normT.includes("polo")) {
-    return normP.includes("polo");
-  }
-  if (normT.includes("tracksuit")) {
-    return normP.includes("tracksuit");
-  }
-  if (normT.includes("pant") || normT.includes("jogger")) {
-    return normP.includes("pant") || normP.includes("jogger") || normP.includes("trouser") || normP.includes("sweatpant");
-  }
-
-  // 5. Jackets & Outerwear
-  if (normT.includes("varsity")) {
-    return normP.includes("varsity");
-  }
-  if (normT.includes("bomber")) {
-    return normP.includes("bomber");
-  }
-  if (normT.includes("windbreaker")) {
-    return normP.includes("windbreaker") || normP.includes("coach");
-  }
-  if (normT.includes("puffer") || normT.includes("winter")) {
-    return normP.includes("puffer") || normP.includes("winter") || normP.includes("parka");
-  }
-  if (normT.includes("fleece")) {
-    return normP.includes("fleece");
-  }
-  if (normT.includes("leather")) {
-    return normP.includes("leather");
-  }
-
-  // 6. Kids & Youth Wear
-  if (normT.includes("kid") || normT.includes("youth")) {
-    return normP.includes("kid") || normP.includes("youth") || normP.includes("junior");
-  }
-
-  // 7. Workwear & Medical Wear
-  if (normT.includes("scrub") || normT.includes("medical")) {
-    return normP.includes("scrub") || normP.includes("medical");
-  }
-  if (normT.includes("workuniform") || normT.includes("safety")) {
-    return normP.includes("safety") || normP.includes("work") || normP.includes("coverall") || normP.includes("hivis");
-  }
-
-  // 8. Sports Accessories
-  if (normT.includes("bag") || normT.includes("backpack")) {
-    return normP.includes("bag") || normP.includes("backpack") || normP.includes("duffel");
-  }
-  if (normT.includes("cap") || normT.includes("hat") || normT.includes("beanie")) {
-    return normP.includes("cap") || normP.includes("hat") || normP.includes("beanie");
-  }
-  if (normT.includes("sock") || normT.includes("wristband")) {
-    return normP.includes("sock") || normP.includes("wristband") || normP.includes("headband");
-  }
-  if (normT.includes("guard") || normT.includes("protect")) {
-    return normP.includes("guard") || normP.includes("pad") || normP.includes("protect");
-  }
-
-  // 9. Gloves
-  if (normT.includes("glove")) {
-    return normP.includes("glove");
+  // 2. Direct match on p.subcategory or p.category
+  const pSubNorm = (p.subcategory || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const pCatNorm = (p.category || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (pSubNorm === targetNorm || pCatNorm === targetNorm) {
+    return true;
   }
 
   return false;
@@ -448,20 +343,29 @@ function CatalogContent() {
 
         const mergedMap = new Map<string, Category>();
 
-        // 1. Populate ONLY with the main parent categories (from megaMenu or static CATEGORIES_DATA)
+        // 1. Populate ONLY with the main parent categories (from megaMenu, liveCats, or static CATEGORIES_DATA)
         const baseParentCats =
           megaMenu && megaMenu.length > 0
             ? megaMenu.map((m, idx) => {
                 const numStr = m.number || String(idx + 1).padStart(2, "0");
                 const matchingStatic = CATEGORIES_DATA.find((c) => c.slug === m.slug || c.id === m.id);
-                const subs = (m.subcategories || []).map((subName) => ({
-                  id: subName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-                  slug: subName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-                  name: subName,
-                }));
+                const matchingLive = liveCats.find(
+                  (lc) =>
+                    lc.slug === m.slug ||
+                    lc.id === m.id ||
+                    (lc.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "") === (m.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "")
+                );
+
+                const subs = matchingLive && matchingLive.subcategories && matchingLive.subcategories.length > 0
+                  ? matchingLive.subcategories
+                  : (m.subcategories || []).map((subName) => ({
+                      id: subName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+                      slug: subName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+                      name: subName,
+                    }));
 
                 return {
-                  id: (m.slug as MainCategoryId) || (matchingStatic?.id as MainCategoryId),
+                  id: (matchingLive?.id || m.slug as MainCategoryId) || (matchingStatic?.id as MainCategoryId),
                   slug: m.slug,
                   name: m.name,
                   number: numStr,
@@ -491,9 +395,20 @@ function CatalogContent() {
             : CATEGORIES_DATA;
 
         baseParentCats.forEach((c) => {
+          const liveCat = liveCats.find(
+            (lc) =>
+              lc.slug === c.slug ||
+              lc.id === c.id ||
+              (lc.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "") === (c.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "")
+          );
+          const subs = liveCat && liveCat.subcategories && liveCat.subcategories.length > 0
+            ? liveCat.subcategories
+            : c.subcategories || [];
+
           mergedMap.set(c.slug, {
             ...c,
-            subcategories: [...(c.subcategories || [])],
+            id: liveCat?.id || c.id,
+            subcategories: [...subs],
           });
         });
 
@@ -651,24 +566,12 @@ function CatalogContent() {
   const getSubcategoryCount = (category: Category, subName: string): number => {
     return allProducts.filter((p) => {
       if (!isProductInParentCategory(p, category)) return false;
-      const pSub = p.subcategory || "";
-      const pCat = p.category || "";
-      const pName = p.name || "";
-      return (
-        matchesSportSubcategory(pSub, subName) ||
-        matchesSportSubcategory(pCat, subName) ||
-        matchesSportSubcategory(pName, subName) ||
-        (p.rawCategories &&
-          p.rawCategories.some((rc: any) =>
-            matchesSportSubcategory(rc.slug || "", subName) ||
-            matchesSportSubcategory(rc.name || "", subName)
-          ))
-      );
+      return isProductInSubcategory(p, subName, category);
     }).length;
   };
 
   function normalizeCategoryTarget(slugOrName?: string): string {
-    const norm = (slugOrName || "").toLowerCase().replace(/[-_\s]/g, "");
+    const norm = (slugOrName || "").toLowerCase().replace(/[^a-z0-9]/g, "");
     if (norm.includes("teamsport") || norm === "sportswear") return "team-sports-wear";
     if (norm.includes("martial") || norm.includes("combat")) return "martial-arts-combat-wear";
     if (norm.includes("fitness") || norm.includes("activewear")) return "activewear-fitness";
@@ -685,7 +588,7 @@ function CatalogContent() {
     (c) =>
       c.id === activeCategory ||
       c.slug === activeCategory ||
-      c.slug.toLowerCase().replace(/[-_\s]/g, "") === activeCategory.toLowerCase().replace(/[-_\s]/g, "") ||
+      (c.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "") === activeCategory.toLowerCase().replace(/[^a-z0-9]/g, "") ||
       normalizeCategoryTarget(c.slug) === normalizeCategoryTarget(activeCategory)
   );
 
@@ -696,6 +599,7 @@ function CatalogContent() {
           (c) =>
             c.id === activeCategory ||
             c.slug === activeCategory ||
+            (c.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "") === activeCategory.toLowerCase().replace(/[^a-z0-9]/g, "") ||
             normalizeCategoryTarget(c.slug) === normalizeCategoryTarget(activeCategory)
         );
 
@@ -703,16 +607,16 @@ function CatalogContent() {
           if (!isProductInParentCategory(p, selectedParent)) return false;
         } else {
           // In case activeCategory is a direct subcategory slug
-          const normActive = activeCategory.toLowerCase().replace(/[-_\s]/g, "");
-          const prodCatNorm = (p.category || "").toLowerCase().replace(/[-_\s]/g, "");
-          const prodSubNorm = (p.subcategory || "").toLowerCase().replace(/[-_\s]/g, "");
+          const normActive = activeCategory.toLowerCase().replace(/[^a-z0-9]/g, "");
+          const prodCatNorm = (p.category || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+          const prodSubNorm = (p.subcategory || "").toLowerCase().replace(/[^a-z0-9]/g, "");
           const hasDirectMatch =
             prodCatNorm === normActive ||
             prodSubNorm === normActive ||
             (p.rawCategories &&
               p.rawCategories.some((c: any) => {
-                const cSlug = (c.slug || "").toLowerCase().replace(/[-_\s]/g, "");
-                const cName = (c.name || "").toLowerCase().replace(/[-_\s]/g, "");
+                const cSlug = (c.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+                const cName = (c.name || "").toLowerCase().replace(/[^a-z0-9]/g, "");
                 return cSlug === normActive || cName === normActive;
               }));
           if (!hasDirectMatch) return false;
@@ -720,22 +624,7 @@ function CatalogContent() {
       }
 
       if (activeSubcategory !== "all") {
-        const subTarget = activeSubcategory;
-        const pSub = p.subcategory || "";
-        const pCat = p.category || "";
-        const pName = p.name || "";
-
-        const hasSubMatch =
-          matchesSportSubcategory(pSub, subTarget) ||
-          matchesSportSubcategory(pCat, subTarget) ||
-          matchesSportSubcategory(pName, subTarget) ||
-          (p.rawCategories &&
-            p.rawCategories.some((c: any) =>
-              matchesSportSubcategory(c.slug || "", subTarget) ||
-              matchesSportSubcategory(c.name || "", subTarget)
-            ));
-
-        if (!hasSubMatch) return false;
+        if (!isProductInSubcategory(p, activeSubcategory, currentCategoryData)) return false;
       }
 
       if (searchQuery) {
@@ -939,7 +828,15 @@ function CatalogContent() {
               )}
               {activeSubcategory !== "all" && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#D61C24] text-white text-[11px] font-mono uppercase rounded-[2px] font-bold">
-                  <span>{activeSubcategory}</span>
+                  <span>
+                    {currentCategoryData?.subcategories?.find(
+                      (s) =>
+                        s.slug === activeSubcategory ||
+                        s.id === activeSubcategory ||
+                        (s.slug || "").toLowerCase().replace(/[^a-z0-9]/g, "") === activeSubcategory.toLowerCase().replace(/[^a-z0-9]/g, "") ||
+                        s.name.toLowerCase().replace(/[^a-z0-9]/g, "") === activeSubcategory.toLowerCase().replace(/[^a-z0-9]/g, "")
+                    )?.name || activeSubcategory}
+                  </span>
                   <button
                     onClick={() => navigateTo(currentCategoryData?.slug || currentCategoryData?.id || activeCategory)}
                     className="hover:text-black font-bold text-sm leading-none ml-1 cursor-pointer"
