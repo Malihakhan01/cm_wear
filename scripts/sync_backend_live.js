@@ -43,7 +43,7 @@ async function main() {
       `php artisan cache:clear`,
       `php artisan view:clear`,
       `echo "=== VERIFY ROUTE ON LIVE ==="`,
-      `php artisan route:list --name=products.images`
+      `php artisan route:list --name=products.bulk-delete-by-date`
     ].join(' && '), (err, stream) => {
       if (err) return reject(err);
       stream.on('data', d => process.stdout.write(d.toString()));

@@ -53,9 +53,9 @@ export const siteConfig = {
       number: "01",
       image: "/categories/teamsports_wear.png",
       subcategories: [
-        "Ice Hockey",
+        "Ice Hockey Uniforms",
+        "American Football Uniform",
         "Soccer & Football",
-        "American Football",
         "Basketball",
         "Baseball & Softball",
         "Cricket",

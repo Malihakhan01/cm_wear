@@ -109,14 +109,35 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
   const gallery = [primaryImg, ...rawGallery.filter((u) => u !== primaryImg)];
 
   // 1. Match root parent category (parent_id === null or undefined or 0)
-  const rootCat = p.categories?.find((c) => c.parent_id === null || c.parent_id === undefined || c.parent_id === 0)
-    || p.categories?.find((c) => MAIN_CAT_IDS.includes(c.slug as MainCategoryId))
-    || p.categories?.[0];
+  let rootCat = p.categories?.find((c) => c.parent_id === null || c.parent_id === undefined || c.parent_id === 0)
+    || p.categories?.find((c) => MAIN_CAT_IDS.includes(c.slug as MainCategoryId));
 
   // 2. Match child subcategory (has a parent_id, or distinct from rootCat)
-  const childCat = p.categories?.find((c) => (c.parent_id !== null && c.parent_id !== undefined && c.parent_id !== 0) && c.slug !== rootCat?.slug)
+  let childCat = p.categories?.find((c) => (c.parent_id !== null && c.parent_id !== undefined && c.parent_id !== 0) && c.slug !== rootCat?.slug)
     || p.categories?.find((c) => c.id !== rootCat?.id && c.slug !== rootCat?.slug && c.name?.toLowerCase() !== rootCat?.name?.toLowerCase())
     || (p.categories && p.categories.length > 1 && p.categories[0]?.slug === rootCat?.slug ? p.categories[1] : undefined);
+
+  // 3. Fallback when product only has a subcategory without explicit parent category in p.categories
+  if (!rootCat && p.categories && p.categories.length > 0) {
+    const firstCat = p.categories[0];
+    const s = (firstCat.slug || firstCat.name || "").toLowerCase();
+    if (
+      firstCat.parent_id === 74 ||
+      s.includes("ice-hockey") ||
+      s.includes("hockey") ||
+      s.includes("football") ||
+      s.includes("soccer") ||
+      s.includes("basketball") ||
+      s.includes("baseball") ||
+      s.includes("cricket") ||
+      s.includes("rugby")
+    ) {
+      rootCat = { id: 74, name: "Team Sportswear", slug: "sportswear" } as any;
+      childCat = firstCat;
+    } else {
+      rootCat = firstCat;
+    }
+  }
 
   const catSlug = (rootCat?.slug || "casual-wear") as MainCategoryId;
 
@@ -211,12 +232,17 @@ function mapBackendProductToFrontend(p: BackendProductRaw): Product {
     featured: Boolean(p.is_featured),
     threeDModel: p.three_d_model_url,
     specifications: mergedSpecs,
-    rawCategories: p.categories?.map((c) => ({
-      id: c.id,
-      name: c.name,
-      slug: c.slug,
-      parentId: c.parent_id ?? null,
-    })),
+    rawCategories: [
+      ...(rootCat && (!p.categories || !p.categories.some((c) => c.slug === rootCat.slug))
+        ? [{ id: String(rootCat.id || rootCat.slug), name: rootCat.name || "Sportswear", slug: rootCat.slug, parentId: null }]
+        : []),
+      ...(p.categories?.map((c) => ({
+        id: String(c.id),
+        name: c.name,
+        slug: c.slug,
+        parentId: c.parent_id ? String(c.parent_id) : null,
+      })) || []),
+    ],
   };
 }
 
@@ -247,7 +273,7 @@ export function saveLocalImportedProducts(products: Product[]): void {
 let memoryProductsCache: Product[] | null = null;
 let inFlightPromise: Promise<Product[]> | null = null;
 let lastFetchTime = 0;
-const CACHED_PRODUCTS_STORAGE_KEY = "cm_cached_products_catalog_v2";
+const CACHED_PRODUCTS_STORAGE_KEY = "cm_cached_products_catalog_v3";
 
 export function getCachedProducts(): Product[] {
   if (memoryProductsCache && memoryProductsCache.length > 0) {
@@ -401,7 +427,7 @@ export const productsService = {
 
   revalidateInBackground(): void {
     if (typeof window === "undefined" || inFlightPromise) return;
-    this.getAll(true).catch(() => {});
+    this.getAll(true).catch(() => { });
   },
 
   async getBySlug(slug: string): Promise<Product | null> {

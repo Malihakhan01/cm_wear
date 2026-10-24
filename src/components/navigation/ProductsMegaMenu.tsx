@@ -8,15 +8,15 @@ import { ArrowRight, Sparkles, Search } from "lucide-react";
 
 function getSportswearSubcategoryPriority(nameOrSlug: string): number {
   const text = (nameOrSlug || "").toLowerCase();
-  if (text.includes("ice hockey")) return 1;
-  if (text.includes("hockey")) return 2;
-  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 3;
-  if (text.includes("american") || text.includes("gridiron")) return 4;
+  if (text.includes("ice hockey") || text.includes("ice-hockey")) return 1;
+  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 4;
+  if (text.includes("american football") || text.includes("american-football") || text.includes("gridiron")) return 2;
   if (text.includes("basketball")) return 5;
   if (text.includes("baseball") || text.includes("softball")) return 6;
-  if (text.includes("cricket")) return 7;
   if (text.includes("rugby")) return 8;
   if (text.includes("lacrosse")) return 9;
+  if (text.includes("cricket")) return 7;
+  if (text.includes("hockey")) return 3;
   if (text.includes("volleyball")) return 10;
   if (text.includes("tennis") || text.includes("golf")) return 11;
   return 100;
@@ -106,7 +106,7 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8">
         <div className="grid grid-cols-12 gap-8">
-          
+
           {/* Column 1: Category Selector (4 cols) */}
           <div className="col-span-4 border-r border-[#DADBD2] pr-6 flex flex-col justify-between">
             <div>
@@ -151,11 +151,10 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
                         const originalIdx = categories.findIndex((c) => c.slug === cat.slug || c.id === cat.id);
                         if (originalIdx !== -1) setActiveCategoryIndex(originalIdx);
                       }}
-                      className={`group flex items-center justify-between px-3 py-2 rounded-[2px] transition-all cursor-pointer ${
-                        isActive
+                      className={`group flex items-center justify-between px-3 py-2 rounded-[2px] transition-all cursor-pointer ${isActive
                           ? "bg-[#0A0A0A] text-white"
                           : "hover:bg-[#F4F4EF] text-[#0A0A0A]"
-                      }`}
+                        }`}
                     >
                       <Link
                         href={`/catalog/?category=${cat.slug || cat.id}`}
@@ -163,9 +162,8 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
                         className="flex items-center gap-2.5 w-full truncate"
                       >
                         <span
-                          className={`text-xs font-mono font-bold shrink-0 ${
-                            isActive ? "text-[#FF333D]" : "text-[#72726D]"
-                          }`}
+                          className={`text-xs font-mono font-bold shrink-0 ${isActive ? "text-[#FF333D]" : "text-[#72726D]"
+                            }`}
                         >
                           {cat.number || (idx + 1 < 10 ? `0${idx + 1}` : idx + 1)}
                         </span>
@@ -174,11 +172,10 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
                         </span>
                       </Link>
                       <ArrowRight
-                        className={`w-3.5 h-3.5 shrink-0 transition-transform ${
-                          isActive
+                        className={`w-3.5 h-3.5 shrink-0 transition-transform ${isActive
                             ? "text-[#FF333D] translate-x-1"
                             : "text-transparent group-hover:text-[#72726D]"
-                        }`}
+                          }`}
                       />
                     </div>
                   );
@@ -230,7 +227,7 @@ export const ProductsMegaMenu: React.FC<ProductsMegaMenuProps> = ({ isOpen, onCl
                 <div className="max-h-[380px] overflow-y-auto pr-1 custom-scrollbar grid grid-cols-2 gap-x-4 gap-y-2">
                   {[...(activeCategory.subcategories || [])]
                     .sort((a, b) => {
-                      const isSport = (activeCategory.slug || activeCategory.id || "").toLowerCase().includes("sport");
+                      const isSport = (activeCategory.slug || activeCategory.id || activeCategory.name || "").toLowerCase().includes("sport");
                       if (isSport) {
                         const prioA = getSportswearSubcategoryPriority(a);
                         const prioB = getSportswearSubcategoryPriority(b);

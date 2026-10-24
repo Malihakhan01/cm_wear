@@ -45,6 +45,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::patch('/products/{product}/images/{image}/set-primary', [ProductController::class, 'setPrimaryImage'])->name('products.images.set-primary');
         Route::post('/products/{product}/images/{image}/set-primary', [ProductController::class, 'setPrimaryImage'])->name('products.images.set-primary.post');
         Route::post('/products/bulk-delete', [ProductController::class, 'bulkDestroy'])->name('products.bulk-delete');
+        Route::post('/products/bulk-delete-by-date', [ProductController::class, 'bulkDeleteByDate'])->name('products.bulk-delete-by-date');
         Route::resource('products', ProductController::class);
 
         // Categories Taxonomy

@@ -108,27 +108,43 @@ export const FeaturedProductsSection: React.FC = () => {
 
 function normalizeCategoryTarget(slugOrName?: string): string {
   const norm = (slugOrName || "").toLowerCase().replace(/[-_\s]/g, "");
-  if (norm.includes("teamsport") || norm === "sportswear") return "sportswear";
-  if (norm.includes("martial") || norm.includes("combat")) return "martialarts";
-  if (norm.includes("fitness") || norm.includes("activewear")) return "fitnesswear";
-  if (norm.includes("casual") || norm.includes("lifestyle") || norm.includes("street")) return "casualwear";
-  if (norm.includes("safety") || norm.includes("workwear") || norm.includes("medical")) return "safetywear";
+  if (
+    norm.includes("teamsport") ||
+    norm === "sportswear" ||
+    norm.includes("icehockey") ||
+    norm.includes("hockey") ||
+    norm.includes("americanfootball") ||
+    norm.includes("soccer") ||
+    norm.includes("basketball") ||
+    norm.includes("baseball") ||
+    norm.includes("cricket") ||
+    norm.includes("rugby") ||
+    norm.includes("lacrosse") ||
+    norm.includes("volleyball")
+  ) return "sportswear";
+  if (norm.includes("martial") || norm.includes("combat") || norm.includes("bjj") || norm.includes("karate") || norm.includes("judo") || norm.includes("boxing")) return "martialarts";
+  if (norm.includes("fitness") || norm.includes("activewear") || norm.includes("gym")) return "fitnesswear";
+  if (norm.includes("casual") || norm.includes("lifestyle") || norm.includes("street") || norm.includes("hoodie") || norm.includes("tshirt") || norm.includes("tracksuit")) return "casualwear";
+  if (norm.includes("safety") || norm.includes("workwear") || norm.includes("medical") || norm.includes("scrub")) return "safetywear";
   if (norm.includes("glove")) return "gloves";
   return norm;
 }
 
 function getSportswearProductPriority(p: Product): number {
   const rawCatNames = p.rawCategories ? p.rawCategories.map((rc) => `${rc.name} ${rc.slug}`).join(" ") : "";
-  const text = `${p.name} ${p.subcategory || ""} ${p.category || ""} ${rawCatNames}`.toLowerCase();
+  const sub = (p.subcategory || "").toLowerCase();
+  const cat = (p.category || "").toLowerCase();
+  const name = (p.name || "").toLowerCase();
+  const text = `${name} ${sub} ${cat} ${rawCatNames}`.toLowerCase();
 
-  // 1. Ice Hockey first
-  if (text.includes("ice hockey") || text.includes("hockey")) return 1;
+  // 1. Real Ice Hockey Uniforms first (exclude field hockey)
+  if ((text.includes("ice hockey") || text.includes("ice-hockey")) && !sub.includes("field hockey")) return 1;
 
-  // 2. Soccer then (ensure not american football)
-  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 2;
+  // 2. American Football Uniforms then
+  if (text.includes("american football") || text.includes("american-football") || text.includes("gridiron")) return 2;
 
-  // 3. American Football then
-  if (text.includes("american football") || text.includes("american") || text.includes("gridiron")) return 3;
+  // 3. Soccer then (ensure not american football)
+  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 3;
 
   // 4. Basketball then
   if (text.includes("basketball")) return 4;
@@ -150,6 +166,9 @@ function getSportswearProductPriority(p: Product): number {
 
   // 10. Tennis & Golf
   if (text.includes("tennis") || text.includes("golf")) return 10;
+
+  // 11. Field Hockey comes after
+  if (text.includes("field hockey") || text.includes("hockey")) return 11;
 
   return 100;
 }
@@ -174,16 +193,16 @@ function getSportswearProductPriority(p: Product): number {
 
   let filteredProducts: Product[] = [];
   if (targetCategoryKey === "sportswear") {
-    // 1. Ice Hockey first, 2. Soccer then, 3. American Football then, 4. Basketball
+    // 1. Ice Hockey first, 2. American Football then, 3. Soccer then, 4. Basketball
     const hockeyProds = categoryProducts.filter((p) => getSportswearProductPriority(p) === 1);
-    const soccerProds = categoryProducts.filter((p) => getSportswearProductPriority(p) === 2);
-    const americanFbProds = categoryProducts.filter((p) => getSportswearProductPriority(p) === 3);
+    const americanFbProds = categoryProducts.filter((p) => getSportswearProductPriority(p) === 2);
+    const soccerProds = categoryProducts.filter((p) => getSportswearProductPriority(p) === 3);
     const basketballProds = categoryProducts.filter((p) => getSportswearProductPriority(p) === 4);
 
     const picked: Product[] = [
       ...hockeyProds.slice(0, 2),
-      ...soccerProds.slice(0, 2),
       ...americanFbProds.slice(0, 2),
+      ...soccerProds.slice(0, 2),
       ...basketballProds.slice(0, 2),
     ];
 

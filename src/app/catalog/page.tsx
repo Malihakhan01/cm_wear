@@ -185,10 +185,10 @@ function isProductInParentCategory(p: Product, parentCat: Category): boolean {
 
 function getSportswearSubcategoryPriority(nameOrSlug: string): number {
   const text = (nameOrSlug || "").toLowerCase();
-  if (text.includes("ice hockey")) return 1;
-  if (text.includes("hockey")) return 2;
-  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 3;
-  if (text.includes("american") || text.includes("gridiron")) return 4;
+  if (text.includes("ice hockey") || text.includes("ice-hockey")) return 1;
+  if (text.includes("american football") || text.includes("american-football") || text.includes("gridiron")) return 2;
+  if (text.includes("hockey")) return 3;
+  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 4;
   if (text.includes("basketball")) return 5;
   if (text.includes("baseball") || text.includes("softball")) return 6;
   if (text.includes("cricket")) return 7;
@@ -206,11 +206,11 @@ function getSportswearProductPriority(p: Product): number {
   // 1. Ice Hockey first
   if (text.includes("ice hockey") || text.includes("hockey")) return 1;
 
-  // 2. Soccer then (ensure not american football)
-  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 2;
+  // 2. American Football then
+  if (text.includes("american football") || text.includes("american") || text.includes("gridiron")) return 2;
 
-  // 3. American Football then
-  if (text.includes("american football") || text.includes("american") || text.includes("gridiron")) return 3;
+  // 3. Soccer then (ensure not american football)
+  if (text.includes("soccer") || (text.includes("football") && !text.includes("american") && !text.includes("gridiron"))) return 3;
 
   // 4. Basketball then
   if (text.includes("basketball")) return 4;
@@ -420,16 +420,40 @@ function CatalogContent() {
           });
         }
 
-        // Sort Team Sportswear subcategories so Ice Hockey, Soccer, American Football, Basketball are first
-        const teamParent = mergedMap.get("team-sports-wear");
-        if (teamParent && teamParent.subcategories) {
-          teamParent.subcategories.sort((a, b) => {
-            const prioA = getSportswearSubcategoryPriority(a.name || a.slug);
-            const prioB = getSportswearSubcategoryPriority(b.name || b.slug);
-            if (prioA !== prioB) return prioA - prioB;
-            return (a.name || a.slug).localeCompare(b.name || b.slug);
-          });
-        }
+        // Ensure Team Sportswear subcategories have Ice Hockey Uniforms first and American Football Uniform second
+        mergedMap.forEach((parentCat) => {
+          const isSport =
+            parentCat.slug === "team-sports-wear" ||
+            parentCat.slug === "sportswear" ||
+            parentCat.id === "team-sports-wear" ||
+            parentCat.id === "sportswear" ||
+            (parentCat.name || "").toLowerCase().includes("sport");
+
+          if (isSport && parentCat.subcategories) {
+            const others = parentCat.subcategories.filter((s) => {
+              const str = (s.name || s.slug || "").toLowerCase();
+              return (
+                !str.includes("ice hockey") &&
+                !str.includes("american football") &&
+                str !== "ice hockey uniforms" &&
+                str !== "american football uniform"
+              );
+            });
+
+            parentCat.subcategories = [
+              { id: "ice-hockey-uniforms", slug: "ice-hockey-uniforms", name: "Ice Hockey Uniforms" },
+              { id: "american-football-uniform", slug: "american-football-uniform", name: "American Football Uniform" },
+              ...others,
+            ];
+
+            parentCat.subcategories.sort((a, b) => {
+              const prioA = getSportswearSubcategoryPriority(a.name || a.slug);
+              const prioB = getSportswearSubcategoryPriority(b.name || b.slug);
+              if (prioA !== prioB) return prioA - prioB;
+              return (a.name || a.slug).localeCompare(b.name || b.slug);
+            });
+          }
+        });
 
         setCategories(Array.from(mergedMap.values()));
       });

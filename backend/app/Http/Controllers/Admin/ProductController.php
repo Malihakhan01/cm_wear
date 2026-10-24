@@ -34,9 +34,26 @@ class ProductController extends Controller
             $query->where('status', $request->status);
         }
 
-        $products = $query->latest()->paginate(15);
+        if ($request->filled('category')) {
+            $query->whereHas('categories', function ($q) use ($request) {
+                $q->where('categories.id', (int) $request->category);
+            });
+        }
 
-        return view('admin.products.index', compact('products'));
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        $allowedPerPage = [10, 15, 25, 50, 100, 250];
+        $perPage = in_array((int) $request->get('per_page'), $allowedPerPage)
+            ? (int) $request->get('per_page')
+            : 15;
+
+        $products = $query->latest()->paginate($perPage)->withQueryString();
+
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.products.index', compact('products', 'categories', 'perPage'));
     }
 
     public function create()
@@ -384,6 +401,21 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')
             ->with('success', "{$count} product(s) successfully deleted.");
+    }
+
+    public function bulkDeleteByDate(Request $request)
+    {
+        $request->validate([
+            'date' => ['required', 'date'],
+        ]);
+
+        $date = $request->input('date');
+        $count = Product::whereDate('created_at', $date)->delete();
+
+        $label = ($date === now()->toDateString()) ? 'today' : "on {$date}";
+
+        return redirect()->route('admin.products.index')
+            ->with('success', "{$count} product(s) added {$label} were permanently deleted.");
     }
 
     protected function sanitizeMetaDescription(?string $metaDescription, ?string $shortDesc = null, ?string $desc = null): ?string

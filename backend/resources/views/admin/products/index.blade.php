@@ -33,43 +33,139 @@
 
     <!-- Search & Filter Card -->
     <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <form method="GET" action="{{ route('admin.products.index') }}" class="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
-            <div class="relative flex-1 min-w-[240px]">
-                <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                <input type="text" 
-                       name="search" 
-                       value="{{ request('search') }}" 
-                       placeholder="Search by product name, SKU, or slug..." 
-                       class="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-500">
+        <form method="GET" action="{{ route('admin.products.index') }}" class="space-y-3">
+            <!-- Row 1: Search + Type + Status -->
+            <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
+                <div class="relative flex-1 min-w-[240px]">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" 
+                           name="search" 
+                           value="{{ request('search') }}" 
+                           placeholder="Search by product name, SKU, or slug..." 
+                           class="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-500">
+                </div>
+
+                <div class="flex flex-wrap sm:flex-nowrap items-center gap-3">
+                    <select name="type" class="w-full sm:w-auto min-w-[170px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+                        <option value="">All Product Types</option>
+                        <option value="simple" {{ request('type') === 'simple' ? 'selected' : '' }}>Simple</option>
+                        <option value="variable" {{ request('type') === 'variable' ? 'selected' : '' }}>Variable (WooCommerce)</option>
+                        <option value="customizable_apparel" {{ request('type') === 'customizable_apparel' ? 'selected' : '' }}>Customizable Garment</option>
+                    </select>
+
+                    <select name="status" class="w-full sm:w-auto min-w-[140px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+                        <option value="">All Statuses</option>
+                        <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Published</option>
+                        <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
+                        <option value="archived" {{ request('status') === 'archived' ? 'selected' : '' }}>Archived</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="flex flex-wrap sm:flex-nowrap items-center gap-3">
-                <select name="type" class="w-full sm:w-auto min-w-[170px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
-                    <option value="">All Product Types</option>
-                    <option value="simple" {{ request('type') === 'simple' ? 'selected' : '' }}>Simple</option>
-                    <option value="variable" {{ request('type') === 'variable' ? 'selected' : '' }}>Variable (WooCommerce)</option>
-                    <option value="customizable_apparel" {{ request('type') === 'customizable_apparel' ? 'selected' : '' }}>Customizable Garment</option>
-                </select>
+            <!-- Row 2: Category + Date + Per Page + Actions -->
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Category Filter -->
+                <div class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                    <select name="category" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300 min-w-[160px]">
+                        <option value="">All Categories</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
+                                {{ $cat->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-                <select name="status" class="w-full sm:w-auto min-w-[140px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
-                    <option value="">All Statuses</option>
-                    <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Published</option>
-                    <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
-                    <option value="archived" {{ request('status') === 'archived' ? 'selected' : '' }}>Archived</option>
-                </select>
+                <!-- Date Filter -->
+                <div class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <input type="date" 
+                           name="date" 
+                           value="{{ request('date') }}" 
+                           class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300"
+                           title="Filter by date added">
+                </div>
+
+                <!-- Per Page -->
+                <div class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                    <select name="per_page" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+                        <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10 / page</option>
+                        <option value="15" {{ $perPage == 15 ? 'selected' : '' }}>15 / page</option>
+                        <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25 / page</option>
+                        <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50 / page</option>
+                        <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100 / page</option>
+                        <option value="250" {{ $perPage == 250 ? 'selected' : '' }}>250 / page</option>
+                    </select>
+                </div>
 
                 <button type="submit" class="rounded-xl bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 text-xs font-bold shadow-md shadow-blue-600/20 transition flex items-center justify-center gap-1.5">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                     <span>Filter</span>
                 </button>
 
-                @if(request()->hasAny(['search', 'type', 'status']))
+                @if(request()->hasAny(['search', 'type', 'status', 'category', 'date', 'per_page']))
                     <a href="{{ route('admin.products.index') }}" class="rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 px-3.5 py-2.5 text-xs font-bold text-slate-600 dark:text-slate-300 transition">
                         Reset
                     </a>
                 @endif
             </div>
         </form>
+    </div>
+
+    <!-- Delete Products by Day Panel -->
+    <div class="rounded-2xl border border-rose-200 bg-rose-50 dark:border-rose-900/40 dark:bg-rose-950/20 p-4 shadow-sm"
+         x-data="{ open: false }">
+        <div class="flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-rose-700 dark:text-rose-400">Bulk Delete by Day</p>
+                    <p class="text-[11px] text-rose-500 dark:text-rose-500">Permanently delete all products added on a specific date</p>
+                </div>
+            </div>
+            <button @click="open = !open" type="button"
+                    class="rounded-xl bg-rose-100 hover:bg-rose-200 dark:bg-rose-900/30 dark:hover:bg-rose-900/50 px-3 py-2 text-xs font-bold text-rose-700 dark:text-rose-400 transition flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                <span x-text="open ? 'Hide' : 'Show Options'"></span>
+            </button>
+        </div>
+
+        <div x-show="open" x-cloak x-transition class="mt-4 pt-4 border-t border-rose-200 dark:border-rose-900/40">
+            <form method="POST" action="{{ route('admin.products.bulk-delete-by-date') }}"
+                  onsubmit="return confirm('PERMANENTLY delete ALL products added on ' + document.getElementById('delete-date-input').value + '? This CANNOT be undone!')">
+                @csrf
+                <div class="flex flex-wrap items-end gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-rose-700 dark:text-rose-400 mb-1">Select Date</label>
+                        <input type="date" 
+                               id="delete-date-input"
+                               name="date" 
+                               value="{{ now()->toDateString() }}"
+                               required
+                               class="rounded-xl border border-rose-200 dark:border-rose-900 bg-white dark:bg-slate-950 px-3 py-2.5 text-xs text-slate-700 dark:text-slate-300 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 focus:outline-none">
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button type="button"
+                                onclick="document.getElementById('delete-date-input').value = '{{ now()->toDateString() }}'"
+                                class="rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 px-3 py-2.5 text-xs font-bold text-slate-600 dark:text-slate-300 transition">
+                            Set to Today
+                        </button>
+
+                        <button type="submit"
+                                class="inline-flex items-center gap-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-rose-600/20 transition">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            Delete All for This Date
+                        </button>
+                    </div>
+                </div>
+                <p class="mt-2 text-[11px] text-rose-500">Warning: This will permanently delete ALL products created on the selected date. This action cannot be undone.</p>
+            </form>
+        </div>
     </div>
 
     <!-- Products Table -->
@@ -169,6 +265,9 @@
                                     <div class="text-xs text-slate-400 font-mono mt-0.5">
                                         SKU: {{ $prod->sku ?: 'Parent (No SKU)' }}
                                     </div>
+                                    <div class="text-[10px] text-slate-400 mt-0.5">
+                                        Added: {{ $prod->created_at->format('M d, Y') }}
+                                    </div>
                                 </td>
                                 <td class="py-3.5">
                                     <div class="text-xs font-semibold text-slate-700 dark:text-slate-300">
@@ -222,7 +321,10 @@
                 </table>
             </div>
 
-            <div class="mt-6">
+            <div class="mt-6 flex items-center justify-between gap-4">
+                <p class="text-xs text-slate-400">
+                    Showing {{ $products->firstItem() }} - {{ $products->lastItem() }} of {{ number_format($products->total()) }} products
+                </p>
                 {{ $products->links() }}
             </div>
         @endif

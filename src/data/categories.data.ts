@@ -10,15 +10,15 @@ export const CATEGORIES_DATA: Category[] = [
     description: "Factory direct team sportswear engineered with quick-dry 4-way micro-poly meshes, anti-bacterial moisture management, reinforced flatlock stitching, and vivid high-definition Italian sublimation printing.",
     heroImage: "/categories/teamsports_wear.png",
     subcategories: [
-      { id: "ice-hockey", slug: "ice-hockey", name: "Ice Hockey" },
+      { id: "ice-hockey-uniforms", slug: "ice-hockey-uniforms", name: "Ice Hockey Uniforms" },
       { id: "soccer-football", slug: "soccer-football", name: "Soccer & Football" },
-      { id: "american-football", slug: "american-football", name: "American Football" },
+      { id: "american-football-uniform", slug: "american-football-uniform", name: "American Football Uniform" },
       { id: "basketball", slug: "basketball", name: "Basketball" },
       { id: "baseball-softball", slug: "baseball-softball", name: "Baseball & Softball" },
-      { id: "cricket", slug: "cricket", name: "Cricket" },
       { id: "rugby", slug: "rugby", name: "Rugby" },
       { id: "lacrosse", slug: "lacrosse", name: "Lacrosse" },
       { id: "volleyball", slug: "volleyball", name: "Volleyball" },
+      { id: "cricket", slug: "cricket", name: "Cricket" },
       { id: "tennis-golf", slug: "tennis-golf", name: "Tennis & Golf" },
     ],
     technicalHighlights: [
