@@ -62,7 +62,7 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
-                <select name="category_id" class="w-full sm:w-auto min-w-[190px] max-w-[260px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+                <select name="category_id" onchange="this.form.submit()" class="w-full sm:w-auto min-w-[220px] max-w-[340px] rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
                     <option value="">All Categories</option>
                     <option value="uncategorized" {{ request('category_id') === 'uncategorized' || request('category') === 'uncategorized' ? 'selected' : '' }}>⚠️ Uncategorized (No Category)</option>
                     @if(isset($categories))
@@ -71,9 +71,14 @@
                                 📁 {{ $parent->name }} (All)
                             </option>
                             @foreach($parent->children as $child)
-                                <option value="{{ $child->id }}" class="text-slate-600 dark:text-slate-400" {{ request('category_id') == $child->id || request('category') == $child->id ? 'selected' : '' }}>
+                                <option value="{{ $child->id }}" class="font-semibold text-slate-700 dark:text-slate-200" {{ request('category_id') == $child->id || request('category') == $child->id ? 'selected' : '' }}>
                                     &nbsp;&nbsp;&nbsp;&nbsp;↳ {{ $child->name }}
                                 </option>
+                                @foreach($child->children as $grandchild)
+                                    <option value="{{ $grandchild->id }}" class="text-slate-500 dark:text-slate-400" {{ request('category_id') == $grandchild->id || request('category') == $grandchild->id ? 'selected' : '' }}>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳↳ {{ $grandchild->name }}
+                                    </option>
+                                @endforeach
                             @endforeach
                         @endforeach
                     @endif

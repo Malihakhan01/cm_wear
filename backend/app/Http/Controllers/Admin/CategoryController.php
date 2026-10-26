@@ -26,7 +26,10 @@ class CategoryController extends Controller
 
         $totalCategories = Category::count();
         $totalParents = $categories->count();
-        $totalSubcategories = Category::whereNotNull('parent_id')->count();
+        $l1Ids = Category::whereNull('parent_id')->pluck('id');
+        $totalSubcategories = Category::whereIn('parent_id', $l1Ids)->count();
+        $l2Ids = Category::whereIn('parent_id', $l1Ids)->pluck('id');
+        $totalProductTypes = Category::whereIn('parent_id', $l2Ids)->count();
 
         // For parent select dropdown (Level 1 pillars and Level 2 subcategories)
         $parentCategories = Category::whereNull('parent_id')
@@ -34,7 +37,7 @@ class CategoryController extends Controller
             ->with(['children' => fn($q) => $q->orderByRaw('CASE WHEN sort_order > 0 THEN 0 ELSE 1 END, sort_order ASC, name ASC')])
             ->get();
 
-        return view('admin.categories.index', compact('categories', 'totalCategories', 'totalParents', 'totalSubcategories', 'parentCategories'));
+        return view('admin.categories.index', compact('categories', 'totalCategories', 'totalParents', 'totalSubcategories', 'totalProductTypes', 'parentCategories'));
     }
 
     public function store(Request $request)
