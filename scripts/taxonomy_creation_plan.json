@@ -1,0 +1,1766 @@
+[
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Ice Hockey",
+    "subId": 23,
+    "name": "Game Jerseys",
+    "slug": "ice-hockey-game-jerseys",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Ice Hockey",
+    "subId": 23,
+    "name": "Practice Jerseys",
+    "slug": "practice-jerseys",
+    "action": "exists",
+    "id": 246,
+    "sort_order": 2
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Ice Hockey",
+    "subId": 23,
+    "name": "Hockey Socks",
+    "slug": "ice-hockey-hockey-socks",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Ice Hockey",
+    "subId": 23,
+    "name": "Shell Pants",
+    "slug": "ice-hockey-shell-pants-1",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Soccer & Football",
+    "subId": 298,
+    "name": "Team Kits",
+    "slug": "soccer-football-team-kits",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Soccer & Football",
+    "subId": 298,
+    "name": "Jerseys",
+    "slug": "soccer-football-jerseys",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Soccer & Football",
+    "subId": 298,
+    "name": "Shorts",
+    "slug": "soccer-football-shorts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Soccer & Football",
+    "subId": 298,
+    "name": "Training Tops",
+    "slug": "soccer-football-training-tops",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Soccer & Football",
+    "subId": 298,
+    "name": "Goalkeeper Uniforms",
+    "slug": "soccer-football-goalkeeper-uniforms",
+    "action": "create",
+    "sort_order": 5
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "American Football",
+    "subId": 299,
+    "name": "Game Jerseys",
+    "slug": "american-football-game-jerseys",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "American Football",
+    "subId": 299,
+    "name": "Practice Jerseys",
+    "slug": "american-football-practice-jerseys",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "American Football",
+    "subId": 299,
+    "name": "Football Pants",
+    "slug": "american-football-football-pants",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "American Football",
+    "subId": 299,
+    "name": "Compression Tops",
+    "slug": "american-football-compression-tops",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Basketball",
+    "subId": 46,
+    "name": "Jerseys",
+    "slug": "basketball-jerseys-1",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Basketball",
+    "subId": 46,
+    "name": "Shorts",
+    "slug": "basketball-shorts-1",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Basketball",
+    "subId": 46,
+    "name": "Complete Uniforms",
+    "slug": "basketball-complete-uniforms",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Basketball",
+    "subId": 46,
+    "name": "Reversible Bibs",
+    "slug": "basketball-reversible-bibs",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Basketball",
+    "subId": 46,
+    "name": "Warm-Up Suits",
+    "slug": "basketball-warm-up-suits-1",
+    "action": "create",
+    "sort_order": 5
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Baseball & Softball",
+    "subId": 300,
+    "name": "Button-Up Jerseys",
+    "slug": "baseball-softball-button-up-jerseys",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Baseball & Softball",
+    "subId": 300,
+    "name": "Pullover Jerseys",
+    "slug": "baseball-softball-pullover-jerseys",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Baseball & Softball",
+    "subId": 300,
+    "name": "Pants",
+    "slug": "baseball-softball-pants",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Baseball & Softball",
+    "subId": 300,
+    "name": "Training Shirts",
+    "slug": "baseball-softball-training-shirts",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Cricket",
+    "subId": 301,
+    "name": "Match Shirts",
+    "slug": "cricket-match-shirts",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Cricket",
+    "subId": 301,
+    "name": "T20 Jerseys",
+    "slug": "cricket-t20-jerseys",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Cricket",
+    "subId": 301,
+    "name": "Trousers",
+    "slug": "cricket-trousers",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Cricket",
+    "subId": 301,
+    "name": "Training Kits",
+    "slug": "cricket-training-kits",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Rugby",
+    "subId": 39,
+    "name": "Match Jerseys",
+    "slug": "rugby-match-jerseys",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Rugby",
+    "subId": 39,
+    "name": "Shorts",
+    "slug": "rugby-shorts-1",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Rugby",
+    "subId": 39,
+    "name": "Training Tops",
+    "slug": "rugby-training-tops",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Rugby",
+    "subId": 39,
+    "name": "Team Kits",
+    "slug": "rugby-team-kits-1",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Lacrosse",
+    "subId": 81,
+    "name": "Game Jerseys",
+    "slug": "lacrosse-game-jerseys",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Lacrosse",
+    "subId": 81,
+    "name": "Shorts",
+    "slug": "lacrosse-shorts",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Lacrosse",
+    "subId": 81,
+    "name": "Practice Pinnies",
+    "slug": "lacrosse-practice-pinnies",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Lacrosse",
+    "subId": 81,
+    "name": "Team Kits",
+    "slug": "lacrosse-team-kits",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Volleyball",
+    "subId": 266,
+    "name": "Jerseys",
+    "slug": "volleyball-jerseys",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Volleyball",
+    "subId": 266,
+    "name": "Shorts",
+    "slug": "volleyball-shorts-1",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Volleyball",
+    "subId": 266,
+    "name": "Team Kits",
+    "slug": "volleyball-team-kits",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Volleyball",
+    "subId": 266,
+    "name": "Training Tops",
+    "slug": "volleyball-training-tops",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Tennis & Golf",
+    "subId": 302,
+    "name": "Polo Shirts",
+    "slug": "polo-shirts",
+    "action": "exists",
+    "id": 221,
+    "sort_order": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Tennis & Golf",
+    "subId": 302,
+    "name": "Performance Tops",
+    "slug": "tennis-golf-performance-tops",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Tennis & Golf",
+    "subId": 302,
+    "name": "Shorts",
+    "slug": "tennis-golf-shorts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Tennis & Golf",
+    "subId": 302,
+    "name": "Skirts",
+    "slug": "skirts",
+    "action": "exists",
+    "id": 220,
+    "sort_order": 4
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Tennis & Golf",
+    "subId": 302,
+    "name": "Skorts",
+    "slug": "tennis-golf-skorts",
+    "action": "create",
+    "sort_order": 5
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "BJJ & Grappling",
+    "subId": 303,
+    "name": "BJJ Gis",
+    "slug": "bjj-grappling-bjj-gis",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "BJJ & Grappling",
+    "subId": 303,
+    "name": "Rash Guards",
+    "slug": "bjj-grappling-rash-guards",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "BJJ & Grappling",
+    "subId": 303,
+    "name": "Grappling Shorts",
+    "slug": "bjj-grappling-grappling-shorts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "BJJ & Grappling",
+    "subId": 303,
+    "name": "Spats",
+    "slug": "bjj-grappling-spats",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "MMA",
+    "subId": 304,
+    "name": "Fight Shorts",
+    "slug": "mma-fight-shorts",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "MMA",
+    "subId": 304,
+    "name": "Rash Guards",
+    "slug": "mma-rash-guards",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "MMA",
+    "subId": 304,
+    "name": "Compression Shorts",
+    "slug": "mma-compression-shorts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "MMA",
+    "subId": 304,
+    "name": "Training Shirts",
+    "slug": "mma-training-shirts",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Boxing & Muay Thai",
+    "subId": 305,
+    "name": "Boxing Shorts",
+    "slug": "boxing-muay-thai-boxing-shorts",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Boxing & Muay Thai",
+    "subId": 305,
+    "name": "Muay Thai Shorts",
+    "slug": "boxing-muay-thai-muay-thai-shorts",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Boxing & Muay Thai",
+    "subId": 305,
+    "name": "Boxing Singlets",
+    "slug": "boxing-muay-thai-boxing-singlets",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Boxing & Muay Thai",
+    "subId": 305,
+    "name": "Training Tracksuits",
+    "slug": "boxing-muay-thai-training-tracksuits",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Karate",
+    "subId": 125,
+    "name": "Training Gis",
+    "slug": "karate-training-gis",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Karate",
+    "subId": 125,
+    "name": "Competition Gis",
+    "slug": "karate-competition-gis",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Karate",
+    "subId": 125,
+    "name": "Belts",
+    "slug": "karate-belts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Judo",
+    "subId": 306,
+    "name": "Training Gis",
+    "slug": "judo-training-gis",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Judo",
+    "subId": 306,
+    "name": "Competition Gis",
+    "slug": "judo-competition-gis",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Judo",
+    "subId": 306,
+    "name": "Belts",
+    "slug": "judo-belts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Taekwondo",
+    "subId": 127,
+    "name": "Training Doboks",
+    "slug": "taekwondo-training-doboks",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Taekwondo",
+    "subId": 127,
+    "name": "Competition Doboks",
+    "slug": "taekwondo-competition-doboks",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Taekwondo",
+    "subId": 127,
+    "name": "Belts",
+    "slug": "taekwondo-belts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Wrestling",
+    "subId": 254,
+    "name": "Singlets",
+    "slug": "wrestling-singlets",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Wrestling",
+    "subId": 254,
+    "name": "Compression Tops",
+    "slug": "wrestling-compression-tops",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Wrestling",
+    "subId": 254,
+    "name": "Training Shorts",
+    "slug": "wrestling-training-shorts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Gym & Training Wear",
+    "subId": 307,
+    "name": "Gym T-Shirts",
+    "slug": "gym-training-wear-gym-t-shirts",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Gym & Training Wear",
+    "subId": 307,
+    "name": "Tank Tops",
+    "slug": "gym-training-wear-tank-tops",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Gym & Training Wear",
+    "subId": 307,
+    "name": "Stringers",
+    "slug": "gym-training-wear-stringers",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Gym & Training Wear",
+    "subId": 307,
+    "name": "Training Shorts",
+    "slug": "gym-training-wear-training-shorts",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Gym & Training Wear",
+    "subId": 307,
+    "name": "Joggers",
+    "slug": "gym-training-wear-joggers",
+    "action": "create",
+    "sort_order": 5
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Compression Wear",
+    "subId": 308,
+    "name": "Short-Sleeve Tops",
+    "slug": "compression-wear-short-sleeve-tops",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Compression Wear",
+    "subId": 308,
+    "name": "Long-Sleeve Tops",
+    "slug": "compression-wear-long-sleeve-tops",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Compression Wear",
+    "subId": 308,
+    "name": "Compression Shorts",
+    "slug": "compression-shorts",
+    "action": "exists",
+    "id": 214,
+    "sort_order": 3
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Compression Wear",
+    "subId": 308,
+    "name": "Full-Length Tights",
+    "slug": "compression-wear-full-length-tights",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Women’s Activewear",
+    "subId": 309,
+    "name": "Sports Bras",
+    "slug": "womens-activewear-sports-bras",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Women’s Activewear",
+    "subId": 309,
+    "name": "Leggings",
+    "slug": "womens-activewear-leggings",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Women’s Activewear",
+    "subId": 309,
+    "name": "Workout Shorts",
+    "slug": "womens-activewear-workout-shorts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Women’s Activewear",
+    "subId": 309,
+    "name": "Tank Tops",
+    "slug": "womens-activewear-tank-tops",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Women’s Activewear",
+    "subId": 309,
+    "name": "Matching Sets",
+    "slug": "womens-activewear-matching-sets",
+    "action": "create",
+    "sort_order": 5
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Running & Athletics",
+    "subId": 310,
+    "name": "Running Singlets",
+    "slug": "running-athletics-running-singlets",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Running & Athletics",
+    "subId": 310,
+    "name": "Performance Shirts",
+    "slug": "running-athletics-performance-shirts",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Running & Athletics",
+    "subId": 310,
+    "name": "Running Shorts",
+    "slug": "running-athletics-running-shorts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Running & Athletics",
+    "subId": 310,
+    "name": "Track Uniforms",
+    "slug": "running-athletics-track-uniforms",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Cycling Wear",
+    "subId": 311,
+    "name": "Cycling Jerseys",
+    "slug": "cycling-wear-cycling-jerseys",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Cycling Wear",
+    "subId": 311,
+    "name": "Cycling Shorts",
+    "slug": "cycling-shorts",
+    "action": "exists",
+    "id": 218,
+    "sort_order": 2
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Cycling Wear",
+    "subId": 311,
+    "name": "Bib Shorts",
+    "slug": "cycling-wear-bib-shorts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Cycling Wear",
+    "subId": 311,
+    "name": "Cycling Jackets",
+    "slug": "cycling-wear-cycling-jackets",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "T-Shirts & Tops",
+    "subId": 312,
+    "name": "Crew-Neck T-Shirts",
+    "slug": "t-shirts-tops-crew-neck-t-shirts",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "T-Shirts & Tops",
+    "subId": 312,
+    "name": "V-Neck T-Shirts",
+    "slug": "t-shirts-tops-v-neck-t-shirts",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "T-Shirts & Tops",
+    "subId": 312,
+    "name": "Oversized T-Shirts",
+    "slug": "t-shirts-tops-oversized-t-shirts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "T-Shirts & Tops",
+    "subId": 312,
+    "name": "Polo Shirts",
+    "slug": "t-shirts-tops-polo-shirts",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Hoodies & Sweatshirts",
+    "subId": 3,
+    "name": "Pullover Hoodies",
+    "slug": "hoodies-sweatshirts-pullover-hoodies",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Hoodies & Sweatshirts",
+    "subId": 3,
+    "name": "Zip-Up Hoodies",
+    "slug": "hoodies-sweatshirts-zip-up-hoodies",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Hoodies & Sweatshirts",
+    "subId": 3,
+    "name": "Oversized Hoodies",
+    "slug": "hoodies-sweatshirts-oversized-hoodies",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Hoodies & Sweatshirts",
+    "subId": 3,
+    "name": "Crew-Neck Sweatshirts",
+    "slug": "hoodies-sweatshirts-crew-neck-sweatshirts",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Tracksuits & Matching Sets",
+    "subId": 313,
+    "name": "Training Tracksuits",
+    "slug": "tracksuits-sets-training-tracksuits",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Tracksuits & Matching Sets",
+    "subId": 313,
+    "name": "Sweat Suits",
+    "slug": "sweat-suits",
+    "action": "exists",
+    "id": 179,
+    "sort_order": 2
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Tracksuits & Matching Sets",
+    "subId": 313,
+    "name": "Hoodie & Jogger Sets",
+    "slug": "tracksuits-sets-hoodie-jogger-sets",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Tracksuits & Matching Sets",
+    "subId": 313,
+    "name": "Sweatshirt & Shorts Sets",
+    "slug": "tracksuits-sets-sweatshirt-shorts-sets",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Pants & Bottoms",
+    "subId": 314,
+    "name": "Joggers",
+    "slug": "pants-bottoms-joggers",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Pants & Bottoms",
+    "subId": 314,
+    "name": "Sweatpants",
+    "slug": "sweatpants",
+    "action": "exists",
+    "id": 4,
+    "sort_order": 2
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Pants & Bottoms",
+    "subId": 314,
+    "name": "Track Pants",
+    "slug": "pants-bottoms-track-pants",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Pants & Bottoms",
+    "subId": 314,
+    "name": "Casual Shorts",
+    "slug": "pants-bottoms-casual-shorts",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Pants & Bottoms",
+    "subId": 314,
+    "name": "Cargo Pants",
+    "slug": "cargo-pants",
+    "action": "exists",
+    "id": 5,
+    "sort_order": 5
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Varsity Jackets",
+    "subId": 72,
+    "name": "Wool Varsity Jackets",
+    "slug": "wool-varsity-jackets",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Varsity Jackets",
+    "subId": 72,
+    "name": "Fleece Varsity Jackets",
+    "slug": "fleece-varsity-jackets",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Varsity Jackets",
+    "subId": 72,
+    "name": "Leather-Sleeve Varsity Jackets",
+    "slug": "leather-sleeve-varsity-jackets",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Leather Jackets",
+    "subId": 223,
+    "name": "Biker Jackets",
+    "slug": "leather-jackets-biker-jackets",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Leather Jackets",
+    "subId": 223,
+    "name": "Bomber Jackets",
+    "slug": "leather-jackets-bomber-jackets",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Leather Jackets",
+    "subId": 223,
+    "name": "Casual Leather Jackets",
+    "slug": "casual-leather-jackets",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Softshell Jackets",
+    "subId": 315,
+    "name": "Full-Zip Softshell Jackets",
+    "slug": "full-zip-softshell-jackets",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Softshell Jackets",
+    "subId": 315,
+    "name": "Hooded Softshell Jackets",
+    "slug": "hooded-softshell-jackets",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Windbreakers",
+    "subId": 316,
+    "name": "Hooded Windbreakers",
+    "slug": "hooded-windbreakers",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Windbreakers",
+    "subId": 316,
+    "name": "Full-Zip Windbreakers",
+    "slug": "full-zip-windbreakers",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Windbreakers",
+    "subId": 316,
+    "name": "Pullover Windbreakers",
+    "slug": "pullover-windbreakers",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Winter Wear",
+    "subId": 317,
+    "name": "Puffer Jackets",
+    "slug": "puffer-jackets",
+    "action": "exists",
+    "id": 235,
+    "sort_order": 1
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Winter Wear",
+    "subId": 317,
+    "name": "Fleece Jackets",
+    "slug": "winter-wear-fleece-jackets",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Winter Wear",
+    "subId": 317,
+    "name": "Thermal Tops",
+    "slug": "winter-wear-thermal-tops",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Winter Wear",
+    "subId": 317,
+    "name": "Thermal Bottoms",
+    "slug": "winter-wear-thermal-bottoms",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Rainwear",
+    "subId": 318,
+    "name": "Rain Jackets",
+    "slug": "rainwear-rain-jackets",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Rainwear",
+    "subId": 318,
+    "name": "Waterproof Pants",
+    "slug": "rainwear-waterproof-pants",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Rainwear",
+    "subId": 318,
+    "name": "Rain Suits",
+    "slug": "rainwear-rain-suits",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Rainwear",
+    "subId": 318,
+    "name": "Lightweight Rain Shells",
+    "slug": "rainwear-lightweight-rain-shells",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Youth Team Uniforms",
+    "subId": 319,
+    "name": "Hockey Uniforms",
+    "slug": "youth-team-uniforms-hockey-uniforms",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Youth Team Uniforms",
+    "subId": 319,
+    "name": "Soccer Kits",
+    "slug": "youth-team-uniforms-soccer-kits",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Youth Team Uniforms",
+    "subId": 319,
+    "name": "Basketball Uniforms",
+    "slug": "youth-team-uniforms-basketball-uniforms",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Youth Team Uniforms",
+    "subId": 319,
+    "name": "Baseball Uniforms",
+    "slug": "youth-team-uniforms-baseball-uniforms",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Activewear",
+    "subId": 320,
+    "name": "Training Shirts",
+    "slug": "kids-activewear-training-shirts",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Activewear",
+    "subId": 320,
+    "name": "Training Shorts",
+    "slug": "kids-activewear-training-shorts",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Activewear",
+    "subId": 320,
+    "name": "Leggings",
+    "slug": "kids-activewear-leggings",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Activewear",
+    "subId": 320,
+    "name": "Joggers",
+    "slug": "kids-activewear-joggers",
+    "action": "create",
+    "sort_order": 4
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ T-Shirts",
+    "subId": 321,
+    "name": "Crew-Neck T-Shirts",
+    "slug": "kids-t-shirts-crew-neck-t-shirts",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ T-Shirts",
+    "subId": 321,
+    "name": "Polo Shirts",
+    "slug": "kids-t-shirts-polo-shirts",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ T-Shirts",
+    "subId": 321,
+    "name": "Printed T-Shirts",
+    "slug": "kids-t-shirts-printed-t-shirts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Hoodies",
+    "subId": 322,
+    "name": "Pullover Hoodies",
+    "slug": "kids-hoodies-pullover-hoodies",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Hoodies",
+    "subId": 322,
+    "name": "Zip-Up Hoodies",
+    "slug": "kids-hoodies-zip-up-hoodies",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Hoodies",
+    "subId": 322,
+    "name": "Sweatshirts",
+    "slug": "kids-hoodies-sweatshirts",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Tracksuits",
+    "subId": 323,
+    "name": "Training Tracksuits",
+    "slug": "kids-tracksuits-training-tracksuits",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Tracksuits",
+    "subId": 323,
+    "name": "Hoodie & Jogger Sets",
+    "slug": "kids-tracksuits-hoodie-jogger-sets",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Tracksuits",
+    "subId": 323,
+    "name": "Sweat Suits",
+    "slug": "kids-tracksuits-sweat-suits",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Medical Scrubs",
+    "subId": 324,
+    "name": "Scrub Tops",
+    "slug": "medical-scrubs-scrub-tops",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Medical Scrubs",
+    "subId": 324,
+    "name": "Scrub Pants",
+    "slug": "medical-scrubs-scrub-pants",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Medical Scrubs",
+    "subId": 324,
+    "name": "Complete Scrub Sets",
+    "slug": "medical-scrubs-complete-scrub-sets",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Uniforms",
+    "subId": 325,
+    "name": "Work Shirts",
+    "slug": "work-uniforms-work-shirts",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Uniforms",
+    "subId": 325,
+    "name": "Work Trousers",
+    "slug": "work-uniforms-work-trousers",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Uniforms",
+    "subId": 325,
+    "name": "Work Jackets",
+    "slug": "work-uniforms-work-jackets",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Polo Shirts",
+    "subId": 326,
+    "name": "Short-Sleeve Polos",
+    "slug": "work-polo-shirts-short-sleeve-polos",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Polo Shirts",
+    "subId": 326,
+    "name": "Long-Sleeve Polos",
+    "slug": "work-polo-shirts-long-sleeve-polos",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Polo Shirts",
+    "subId": 326,
+    "name": "Embroidered Logo Polos",
+    "slug": "work-polo-shirts-embroidered-logo-polos",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Team Socks",
+    "subId": 327,
+    "name": "Hockey Socks",
+    "slug": "team-socks-hockey-socks",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Team Socks",
+    "subId": 327,
+    "name": "Soccer Socks",
+    "slug": "team-socks-soccer-socks",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Team Socks",
+    "subId": 327,
+    "name": "Training Socks",
+    "slug": "team-socks-training-socks",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Training Bibs",
+    "subId": 209,
+    "name": "Single-Layer Bibs",
+    "slug": "training-bibs-single-layer-bibs",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Training Bibs",
+    "subId": 209,
+    "name": "Reversible Bibs",
+    "slug": "training-bibs-reversible-bibs",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Training Bibs",
+    "subId": 209,
+    "name": "Mesh Bibs",
+    "slug": "training-bibs-mesh-bibs",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Caps",
+    "subId": 200,
+    "name": "Baseball Caps",
+    "slug": "baseball-caps",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Caps",
+    "subId": 200,
+    "name": "Trucker Caps",
+    "slug": "trucker-caps",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Caps",
+    "subId": 200,
+    "name": "Sports Visors",
+    "slug": "caps-sports-visors",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Headbands",
+    "subId": 328,
+    "name": "Sports Headbands",
+    "slug": "sports-headbands",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Headbands",
+    "subId": 328,
+    "name": "Running Headbands",
+    "slug": "running-headbands",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Headbands",
+    "subId": 328,
+    "name": "Winter Headbands",
+    "slug": "winter-headbands",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Wristbands",
+    "subId": 329,
+    "name": "Sweatbands",
+    "slug": "wristbands-sweatbands",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Wristbands",
+    "subId": 329,
+    "name": "Embroidered Wristbands",
+    "slug": "embroidered-wristbands",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Wristbands",
+    "subId": 329,
+    "name": "Printed Wristbands",
+    "slug": "printed-wristbands",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Ice Hockey Gloves",
+    "subId": 330,
+    "name": "Youth Hockey Gloves",
+    "slug": "youth-hockey-gloves",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Ice Hockey Gloves",
+    "subId": 330,
+    "name": "Senior Hockey Gloves",
+    "slug": "senior-hockey-gloves",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Ice Hockey Gloves",
+    "subId": 330,
+    "name": "Practice Hockey Gloves",
+    "slug": "practice-hockey-gloves",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Goalkeeper Gloves",
+    "subId": 331,
+    "name": "Training Gloves",
+    "slug": "training-gloves",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Goalkeeper Gloves",
+    "subId": 331,
+    "name": "Match Gloves",
+    "slug": "match-gloves",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Goalkeeper Gloves",
+    "subId": 331,
+    "name": "Finger-Protection Gloves",
+    "slug": "finger-protection-gloves",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cricket Batting Gloves",
+    "subId": 332,
+    "name": "Youth Batting Gloves",
+    "slug": "youth-batting-gloves",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cricket Batting Gloves",
+    "subId": 332,
+    "name": "Adult Batting Gloves",
+    "slug": "adult-batting-gloves",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cricket Batting Gloves",
+    "subId": 332,
+    "name": "Training Batting Gloves",
+    "slug": "training-batting-gloves",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Baseball Batting Gloves",
+    "subId": 333,
+    "name": "Youth Batting Gloves",
+    "slug": "baseball-batting-gloves-youth-batting-gloves",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Baseball Batting Gloves",
+    "subId": 333,
+    "name": "Adult Batting Gloves",
+    "slug": "baseball-batting-gloves-adult-batting-gloves",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Boxing Gloves",
+    "subId": 334,
+    "name": "Training Gloves",
+    "slug": "boxing-gloves-training-gloves",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Boxing Gloves",
+    "subId": 334,
+    "name": "Sparring Gloves",
+    "slug": "sparring-gloves",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Boxing Gloves",
+    "subId": 334,
+    "name": "Bag Gloves",
+    "slug": "bag-gloves",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "MMA Gloves",
+    "subId": 335,
+    "name": "Competition Gloves",
+    "slug": "competition-gloves",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "MMA Gloves",
+    "subId": 335,
+    "name": "Sparring Gloves",
+    "slug": "mma-gloves-sparring-gloves",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "MMA Gloves",
+    "subId": 335,
+    "name": "Training Gloves",
+    "slug": "mma-gloves-training-gloves",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Gym & Weightlifting Gloves",
+    "subId": 336,
+    "name": "Fingerless Gym Gloves",
+    "slug": "fingerless-gym-gloves",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Gym & Weightlifting Gloves",
+    "subId": 336,
+    "name": "Full-Finger Gym Gloves",
+    "slug": "full-finger-gym-gloves",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Gym & Weightlifting Gloves",
+    "subId": 336,
+    "name": "Wrist-Support Gloves",
+    "slug": "wrist-support-gloves",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cycling Gloves",
+    "subId": 337,
+    "name": "Short-Finger Cycling Gloves",
+    "slug": "short-finger-cycling-gloves",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cycling Gloves",
+    "subId": 337,
+    "name": "Full-Finger Cycling Gloves",
+    "slug": "full-finger-cycling-gloves",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cycling Gloves",
+    "subId": 337,
+    "name": "Winter Cycling Gloves",
+    "slug": "winter-cycling-gloves",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Winter Gloves",
+    "subId": 338,
+    "name": "Fleece Gloves",
+    "slug": "fleece-gloves",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Winter Gloves",
+    "subId": 338,
+    "name": "Insulated Gloves",
+    "slug": "insulated-gloves",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Winter Gloves",
+    "subId": 338,
+    "name": "Touchscreen Gloves",
+    "slug": "touchscreen-gloves",
+    "action": "create",
+    "sort_order": 3
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Work Gloves",
+    "subId": 339,
+    "name": "General Work Gloves",
+    "slug": "general-work-gloves",
+    "action": "create",
+    "sort_order": 1
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Work Gloves",
+    "subId": 339,
+    "name": "Leather Work Gloves",
+    "slug": "leather-work-gloves",
+    "action": "create",
+    "sort_order": 2
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Work Gloves",
+    "subId": 339,
+    "name": "Grip Gloves",
+    "slug": "grip-gloves",
+    "action": "create",
+    "sort_order": 3
+  }
+]

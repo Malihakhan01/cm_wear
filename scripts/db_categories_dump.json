@@ -1,0 +1,2930 @@
+[
+  {
+    "id": 1,
+    "name": "Casual Wear",
+    "slug": "casual-wear",
+    "parent_id": 312
+  },
+  {
+    "id": 2,
+    "name": "T-Shirts",
+    "slug": "t-shirts",
+    "parent_id": 1
+  },
+  {
+    "id": 3,
+    "name": "Hoodies & Sweatshirts",
+    "slug": "hoodies-sweatshirts",
+    "parent_id": 293
+  },
+  {
+    "id": 4,
+    "name": "Sweatpants",
+    "slug": "sweatpants",
+    "parent_id": 314
+  },
+  {
+    "id": 5,
+    "name": "Cargo Pants",
+    "slug": "cargo-pants",
+    "parent_id": 314
+  },
+  {
+    "id": 6,
+    "name": "Shorts",
+    "slug": "shorts",
+    "parent_id": 1
+  },
+  {
+    "id": 7,
+    "name": "Jackets",
+    "slug": "jackets",
+    "parent_id": 1
+  },
+  {
+    "id": 8,
+    "name": "Tracksuits",
+    "slug": "tracksuits",
+    "parent_id": 313
+  },
+  {
+    "id": 9,
+    "name": "Custom / Private Label Casual Wear",
+    "slug": "custom-private-label",
+    "parent_id": 1
+  },
+  {
+    "id": 23,
+    "name": "Ice Hockey",
+    "slug": "ice-hockey",
+    "parent_id": 290
+  },
+  {
+    "id": 24,
+    "name": "Ice Hockey Jerseys",
+    "slug": "ice-hockey-jerseys",
+    "parent_id": 23
+  },
+  {
+    "id": 25,
+    "name": "Hockey Pants",
+    "slug": "hockey-pants",
+    "parent_id": 23
+  },
+  {
+    "id": 26,
+    "name": "Hockey Shorts",
+    "slug": "hockey-shorts",
+    "parent_id": 23
+  },
+  {
+    "id": 27,
+    "name": "Hockey Jackets",
+    "slug": "hockey-jackets",
+    "parent_id": 23
+  },
+  {
+    "id": 28,
+    "name": "Hockey Training Wear",
+    "slug": "hockey-training-wear",
+    "parent_id": 23
+  },
+  {
+    "id": 29,
+    "name": "Custom Hockey Team Kits",
+    "slug": "custom-hockey-team-kits",
+    "parent_id": 23
+  },
+  {
+    "id": 39,
+    "name": "Rugby",
+    "slug": "rugby",
+    "parent_id": 290
+  },
+  {
+    "id": 40,
+    "name": "Rugby Jerseys",
+    "slug": "rugby-jerseys",
+    "parent_id": 39
+  },
+  {
+    "id": 41,
+    "name": "Rugby Shorts",
+    "slug": "rugby-shorts",
+    "parent_id": 39
+  },
+  {
+    "id": 42,
+    "name": "Rugby Training Wear",
+    "slug": "rugby-training-wear",
+    "parent_id": 39
+  },
+  {
+    "id": 43,
+    "name": "Rugby Jackets",
+    "slug": "rugby-jackets",
+    "parent_id": 39
+  },
+  {
+    "id": 44,
+    "name": "Rugby Team Kits",
+    "slug": "rugby-team-kits",
+    "parent_id": 39
+  },
+  {
+    "id": 45,
+    "name": "Custom Rugby Apparel",
+    "slug": "custom-rugby-apparel",
+    "parent_id": 39
+  },
+  {
+    "id": 46,
+    "name": "Basketball",
+    "slug": "basketball",
+    "parent_id": 290
+  },
+  {
+    "id": 47,
+    "name": "Basketball Jerseys",
+    "slug": "basketball-jerseys",
+    "parent_id": 46
+  },
+  {
+    "id": 48,
+    "name": "Basketball Shorts",
+    "slug": "basketball-shorts",
+    "parent_id": 46
+  },
+  {
+    "id": 49,
+    "name": "Basketball Sets",
+    "slug": "basketball-sets",
+    "parent_id": 46
+  },
+  {
+    "id": 50,
+    "name": "Basketball Training Wear",
+    "slug": "basketball-training-wear",
+    "parent_id": 46
+  },
+  {
+    "id": 51,
+    "name": "Basketball Team Kits",
+    "slug": "basketball-team-kits",
+    "parent_id": 46
+  },
+  {
+    "id": 52,
+    "name": "Custom Basketball Apparel",
+    "slug": "custom-basketball-apparel",
+    "parent_id": 46
+  },
+  {
+    "id": 69,
+    "name": "Streetwear",
+    "slug": "streetwear",
+    "parent_id": 293
+  },
+  {
+    "id": 70,
+    "name": "Hoodies",
+    "slug": "hoodies",
+    "parent_id": 69
+  },
+  {
+    "id": 71,
+    "name": "Streetwear Tees",
+    "slug": "t-shirts-street",
+    "parent_id": 312
+  },
+  {
+    "id": 72,
+    "name": "Varsity Jackets",
+    "slug": "varsity-jackets",
+    "parent_id": 294
+  },
+  {
+    "id": 73,
+    "name": "Heavy Sweatpants",
+    "slug": "sweatpants-street",
+    "parent_id": 314
+  },
+  {
+    "id": 74,
+    "name": "Sportswear",
+    "slug": "sportswear",
+    "parent_id": 290
+  },
+  {
+    "id": 75,
+    "name": "Soccer Uniform",
+    "slug": "soccer-uniform",
+    "parent_id": 74
+  },
+  {
+    "id": 76,
+    "name": "Cricket Uniform",
+    "slug": "cricket-uniform",
+    "parent_id": 301
+  },
+  {
+    "id": 77,
+    "name": "Basketball uniform",
+    "slug": "basketball-uniform",
+    "parent_id": 46
+  },
+  {
+    "id": 78,
+    "name": "Volleyball Uniform",
+    "slug": "volleyball-uniform",
+    "parent_id": 74
+  },
+  {
+    "id": 79,
+    "name": "Cycling Uniform",
+    "slug": "cycling-uniform",
+    "parent_id": 311
+  },
+  {
+    "id": 80,
+    "name": "Tennis",
+    "slug": "tennis",
+    "parent_id": 74
+  },
+  {
+    "id": 81,
+    "name": "Lacrosse",
+    "slug": "lacrosse",
+    "parent_id": 290
+  },
+  {
+    "id": 82,
+    "name": "Field Hockey",
+    "slug": "field-hockey",
+    "parent_id": 74
+  },
+  {
+    "id": 83,
+    "name": "Swimming Suits",
+    "slug": "swimming-suits",
+    "parent_id": 74
+  },
+  {
+    "id": 84,
+    "name": "Badminton Uniforms",
+    "slug": "badminton-uniforms",
+    "parent_id": 74
+  },
+  {
+    "id": 85,
+    "name": "Athletic Uniforms",
+    "slug": "athletic-uniforms",
+    "parent_id": 74
+  },
+  {
+    "id": 86,
+    "name": "Gymnastic Uniforms",
+    "slug": "gymnastic-uniforms",
+    "parent_id": 74
+  },
+  {
+    "id": 87,
+    "name": "Hurling Uniforms",
+    "slug": "hurling-uniforms",
+    "parent_id": 74
+  },
+  {
+    "id": 88,
+    "name": "Wresting Uniform",
+    "slug": "wresting-uniform",
+    "parent_id": 254
+  },
+  {
+    "id": 89,
+    "name": "Motor Sports Uniform",
+    "slug": "motor-sports-uniform",
+    "parent_id": 74
+  },
+  {
+    "id": 90,
+    "name": "Kabadi",
+    "slug": "kabadi",
+    "parent_id": 74
+  },
+  {
+    "id": 91,
+    "name": "Archery",
+    "slug": "archery",
+    "parent_id": null
+  },
+  {
+    "id": 92,
+    "name": "Golf",
+    "slug": "golf",
+    "parent_id": 302
+  },
+  {
+    "id": 93,
+    "name": "Polo",
+    "slug": "polo",
+    "parent_id": 302
+  },
+  {
+    "id": 94,
+    "name": "Motor Sports",
+    "slug": "motor-sports",
+    "parent_id": null
+  },
+  {
+    "id": 95,
+    "name": "Rowing",
+    "slug": "rowing",
+    "parent_id": null
+  },
+  {
+    "id": 96,
+    "name": "Sailing",
+    "slug": "sailing",
+    "parent_id": null
+  },
+  {
+    "id": 97,
+    "name": "Skiing & Snowboarding",
+    "slug": "skiing-snowboarding",
+    "parent_id": null
+  },
+  {
+    "id": 98,
+    "name": "Fencing Uniform",
+    "slug": "fencing-uniform",
+    "parent_id": null
+  },
+  {
+    "id": 99,
+    "name": "E-Sports",
+    "slug": "e-sports",
+    "parent_id": null
+  },
+  {
+    "id": 100,
+    "name": "Snooker",
+    "slug": "snooker",
+    "parent_id": null
+  },
+  {
+    "id": 101,
+    "name": "Shooting",
+    "slug": "shooting",
+    "parent_id": null
+  },
+  {
+    "id": 102,
+    "name": "Canoeing & Kayaking",
+    "slug": "canoeing-kayaking",
+    "parent_id": null
+  },
+  {
+    "id": 103,
+    "name": "Bobsleigh",
+    "slug": "bobsleigh",
+    "parent_id": null
+  },
+  {
+    "id": 104,
+    "name": "Surfing",
+    "slug": "surfing",
+    "parent_id": null
+  },
+  {
+    "id": 105,
+    "name": "Racquet Ball",
+    "slug": "racquet-ball",
+    "parent_id": null
+  },
+  {
+    "id": 106,
+    "name": "Skateboarding",
+    "slug": "skateboarding",
+    "parent_id": null
+  },
+  {
+    "id": 107,
+    "name": "Squash",
+    "slug": "squash",
+    "parent_id": null
+  },
+  {
+    "id": 108,
+    "name": "BMX Cycling",
+    "slug": "bmx-cycling",
+    "parent_id": 311
+  },
+  {
+    "id": 109,
+    "name": "Rugby Uniform",
+    "slug": "rugby-uniform",
+    "parent_id": 39
+  },
+  {
+    "id": 110,
+    "name": "Motocross Suits",
+    "slug": "motocross-suits",
+    "parent_id": 74
+  },
+  {
+    "id": 111,
+    "name": "Bowling",
+    "slug": "bowling",
+    "parent_id": 74
+  },
+  {
+    "id": 112,
+    "name": "Water Polo",
+    "slug": "water-polo",
+    "parent_id": 74
+  },
+  {
+    "id": 113,
+    "name": "Canoe Slalom",
+    "slug": "canoe-slalom",
+    "parent_id": 74
+  },
+  {
+    "id": 114,
+    "name": "Netball Uniform",
+    "slug": "netball-uniform",
+    "parent_id": 74
+  },
+  {
+    "id": 115,
+    "name": "Fishing Suits",
+    "slug": "fishing-suits",
+    "parent_id": 74
+  },
+  {
+    "id": 116,
+    "name": "Coach Uniforms",
+    "slug": "coach-uniforms",
+    "parent_id": 74
+  },
+  {
+    "id": 117,
+    "name": "Refree Uniforms",
+    "slug": "refree-uniforms",
+    "parent_id": 74
+  },
+  {
+    "id": 118,
+    "name": "Roller Derby",
+    "slug": "roller-derby",
+    "parent_id": 74
+  },
+  {
+    "id": 119,
+    "name": "Umpire Uniforms",
+    "slug": "umpire-uniforms",
+    "parent_id": 74
+  },
+  {
+    "id": 120,
+    "name": "Motorbike Suits",
+    "slug": "motorbike-suits",
+    "parent_id": 74
+  },
+  {
+    "id": 121,
+    "name": "Cheerleading Uniforms",
+    "slug": "cheerleading-uniforms",
+    "parent_id": 74
+  },
+  {
+    "id": 122,
+    "name": "Skydiving",
+    "slug": "skydiving",
+    "parent_id": 74
+  },
+  {
+    "id": 123,
+    "name": "Martial Arts",
+    "slug": "martial-arts",
+    "parent_id": 303
+  },
+  {
+    "id": 124,
+    "name": "Judo Uniform",
+    "slug": "judo-uniform",
+    "parent_id": 306
+  },
+  {
+    "id": 125,
+    "name": "Karate",
+    "slug": "karate",
+    "parent_id": 291
+  },
+  {
+    "id": 126,
+    "name": "Jiu Jitsu",
+    "slug": "jiu-jitsu",
+    "parent_id": 303
+  },
+  {
+    "id": 127,
+    "name": "Taekwondo",
+    "slug": "taekwondo",
+    "parent_id": 291
+  },
+  {
+    "id": 128,
+    "name": "Muay Thai",
+    "slug": "muay-thai",
+    "parent_id": 305
+  },
+  {
+    "id": 129,
+    "name": "Kung Fu",
+    "slug": "kung-fu",
+    "parent_id": 123
+  },
+  {
+    "id": 130,
+    "name": "Aikido",
+    "slug": "aikido",
+    "parent_id": 123
+  },
+  {
+    "id": 131,
+    "name": "Boxing",
+    "slug": "boxing",
+    "parent_id": 305
+  },
+  {
+    "id": 132,
+    "name": "Full Contact",
+    "slug": "full-contact",
+    "parent_id": 304
+  },
+  {
+    "id": 133,
+    "name": "Hapkido",
+    "slug": "hapkido",
+    "parent_id": 123
+  },
+  {
+    "id": 134,
+    "name": "Kenpo",
+    "slug": "kenpo",
+    "parent_id": 123
+  },
+  {
+    "id": 135,
+    "name": "Sumo",
+    "slug": "sumo",
+    "parent_id": 123
+  },
+  {
+    "id": 136,
+    "name": "Kick boxing",
+    "slug": "kick-boxing",
+    "parent_id": 304
+  },
+  {
+    "id": 137,
+    "name": "Tai Chi",
+    "slug": "tai-chi",
+    "parent_id": 123
+  },
+  {
+    "id": 138,
+    "name": "Kendo",
+    "slug": "kendo",
+    "parent_id": 123
+  },
+  {
+    "id": 139,
+    "name": "Krav Maga",
+    "slug": "krav-maga",
+    "parent_id": 123
+  },
+  {
+    "id": 140,
+    "name": "Sambo",
+    "slug": "sambo",
+    "parent_id": 123
+  },
+  {
+    "id": 141,
+    "name": "Capoeira",
+    "slug": "capoeira",
+    "parent_id": 123
+  },
+  {
+    "id": 142,
+    "name": "Sanda",
+    "slug": "sanda",
+    "parent_id": 123
+  },
+  {
+    "id": 143,
+    "name": "Kobudo",
+    "slug": "kobudo",
+    "parent_id": 123
+  },
+  {
+    "id": 144,
+    "name": "Savate",
+    "slug": "savate",
+    "parent_id": 123
+  },
+  {
+    "id": 145,
+    "name": "Laido",
+    "slug": "laido",
+    "parent_id": 123
+  },
+  {
+    "id": 146,
+    "name": "Ninjutsu",
+    "slug": "ninjutsu",
+    "parent_id": 123
+  },
+  {
+    "id": 147,
+    "name": "Fitness Wear",
+    "slug": "fitness-wear",
+    "parent_id": 307
+  },
+  {
+    "id": 148,
+    "name": "Fitness Apparel",
+    "slug": "fitness-apparel",
+    "parent_id": 307
+  },
+  {
+    "id": 149,
+    "name": "Fitness Accessories",
+    "slug": "fitness-accessories",
+    "parent_id": 329
+  },
+  {
+    "id": 150,
+    "name": "Backpack",
+    "slug": "backpack",
+    "parent_id": 262
+  },
+  {
+    "id": 151,
+    "name": "Bags",
+    "slug": "bags",
+    "parent_id": 262
+  },
+  {
+    "id": 152,
+    "name": "Duffle Bag",
+    "slug": "duffle-bag",
+    "parent_id": 262
+  },
+  {
+    "id": 153,
+    "name": "Laptop Bag",
+    "slug": "laptop-bag",
+    "parent_id": 262
+  },
+  {
+    "id": 154,
+    "name": "Sling Bag",
+    "slug": "sling-bag",
+    "parent_id": 262
+  },
+  {
+    "id": 155,
+    "name": "Guitar Bag",
+    "slug": "guitar-bag",
+    "parent_id": 262
+  },
+  {
+    "id": 156,
+    "name": "Camera Bag",
+    "slug": "camera-bag",
+    "parent_id": 262
+  },
+  {
+    "id": 157,
+    "name": "Gloves",
+    "slug": "gloves",
+    "parent_id": null
+  },
+  {
+    "id": 158,
+    "name": "safety gloves",
+    "slug": "safety-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 159,
+    "name": "Custom Cut Resistant",
+    "slug": "custom-cut-resistant",
+    "parent_id": 157
+  },
+  {
+    "id": 160,
+    "name": "Custom Cycling Gloves",
+    "slug": "custom-cycling-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 161,
+    "name": "weightlifting gloves",
+    "slug": "weightlifting-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 162,
+    "name": "Tactical Gloves",
+    "slug": "tactical-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 163,
+    "name": "racing gloves",
+    "slug": "racing-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 164,
+    "name": "Skiing Gloves",
+    "slug": "skiing-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 165,
+    "name": "Polo Gloves",
+    "slug": "polo-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 166,
+    "name": "Polo Glove",
+    "slug": "polo-glove",
+    "parent_id": 339
+  },
+  {
+    "id": 167,
+    "name": "Motor Cross Glove",
+    "slug": "motor-cross-glove",
+    "parent_id": 339
+  },
+  {
+    "id": 168,
+    "name": "Handball Glove",
+    "slug": "handball-glove",
+    "parent_id": 339
+  },
+  {
+    "id": 169,
+    "name": "Gardening Glove",
+    "slug": "gardening-glove",
+    "parent_id": 339
+  },
+  {
+    "id": 170,
+    "name": "Snow Glove",
+    "slug": "snow-glove",
+    "parent_id": 338
+  },
+  {
+    "id": 171,
+    "name": "Fishing Glove",
+    "slug": "fishing-glove",
+    "parent_id": 339
+  },
+  {
+    "id": 172,
+    "name": "Motorcycling Glove",
+    "slug": "motorcycling-glove",
+    "parent_id": 339
+  },
+  {
+    "id": 173,
+    "name": "Gaelic Gloves",
+    "slug": "gaelic-gloves",
+    "parent_id": 339
+  },
+  {
+    "id": 174,
+    "name": "Hurling Gloves",
+    "slug": "hurling-gloves",
+    "parent_id": 339
+  },
+  {
+    "id": 175,
+    "name": "Rugby Gloves",
+    "slug": "rugby-gloves",
+    "parent_id": 339
+  },
+  {
+    "id": 176,
+    "name": "Mittens Glove",
+    "slug": "mittens-glove",
+    "parent_id": 338
+  },
+  {
+    "id": 177,
+    "name": "Street wear",
+    "slug": "street-wear",
+    "parent_id": 69
+  },
+  {
+    "id": 178,
+    "name": "Pants",
+    "slug": "pants",
+    "parent_id": 314
+  },
+  {
+    "id": 179,
+    "name": "Sweat Suits",
+    "slug": "sweat-suits",
+    "parent_id": 313
+  },
+  {
+    "id": 180,
+    "name": "Wind Breaker set",
+    "slug": "wind-breaker-set",
+    "parent_id": 316
+  },
+  {
+    "id": 181,
+    "name": "Coats",
+    "slug": "coats",
+    "parent_id": 317
+  },
+  {
+    "id": 182,
+    "name": "Trousers",
+    "slug": "trousers",
+    "parent_id": 314
+  },
+  {
+    "id": 183,
+    "name": "Sweat Shirts",
+    "slug": "sweat-shirts",
+    "parent_id": 3
+  },
+  {
+    "id": 184,
+    "name": "Denim Jeans",
+    "slug": "denim-jeans",
+    "parent_id": 314
+  },
+  {
+    "id": 185,
+    "name": "Sweaters",
+    "slug": "sweaters",
+    "parent_id": 3
+  },
+  {
+    "id": 186,
+    "name": "Masks",
+    "slug": "masks",
+    "parent_id": 328
+  },
+  {
+    "id": 187,
+    "name": "Bras Legging",
+    "slug": "bras-legging",
+    "parent_id": 309
+  },
+  {
+    "id": 188,
+    "name": "Head Wear",
+    "slug": "head-wear",
+    "parent_id": 328
+  },
+  {
+    "id": 189,
+    "name": "Sweat Pants",
+    "slug": "sweat-pants",
+    "parent_id": 314
+  },
+  {
+    "id": 190,
+    "name": "Blazers",
+    "slug": "blazers",
+    "parent_id": 177
+  },
+  {
+    "id": 191,
+    "name": "Socks",
+    "slug": "socks",
+    "parent_id": 327
+  },
+  {
+    "id": 192,
+    "name": "Safety Wear",
+    "slug": "safety-wear",
+    "parent_id": 325
+  },
+  {
+    "id": 193,
+    "name": "Vests",
+    "slug": "vests",
+    "parent_id": 325
+  },
+  {
+    "id": 194,
+    "name": "Shirts",
+    "slug": "shirts",
+    "parent_id": 192
+  },
+  {
+    "id": 195,
+    "name": "Safety Suits",
+    "slug": "safety-suits",
+    "parent_id": 325
+  },
+  {
+    "id": 196,
+    "name": "Safety Coveralls",
+    "slug": "safety-coveralls",
+    "parent_id": 325
+  },
+  {
+    "id": 197,
+    "name": "Safety Heated Apparel",
+    "slug": "safety-heated-apparel",
+    "parent_id": 325
+  },
+  {
+    "id": 198,
+    "name": "Safety Rain Wear",
+    "slug": "safety-rain-wear",
+    "parent_id": 318
+  },
+  {
+    "id": 199,
+    "name": "Safety Balaclava",
+    "slug": "safety-balaclava",
+    "parent_id": 325
+  },
+  {
+    "id": 200,
+    "name": "Caps",
+    "slug": "caps",
+    "parent_id": 297
+  },
+  {
+    "id": 201,
+    "name": "Toolbelt",
+    "slug": "toolbelt",
+    "parent_id": 325
+  },
+  {
+    "id": 202,
+    "name": "Safety Bags",
+    "slug": "safety-bags",
+    "parent_id": 325
+  },
+  {
+    "id": 204,
+    "name": "American Football Uniform",
+    "slug": "american-football-uniform",
+    "parent_id": 299
+  },
+  {
+    "id": 205,
+    "name": "Ice Hockey Uniforms",
+    "slug": "ice-hockey-uniforms",
+    "parent_id": 23
+  },
+  {
+    "id": 206,
+    "name": "Sportwear",
+    "slug": "sportwear",
+    "parent_id": 290
+  },
+  {
+    "id": 207,
+    "name": "Soccer Sets",
+    "slug": "soccer-sets",
+    "parent_id": 298
+  },
+  {
+    "id": 208,
+    "name": "Sublimation Sports Uniforms",
+    "slug": "sublimation-sports-uniforms",
+    "parent_id": 206
+  },
+  {
+    "id": 209,
+    "name": "Training Bibs",
+    "slug": "training-bibs",
+    "parent_id": 297
+  },
+  {
+    "id": 210,
+    "name": "Training Trousers",
+    "slug": "training-trousers",
+    "parent_id": 307
+  },
+  {
+    "id": 211,
+    "name": "Bomber Jackets",
+    "slug": "bomber-jackets",
+    "parent_id": 72
+  },
+  {
+    "id": 212,
+    "name": "Compression Pants",
+    "slug": "compression-pants",
+    "parent_id": 308
+  },
+  {
+    "id": 213,
+    "name": "Compression Shirts",
+    "slug": "compression-shirts",
+    "parent_id": 308
+  },
+  {
+    "id": 214,
+    "name": "Compression Shorts",
+    "slug": "compression-shorts",
+    "parent_id": 308
+  },
+  {
+    "id": 215,
+    "name": "Conductive Sports Garments",
+    "slug": "conductive-sports-garments",
+    "parent_id": 308
+  },
+  {
+    "id": 216,
+    "name": "Cycling Bib Tights",
+    "slug": "cycling-bib-tights",
+    "parent_id": 311
+  },
+  {
+    "id": 217,
+    "name": "Cycling Shirts",
+    "slug": "cycling-shirts",
+    "parent_id": 311
+  },
+  {
+    "id": 218,
+    "name": "Cycling Shorts",
+    "slug": "cycling-shorts",
+    "parent_id": 311
+  },
+  {
+    "id": 219,
+    "name": "Track Suits",
+    "slug": "track-suits",
+    "parent_id": 313
+  },
+  {
+    "id": 220,
+    "name": "Skirts",
+    "slug": "skirts",
+    "parent_id": 302
+  },
+  {
+    "id": 221,
+    "name": "Polo Shirts",
+    "slug": "polo-shirts",
+    "parent_id": 302
+  },
+  {
+    "id": 222,
+    "name": "Custom Leather Wear",
+    "slug": "custom-leather-wear",
+    "parent_id": 223
+  },
+  {
+    "id": 223,
+    "name": "Leather Jackets",
+    "slug": "leather-jackets",
+    "parent_id": 294
+  },
+  {
+    "id": 224,
+    "name": "Leather Vests",
+    "slug": "leather-vests",
+    "parent_id": 223
+  },
+  {
+    "id": 225,
+    "name": "Leather Pants",
+    "slug": "leather-pants",
+    "parent_id": 223
+  },
+  {
+    "id": 226,
+    "name": "Leather Shorts",
+    "slug": "leather-shorts",
+    "parent_id": 223
+  },
+  {
+    "id": 227,
+    "name": "Leather Belts",
+    "slug": "leather-belts",
+    "parent_id": 222
+  },
+  {
+    "id": 228,
+    "name": "Combat Sports",
+    "slug": "combat-sports",
+    "parent_id": 304
+  },
+  {
+    "id": 229,
+    "name": "Accessories",
+    "slug": "accessories",
+    "parent_id": 329
+  },
+  {
+    "id": 230,
+    "name": "Honours Caps",
+    "slug": "honours-caps",
+    "parent_id": 200
+  },
+  {
+    "id": 231,
+    "name": "Beanie",
+    "slug": "beanie",
+    "parent_id": 328
+  },
+  {
+    "id": 232,
+    "name": "Balaclavas & Ski Masks",
+    "slug": "balaclavas-ski-masks",
+    "parent_id": 328
+  },
+  {
+    "id": 233,
+    "name": "Visor",
+    "slug": "visor",
+    "parent_id": 200
+  },
+  {
+    "id": 234,
+    "name": "CLOTHING",
+    "slug": "clothing",
+    "parent_id": 312
+  },
+  {
+    "id": 235,
+    "name": "PUFFER JACKETS",
+    "slug": "puffer-jackets",
+    "parent_id": 317
+  },
+  {
+    "id": 236,
+    "name": "FASHION WEAR",
+    "slug": "fashion-wear",
+    "parent_id": 312
+  },
+  {
+    "id": 237,
+    "name": "Casual wears",
+    "slug": "casual-wears",
+    "parent_id": 312
+  },
+  {
+    "id": 238,
+    "name": "Sweat Shirt",
+    "slug": "sweat-shirt",
+    "parent_id": 3
+  },
+  {
+    "id": 239,
+    "name": "Sports Wears",
+    "slug": "sports-wears",
+    "parent_id": 290
+  },
+  {
+    "id": 240,
+    "name": "Sports Wear",
+    "slug": "sports-wear",
+    "parent_id": 290
+  },
+  {
+    "id": 241,
+    "name": "American Footbal Uniform",
+    "slug": "american-footbal-uniform",
+    "parent_id": 299
+  },
+  {
+    "id": 242,
+    "name": "ICE HOCKEY CLOTHING",
+    "slug": "ice-hockey-clothing",
+    "parent_id": 23
+  },
+  {
+    "id": 243,
+    "name": "Graphite Sticks",
+    "slug": "graphite-sticks",
+    "parent_id": 23
+  },
+  {
+    "id": 244,
+    "name": "Sublimated Game Jerseys",
+    "slug": "sublimated-game-jerseys",
+    "parent_id": 23
+  },
+  {
+    "id": 245,
+    "name": "Tackle Twill Embroidered Jerseys",
+    "slug": "tackle-twill-embroidered-jerseys",
+    "parent_id": 23
+  },
+  {
+    "id": 246,
+    "name": "Practice Jerseys",
+    "slug": "practice-jerseys",
+    "parent_id": 23
+  },
+  {
+    "id": 247,
+    "name": "Coach Jackets",
+    "slug": "coach-jackets",
+    "parent_id": 23
+  },
+  {
+    "id": 248,
+    "name": "Hockey Pant Shells",
+    "slug": "hockey-pant-shells",
+    "parent_id": 23
+  },
+  {
+    "id": 249,
+    "name": "Track & Field / Hurdling",
+    "slug": "track-field-hurdling",
+    "parent_id": 310
+  },
+  {
+    "id": 250,
+    "name": "Yoga Wear",
+    "slug": "yoga-wear",
+    "parent_id": 309
+  },
+  {
+    "id": 251,
+    "name": "Running Wear",
+    "slug": "running-wear",
+    "parent_id": 310
+  },
+  {
+    "id": 252,
+    "name": "Fitness Sets",
+    "slug": "fitness-sets",
+    "parent_id": 309
+  },
+  {
+    "id": 253,
+    "name": "Base Layers",
+    "slug": "base-layers",
+    "parent_id": 308
+  },
+  {
+    "id": 254,
+    "name": "Wrestling",
+    "slug": "wrestling",
+    "parent_id": 291
+  },
+  {
+    "id": 255,
+    "name": "Combat Training Wear",
+    "slug": "combat-training-wear",
+    "parent_id": 303
+  },
+  {
+    "id": 256,
+    "name": "Leather purses",
+    "slug": "leather-purses",
+    "parent_id": 222
+  },
+  {
+    "id": 257,
+    "name": "Combat Teamwear",
+    "slug": "combat-teamwear",
+    "parent_id": 303
+  },
+  {
+    "id": 258,
+    "name": "leather bags",
+    "slug": "leather-bags",
+    "parent_id": 222
+  },
+  {
+    "id": 259,
+    "name": "leather gloves",
+    "slug": "leather-gloves",
+    "parent_id": 222
+  },
+  {
+    "id": 260,
+    "name": "leather shoes",
+    "slug": "leather-shoes",
+    "parent_id": 222
+  },
+  {
+    "id": 261,
+    "name": "leather wallets",
+    "slug": "leather-wallets",
+    "parent_id": 222
+  },
+  {
+    "id": 262,
+    "name": "Bags & Backpacks",
+    "slug": "bags-backpacks",
+    "parent_id": 297
+  },
+  {
+    "id": 263,
+    "name": "Headwear",
+    "slug": "headwear",
+    "parent_id": 328
+  },
+  {
+    "id": 264,
+    "name": "Hunting Wear",
+    "slug": "hunting-wear",
+    "parent_id": 206
+  },
+  {
+    "id": 265,
+    "name": "Scrub Suit",
+    "slug": "scrub-suit",
+    "parent_id": 324
+  },
+  {
+    "id": 266,
+    "name": "Volleyball",
+    "slug": "volleyball",
+    "parent_id": 290
+  },
+  {
+    "id": 267,
+    "name": "Volleyball Jersey",
+    "slug": "volleyball-jersey",
+    "parent_id": 266
+  },
+  {
+    "id": 268,
+    "name": "Volleyball Shorts",
+    "slug": "volleyball-shorts",
+    "parent_id": 266
+  },
+  {
+    "id": 269,
+    "name": "Volleyball Training Wear",
+    "slug": "volleyball-training-wear",
+    "parent_id": 266
+  },
+  {
+    "id": 270,
+    "name": "Volleyball Accessories",
+    "slug": "volleyball-accessories",
+    "parent_id": 266
+  },
+  {
+    "id": 271,
+    "name": "Volleyball Shorts / Spandex",
+    "slug": "volleyball-shorts-spandex",
+    "parent_id": 266
+  },
+  {
+    "id": 272,
+    "name": "Baseball",
+    "slug": "baseball",
+    "parent_id": 300
+  },
+  {
+    "id": 273,
+    "name": "baseball jeresy",
+    "slug": "baseball-jeresy",
+    "parent_id": 300
+  },
+  {
+    "id": 274,
+    "name": "Baseball Pants",
+    "slug": "baseball-pants",
+    "parent_id": 300
+  },
+  {
+    "id": 275,
+    "name": "Baseball Hoodies",
+    "slug": "baseball-hoodies",
+    "parent_id": 300
+  },
+  {
+    "id": 276,
+    "name": "Baseball Gear",
+    "slug": "baseball-gear",
+    "parent_id": 300
+  },
+  {
+    "id": 277,
+    "name": "Baseball Uniform",
+    "slug": "baseball-uniform",
+    "parent_id": 300
+  },
+  {
+    "id": 278,
+    "name": "Baseball Equipment set",
+    "slug": "baseball-equipment-set",
+    "parent_id": 300
+  },
+  {
+    "id": 279,
+    "name": "Basketball Warm-up Suits",
+    "slug": "basketball-warm-up-suits",
+    "parent_id": 46
+  },
+  {
+    "id": 280,
+    "name": "Soccer Shorts",
+    "slug": "soccer-shorts",
+    "parent_id": 298
+  },
+  {
+    "id": 281,
+    "name": "Soccer Uniforms",
+    "slug": "soccer-uniforms",
+    "parent_id": 298
+  },
+  {
+    "id": 282,
+    "name": "Soccer/Football",
+    "slug": "soccerfootball",
+    "parent_id": 298
+  },
+  {
+    "id": 283,
+    "name": "Goalkeeper Jerseys",
+    "slug": "goalkeeper-jerseys",
+    "parent_id": 298
+  },
+  {
+    "id": 284,
+    "name": "Goalkeeper Wear",
+    "slug": "goalkeeper-wear",
+    "parent_id": 298
+  },
+  {
+    "id": 285,
+    "name": "Soccer Team Kits",
+    "slug": "soccer-team-kits",
+    "parent_id": 298
+  },
+  {
+    "id": 286,
+    "name": "Custom sportswear Manufacturer",
+    "slug": "custom-sportswear-manufacturer",
+    "parent_id": null
+  },
+  {
+    "id": 287,
+    "name": "Custom Soccer Jerseys",
+    "slug": "custom-soccer-jerseys",
+    "parent_id": 298
+  },
+  {
+    "id": 288,
+    "name": "Ice Hockey Socks",
+    "slug": "ice-hockey-socks",
+    "parent_id": 23
+  },
+  {
+    "id": 289,
+    "name": "American Football Pants",
+    "slug": "american-football-pants",
+    "parent_id": 299
+  },
+  {
+    "id": 290,
+    "name": "Team Sports Wear",
+    "slug": "team-sports-wear",
+    "parent_id": null
+  },
+  {
+    "id": 291,
+    "name": "Martial Arts & Combat Wear",
+    "slug": "martial-arts-combat-wear",
+    "parent_id": null
+  },
+  {
+    "id": 292,
+    "name": "Activewear & Fitness",
+    "slug": "activewear-fitness",
+    "parent_id": null
+  },
+  {
+    "id": 293,
+    "name": "Casual & Lifestyle Wear",
+    "slug": "casual-lifestyle-wear",
+    "parent_id": null
+  },
+  {
+    "id": 294,
+    "name": "Jackets & Outerwear",
+    "slug": "jackets-outerwear",
+    "parent_id": null
+  },
+  {
+    "id": 295,
+    "name": "Kids & Youth Wear",
+    "slug": "kids-youth-wear",
+    "parent_id": null
+  },
+  {
+    "id": 296,
+    "name": "Workwear & Medical Wear",
+    "slug": "workwear-medical-wear",
+    "parent_id": null
+  },
+  {
+    "id": 297,
+    "name": "Sports Accessories",
+    "slug": "sports-accessories",
+    "parent_id": null
+  },
+  {
+    "id": 298,
+    "name": "Soccer & Football",
+    "slug": "soccer-football",
+    "parent_id": 290
+  },
+  {
+    "id": 299,
+    "name": "American Football",
+    "slug": "american-football",
+    "parent_id": 290
+  },
+  {
+    "id": 300,
+    "name": "Baseball & Softball",
+    "slug": "baseball-softball",
+    "parent_id": 290
+  },
+  {
+    "id": 301,
+    "name": "Cricket",
+    "slug": "cricket",
+    "parent_id": 290
+  },
+  {
+    "id": 302,
+    "name": "Tennis & Golf",
+    "slug": "tennis-golf",
+    "parent_id": 290
+  },
+  {
+    "id": 303,
+    "name": "BJJ & Grappling",
+    "slug": "bjj-grappling",
+    "parent_id": 291
+  },
+  {
+    "id": 304,
+    "name": "MMA",
+    "slug": "mma",
+    "parent_id": 291
+  },
+  {
+    "id": 305,
+    "name": "Boxing & Muay Thai",
+    "slug": "boxing-muay-thai",
+    "parent_id": 291
+  },
+  {
+    "id": 306,
+    "name": "Judo",
+    "slug": "judo",
+    "parent_id": 291
+  },
+  {
+    "id": 307,
+    "name": "Gym & Training Wear",
+    "slug": "gym-training-wear",
+    "parent_id": 292
+  },
+  {
+    "id": 308,
+    "name": "Compression Wear",
+    "slug": "compression-wear",
+    "parent_id": 292
+  },
+  {
+    "id": 309,
+    "name": "Women’s Activewear",
+    "slug": "womens-activewear",
+    "parent_id": 292
+  },
+  {
+    "id": 310,
+    "name": "Running & Athletics",
+    "slug": "running-athletics",
+    "parent_id": 292
+  },
+  {
+    "id": 311,
+    "name": "Cycling Wear",
+    "slug": "cycling-wear",
+    "parent_id": 292
+  },
+  {
+    "id": 312,
+    "name": "T-Shirts & Tops",
+    "slug": "t-shirts-tops",
+    "parent_id": 293
+  },
+  {
+    "id": 313,
+    "name": "Tracksuits & Matching Sets",
+    "slug": "tracksuits-sets",
+    "parent_id": 293
+  },
+  {
+    "id": 314,
+    "name": "Pants & Bottoms",
+    "slug": "pants-bottoms",
+    "parent_id": 293
+  },
+  {
+    "id": 315,
+    "name": "Softshell Jackets",
+    "slug": "softshell-jackets",
+    "parent_id": 294
+  },
+  {
+    "id": 316,
+    "name": "Windbreakers",
+    "slug": "windbreakers",
+    "parent_id": 294
+  },
+  {
+    "id": 317,
+    "name": "Winter Wear",
+    "slug": "winter-wear",
+    "parent_id": 294
+  },
+  {
+    "id": 318,
+    "name": "Rainwear",
+    "slug": "rainwear",
+    "parent_id": 294
+  },
+  {
+    "id": 319,
+    "name": "Youth Team Uniforms",
+    "slug": "youth-team-uniforms",
+    "parent_id": 295
+  },
+  {
+    "id": 320,
+    "name": "Kids’ Activewear",
+    "slug": "kids-activewear",
+    "parent_id": 295
+  },
+  {
+    "id": 321,
+    "name": "Kids’ T-Shirts",
+    "slug": "kids-t-shirts",
+    "parent_id": 295
+  },
+  {
+    "id": 322,
+    "name": "Kids’ Hoodies",
+    "slug": "kids-hoodies",
+    "parent_id": 295
+  },
+  {
+    "id": 323,
+    "name": "Kids’ Tracksuits",
+    "slug": "kids-tracksuits",
+    "parent_id": 295
+  },
+  {
+    "id": 324,
+    "name": "Medical Scrubs",
+    "slug": "medical-scrubs",
+    "parent_id": 296
+  },
+  {
+    "id": 325,
+    "name": "Work Uniforms",
+    "slug": "work-uniforms",
+    "parent_id": 296
+  },
+  {
+    "id": 326,
+    "name": "Work Polo Shirts",
+    "slug": "work-polo-shirts",
+    "parent_id": 296
+  },
+  {
+    "id": 327,
+    "name": "Team Socks",
+    "slug": "team-socks",
+    "parent_id": 297
+  },
+  {
+    "id": 328,
+    "name": "Headbands",
+    "slug": "headbands",
+    "parent_id": 297
+  },
+  {
+    "id": 329,
+    "name": "Wristbands",
+    "slug": "wristbands",
+    "parent_id": 297
+  },
+  {
+    "id": 330,
+    "name": "Ice Hockey Gloves",
+    "slug": "ice-hockey-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 331,
+    "name": "Goalkeeper Gloves",
+    "slug": "goalkeeper-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 332,
+    "name": "Cricket Batting Gloves",
+    "slug": "cricket-batting-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 333,
+    "name": "Baseball Batting Gloves",
+    "slug": "baseball-batting-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 334,
+    "name": "Boxing Gloves",
+    "slug": "boxing-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 335,
+    "name": "MMA Gloves",
+    "slug": "mma-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 336,
+    "name": "Gym & Weightlifting Gloves",
+    "slug": "gym-weightlifting-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 337,
+    "name": "Cycling Gloves",
+    "slug": "cycling-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 338,
+    "name": "Winter Gloves",
+    "slug": "winter-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 339,
+    "name": "Work Gloves",
+    "slug": "work-gloves",
+    "parent_id": 157
+  },
+  {
+    "id": 340,
+    "name": "Ice Hockey Socks",
+    "slug": "ice-hockey-socks-1",
+    "parent_id": 290
+  },
+  {
+    "id": 341,
+    "name": "Ice Hockey Shell Pants",
+    "slug": "ice-hockey-shell-pants",
+    "parent_id": 290
+  },
+  {
+    "id": 342,
+    "name": "Game Jerseys",
+    "slug": "ice-hockey-game-jerseys",
+    "parent_id": 23
+  },
+  {
+    "id": 343,
+    "name": "Hockey Socks",
+    "slug": "ice-hockey-hockey-socks",
+    "parent_id": 23
+  },
+  {
+    "id": 344,
+    "name": "Shell Pants",
+    "slug": "ice-hockey-shell-pants-1",
+    "parent_id": 23
+  },
+  {
+    "id": 345,
+    "name": "Team Kits",
+    "slug": "soccer-football-team-kits",
+    "parent_id": 298
+  },
+  {
+    "id": 346,
+    "name": "Jerseys",
+    "slug": "soccer-football-jerseys",
+    "parent_id": 298
+  },
+  {
+    "id": 347,
+    "name": "Shorts",
+    "slug": "soccer-football-shorts",
+    "parent_id": 298
+  },
+  {
+    "id": 348,
+    "name": "Training Tops",
+    "slug": "soccer-football-training-tops",
+    "parent_id": 298
+  },
+  {
+    "id": 349,
+    "name": "Goalkeeper Uniforms",
+    "slug": "soccer-football-goalkeeper-uniforms",
+    "parent_id": 298
+  },
+  {
+    "id": 350,
+    "name": "Game Jerseys",
+    "slug": "american-football-game-jerseys",
+    "parent_id": 299
+  },
+  {
+    "id": 351,
+    "name": "Practice Jerseys",
+    "slug": "american-football-practice-jerseys",
+    "parent_id": 299
+  },
+  {
+    "id": 352,
+    "name": "Football Pants",
+    "slug": "american-football-football-pants",
+    "parent_id": 299
+  },
+  {
+    "id": 353,
+    "name": "Compression Tops",
+    "slug": "american-football-compression-tops",
+    "parent_id": 299
+  },
+  {
+    "id": 354,
+    "name": "Jerseys",
+    "slug": "basketball-jerseys-1",
+    "parent_id": 46
+  },
+  {
+    "id": 355,
+    "name": "Shorts",
+    "slug": "basketball-shorts-1",
+    "parent_id": 46
+  },
+  {
+    "id": 356,
+    "name": "Complete Uniforms",
+    "slug": "basketball-complete-uniforms",
+    "parent_id": 46
+  },
+  {
+    "id": 357,
+    "name": "Reversible Bibs",
+    "slug": "basketball-reversible-bibs",
+    "parent_id": 46
+  },
+  {
+    "id": 358,
+    "name": "Warm-Up Suits",
+    "slug": "basketball-warm-up-suits-1",
+    "parent_id": 46
+  },
+  {
+    "id": 359,
+    "name": "Button-Up Jerseys",
+    "slug": "baseball-softball-button-up-jerseys",
+    "parent_id": 300
+  },
+  {
+    "id": 360,
+    "name": "Pullover Jerseys",
+    "slug": "baseball-softball-pullover-jerseys",
+    "parent_id": 300
+  },
+  {
+    "id": 361,
+    "name": "Pants",
+    "slug": "baseball-softball-pants",
+    "parent_id": 300
+  },
+  {
+    "id": 362,
+    "name": "Training Shirts",
+    "slug": "baseball-softball-training-shirts",
+    "parent_id": 300
+  },
+  {
+    "id": 363,
+    "name": "Match Shirts",
+    "slug": "cricket-match-shirts",
+    "parent_id": 301
+  },
+  {
+    "id": 364,
+    "name": "T20 Jerseys",
+    "slug": "cricket-t20-jerseys",
+    "parent_id": 301
+  },
+  {
+    "id": 365,
+    "name": "Trousers",
+    "slug": "cricket-trousers",
+    "parent_id": 301
+  },
+  {
+    "id": 366,
+    "name": "Training Kits",
+    "slug": "cricket-training-kits",
+    "parent_id": 301
+  },
+  {
+    "id": 367,
+    "name": "Match Jerseys",
+    "slug": "rugby-match-jerseys",
+    "parent_id": 39
+  },
+  {
+    "id": 368,
+    "name": "Shorts",
+    "slug": "rugby-shorts-1",
+    "parent_id": 39
+  },
+  {
+    "id": 369,
+    "name": "Training Tops",
+    "slug": "rugby-training-tops",
+    "parent_id": 39
+  },
+  {
+    "id": 370,
+    "name": "Team Kits",
+    "slug": "rugby-team-kits-1",
+    "parent_id": 39
+  },
+  {
+    "id": 371,
+    "name": "Game Jerseys",
+    "slug": "lacrosse-game-jerseys",
+    "parent_id": 81
+  },
+  {
+    "id": 372,
+    "name": "Shorts",
+    "slug": "lacrosse-shorts",
+    "parent_id": 81
+  },
+  {
+    "id": 373,
+    "name": "Practice Pinnies",
+    "slug": "lacrosse-practice-pinnies",
+    "parent_id": 81
+  },
+  {
+    "id": 374,
+    "name": "Team Kits",
+    "slug": "lacrosse-team-kits",
+    "parent_id": 81
+  },
+  {
+    "id": 375,
+    "name": "Jerseys",
+    "slug": "volleyball-jerseys",
+    "parent_id": 266
+  },
+  {
+    "id": 376,
+    "name": "Shorts",
+    "slug": "volleyball-shorts-1",
+    "parent_id": 266
+  },
+  {
+    "id": 377,
+    "name": "Team Kits",
+    "slug": "volleyball-team-kits",
+    "parent_id": 266
+  },
+  {
+    "id": 378,
+    "name": "Training Tops",
+    "slug": "volleyball-training-tops",
+    "parent_id": 266
+  },
+  {
+    "id": 379,
+    "name": "Performance Tops",
+    "slug": "tennis-golf-performance-tops",
+    "parent_id": 302
+  },
+  {
+    "id": 380,
+    "name": "Shorts",
+    "slug": "tennis-golf-shorts",
+    "parent_id": 302
+  },
+  {
+    "id": 381,
+    "name": "Skorts",
+    "slug": "tennis-golf-skorts",
+    "parent_id": 302
+  },
+  {
+    "id": 382,
+    "name": "BJJ Gis",
+    "slug": "bjj-grappling-bjj-gis",
+    "parent_id": 303
+  },
+  {
+    "id": 383,
+    "name": "Rash Guards",
+    "slug": "bjj-grappling-rash-guards",
+    "parent_id": 303
+  },
+  {
+    "id": 384,
+    "name": "Grappling Shorts",
+    "slug": "bjj-grappling-grappling-shorts",
+    "parent_id": 303
+  },
+  {
+    "id": 385,
+    "name": "Spats",
+    "slug": "bjj-grappling-spats",
+    "parent_id": 303
+  },
+  {
+    "id": 386,
+    "name": "Fight Shorts",
+    "slug": "mma-fight-shorts",
+    "parent_id": 304
+  },
+  {
+    "id": 387,
+    "name": "Rash Guards",
+    "slug": "mma-rash-guards",
+    "parent_id": 304
+  },
+  {
+    "id": 388,
+    "name": "Compression Shorts",
+    "slug": "mma-compression-shorts",
+    "parent_id": 304
+  },
+  {
+    "id": 389,
+    "name": "Training Shirts",
+    "slug": "mma-training-shirts",
+    "parent_id": 304
+  },
+  {
+    "id": 390,
+    "name": "Boxing Shorts",
+    "slug": "boxing-muay-thai-boxing-shorts",
+    "parent_id": 305
+  },
+  {
+    "id": 391,
+    "name": "Muay Thai Shorts",
+    "slug": "boxing-muay-thai-muay-thai-shorts",
+    "parent_id": 305
+  },
+  {
+    "id": 392,
+    "name": "Boxing Singlets",
+    "slug": "boxing-muay-thai-boxing-singlets",
+    "parent_id": 305
+  },
+  {
+    "id": 393,
+    "name": "Training Tracksuits",
+    "slug": "boxing-muay-thai-training-tracksuits",
+    "parent_id": 305
+  },
+  {
+    "id": 394,
+    "name": "Training Gis",
+    "slug": "karate-training-gis",
+    "parent_id": 125
+  },
+  {
+    "id": 395,
+    "name": "Competition Gis",
+    "slug": "karate-competition-gis",
+    "parent_id": 125
+  },
+  {
+    "id": 396,
+    "name": "Belts",
+    "slug": "karate-belts",
+    "parent_id": 125
+  },
+  {
+    "id": 397,
+    "name": "Training Gis",
+    "slug": "judo-training-gis",
+    "parent_id": 306
+  },
+  {
+    "id": 398,
+    "name": "Competition Gis",
+    "slug": "judo-competition-gis",
+    "parent_id": 306
+  },
+  {
+    "id": 399,
+    "name": "Belts",
+    "slug": "judo-belts",
+    "parent_id": 306
+  },
+  {
+    "id": 400,
+    "name": "Training Doboks",
+    "slug": "taekwondo-training-doboks",
+    "parent_id": 127
+  },
+  {
+    "id": 401,
+    "name": "Competition Doboks",
+    "slug": "taekwondo-competition-doboks",
+    "parent_id": 127
+  },
+  {
+    "id": 402,
+    "name": "Belts",
+    "slug": "taekwondo-belts",
+    "parent_id": 127
+  },
+  {
+    "id": 403,
+    "name": "Singlets",
+    "slug": "wrestling-singlets",
+    "parent_id": 254
+  },
+  {
+    "id": 404,
+    "name": "Compression Tops",
+    "slug": "wrestling-compression-tops",
+    "parent_id": 254
+  },
+  {
+    "id": 405,
+    "name": "Training Shorts",
+    "slug": "wrestling-training-shorts",
+    "parent_id": 254
+  },
+  {
+    "id": 406,
+    "name": "Gym T-Shirts",
+    "slug": "gym-training-wear-gym-t-shirts",
+    "parent_id": 307
+  },
+  {
+    "id": 407,
+    "name": "Tank Tops",
+    "slug": "gym-training-wear-tank-tops",
+    "parent_id": 307
+  },
+  {
+    "id": 408,
+    "name": "Stringers",
+    "slug": "gym-training-wear-stringers",
+    "parent_id": 307
+  },
+  {
+    "id": 409,
+    "name": "Training Shorts",
+    "slug": "gym-training-wear-training-shorts",
+    "parent_id": 307
+  },
+  {
+    "id": 410,
+    "name": "Joggers",
+    "slug": "gym-training-wear-joggers",
+    "parent_id": 307
+  },
+  {
+    "id": 411,
+    "name": "Short-Sleeve Tops",
+    "slug": "compression-wear-short-sleeve-tops",
+    "parent_id": 308
+  },
+  {
+    "id": 412,
+    "name": "Long-Sleeve Tops",
+    "slug": "compression-wear-long-sleeve-tops",
+    "parent_id": 308
+  },
+  {
+    "id": 413,
+    "name": "Full-Length Tights",
+    "slug": "compression-wear-full-length-tights",
+    "parent_id": 308
+  },
+  {
+    "id": 414,
+    "name": "Sports Bras",
+    "slug": "womens-activewear-sports-bras",
+    "parent_id": 309
+  },
+  {
+    "id": 415,
+    "name": "Leggings",
+    "slug": "womens-activewear-leggings",
+    "parent_id": 309
+  },
+  {
+    "id": 416,
+    "name": "Workout Shorts",
+    "slug": "womens-activewear-workout-shorts",
+    "parent_id": 309
+  },
+  {
+    "id": 417,
+    "name": "Tank Tops",
+    "slug": "womens-activewear-tank-tops",
+    "parent_id": 309
+  },
+  {
+    "id": 418,
+    "name": "Matching Sets",
+    "slug": "womens-activewear-matching-sets",
+    "parent_id": 309
+  },
+  {
+    "id": 419,
+    "name": "Running Singlets",
+    "slug": "running-athletics-running-singlets",
+    "parent_id": 310
+  },
+  {
+    "id": 420,
+    "name": "Performance Shirts",
+    "slug": "running-athletics-performance-shirts",
+    "parent_id": 310
+  },
+  {
+    "id": 421,
+    "name": "Running Shorts",
+    "slug": "running-athletics-running-shorts",
+    "parent_id": 310
+  },
+  {
+    "id": 422,
+    "name": "Track Uniforms",
+    "slug": "running-athletics-track-uniforms",
+    "parent_id": 310
+  },
+  {
+    "id": 423,
+    "name": "Cycling Jerseys",
+    "slug": "cycling-wear-cycling-jerseys",
+    "parent_id": 311
+  },
+  {
+    "id": 424,
+    "name": "Bib Shorts",
+    "slug": "cycling-wear-bib-shorts",
+    "parent_id": 311
+  },
+  {
+    "id": 425,
+    "name": "Cycling Jackets",
+    "slug": "cycling-wear-cycling-jackets",
+    "parent_id": 311
+  },
+  {
+    "id": 426,
+    "name": "Crew-Neck T-Shirts",
+    "slug": "t-shirts-tops-crew-neck-t-shirts",
+    "parent_id": 312
+  },
+  {
+    "id": 427,
+    "name": "V-Neck T-Shirts",
+    "slug": "t-shirts-tops-v-neck-t-shirts",
+    "parent_id": 312
+  },
+  {
+    "id": 428,
+    "name": "Oversized T-Shirts",
+    "slug": "t-shirts-tops-oversized-t-shirts",
+    "parent_id": 312
+  },
+  {
+    "id": 429,
+    "name": "Polo Shirts",
+    "slug": "t-shirts-tops-polo-shirts",
+    "parent_id": 312
+  },
+  {
+    "id": 430,
+    "name": "Pullover Hoodies",
+    "slug": "hoodies-sweatshirts-pullover-hoodies",
+    "parent_id": 3
+  },
+  {
+    "id": 431,
+    "name": "Zip-Up Hoodies",
+    "slug": "hoodies-sweatshirts-zip-up-hoodies",
+    "parent_id": 3
+  },
+  {
+    "id": 432,
+    "name": "Oversized Hoodies",
+    "slug": "hoodies-sweatshirts-oversized-hoodies",
+    "parent_id": 3
+  },
+  {
+    "id": 433,
+    "name": "Crew-Neck Sweatshirts",
+    "slug": "hoodies-sweatshirts-crew-neck-sweatshirts",
+    "parent_id": 3
+  },
+  {
+    "id": 434,
+    "name": "Training Tracksuits",
+    "slug": "tracksuits-sets-training-tracksuits",
+    "parent_id": 313
+  },
+  {
+    "id": 435,
+    "name": "Hoodie & Jogger Sets",
+    "slug": "tracksuits-sets-hoodie-jogger-sets",
+    "parent_id": 313
+  },
+  {
+    "id": 436,
+    "name": "Sweatshirt & Shorts Sets",
+    "slug": "tracksuits-sets-sweatshirt-shorts-sets",
+    "parent_id": 313
+  },
+  {
+    "id": 437,
+    "name": "Joggers",
+    "slug": "pants-bottoms-joggers",
+    "parent_id": 314
+  },
+  {
+    "id": 438,
+    "name": "Track Pants",
+    "slug": "pants-bottoms-track-pants",
+    "parent_id": 314
+  },
+  {
+    "id": 439,
+    "name": "Casual Shorts",
+    "slug": "pants-bottoms-casual-shorts",
+    "parent_id": 314
+  },
+  {
+    "id": 440,
+    "name": "Wool Varsity Jackets",
+    "slug": "wool-varsity-jackets",
+    "parent_id": 72
+  },
+  {
+    "id": 441,
+    "name": "Fleece Varsity Jackets",
+    "slug": "fleece-varsity-jackets",
+    "parent_id": 72
+  },
+  {
+    "id": 442,
+    "name": "Leather-Sleeve Varsity Jackets",
+    "slug": "leather-sleeve-varsity-jackets",
+    "parent_id": 72
+  },
+  {
+    "id": 443,
+    "name": "Biker Jackets",
+    "slug": "leather-jackets-biker-jackets",
+    "parent_id": 223
+  },
+  {
+    "id": 444,
+    "name": "Bomber Jackets",
+    "slug": "leather-jackets-bomber-jackets",
+    "parent_id": 223
+  },
+  {
+    "id": 445,
+    "name": "Casual Leather Jackets",
+    "slug": "casual-leather-jackets",
+    "parent_id": 223
+  },
+  {
+    "id": 446,
+    "name": "Full-Zip Softshell Jackets",
+    "slug": "full-zip-softshell-jackets",
+    "parent_id": 315
+  },
+  {
+    "id": 447,
+    "name": "Hooded Softshell Jackets",
+    "slug": "hooded-softshell-jackets",
+    "parent_id": 315
+  },
+  {
+    "id": 448,
+    "name": "Hooded Windbreakers",
+    "slug": "hooded-windbreakers",
+    "parent_id": 316
+  },
+  {
+    "id": 449,
+    "name": "Full-Zip Windbreakers",
+    "slug": "full-zip-windbreakers",
+    "parent_id": 316
+  },
+  {
+    "id": 450,
+    "name": "Pullover Windbreakers",
+    "slug": "pullover-windbreakers",
+    "parent_id": 316
+  },
+  {
+    "id": 451,
+    "name": "Fleece Jackets",
+    "slug": "winter-wear-fleece-jackets",
+    "parent_id": 317
+  },
+  {
+    "id": 452,
+    "name": "Thermal Tops",
+    "slug": "winter-wear-thermal-tops",
+    "parent_id": 317
+  },
+  {
+    "id": 453,
+    "name": "Thermal Bottoms",
+    "slug": "winter-wear-thermal-bottoms",
+    "parent_id": 317
+  },
+  {
+    "id": 454,
+    "name": "Rain Jackets",
+    "slug": "rainwear-rain-jackets",
+    "parent_id": 318
+  },
+  {
+    "id": 455,
+    "name": "Waterproof Pants",
+    "slug": "rainwear-waterproof-pants",
+    "parent_id": 318
+  },
+  {
+    "id": 456,
+    "name": "Rain Suits",
+    "slug": "rainwear-rain-suits",
+    "parent_id": 318
+  },
+  {
+    "id": 457,
+    "name": "Lightweight Rain Shells",
+    "slug": "rainwear-lightweight-rain-shells",
+    "parent_id": 318
+  },
+  {
+    "id": 458,
+    "name": "Hockey Uniforms",
+    "slug": "youth-team-uniforms-hockey-uniforms",
+    "parent_id": 319
+  },
+  {
+    "id": 459,
+    "name": "Soccer Kits",
+    "slug": "youth-team-uniforms-soccer-kits",
+    "parent_id": 319
+  },
+  {
+    "id": 460,
+    "name": "Basketball Uniforms",
+    "slug": "youth-team-uniforms-basketball-uniforms",
+    "parent_id": 319
+  },
+  {
+    "id": 461,
+    "name": "Baseball Uniforms",
+    "slug": "youth-team-uniforms-baseball-uniforms",
+    "parent_id": 319
+  },
+  {
+    "id": 462,
+    "name": "Training Shirts",
+    "slug": "kids-activewear-training-shirts",
+    "parent_id": 320
+  },
+  {
+    "id": 463,
+    "name": "Training Shorts",
+    "slug": "kids-activewear-training-shorts",
+    "parent_id": 320
+  },
+  {
+    "id": 464,
+    "name": "Leggings",
+    "slug": "kids-activewear-leggings",
+    "parent_id": 320
+  },
+  {
+    "id": 465,
+    "name": "Joggers",
+    "slug": "kids-activewear-joggers",
+    "parent_id": 320
+  },
+  {
+    "id": 466,
+    "name": "Crew-Neck T-Shirts",
+    "slug": "kids-t-shirts-crew-neck-t-shirts",
+    "parent_id": 321
+  },
+  {
+    "id": 467,
+    "name": "Polo Shirts",
+    "slug": "kids-t-shirts-polo-shirts",
+    "parent_id": 321
+  },
+  {
+    "id": 468,
+    "name": "Printed T-Shirts",
+    "slug": "kids-t-shirts-printed-t-shirts",
+    "parent_id": 321
+  },
+  {
+    "id": 469,
+    "name": "Pullover Hoodies",
+    "slug": "kids-hoodies-pullover-hoodies",
+    "parent_id": 322
+  },
+  {
+    "id": 470,
+    "name": "Zip-Up Hoodies",
+    "slug": "kids-hoodies-zip-up-hoodies",
+    "parent_id": 322
+  },
+  {
+    "id": 471,
+    "name": "Sweatshirts",
+    "slug": "kids-hoodies-sweatshirts",
+    "parent_id": 322
+  },
+  {
+    "id": 472,
+    "name": "Training Tracksuits",
+    "slug": "kids-tracksuits-training-tracksuits",
+    "parent_id": 323
+  },
+  {
+    "id": 473,
+    "name": "Hoodie & Jogger Sets",
+    "slug": "kids-tracksuits-hoodie-jogger-sets",
+    "parent_id": 323
+  },
+  {
+    "id": 474,
+    "name": "Sweat Suits",
+    "slug": "kids-tracksuits-sweat-suits",
+    "parent_id": 323
+  },
+  {
+    "id": 475,
+    "name": "Scrub Tops",
+    "slug": "medical-scrubs-scrub-tops",
+    "parent_id": 324
+  },
+  {
+    "id": 476,
+    "name": "Scrub Pants",
+    "slug": "medical-scrubs-scrub-pants",
+    "parent_id": 324
+  },
+  {
+    "id": 477,
+    "name": "Complete Scrub Sets",
+    "slug": "medical-scrubs-complete-scrub-sets",
+    "parent_id": 324
+  },
+  {
+    "id": 478,
+    "name": "Work Shirts",
+    "slug": "work-uniforms-work-shirts",
+    "parent_id": 325
+  },
+  {
+    "id": 479,
+    "name": "Work Trousers",
+    "slug": "work-uniforms-work-trousers",
+    "parent_id": 325
+  },
+  {
+    "id": 480,
+    "name": "Work Jackets",
+    "slug": "work-uniforms-work-jackets",
+    "parent_id": 325
+  },
+  {
+    "id": 481,
+    "name": "Short-Sleeve Polos",
+    "slug": "work-polo-shirts-short-sleeve-polos",
+    "parent_id": 326
+  },
+  {
+    "id": 482,
+    "name": "Long-Sleeve Polos",
+    "slug": "work-polo-shirts-long-sleeve-polos",
+    "parent_id": 326
+  },
+  {
+    "id": 483,
+    "name": "Embroidered Logo Polos",
+    "slug": "work-polo-shirts-embroidered-logo-polos",
+    "parent_id": 326
+  },
+  {
+    "id": 484,
+    "name": "Hockey Socks",
+    "slug": "team-socks-hockey-socks",
+    "parent_id": 327
+  },
+  {
+    "id": 485,
+    "name": "Soccer Socks",
+    "slug": "team-socks-soccer-socks",
+    "parent_id": 327
+  },
+  {
+    "id": 486,
+    "name": "Training Socks",
+    "slug": "team-socks-training-socks",
+    "parent_id": 327
+  },
+  {
+    "id": 487,
+    "name": "Single-Layer Bibs",
+    "slug": "training-bibs-single-layer-bibs",
+    "parent_id": 209
+  },
+  {
+    "id": 488,
+    "name": "Reversible Bibs",
+    "slug": "training-bibs-reversible-bibs",
+    "parent_id": 209
+  },
+  {
+    "id": 489,
+    "name": "Mesh Bibs",
+    "slug": "training-bibs-mesh-bibs",
+    "parent_id": 209
+  },
+  {
+    "id": 490,
+    "name": "Baseball Caps",
+    "slug": "baseball-caps",
+    "parent_id": 200
+  },
+  {
+    "id": 491,
+    "name": "Trucker Caps",
+    "slug": "trucker-caps",
+    "parent_id": 200
+  },
+  {
+    "id": 492,
+    "name": "Sports Visors",
+    "slug": "caps-sports-visors",
+    "parent_id": 200
+  },
+  {
+    "id": 493,
+    "name": "Sports Headbands",
+    "slug": "sports-headbands",
+    "parent_id": 328
+  },
+  {
+    "id": 494,
+    "name": "Running Headbands",
+    "slug": "running-headbands",
+    "parent_id": 328
+  },
+  {
+    "id": 495,
+    "name": "Winter Headbands",
+    "slug": "winter-headbands",
+    "parent_id": 328
+  },
+  {
+    "id": 496,
+    "name": "Sweatbands",
+    "slug": "wristbands-sweatbands",
+    "parent_id": 329
+  },
+  {
+    "id": 497,
+    "name": "Embroidered Wristbands",
+    "slug": "embroidered-wristbands",
+    "parent_id": 329
+  },
+  {
+    "id": 498,
+    "name": "Printed Wristbands",
+    "slug": "printed-wristbands",
+    "parent_id": 329
+  },
+  {
+    "id": 499,
+    "name": "Youth Hockey Gloves",
+    "slug": "youth-hockey-gloves",
+    "parent_id": 330
+  },
+  {
+    "id": 500,
+    "name": "Senior Hockey Gloves",
+    "slug": "senior-hockey-gloves",
+    "parent_id": 330
+  },
+  {
+    "id": 501,
+    "name": "Practice Hockey Gloves",
+    "slug": "practice-hockey-gloves",
+    "parent_id": 330
+  },
+  {
+    "id": 502,
+    "name": "Training Gloves",
+    "slug": "training-gloves",
+    "parent_id": 331
+  },
+  {
+    "id": 503,
+    "name": "Match Gloves",
+    "slug": "match-gloves",
+    "parent_id": 331
+  },
+  {
+    "id": 504,
+    "name": "Finger-Protection Gloves",
+    "slug": "finger-protection-gloves",
+    "parent_id": 331
+  },
+  {
+    "id": 505,
+    "name": "Youth Batting Gloves",
+    "slug": "youth-batting-gloves",
+    "parent_id": 332
+  },
+  {
+    "id": 506,
+    "name": "Adult Batting Gloves",
+    "slug": "adult-batting-gloves",
+    "parent_id": 332
+  },
+  {
+    "id": 507,
+    "name": "Training Batting Gloves",
+    "slug": "training-batting-gloves",
+    "parent_id": 332
+  },
+  {
+    "id": 508,
+    "name": "Youth Batting Gloves",
+    "slug": "baseball-batting-gloves-youth-batting-gloves",
+    "parent_id": 333
+  },
+  {
+    "id": 509,
+    "name": "Adult Batting Gloves",
+    "slug": "baseball-batting-gloves-adult-batting-gloves",
+    "parent_id": 333
+  },
+  {
+    "id": 510,
+    "name": "Training Gloves",
+    "slug": "boxing-gloves-training-gloves",
+    "parent_id": 334
+  },
+  {
+    "id": 511,
+    "name": "Sparring Gloves",
+    "slug": "sparring-gloves",
+    "parent_id": 334
+  },
+  {
+    "id": 512,
+    "name": "Bag Gloves",
+    "slug": "bag-gloves",
+    "parent_id": 334
+  },
+  {
+    "id": 513,
+    "name": "Competition Gloves",
+    "slug": "competition-gloves",
+    "parent_id": 335
+  },
+  {
+    "id": 514,
+    "name": "Sparring Gloves",
+    "slug": "mma-gloves-sparring-gloves",
+    "parent_id": 335
+  },
+  {
+    "id": 515,
+    "name": "Training Gloves",
+    "slug": "mma-gloves-training-gloves",
+    "parent_id": 335
+  },
+  {
+    "id": 516,
+    "name": "Fingerless Gym Gloves",
+    "slug": "fingerless-gym-gloves",
+    "parent_id": 336
+  },
+  {
+    "id": 517,
+    "name": "Full-Finger Gym Gloves",
+    "slug": "full-finger-gym-gloves",
+    "parent_id": 336
+  },
+  {
+    "id": 518,
+    "name": "Wrist-Support Gloves",
+    "slug": "wrist-support-gloves",
+    "parent_id": 336
+  },
+  {
+    "id": 519,
+    "name": "Short-Finger Cycling Gloves",
+    "slug": "short-finger-cycling-gloves",
+    "parent_id": 337
+  },
+  {
+    "id": 520,
+    "name": "Full-Finger Cycling Gloves",
+    "slug": "full-finger-cycling-gloves",
+    "parent_id": 337
+  },
+  {
+    "id": 521,
+    "name": "Winter Cycling Gloves",
+    "slug": "winter-cycling-gloves",
+    "parent_id": 337
+  },
+  {
+    "id": 522,
+    "name": "Fleece Gloves",
+    "slug": "fleece-gloves",
+    "parent_id": 338
+  },
+  {
+    "id": 523,
+    "name": "Insulated Gloves",
+    "slug": "insulated-gloves",
+    "parent_id": 338
+  },
+  {
+    "id": 524,
+    "name": "Touchscreen Gloves",
+    "slug": "touchscreen-gloves",
+    "parent_id": 338
+  },
+  {
+    "id": 525,
+    "name": "General Work Gloves",
+    "slug": "general-work-gloves",
+    "parent_id": 339
+  },
+  {
+    "id": 526,
+    "name": "Leather Work Gloves",
+    "slug": "leather-work-gloves",
+    "parent_id": 339
+  },
+  {
+    "id": 527,
+    "name": "Grip Gloves",
+    "slug": "grip-gloves",
+    "parent_id": 339
+  }
+]

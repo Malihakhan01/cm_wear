@@ -1,0 +1,1334 @@
+[
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Ice Hockey",
+    "subId": 23,
+    "productType": "Game Jerseys",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Ice Hockey",
+    "subId": 23,
+    "productType": "Hockey Socks",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Ice Hockey",
+    "subId": 23,
+    "productType": "Shell Pants",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Soccer & Football",
+    "subId": 298,
+    "productType": "Team Kits",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Soccer & Football",
+    "subId": 298,
+    "productType": "Jerseys",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Soccer & Football",
+    "subId": 298,
+    "productType": "Shorts",
+    "status": "exists_elsewhere",
+    "existingId": 6,
+    "existingParent": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Soccer & Football",
+    "subId": 298,
+    "productType": "Training Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Soccer & Football",
+    "subId": 298,
+    "productType": "Goalkeeper Uniforms",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "American Football",
+    "subId": 299,
+    "productType": "Game Jerseys",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "American Football",
+    "subId": 299,
+    "productType": "Practice Jerseys",
+    "status": "exists_elsewhere",
+    "existingId": 246,
+    "existingParent": 23
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "American Football",
+    "subId": 299,
+    "productType": "Football Pants",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "American Football",
+    "subId": 299,
+    "productType": "Compression Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Basketball",
+    "subId": 46,
+    "productType": "Jerseys",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Basketball",
+    "subId": 46,
+    "productType": "Shorts",
+    "status": "exists_elsewhere",
+    "existingId": 6,
+    "existingParent": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Basketball",
+    "subId": 46,
+    "productType": "Complete Uniforms",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Basketball",
+    "subId": 46,
+    "productType": "Reversible Bibs",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Basketball",
+    "subId": 46,
+    "productType": "Warm-Up Suits",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Baseball & Softball",
+    "subId": 300,
+    "productType": "Button-Up Jerseys",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Baseball & Softball",
+    "subId": 300,
+    "productType": "Pullover Jerseys",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Baseball & Softball",
+    "subId": 300,
+    "productType": "Pants",
+    "status": "exists_elsewhere",
+    "existingId": 178,
+    "existingParent": 314
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Baseball & Softball",
+    "subId": 300,
+    "productType": "Training Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Cricket",
+    "subId": 301,
+    "productType": "Match Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Cricket",
+    "subId": 301,
+    "productType": "T20 Jerseys",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Cricket",
+    "subId": 301,
+    "productType": "Trousers",
+    "status": "exists_elsewhere",
+    "existingId": 182,
+    "existingParent": 314
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Cricket",
+    "subId": 301,
+    "productType": "Training Kits",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Rugby",
+    "subId": 39,
+    "productType": "Match Jerseys",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Rugby",
+    "subId": 39,
+    "productType": "Shorts",
+    "status": "exists_elsewhere",
+    "existingId": 6,
+    "existingParent": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Rugby",
+    "subId": 39,
+    "productType": "Training Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Rugby",
+    "subId": 39,
+    "productType": "Team Kits",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Lacrosse",
+    "subId": 81,
+    "productType": "Game Jerseys",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Lacrosse",
+    "subId": 81,
+    "productType": "Shorts",
+    "status": "exists_elsewhere",
+    "existingId": 6,
+    "existingParent": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Lacrosse",
+    "subId": 81,
+    "productType": "Practice Pinnies",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Lacrosse",
+    "subId": 81,
+    "productType": "Team Kits",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Volleyball",
+    "subId": 266,
+    "productType": "Jerseys",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Volleyball",
+    "subId": 266,
+    "productType": "Shorts",
+    "status": "exists_elsewhere",
+    "existingId": 6,
+    "existingParent": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Volleyball",
+    "subId": 266,
+    "productType": "Team Kits",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Volleyball",
+    "subId": 266,
+    "productType": "Training Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Tennis & Golf",
+    "subId": 302,
+    "productType": "Performance Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Tennis & Golf",
+    "subId": 302,
+    "productType": "Shorts",
+    "status": "exists_elsewhere",
+    "existingId": 6,
+    "existingParent": 1
+  },
+  {
+    "pillar": "Team Sports Wear",
+    "subName": "Tennis & Golf",
+    "subId": 302,
+    "productType": "Skorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "BJJ & Grappling",
+    "subId": 303,
+    "productType": "BJJ Gis",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "BJJ & Grappling",
+    "subId": 303,
+    "productType": "Rash Guards",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "BJJ & Grappling",
+    "subId": 303,
+    "productType": "Grappling Shorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "BJJ & Grappling",
+    "subId": 303,
+    "productType": "Spats",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "MMA",
+    "subId": 304,
+    "productType": "Fight Shorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "MMA",
+    "subId": 304,
+    "productType": "Rash Guards",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "MMA",
+    "subId": 304,
+    "productType": "Compression Shorts",
+    "status": "exists_elsewhere",
+    "existingId": 214,
+    "existingParent": 308
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "MMA",
+    "subId": 304,
+    "productType": "Training Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Boxing & Muay Thai",
+    "subId": 305,
+    "productType": "Boxing Shorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Boxing & Muay Thai",
+    "subId": 305,
+    "productType": "Muay Thai Shorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Boxing & Muay Thai",
+    "subId": 305,
+    "productType": "Boxing Singlets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Boxing & Muay Thai",
+    "subId": 305,
+    "productType": "Training Tracksuits",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Karate",
+    "subId": 125,
+    "productType": "Training Gis",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Karate",
+    "subId": 125,
+    "productType": "Competition Gis",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Karate",
+    "subId": 125,
+    "productType": "Belts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Judo",
+    "subId": 306,
+    "productType": "Training Gis",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Judo",
+    "subId": 306,
+    "productType": "Competition Gis",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Judo",
+    "subId": 306,
+    "productType": "Belts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Taekwondo",
+    "subId": 127,
+    "productType": "Training Doboks",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Taekwondo",
+    "subId": 127,
+    "productType": "Competition Doboks",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Taekwondo",
+    "subId": 127,
+    "productType": "Belts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Wrestling",
+    "subId": 254,
+    "productType": "Singlets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Wrestling",
+    "subId": 254,
+    "productType": "Compression Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Martial Arts & Combat Wear",
+    "subName": "Wrestling",
+    "subId": 254,
+    "productType": "Training Shorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Gym & Training Wear",
+    "subId": 307,
+    "productType": "Gym T-Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Gym & Training Wear",
+    "subId": 307,
+    "productType": "Tank Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Gym & Training Wear",
+    "subId": 307,
+    "productType": "Stringers",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Gym & Training Wear",
+    "subId": 307,
+    "productType": "Training Shorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Gym & Training Wear",
+    "subId": 307,
+    "productType": "Joggers",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Compression Wear",
+    "subId": 308,
+    "productType": "Short-Sleeve Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Compression Wear",
+    "subId": 308,
+    "productType": "Long-Sleeve Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Compression Wear",
+    "subId": 308,
+    "productType": "Full-Length Tights",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Women’s Activewear",
+    "subId": 309,
+    "productType": "Sports Bras",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Women’s Activewear",
+    "subId": 309,
+    "productType": "Leggings",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Women’s Activewear",
+    "subId": 309,
+    "productType": "Workout Shorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Women’s Activewear",
+    "subId": 309,
+    "productType": "Tank Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Women’s Activewear",
+    "subId": 309,
+    "productType": "Matching Sets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Running & Athletics",
+    "subId": 310,
+    "productType": "Running Singlets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Running & Athletics",
+    "subId": 310,
+    "productType": "Performance Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Running & Athletics",
+    "subId": 310,
+    "productType": "Running Shorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Running & Athletics",
+    "subId": 310,
+    "productType": "Track Uniforms",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Cycling Wear",
+    "subId": 311,
+    "productType": "Cycling Jerseys",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Cycling Wear",
+    "subId": 311,
+    "productType": "Bib Shorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Activewear & Fitness",
+    "subName": "Cycling Wear",
+    "subId": 311,
+    "productType": "Cycling Jackets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "T-Shirts & Tops",
+    "subId": 312,
+    "productType": "Crew-Neck T-Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "T-Shirts & Tops",
+    "subId": 312,
+    "productType": "V-Neck T-Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "T-Shirts & Tops",
+    "subId": 312,
+    "productType": "Oversized T-Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "T-Shirts & Tops",
+    "subId": 312,
+    "productType": "Polo Shirts",
+    "status": "exists_elsewhere",
+    "existingId": 221,
+    "existingParent": 302
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Hoodies & Sweatshirts",
+    "subId": 3,
+    "productType": "Pullover Hoodies",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Hoodies & Sweatshirts",
+    "subId": 3,
+    "productType": "Zip-Up Hoodies",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Hoodies & Sweatshirts",
+    "subId": 3,
+    "productType": "Oversized Hoodies",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Hoodies & Sweatshirts",
+    "subId": 3,
+    "productType": "Crew-Neck Sweatshirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Tracksuits & Matching Sets",
+    "subId": 313,
+    "productType": "Training Tracksuits",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Tracksuits & Matching Sets",
+    "subId": 313,
+    "productType": "Hoodie & Jogger Sets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Tracksuits & Matching Sets",
+    "subId": 313,
+    "productType": "Sweatshirt & Shorts Sets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Pants & Bottoms",
+    "subId": 314,
+    "productType": "Joggers",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Pants & Bottoms",
+    "subId": 314,
+    "productType": "Track Pants",
+    "status": "missing"
+  },
+  {
+    "pillar": "Casual & Lifestyle Wear",
+    "subName": "Pants & Bottoms",
+    "subId": 314,
+    "productType": "Casual Shorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Varsity Jackets",
+    "subId": 72,
+    "productType": "Wool Varsity Jackets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Varsity Jackets",
+    "subId": 72,
+    "productType": "Fleece Varsity Jackets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Varsity Jackets",
+    "subId": 72,
+    "productType": "Leather-Sleeve Varsity Jackets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Leather Jackets",
+    "subId": 223,
+    "productType": "Biker Jackets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Leather Jackets",
+    "subId": 223,
+    "productType": "Bomber Jackets",
+    "status": "exists_elsewhere",
+    "existingId": 211,
+    "existingParent": 72
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Leather Jackets",
+    "subId": 223,
+    "productType": "Casual Leather Jackets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Softshell Jackets",
+    "subId": 315,
+    "productType": "Full-Zip Softshell Jackets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Softshell Jackets",
+    "subId": 315,
+    "productType": "Hooded Softshell Jackets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Windbreakers",
+    "subId": 316,
+    "productType": "Hooded Windbreakers",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Windbreakers",
+    "subId": 316,
+    "productType": "Full-Zip Windbreakers",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Windbreakers",
+    "subId": 316,
+    "productType": "Pullover Windbreakers",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Winter Wear",
+    "subId": 317,
+    "productType": "Fleece Jackets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Winter Wear",
+    "subId": 317,
+    "productType": "Thermal Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Winter Wear",
+    "subId": 317,
+    "productType": "Thermal Bottoms",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Rainwear",
+    "subId": 318,
+    "productType": "Rain Jackets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Rainwear",
+    "subId": 318,
+    "productType": "Waterproof Pants",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Rainwear",
+    "subId": 318,
+    "productType": "Rain Suits",
+    "status": "missing"
+  },
+  {
+    "pillar": "Jackets & Outerwear",
+    "subName": "Rainwear",
+    "subId": 318,
+    "productType": "Lightweight Rain Shells",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Youth Team Uniforms",
+    "subId": 319,
+    "productType": "Hockey Uniforms",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Youth Team Uniforms",
+    "subId": 319,
+    "productType": "Soccer Kits",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Youth Team Uniforms",
+    "subId": 319,
+    "productType": "Basketball Uniforms",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Youth Team Uniforms",
+    "subId": 319,
+    "productType": "Baseball Uniforms",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Activewear",
+    "subId": 320,
+    "productType": "Training Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Activewear",
+    "subId": 320,
+    "productType": "Training Shorts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Activewear",
+    "subId": 320,
+    "productType": "Leggings",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Activewear",
+    "subId": 320,
+    "productType": "Joggers",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ T-Shirts",
+    "subId": 321,
+    "productType": "Crew-Neck T-Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ T-Shirts",
+    "subId": 321,
+    "productType": "Polo Shirts",
+    "status": "exists_elsewhere",
+    "existingId": 221,
+    "existingParent": 302
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ T-Shirts",
+    "subId": 321,
+    "productType": "Printed T-Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Hoodies",
+    "subId": 322,
+    "productType": "Pullover Hoodies",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Hoodies",
+    "subId": 322,
+    "productType": "Zip-Up Hoodies",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Hoodies",
+    "subId": 322,
+    "productType": "Sweatshirts",
+    "status": "exists_elsewhere",
+    "existingId": 183,
+    "existingParent": 3
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Tracksuits",
+    "subId": 323,
+    "productType": "Training Tracksuits",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Tracksuits",
+    "subId": 323,
+    "productType": "Hoodie & Jogger Sets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Kids & Youth Wear",
+    "subName": "Kids’ Tracksuits",
+    "subId": 323,
+    "productType": "Sweat Suits",
+    "status": "exists_elsewhere",
+    "existingId": 179,
+    "existingParent": 313
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Medical Scrubs",
+    "subId": 324,
+    "productType": "Scrub Tops",
+    "status": "missing"
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Medical Scrubs",
+    "subId": 324,
+    "productType": "Scrub Pants",
+    "status": "missing"
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Medical Scrubs",
+    "subId": 324,
+    "productType": "Complete Scrub Sets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Uniforms",
+    "subId": 325,
+    "productType": "Work Shirts",
+    "status": "missing"
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Uniforms",
+    "subId": 325,
+    "productType": "Work Trousers",
+    "status": "missing"
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Uniforms",
+    "subId": 325,
+    "productType": "Work Jackets",
+    "status": "missing"
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Polo Shirts",
+    "subId": 326,
+    "productType": "Short-Sleeve Polos",
+    "status": "missing"
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Polo Shirts",
+    "subId": 326,
+    "productType": "Long-Sleeve Polos",
+    "status": "missing"
+  },
+  {
+    "pillar": "Workwear & Medical Wear",
+    "subName": "Work Polo Shirts",
+    "subId": 326,
+    "productType": "Embroidered Logo Polos",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Team Socks",
+    "subId": 327,
+    "productType": "Hockey Socks",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Team Socks",
+    "subId": 327,
+    "productType": "Soccer Socks",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Team Socks",
+    "subId": 327,
+    "productType": "Training Socks",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Training Bibs",
+    "subId": 209,
+    "productType": "Single-Layer Bibs",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Training Bibs",
+    "subId": 209,
+    "productType": "Reversible Bibs",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Training Bibs",
+    "subId": 209,
+    "productType": "Mesh Bibs",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Caps",
+    "subId": 200,
+    "productType": "Baseball Caps",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Caps",
+    "subId": 200,
+    "productType": "Trucker Caps",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Caps",
+    "subId": 200,
+    "productType": "Sports Visors",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Headbands",
+    "subId": 328,
+    "productType": "Sports Headbands",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Headbands",
+    "subId": 328,
+    "productType": "Running Headbands",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Headbands",
+    "subId": 328,
+    "productType": "Winter Headbands",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Wristbands",
+    "subId": 329,
+    "productType": "Sweatbands",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Wristbands",
+    "subId": 329,
+    "productType": "Embroidered Wristbands",
+    "status": "missing"
+  },
+  {
+    "pillar": "Sports Accessories",
+    "subName": "Wristbands",
+    "subId": 329,
+    "productType": "Printed Wristbands",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Ice Hockey Gloves",
+    "subId": 330,
+    "productType": "Youth Hockey Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Ice Hockey Gloves",
+    "subId": 330,
+    "productType": "Senior Hockey Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Ice Hockey Gloves",
+    "subId": 330,
+    "productType": "Practice Hockey Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Goalkeeper Gloves",
+    "subId": 331,
+    "productType": "Training Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Goalkeeper Gloves",
+    "subId": 331,
+    "productType": "Match Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Goalkeeper Gloves",
+    "subId": 331,
+    "productType": "Finger-Protection Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cricket Batting Gloves",
+    "subId": 332,
+    "productType": "Youth Batting Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cricket Batting Gloves",
+    "subId": 332,
+    "productType": "Adult Batting Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cricket Batting Gloves",
+    "subId": 332,
+    "productType": "Training Batting Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Baseball Batting Gloves",
+    "subId": 333,
+    "productType": "Youth Batting Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Baseball Batting Gloves",
+    "subId": 333,
+    "productType": "Adult Batting Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Boxing Gloves",
+    "subId": 334,
+    "productType": "Training Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Boxing Gloves",
+    "subId": 334,
+    "productType": "Sparring Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Boxing Gloves",
+    "subId": 334,
+    "productType": "Bag Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "MMA Gloves",
+    "subId": 335,
+    "productType": "Competition Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "MMA Gloves",
+    "subId": 335,
+    "productType": "Sparring Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "MMA Gloves",
+    "subId": 335,
+    "productType": "Training Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Gym & Weightlifting Gloves",
+    "subId": 336,
+    "productType": "Fingerless Gym Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Gym & Weightlifting Gloves",
+    "subId": 336,
+    "productType": "Full-Finger Gym Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Gym & Weightlifting Gloves",
+    "subId": 336,
+    "productType": "Wrist-Support Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cycling Gloves",
+    "subId": 337,
+    "productType": "Short-Finger Cycling Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cycling Gloves",
+    "subId": 337,
+    "productType": "Full-Finger Cycling Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Cycling Gloves",
+    "subId": 337,
+    "productType": "Winter Cycling Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Winter Gloves",
+    "subId": 338,
+    "productType": "Fleece Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Winter Gloves",
+    "subId": 338,
+    "productType": "Insulated Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Winter Gloves",
+    "subId": 338,
+    "productType": "Touchscreen Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Work Gloves",
+    "subId": 339,
+    "productType": "General Work Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Work Gloves",
+    "subId": 339,
+    "productType": "Leather Work Gloves",
+    "status": "missing"
+  },
+  {
+    "pillar": "Gloves",
+    "subName": "Work Gloves",
+    "subId": 339,
+    "productType": "Grip Gloves",
+    "status": "missing"
+  }
+]

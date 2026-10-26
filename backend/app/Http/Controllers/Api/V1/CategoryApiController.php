@@ -11,7 +11,13 @@ class CategoryApiController extends Controller
     {
         $categories = Category::whereNull('parent_id')
             ->where('is_active', true)
-            ->with(['children' => fn($q) => $q->where('is_active', true)->withCount('products')])
+            ->with([
+                'children' => fn($q) => $q->where('is_active', true)
+                    ->with(['children' => fn($q2) => $q2->where('is_active', true)->withCount('products')->orderBy('sort_order')->orderBy('name')])
+                    ->withCount('products')
+                    ->orderBy('sort_order')
+                    ->orderBy('name')
+            ])
             ->withCount('products')
             ->orderBy('sort_order')
             ->orderBy('name')

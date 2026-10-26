@@ -12,16 +12,29 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::whereNull('parent_id')
-            ->with(['children' => fn($q) => $q->withCount('products')])
+            ->with([
+                'children' => fn($q) => $q->withCount('products')
+                    ->orderByRaw('CASE WHEN sort_order > 0 THEN 0 ELSE 1 END, sort_order ASC, name ASC')
+                    ->with([
+                        'children' => fn($cq) => $cq->withCount('products')
+                            ->orderByRaw('CASE WHEN sort_order > 0 THEN 0 ELSE 1 END, sort_order ASC, name ASC')
+                    ])
+            ])
             ->withCount('products')
-            ->orderBy('sort_order')
+            ->orderByRaw('CASE WHEN sort_order > 0 THEN 0 ELSE 1 END, sort_order ASC, name ASC')
             ->get();
 
         $totalCategories = Category::count();
         $totalParents = $categories->count();
         $totalSubcategories = Category::whereNotNull('parent_id')->count();
 
-        return view('admin.categories.index', compact('categories', 'totalCategories', 'totalParents', 'totalSubcategories'));
+        // For parent select dropdown (Level 1 pillars and Level 2 subcategories)
+        $parentCategories = Category::whereNull('parent_id')
+            ->orderByRaw('CASE WHEN sort_order > 0 THEN 0 ELSE 1 END, sort_order ASC, name ASC')
+            ->with(['children' => fn($q) => $q->orderByRaw('CASE WHEN sort_order > 0 THEN 0 ELSE 1 END, sort_order ASC, name ASC')])
+            ->get();
+
+        return view('admin.categories.index', compact('categories', 'totalCategories', 'totalParents', 'totalSubcategories', 'parentCategories'));
     }
 
     public function store(Request $request)

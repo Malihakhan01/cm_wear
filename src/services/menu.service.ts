@@ -93,6 +93,57 @@ function enrichPillarsWithTaxonomy(pillars: MegaMenuPillar[]): MegaMenuPillar[] 
 
 let cachedMenu: MegaMenuPillar[] | null = null;
 
+function extractCategoryCounts(cats: any[]): Map<string, number> {
+  const map = new Map<string, number>();
+  function traverse(list: any[]) {
+    if (!Array.isArray(list)) return;
+    for (const item of list) {
+      if (item && item.slug) {
+        map.set(item.slug.toLowerCase(), Number(item.products_count ?? 0));
+        map.set(item.slug.toLowerCase().replace(/[^a-z0-9]/g, ""), Number(item.products_count ?? 0));
+      }
+      if (item && item.id) {
+        map.set(String(item.id), Number(item.products_count ?? 0));
+      }
+      if (item && item.children) {
+        traverse(item.children);
+      }
+    }
+  }
+  traverse(cats);
+  return map;
+}
+
+function updateTaxonomyCounts(pillars: MegaMenuPillar[], countMap: Map<string, number>): MegaMenuPillar[] {
+  return pillars.map((p) => {
+    if (!p.groups) return p;
+    const updatedGroups = p.groups.map((g) => {
+      const updatedPts = g.productTypes.map((pt) => {
+        let liveCount = pt.productCount;
+        for (const s of pt.slugs || []) {
+          const direct = countMap.get(s.toLowerCase()) ?? countMap.get(s.toLowerCase().replace(/[^a-z0-9]/g, ""));
+          if (direct !== undefined) {
+            liveCount = direct;
+            break;
+          }
+        }
+        return {
+          ...pt,
+          productCount: liveCount,
+        };
+      });
+      return {
+        ...g,
+        productTypes: updatedPts,
+      };
+    });
+    return {
+      ...p,
+      groups: updatedGroups,
+    };
+  });
+}
+
 export const menuService = {
   getCachedMenu(): MegaMenuPillar[] {
     if (cachedMenu && cachedMenu.length > 0) {
@@ -135,26 +186,41 @@ export const menuService = {
     }
 
     try {
-      const res = await apiClient.get<MenuApiResponse>(`/menu/header?_t=${Date.now()}`, {
-        timeoutMs: 6000,
-        cache: "no-store" as RequestCache,
-        headers: { "Cache-Control": "no-cache" },
-      });
+      const [res, catsRes] = await Promise.allSettled([
+        apiClient.get<MenuApiResponse>(`/menu/header?_t=${Date.now()}`, {
+          timeoutMs: 6000,
+          cache: "no-store" as RequestCache,
+          headers: { "Cache-Control": "no-cache" },
+        }),
+        apiClient.get<{ data?: any[] }>(`/categories?_t=${Date.now()}`, {
+          timeoutMs: 6000,
+          cache: "no-store" as RequestCache,
+          headers: { "Cache-Control": "no-cache" },
+        }),
+      ]);
 
-      if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
-        const enriched = enrichPillarsWithTaxonomy(res.data);
-        const hasChanged = JSON.stringify(cachedMenu) !== JSON.stringify(enriched);
-        cachedMenu = enriched;
-        if (typeof window !== "undefined") {
-          try {
-            localStorage.setItem("cm_header_mega_menu_v3", JSON.stringify(enriched));
-            if (hasChanged) {
-              window.dispatchEvent(new CustomEvent("cm_menu_updated", { detail: enriched }));
-            }
-          } catch (e) {}
-        }
-        return enriched;
+      let basePillars: MegaMenuPillar[] = MEGA_MENU_TAXONOMY;
+      if (res.status === "fulfilled" && res.value && res.value.success && Array.isArray(res.value.data) && res.value.data.length > 0) {
+        basePillars = res.value.data;
       }
+      let enriched = enrichPillarsWithTaxonomy(basePillars);
+
+      if (catsRes.status === "fulfilled" && catsRes.value?.data && Array.isArray(catsRes.value.data)) {
+        const countMap = extractCategoryCounts(catsRes.value.data);
+        enriched = updateTaxonomyCounts(enriched, countMap);
+      }
+
+      const hasChanged = JSON.stringify(cachedMenu) !== JSON.stringify(enriched);
+      cachedMenu = enriched;
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem("cm_header_mega_menu_v3", JSON.stringify(enriched));
+          if (hasChanged) {
+            window.dispatchEvent(new CustomEvent("cm_menu_updated", { detail: enriched }));
+          }
+        } catch (e) {}
+      }
+      return enriched;
     } catch (e) {
       console.warn("Could not fetch live header mega menu, using taxonomy fallback:", e);
     }
@@ -170,25 +236,37 @@ export const menuService = {
 
   revalidateInBackground(): void {
     if (typeof window === "undefined") return;
-    apiClient
-      .get<MenuApiResponse>(`/menu/header?_t=${Date.now()}`, {
+    Promise.allSettled([
+      apiClient.get<MenuApiResponse>(`/menu/header?_t=${Date.now()}`, {
         timeoutMs: 6000,
         cache: "no-store" as RequestCache,
         headers: { "Cache-Control": "no-cache" },
-      })
-      .then((res) => {
-        if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
-          const enriched = enrichPillarsWithTaxonomy(res.data);
-          const hasChanged = JSON.stringify(cachedMenu) !== JSON.stringify(enriched);
-          if (hasChanged) {
-            cachedMenu = enriched;
-            try {
-              localStorage.setItem("cm_header_mega_menu_v3", JSON.stringify(enriched));
-            } catch (e) {}
-            window.dispatchEvent(new CustomEvent("cm_menu_updated", { detail: enriched }));
-          }
-        }
-      })
-      .catch(() => {});
+      }),
+      apiClient.get<{ data?: any[] }>(`/categories?_t=${Date.now()}`, {
+        timeoutMs: 6000,
+        cache: "no-store" as RequestCache,
+        headers: { "Cache-Control": "no-cache" },
+      }),
+    ]).then(([res, catsRes]) => {
+      let basePillars: MegaMenuPillar[] = MEGA_MENU_TAXONOMY;
+      if (res.status === "fulfilled" && res.value && res.value.success && Array.isArray(res.value.data) && res.value.data.length > 0) {
+        basePillars = res.value.data;
+      }
+      let enriched = enrichPillarsWithTaxonomy(basePillars);
+
+      if (catsRes.status === "fulfilled" && catsRes.value?.data && Array.isArray(catsRes.value.data)) {
+        const countMap = extractCategoryCounts(catsRes.value.data);
+        enriched = updateTaxonomyCounts(enriched, countMap);
+      }
+
+      const hasChanged = JSON.stringify(cachedMenu) !== JSON.stringify(enriched);
+      if (hasChanged) {
+        cachedMenu = enriched;
+        try {
+          localStorage.setItem("cm_header_mega_menu_v3", JSON.stringify(enriched));
+        } catch (e) {}
+        window.dispatchEvent(new CustomEvent("cm_menu_updated", { detail: enriched }));
+      }
+    }).catch(() => {});
   },
 };

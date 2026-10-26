@@ -309,8 +309,8 @@ export default function ProductDetailPage({ initialSlug }: ProductDetailClientPr
                     key={i}
                     onClick={() => setActiveImageIndex(i)}
                     className={`w-20 h-20 bg-[#F4F4EF] rounded-[2px] border p-2 flex items-center justify-center shrink-0 transition-all cursor-pointer ${activeImageIndex === i
-                        ? "border-[#0A0A0A] ring-2 ring-[#D61C24]/30"
-                        : "border-[#DADBD2] hover:border-black"
+                      ? "border-[#0A0A0A] ring-2 ring-[#D61C24]/30"
+                      : "border-[#DADBD2] hover:border-black"
                       }`}
                   >
                     <img
@@ -329,21 +329,6 @@ export default function ProductDetailPage({ initialSlug }: ProductDetailClientPr
               </div>
             )}
 
-            {/* Factory Verification Badges */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 p-3.5 sm:p-4 bg-[#F4F4EF] border border-[#DADBD2] rounded-[2px] text-xs font-mono text-[#0A0A0A]">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#D61C24] shrink-0" />
-                <span>AQL 2.5 Quality Verified</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Truck className="w-4 h-4 text-[#D61C24] shrink-0" />
-                <span>Lead Time: {product.leadTime}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#D61C24] shrink-0" />
-                <span>Pre-Production Sample Ready</span>
-              </div>
-            </div>
 
             {/* Expandable Specifications Sections directly below Product Image */}
             <div className="pt-6 space-y-3">
@@ -526,8 +511,8 @@ export default function ProductDetailPage({ initialSlug }: ProductDetailClientPr
                 <button
                   onClick={() => toggleItem(product)}
                   className={`p-2 rounded-full border transition-colors cursor-pointer ${mounted && isInWishlist(product.id)
-                      ? "bg-[#D61C24] text-white border-[#D61C24]"
-                      : "bg-white text-[#72726D] border-[#DADBD2] hover:text-black"
+                    ? "bg-[#D61C24] text-white border-[#D61C24]"
+                    : "bg-white text-[#72726D] border-[#DADBD2] hover:text-black"
                     }`}
                   title={mounted && isInWishlist(product.id) ? "Remove from Wishlist" : "Save to Wishlist"}
                 >
@@ -555,8 +540,8 @@ export default function ProductDetailPage({ initialSlug }: ProductDetailClientPr
                         key={c.id}
                         onClick={() => setSelectedColor(c)}
                         className={`w-7 h-7 rounded-full border flex items-center justify-center transition-transform cursor-pointer ${selectedColor.id === c.id
-                            ? "ring-2 ring-[#D61C24] scale-110"
-                            : "border-black/20 hover:scale-105"
+                          ? "ring-2 ring-[#D61C24] scale-110"
+                          : "border-black/20 hover:scale-105"
                           }`}
                         style={{ backgroundColor: c.hex }}
                         title={c.name}
@@ -577,8 +562,8 @@ export default function ProductDetailPage({ initialSlug }: ProductDetailClientPr
                         key={s}
                         onClick={() => setSelectedSize(s)}
                         className={`px-3.5 py-1.5 text-xs font-mono uppercase font-bold rounded-[2px] border transition-colors cursor-pointer ${selectedSize === s
-                            ? "bg-[#0A0A0A] text-white border-[#0A0A0A]"
-                            : "bg-white text-[#0A0A0A] border-[#DADBD2] hover:border-black"
+                          ? "bg-[#0A0A0A] text-white border-[#0A0A0A]"
+                          : "bg-white text-[#0A0A0A] border-[#DADBD2] hover:border-black"
                           }`}
                       >
                         {s}

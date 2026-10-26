@@ -97,8 +97,11 @@
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2">Parent Category</label>
                     <select name="parent_id" class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white dark:focus:bg-slate-950">
                         <option value="">None (Top-Level Pillar)</option>
-                        @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @foreach($parentCategories as $pCat)
+                            <option value="{{ $pCat->id }}" class="font-bold text-slate-900">{{ $pCat->name }} (Pillar)</option>
+                            @foreach($pCat->children as $cCat)
+                                <option value="{{ $cCat->id }}" class="text-slate-600">&nbsp;&nbsp;&nbsp;&mdash; {{ $cCat->name }} (Subcategory of {{ $pCat->name }})</option>
+                            @endforeach
                         @endforeach
                     </select>
                 </div>
@@ -193,15 +196,17 @@
                                 </tr>
 
                                 @foreach($parent->children as $child)
-                                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition"
-                                        x-show="!searchCat || '{{ strtolower($child->name . ' ' . $child->slug . ' ' . $parent->name) }}'.includes(searchCat.toLowerCase())">
-                                        <td class="py-2.5 pl-8 text-xs text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                                            <span class="text-slate-400">&mdash;</span>
-                                            <span>{{ $child->name }}</span>
+                                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition font-semibold"
+                                        x-show="!searchCat || '{{ strtolower($child->name . ' ' . $child->slug . ' ' . $parent->name . ' ' . $child->children->pluck('name')->join(' ')) }}'.includes(searchCat.toLowerCase())">
+                                        <td class="py-2.5 pl-8 text-xs text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                                            <span class="text-slate-400 font-bold">&mdash;</span>
+                                            <span class="font-bold">{{ $child->name }}</span>
                                         </td>
                                         <td class="py-2.5 font-mono text-xs text-slate-400">{{ $child->slug }}</td>
-                                        <td class="py-2.5 text-center text-xs text-slate-400">
-                                            <span class="text-[10px] text-slate-400">&mdash;</span>
+                                        <td class="py-2.5 text-center text-xs text-slate-500">
+                                            <span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[10px] font-semibold text-slate-600 dark:text-slate-400">
+                                                {{ $child->children->count() }} Types
+                                            </span>
                                         </td>
                                         <td class="py-2.5 text-center text-xs font-semibold text-slate-600 dark:text-slate-400">
                                             {{ $child->products_count }}
@@ -226,6 +231,44 @@
                                             </form>
                                         </td>
                                     </tr>
+
+                                    @foreach($child->children as $grandchild)
+                                        <tr class="hover:bg-slate-50/30 dark:hover:bg-slate-800/10 transition"
+                                            x-show="!searchCat || '{{ strtolower($grandchild->name . ' ' . $grandchild->slug . ' ' . $child->name . ' ' . $parent->name) }}'.includes(searchCat.toLowerCase())">
+                                            <td class="py-2 pl-14 text-xs text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                <span class="text-slate-300 dark:text-slate-600">&bull;</span>
+                                                <span>{{ $grandchild->name }}</span>
+                                            </td>
+                                            <td class="py-2 font-mono text-[11px] text-slate-400">{{ $grandchild->slug }}</td>
+                                            <td class="py-2 text-center text-xs">
+                                                <span class="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-950/40 px-2 py-0.5 text-[9px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+                                                    Type
+                                                </span>
+                                            </td>
+                                            <td class="py-2 text-center text-xs font-medium text-slate-500 dark:text-slate-400">
+                                                {{ $grandchild->products_count }}
+                                            </td>
+                                            <td class="py-2 text-right space-x-2">
+                                                <button type="button" 
+                                                        @click="openEdit({
+                                                            id: {{ $grandchild->id }},
+                                                            name: {{ Js::from($grandchild->name) }},
+                                                            slug: {{ Js::from($grandchild->slug) }},
+                                                            parent_id: {{ $child->id }},
+                                                            tagline: {{ Js::from($grandchild->tagline ?? '') }},
+                                                            description: {{ Js::from($grandchild->description ?? '') }}
+                                                        })"
+                                                        class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">
+                                                    Edit
+                                                </button>
+                                                <form method="POST" action="{{ route('admin.categories.destroy', $grandchild->id) }}" class="inline" onsubmit="return confirm('Delete product type?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-xs text-rose-500 hover:text-rose-700">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 @endforeach
                             @endforeach
                         </tbody>
@@ -303,14 +346,17 @@
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1.5">
-                            Parent Pillar
+                            Parent Category
                         </label>
                         <select name="parent_id" 
                                 x-model="editCategory.parent_id"
                                 class="w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
                             <option value="">None (Top-Level Pillar)</option>
-                            @foreach($categories as $cat)
-                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                            @foreach($parentCategories as $pCat)
+                                <option value="{{ $pCat->id }}" class="font-bold text-slate-900" :disabled="editCategory.id == {{ $pCat->id }}">{{ $pCat->name }} (Pillar)</option>
+                                @foreach($pCat->children as $cCat)
+                                    <option value="{{ $cCat->id }}" class="text-slate-600" :disabled="editCategory.id == {{ $cCat->id }}">&nbsp;&nbsp;&nbsp;&mdash; {{ $cCat->name }} (Subcategory of {{ $pCat->name }})</option>
+                                @endforeach
                             @endforeach
                         </select>
                     </div>

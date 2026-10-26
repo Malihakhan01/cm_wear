@@ -39,9 +39,15 @@ class ProductController extends Controller
             if ($catId === 'uncategorized') {
                 $query->doesntHave('categories');
             } else {
-                $category = Category::with('children:id,parent_id')->find($catId);
+                $category = Category::with('children.children')->find($catId);
                 if ($category) {
-                    $categoryIds = array_merge([$category->id], $category->children->pluck('id')->all());
+                    $categoryIds = [$category->id];
+                    foreach ($category->children as $c) {
+                        $categoryIds[] = $c->id;
+                        foreach ($c->children as $gc) {
+                            $categoryIds[] = $gc->id;
+                        }
+                    }
                     $query->whereHas('categories', function ($q) use ($categoryIds) {
                         $q->whereIn('categories.id', $categoryIds);
                     });
@@ -62,7 +68,11 @@ class ProductController extends Controller
 
         $categories = Category::whereNull('parent_id')
             ->orderByRaw('CASE WHEN sort_order > 0 THEN 0 ELSE 1 END, sort_order ASC, name ASC')
-            ->with(['children' => fn($q) => $q->orderBy('sort_order')->orderBy('name')])
+            ->with([
+                'children' => fn($q) => $q->orderBy('sort_order')->orderBy('name')->with([
+                    'children' => fn($cq) => $cq->orderBy('sort_order')->orderBy('name')
+                ])
+            ])
             ->get();
 
         return view('admin.products.index', compact('products', 'categories', 'perPage'));
@@ -72,7 +82,11 @@ class ProductController extends Controller
     {
         $categories = Category::whereNull('parent_id')
             ->orderByRaw('CASE WHEN sort_order > 0 THEN 0 ELSE 1 END, sort_order ASC, name ASC')
-            ->with(['children' => fn($q) => $q->orderBy('sort_order')->orderBy('name')])
+            ->with([
+                'children' => fn($q) => $q->orderBy('sort_order')->orderBy('name')->with([
+                    'children' => fn($cq) => $cq->orderBy('sort_order')->orderBy('name')
+                ])
+            ])
             ->get();
 
         return view('admin.products.create', compact('categories'));
@@ -192,7 +206,11 @@ class ProductController extends Controller
         $product->load(['categories', 'wholesaleTiers', 'variants.attributeValues', 'images']);
         $categories = Category::whereNull('parent_id')
             ->orderByRaw('CASE WHEN sort_order > 0 THEN 0 ELSE 1 END, sort_order ASC, name ASC')
-            ->with(['children' => fn($q) => $q->orderBy('sort_order')->orderBy('name')])
+            ->with([
+                'children' => fn($q) => $q->orderBy('sort_order')->orderBy('name')->with([
+                    'children' => fn($cq) => $cq->orderBy('sort_order')->orderBy('name')
+                ])
+            ])
             ->get();
 
         return view('admin.products.edit', compact('product', 'categories'));

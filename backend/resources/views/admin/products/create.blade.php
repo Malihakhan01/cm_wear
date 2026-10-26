@@ -340,23 +340,44 @@
                 </div>
 
                 <!-- Product Categories Multi-Select Card -->
-                <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-3">
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white">Product Categories</h3>
-                    <p class="text-xs text-slate-400">Select one or more categories</p>
+                <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-3" x-data="{ searchCatTree: '' }">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900 dark:text-white">Product Categories & Types</h3>
+                        <p class="text-xs text-slate-400">Assign to pillar, subcategory, or specific product type</p>
+                    </div>
 
-                    <div class="max-h-64 overflow-y-auto space-y-2 pt-2">
+                    <div class="relative">
+                        <input type="text" 
+                               x-model="searchCatTree" 
+                               placeholder="Filter categories & product types..." 
+                               class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+                    </div>
+
+                    <div class="max-h-80 overflow-y-auto space-y-2 pt-2 pr-1 border-t border-slate-100 dark:border-slate-800">
                         @foreach($categories as $cat)
-                            <label class="flex items-center gap-2.5 cursor-pointer">
-                                <input type="checkbox" name="categories[]" value="{{ $cat->id }}" class="rounded border-slate-300 text-blue-600 focus:ring-0">
-                                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">{{ $cat->name }}</span>
-                            </label>
-
-                            @foreach($cat->children as $child)
-                                <label class="flex items-center gap-2.5 ml-5 cursor-pointer">
-                                    <input type="checkbox" name="categories[]" value="{{ $child->id }}" class="rounded border-slate-300 text-blue-600 focus:ring-0">
-                                    <span class="text-xs text-slate-600 dark:text-slate-400">&mdash; {{ $child->name }}</span>
+                            <div x-show="!searchCatTree || '{{ strtolower($cat->name . ' ' . $cat->children->pluck('name')->join(' ') . ' ' . $cat->children->flatMap->children->pluck('name')->join(' ')) }}'.includes(searchCatTree.toLowerCase())" class="space-y-1">
+                                <label class="flex items-center gap-2.5 cursor-pointer font-bold text-slate-900 dark:text-slate-100 py-1">
+                                    <input type="checkbox" name="categories[]" value="{{ $cat->id }}" class="rounded border-slate-300 text-blue-600 focus:ring-0">
+                                    <span class="text-xs uppercase tracking-wide">{{ $cat->name }}</span>
                                 </label>
-                            @endforeach
+
+                                @foreach($cat->children as $child)
+                                    <div x-show="!searchCatTree || '{{ strtolower($child->name . ' ' . $cat->name . ' ' . $child->children->pluck('name')->join(' ')) }}'.includes(searchCatTree.toLowerCase())" class="ml-4 space-y-1">
+                                        <label class="flex items-center gap-2 cursor-pointer text-slate-700 dark:text-slate-300 py-0.5">
+                                            <input type="checkbox" name="categories[]" value="{{ $child->id }}" class="rounded border-slate-300 text-blue-600 focus:ring-0">
+                                            <span class="text-xs font-semibold">&mdash; {{ $child->name }}</span>
+                                        </label>
+
+                                        @foreach($child->children as $grandchild)
+                                            <label x-show="!searchCatTree || '{{ strtolower($grandchild->name . ' ' . $child->name . ' ' . $cat->name) }}'.includes(searchCatTree.toLowerCase())" 
+                                                   class="flex items-center gap-2 ml-5 cursor-pointer text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white py-0.5">
+                                                <input type="checkbox" name="categories[]" value="{{ $grandchild->id }}" class="rounded border-slate-300 text-blue-600 focus:ring-0">
+                                                <span class="text-[11px]">&bull; {{ $grandchild->name }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            </div>
                         @endforeach
                     </div>
                 </div>
